@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "out-test",
+    "declaration": false
+  },
+  "files": ["vscode.proposed.languageModelThinkingPart.d.ts"],
+  "include": ["src/**/*", "test/**/*"],
+  "exclude": ["node_modules", "dist", "out-test"]
+}
