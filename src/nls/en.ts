@@ -24,6 +24,8 @@ export const en: Translation = {
   'auth.chooseProvider': 'Select a provider',
   'auth.chooseClearTarget': 'Select provider to clear API Key',
   'auth.noKeysFound': 'No API keys configured',
+  'auth.noKey': 'No API key configured for {0}.',
+  'auth.noKeyTooltip': 'No API key configured for {0}. Add one via the Language Models panel.',
 
   'think.label': 'Thinking Mode',
   'think.none': 'None',
@@ -51,4 +53,8 @@ export const en: Translation = {
   'err.action.usage': 'View Usage',
   'err.action.status': 'View Status',
   'err.action.logs': 'View Logs',
+
+  'err.unknownModel': 'Unknown model: {0}.',
+
+  'tools.drift': 'The following tools were removed to keep the conversation on track: {0}.',
 };

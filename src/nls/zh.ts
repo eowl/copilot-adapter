@@ -24,6 +24,8 @@ export const zh: Translation = {
   'auth.chooseProvider': '选择提供商',
   'auth.chooseClearTarget': '选择要清除 API Key 的提供商',
   'auth.noKeysFound': '当前没有已配置的 API Key',
+  'auth.noKey': '{0} 未配置 API Key。',
+  'auth.noKeyTooltip': '{0} 未配置 API Key，请在语言模型面板中添加。',
 
   'think.label': '思考模式',
   'think.none': '无',
@@ -51,4 +53,8 @@ export const zh: Translation = {
   'err.action.usage': '查看用量',
   'err.action.status': '查看状态',
   'err.action.logs': '查看日志',
+
+  'err.unknownModel': '未知模型：{0}。',
+
+  'tools.drift': '以下工具已从对话中移除以保持上下文连贯：{0}。',
 };
