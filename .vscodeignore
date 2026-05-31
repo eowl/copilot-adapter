@@ -1,0 +1,17 @@
+.git/
+.gitattributes
+.gitignore
+.prettierrc
+.vscode/
+.vscode-test/
+.vscode-test.mjs
+node_modules/
+src/
+test/
+docs/
+eslint.config.mjs
+tsconfig.json
+tsconfig.test.json
+vscode.proposed.languageModelThinkingPart.d.ts
+package-lock.json
+dist/*.vsix
