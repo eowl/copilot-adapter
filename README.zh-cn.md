@@ -110,7 +110,16 @@ API Key 仅存储于 [VS Code Secret Storage](https://code.visualstudio.com/api/
 | `copilot-adapter.visionProxyModel` | `"off"` | 视觉代理使用的模型 ID，`"off"` 表示禁用，详见[视觉代理](#视觉代理) |
 | `copilot-adapter.requestTimeout` | `60` | 请求超时时间（秒） |
 | `copilot-adapter.requestRetries` | `2` | 瞬时错误重试次数（最多 5 次） |
-| `copilot-adapter.debugMode` | `"off"` | 日志详细程度：`off` / `info` / `verbose` |
+| `copilot-adapter.debugMode` | `"off"` | 日志详细程度：`off` / `info` / `meta` / `verbose` |
+
+### 日志级别说明
+
+| 级别 | 输出频道 | 模型 `id` / `apiId` / 端点 | 请求 dump 写入磁盘 |
+|---|---|---|---|
+| `off` | — | — | — |
+| `info` | ✔ 请求元数据 | — | — |
+| `meta` | ✔ 请求元数据 | ✔ | — |
+| `verbose` | ✔ 请求元数据 | ✔ | ✔ |
 
 ---
 

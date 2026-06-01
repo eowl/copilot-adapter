@@ -110,7 +110,16 @@ Each provider can be configured independently under `copilot-adapter.providers`:
 | `copilot-adapter.visionProxyModel` | `"off"` | Model ID to use as vision proxy, or `"off"` to disable — see [Vision Proxy](#vision-proxy) |
 | `copilot-adapter.requestTimeout` | `60` | Request timeout in seconds |
 | `copilot-adapter.requestRetries` | `2` | Retry attempts on transient errors (max 5) |
-| `copilot-adapter.debugMode` | `"off"` | Log verbosity: `off` / `info` / `verbose` |
+| `copilot-adapter.debugMode` | `"off"` | Log verbosity: `off` / `info` / `meta` / `verbose` |
+
+### Debug Mode Levels
+
+| Level | Output channel | Model `id` / `apiId` / endpoint | Request dump to disk |
+|---|---|---|---|
+| `off` | — | — | — |
+| `info` | ✔ request metadata | — | — |
+| `meta` | ✔ request metadata | ✔ | — |
+| `verbose` | ✔ request metadata | ✔ | ✔ |
 
 ---
 

@@ -230,16 +230,19 @@
           "enum": [
             "off",
             "info",
+            "meta",
             "verbose"
           ],
           "enumItemLabels": [
             "%copilot-adapter.config.debug.off.label%",
             "%copilot-adapter.config.debug.info.label%",
+            "%copilot-adapter.config.debug.meta.label%",
             "%copilot-adapter.config.debug.verbose.label%"
           ],
           "markdownEnumDescriptions": [
             "%copilot-adapter.config.debug.off.description%",
             "%copilot-adapter.config.debug.info.description%",
+            "%copilot-adapter.config.debug.meta.description%",
             "%copilot-adapter.config.debug.verbose.description%"
           ],
           "markdownDescription": "%copilot-adapter.config.debug.description%"

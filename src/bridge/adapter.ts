@@ -138,7 +138,12 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     channel.info(
       `Sending: ${provider.label} / ${model.label} (session: ${session.id} [${session.source}])`,
     );
-    channel.debug(`Endpoint: ${endpoint} | Key: ${apiKey.slice(0, 6)}... (${apiKey.length} chars)`);
+    if (Settings.metaEnabled()) {
+      channel.info(`Model: id=${model.id} | apiId=${model.apiId}`);
+      channel.info(
+        `Endpoint: ${endpoint} | Key: ${apiKey.slice(0, 6)}... (${apiKey.length} chars)`,
+      );
+    }
 
     try {
       const ready = await assembleChatReq({

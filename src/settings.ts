@@ -3,9 +3,10 @@ import { EXT_ID } from './defines';
 
 const LEVEL_OFF = 'off' as const;
 const LEVEL_INFO = 'info' as const;
+const LEVEL_META = 'meta' as const;
 const LEVEL_VERBOSE = 'verbose' as const;
 
-const LEVELS = [LEVEL_OFF, LEVEL_INFO, LEVEL_VERBOSE] as const;
+const LEVELS = [LEVEL_OFF, LEVEL_INFO, LEVEL_META, LEVEL_VERBOSE] as const;
 export type DebugLevel = (typeof LEVELS)[number];
 
 function asLevel(v: unknown): DebugLevel | undefined {
@@ -39,6 +40,11 @@ export class Settings {
 
   static loggingEnabled(): boolean {
     return this.activeLevel() !== LEVEL_OFF;
+  }
+
+  static metaEnabled(): boolean {
+    const level = this.activeLevel();
+    return level === LEVEL_META || level === LEVEL_VERBOSE;
   }
 
   static dumpEnabled(): boolean {

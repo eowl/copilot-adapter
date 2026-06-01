@@ -20,7 +20,7 @@ const DS_MODELS: readonly Model[] = [
   {
     id: 'deepseek-v4-flash',
     label: 'DeepSeek V4 Flash',
-    apiId: 'deepseek-chat',
+    apiId: 'deepseek-v4-flash',
     family: 'deepseek',
     version: '4',
     maxInputTokens: 616_000,
@@ -31,7 +31,7 @@ const DS_MODELS: readonly Model[] = [
   {
     id: 'deepseek-v4-pro',
     label: 'DeepSeek V4 Pro',
-    apiId: 'deepseek-reasoner',
+    apiId: 'deepseek-v4-pro',
     family: 'deepseek',
     version: '4',
     maxInputTokens: 616_000,
