@@ -1,4 +1,10 @@
 node_modules/
 dist/
 *.tsbuildinfo
-.vscode-test
+.vscode-test/
+.vscode/extensions.json
+*.vsix
+.env
+.env.*
+coverage/
+*.log
