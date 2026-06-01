@@ -1,6 +1,10 @@
 # Copilot Adapter
 
-Use third-party AI models directly inside VS Code Copilot Chat — the same native way VS Code manages any language model provider. Bring your own API keys; no Copilot subscription is required for the models themselves.
+[![VS Code Marketplace](https://img.shields.io/badge/VS%20Code%20Marketplace-Install-blue?logo=visualstudiocode)](https://marketplace.visualstudio.com/items?itemName=Eowl.copilot-adapter)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![CI](https://github.com/eowl/copilot-adapter/actions/workflows/ci.yml/badge.svg)](https://github.com/eowl/copilot-adapter/actions/workflows/ci.yml)
+
+Use third-party AI models directly inside VS Code Copilot Chat — the same native way VS Code manages any language model provider. Bring your own API keys; no Copilot subscription required for the models themselves, and no local proxy (e.g. Ollama) needed.
 
 [简体中文](README.zh-cn.md)
 

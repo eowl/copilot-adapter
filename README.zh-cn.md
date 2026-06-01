@@ -1,6 +1,10 @@
 # Copilot Adapter
 
-以 VS Code 原生方式在 Copilot Chat 中直接使用第三方 AI 模型——与 VS Code 管理任何语言模型提供商的方式完全一致。使用自己的 API Key，无需 Copilot 订阅。
+[![VS Code Marketplace](https://img.shields.io/badge/VS%20Code%20Marketplace-安装-blue?logo=visualstudiocode)](https://marketplace.visualstudio.com/items?itemName=Eowl.copilot-adapter)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![CI](https://github.com/eowl/copilot-adapter/actions/workflows/ci.yml/badge.svg)](https://github.com/eowl/copilot-adapter/actions/workflows/ci.yml)
+
+以 VS Code 原生方式在 Copilot Chat 中直接使用第三方 AI 模型——与 VS Code 管理任何语言模型提供商的方式完全一致。使用自己的 API Key，无需 Copilot 订阅，也无需任何本地代理（如 Ollama）。
 
 [English](README.md)
 
