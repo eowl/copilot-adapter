@@ -4,45 +4,75 @@ on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Tag to release (e.g. v0.1.1)'
+        required: true
 
 jobs:
   release:
-    name: Build & release
+    name: Create GitHub Release
     runs-on: ubuntu-latest
     permissions:
       contents: write
-
+    outputs:
+      tag_name: ${{ inputs.tag_name || github.ref_name }}
     steps:
       - uses: actions/checkout@v4
 
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ inputs.tag_name || github.ref_name }}
+          generate_release_notes: true
+
+  publish:
+    name: Build & Publish
+    needs: release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.release.outputs.tag_name }}
+
       - uses: actions/setup-node@v4
         with:
-          node-version: '24'
+          node-version: 24
           cache: npm
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Compile
-        run: npm run compile
-
       - name: Test (headless)
         run: xvfb-run -a npm test
 
       - name: Package
-        run: npm run package
+        run: rm -rf dist && mkdir -p dist && npm run package
 
-      - name: Create GitHub Release
+      - name: Locate VSIX
+        id: vsix
+        shell: bash
+        run: |
+          shopt -s nullglob
+          files=(dist/*.vsix)
+          if [ "${#files[@]}" -ne 1 ]; then
+            echo "Expected exactly one VSIX in dist, found ${#files[@]}" >&2
+            printf '%s\n' "${files[@]}" >&2
+            exit 1
+          fi
+          echo "path=${files[0]}" >> "$GITHUB_OUTPUT"
+
+      - name: Publish to VS Code Marketplace
+        run: npm exec -- vsce publish --packagePath "${{ steps.vsix.outputs.path }}" --skip-duplicate
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+
+      - name: Attach VSIX to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/copilot-adapter-*.vsix
-          generate_release_notes: true
-
-      # To publish to VS Code Marketplace, add VSCE_PAT to repository secrets
-      # and uncomment the step below. PAT must have Marketplace → Manage scope.
-      # Obtain a PAT from https://dev.azure.com (requires Azure DevOps org).
-      #
-      # - name: Publish to VS Code Marketplace
-      #   env:
-      #     VSCE_PAT: ${{ secrets.VSCE_PAT }}
-      #   run: npx vsce publish --pat "$VSCE_PAT"
+          tag_name: ${{ needs.release.outputs.tag_name }}
+          files: ${{ steps.vsix.outputs.path }}
+          fail_on_unmatched_files: true
