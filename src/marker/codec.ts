@@ -1,12 +1,6 @@
 import vscode from 'vscode';
 import { pack } from '../serialize';
-import {
-  BASE64URL_RE,
-  ENCODED_JSON_PREFIX,
-  MARKER_MIME,
-  UUID_RE,
-  WRITER_ID,
-} from './defines';
+import { BASE64URL_RE, ENCODED_JSON_PREFIX, MARKER_MIME, UUID_RE, WRITER_ID } from './defines';
 import type {
   LocatedMarker,
   MarkerPayload,

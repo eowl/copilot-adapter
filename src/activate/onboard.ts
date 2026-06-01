@@ -2,7 +2,6 @@ import vscode from 'vscode';
 import { channel } from '../logger';
 import type { KeyStore } from '../secrets';
 import { ALL_PROVIDERS } from '../providers';
-import { t } from '../nls';
 import { EXT_ID } from '../defines';
 
 const WELCOME_KEY = `${EXT_ID}.welcomeShown`;

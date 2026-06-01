@@ -98,7 +98,7 @@ export function needsWarmup(
   isEnabled: boolean,
 ): boolean {
   if (!isEnabled) return false;
-  
+
   const activatable = availableToolNames.filter((n) => n.startsWith(ACTIVATE_PREFIX));
   if (activatable.length === 0) return false;
 

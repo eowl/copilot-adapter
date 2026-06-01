@@ -17,7 +17,7 @@ export function buildDriftWarning(droppedNames: string[]): string {
 export function stripDriftNotice(text: string): string {
   const start = text.indexOf(DRIFT_NOTICE_START);
   if (start < 0) return text;
-  
+
   const end = text.indexOf(DRIFT_NOTICE_END, start);
   if (end < 0) return text;
 

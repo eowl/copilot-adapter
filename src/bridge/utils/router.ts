@@ -44,7 +44,7 @@ export function routeToolFlow(
       const state = scanWarmupState(messages, toolNames);
       const round = state.completedRounds + 1;
       const activateName = toolNames.find((n) => n.startsWith('activate_'));
-      
+
       if (activateName) {
         return {
           kind: 'warmup',

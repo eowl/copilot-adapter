@@ -57,7 +57,7 @@ export class KeyStore {
     await this.set(providerId, input.trim());
     channel.info(`${providerLabel} API Key saved.`);
     vscode.window.showInformationMessage(t('auth.keyStored', providerLabel));
-    
+
     return true;
   }
 }

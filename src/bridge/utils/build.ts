@@ -46,6 +46,6 @@ export function gatherTrailingResultIds(
     }
     if (!hasResult) break;
   }
-  
+
   return ids.reverse();
 }

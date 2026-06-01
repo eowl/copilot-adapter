@@ -1,6 +1,5 @@
 import vscode from 'vscode';
 import { channel } from '../logger';
-import { t } from '../nls';
 import { Settings } from '../settings';
 import { readMarkerFromMessage } from '../marker/codec';
 import type { VisionModelPicker } from './model';
