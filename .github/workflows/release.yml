@@ -50,7 +50,7 @@ jobs:
         run: xvfb-run -a npm test
 
       - name: Package
-        run: rm -rf dist && mkdir -p dist && npm run package
+        run: npm run compile && npm run package
 
       - name: Locate VSIX
         id: vsix
