@@ -1,15 +1,15 @@
 import assert from 'node:assert/strict';
 import { suite, test } from 'mocha';
-import { MINIMAX } from '../../../src/providers/minimax';
+import { MINIMAX, MM_MODELS } from '../../../src/providers/minimax';
 import { ThinkTagParser } from '../../../src/providers/parsers/tag';
 import type { Model } from '../../../src/providers/types';
 
 function reasoningModel(): Model {
-  return MINIMAX.models.find((m) => m.ability.reasoning)! as Model;
+  return MM_MODELS.find((m) => m.ability.reasoning)! as Model;
 }
 
 function nonReasoningModel(): Model {
-  return MINIMAX.models.find((m) => !m.ability.reasoning)! as Model;
+  return MM_MODELS.find((m) => !m.ability.reasoning)! as Model;
 }
 
 suite('providers/minimax — MINIMAX.requestExtras()', () => {
@@ -69,11 +69,11 @@ suite('providers/minimax — MINIMAX.createContentParser()', () => {
 
 suite('providers/minimax — model list', () => {
   test('has 9 models', () => {
-    assert.equal(MINIMAX.models.length, 9);
+    assert.equal(MM_MODELS.length, 9);
   });
 
   test('first model is minimax-text-01', () => {
-    assert.equal(MINIMAX.models[0].id, 'minimax-text-01');
+    assert.equal(MM_MODELS[0].id, 'minimax-text-01');
   });
 
   test('MINIMAX provider id is "minimax"', () => {

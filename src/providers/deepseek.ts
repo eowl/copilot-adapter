@@ -10,43 +10,11 @@ function parseEffort(raw: unknown): ThinkingEffort {
   return 'high';
 }
 
-const DS_ABILITY: ReasoningAbility = {
-  maxTools: 128,
-  acceptsImages: false,
-  reasoning: true,
-};
-
-const DS_MODELS: readonly Model[] = [
-  {
-    id: 'deepseek-v4-flash',
-    label: 'DeepSeek V4 Flash',
-    apiId: 'deepseek-v4-flash',
-    family: 'deepseek',
-    version: '4',
-    maxInputTokens: 616_000,
-    maxOutputTokens: 384_000,
-    ability: DS_ABILITY,
-    detailKey: 'model.deepseek-v4-flash.detail',
-  },
-  {
-    id: 'deepseek-v4-pro',
-    label: 'DeepSeek V4 Pro',
-    apiId: 'deepseek-v4-pro',
-    family: 'deepseek',
-    version: '4',
-    maxInputTokens: 616_000,
-    maxOutputTokens: 384_000,
-    ability: DS_ABILITY,
-    detailKey: 'model.deepseek-v4-pro.detail',
-  },
-];
-
 export const DEEPSEEK: Provider = {
   id: 'deepseek',
   label: 'DeepSeek',
   detailKey: 'provider.deepseek.detail',
-  defaultEndpoint: 'https://api.deepseek.com',
-  models: DS_MODELS,
+  endpoint: 'https://api.deepseek.com',
   tokenRatio: 4.0,
   thinkingField: 'reasoning_content',
   apiKeyHint: 'sk-...',
@@ -85,3 +53,36 @@ export const DEEPSEEK: Provider = {
     } as const;
   },
 };
+
+const DS_ABILITY: ReasoningAbility = {
+  maxTools: 128,
+  acceptsImages: false,
+  reasoning: true,
+};
+
+export const DS_MODELS: readonly Model[] = [
+  {
+    id: 'deepseek-v4-flash',
+    label: 'DeepSeek V4 Flash',
+    apiId: 'deepseek-v4-flash',
+    family: 'deepseek',
+    version: '4',
+    maxInputTokens: 616_000,
+    maxOutputTokens: 384_000,
+    ability: DS_ABILITY,
+    detailKey: 'model.deepseek-v4-flash.detail',
+    provider: DEEPSEEK,
+  },
+  {
+    id: 'deepseek-v4-pro',
+    label: 'DeepSeek V4 Pro',
+    apiId: 'deepseek-v4-pro',
+    family: 'deepseek',
+    version: '4',
+    maxInputTokens: 616_000,
+    maxOutputTokens: 384_000,
+    ability: DS_ABILITY,
+    detailKey: 'model.deepseek-v4-pro.detail',
+    provider: DEEPSEEK,
+  },
+];

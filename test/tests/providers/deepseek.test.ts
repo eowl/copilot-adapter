@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { suite, test } from 'mocha';
-import { DEEPSEEK } from '../../../src/providers/deepseek';
+import { DEEPSEEK, DS_MODELS } from '../../../src/providers/deepseek';
 
 suite('providers/deepseek — DEEPSEEK.requestExtras()', () => {
   const requestExtras = DEEPSEEK.requestExtras!.bind(DEEPSEEK);
@@ -51,15 +51,15 @@ suite('providers/deepseek — DEEPSEEK.requestExtras()', () => {
   });
 
   test('DEEPSEEK has exactly 2 models', () => {
-    assert.equal(DEEPSEEK.models.length, 2);
+    assert.equal(DS_MODELS.length, 2);
   });
 
   test('first model is deepseek-v4-flash', () => {
-    assert.equal(DEEPSEEK.models[0].id, 'deepseek-v4-flash');
+    assert.equal(DS_MODELS[0].id, 'deepseek-v4-flash');
   });
 
   test('second model is deepseek-v4-pro', () => {
-    assert.equal(DEEPSEEK.models[1].id, 'deepseek-v4-pro');
+    assert.equal(DS_MODELS[1].id, 'deepseek-v4-pro');
   });
 
   test('DEEPSEEK provider id is "deepseek"', () => {

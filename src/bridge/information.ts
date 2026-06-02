@@ -1,6 +1,6 @@
 import vscode from 'vscode';
 import { t } from '../nls';
-import type { Provider, Model } from '../providers/types';
+import type { Model } from '../providers/types';
 
 /** Extended chat model information returned to VS Code. */
 export interface ChatInfo extends vscode.LanguageModelChatInformation {
@@ -17,10 +17,10 @@ export interface ReqOptions extends vscode.ProvideLanguageModelChatResponseOptio
 
 export function buildChatInfo(
   model: Model,
-  provider: Provider,
   hasKey: boolean,
   hasVisionProxy = false,
 ): ChatInfo {
+  const provider = model.provider;
   const schema = provider.configSchema?.(model);
   const notConfigured = !hasKey;
 

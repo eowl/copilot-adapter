@@ -4,7 +4,7 @@ import type { VisionModelPicker } from '../vision/model';
 import { translateMessages, translateTools } from './translate';
 import { routeToolFlow, type GateAction } from './utils/router';
 import { resolveModelConfig } from './information';
-import type { Provider, Model } from '../providers/types';
+import type { Model } from '../providers/types';
 import type { ReqOptions } from './information';
 import type { ApiReq } from '../client/types';
 import { Settings } from '../settings';
@@ -13,7 +13,6 @@ export interface ReadyReq {
   endpoint: string;
   apiKey: string;
   body: ApiReq;
-  provider: Provider;
   model: Model;
   gate: GateAction;
   visionText: string;
@@ -22,7 +21,6 @@ export interface ReadyReq {
 export interface PrepContext {
   messages: readonly vscode.LanguageModelChatRequestMessage[];
   options: ReqOptions;
-  provider: Provider;
   model: Model;
   apiKey: string;
   token: vscode.CancellationToken;
@@ -35,7 +33,8 @@ export interface PrepContext {
  * Handles: image resolution, tool routing, message translation, extras injection.
  */
 export async function assembleChatReq(ctx: PrepContext): Promise<ReadyReq> {
-  const { provider, model, options, token } = ctx;
+  const { model, options, token } = ctx;
+  const provider = model.provider;
   const modelConfig = resolveModelConfig(options);
 
   let processedMessages = ctx.messages;
@@ -87,7 +86,6 @@ export async function assembleChatReq(ctx: PrepContext): Promise<ReadyReq> {
     endpoint: ctx.endpoint,
     apiKey: ctx.apiKey,
     body,
-    provider,
     model,
     gate,
     visionText,

@@ -2,7 +2,7 @@ import vscode from 'vscode';
 import { EXT_ID } from '../defines';
 import { channel } from '../logger';
 import { t } from '../nls';
-import { ALL_PROVIDERS, modelById } from '../providers';
+import { ALL_MODELS, ALL_PROVIDERS, modelById } from '../providers';
 import { KeyStore } from '../secrets';
 import { Settings } from '../settings';
 import { buildChatInfo, type ChatInfo, type ReqOptions } from './information';
@@ -90,8 +90,10 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     _options: PrepareOptions,
     _token: vscode.CancellationToken,
   ): Promise<ChatInfo[]> {
-    const provider = ALL_PROVIDERS.find((p) => p.id === this.filteredProviderId);
-    if (!provider || !Settings.providerEnabled(this.filteredProviderId)) return [];
+    if (!Settings.providerEnabled(this.filteredProviderId)) return [];
+
+    const providerModels = ALL_MODELS.filter((m) => m.provider.id === this.filteredProviderId);
+    if (providerModels.length === 0) return [];
 
     const opts = _options as GroupOptions;
     const groupCfg = opts.configuration;
@@ -100,15 +102,15 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       const apiKey = typeof groupCfg['apiKey'] === 'string' ? (groupCfg['apiKey'] as string) : '';
       this.groupApiKey = apiKey.length > 0 ? apiKey : undefined;
       const hasKey = this.groupApiKey !== undefined;
-      return provider.models.map(
-        (model) => buildChatInfo(model, provider, hasKey, this.visionProxyAvailable) as ChatInfo,
+      return providerModels.map(
+        (model) => buildChatInfo(model, hasKey, this.visionProxyAvailable) as ChatInfo,
       );
     }
 
     const hasKey = await this.keys.has(this.filteredProviderId);
     if (!hasKey) return [];
-    return provider.models.map(
-      (model) => buildChatInfo(model, provider, true, this.visionProxyAvailable) as ChatInfo,
+    return providerModels.map(
+      (model) => buildChatInfo(model, true, this.visionProxyAvailable) as ChatInfo,
     );
   }
 
@@ -119,11 +121,11 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     progress: Progress,
     token: vscode.CancellationToken,
   ): Promise<void> {
-    const entry = modelById.get(modelInfo.id);
-    if (!entry) {
+    const model = modelById.get(modelInfo.id);
+    if (!model) {
       throw new Error(t('err.unknownModel', modelInfo.id));
     }
-    const { provider, model } = entry;
+    const { provider } = model;
 
     const apiKey = this.groupApiKey ?? (await this.keys.get(provider.id));
     const usingGroupKey = this.groupApiKey !== undefined;
@@ -132,7 +134,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       throw new Error(t('auth.noKey', provider.label));
     }
 
-    const endpoint = Settings.baseUrl(provider.defaultEndpoint, provider.id);
+    const endpoint = Settings.baseUrl(provider.endpoint, provider.id);
     const session = Session.fromMessages(messages);
 
     channel.info(
@@ -149,7 +151,6 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       const ready = await assembleChatReq({
         messages,
         options,
-        provider,
         model,
         apiKey,
         token,
@@ -209,7 +210,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     const items = ALL_PROVIDERS.map((p) => ({
       label: p.label,
       description: p.id,
-      detail: t(p.detailKey, String(p.models.length)),
+      detail: t(p.detailKey, String(ALL_MODELS.filter((m) => m.provider.id === p.id).length)),
     }));
     const picked = await vscode.window.showQuickPick(items, {
       title: t('auth.chooseProvider'),
@@ -238,7 +239,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
         configured.push({
           label: p.label,
           description: p.id,
-          detail: t(p.detailKey, String(p.models.length)),
+          detail: t(p.detailKey, String(ALL_MODELS.filter((m) => m.provider.id === p.id).length)),
         });
       }
     }
