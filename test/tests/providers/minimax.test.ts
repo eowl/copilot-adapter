@@ -25,8 +25,8 @@ suite('providers/minimax — model.createContentParser()', () => {
 });
 
 suite('providers/minimax — model list', () => {
-  test('has 7 models', () => {
-    assert.equal(MM_MODELS.length, 7);
+  test('has 8 models', () => {
+    assert.equal(MM_MODELS.length, 8);
   });
 
   test('first model is minimax-m2', () => {

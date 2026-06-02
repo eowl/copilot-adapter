@@ -1,8 +1,39 @@
+import { t } from '../nls';
 import type { ContentParser, Model, Provider, ReasoningAbility } from './types';
 import { ThinkTagParser } from './parsers/tag';
 
 function mmCreateContentParser(): ContentParser {
   return new ThinkTagParser('think');
+}
+
+function m3RequestExtras(modelConfig: Record<string, unknown> | undefined): Record<string, unknown> {
+  if (modelConfig?.thinkingMode === 'disabled') {
+    return { thinking: { type: 'disabled' } };
+  }
+
+  return {};
+}
+
+function m3ConfigSchema(): Record<string, unknown> {
+  return {
+    properties: {
+      thinkingMode: {
+        type: 'string',
+        title: t('think.label'),
+        enum: ['adaptive', 'disabled'],
+        enumItemLabels: [t('think.adaptive'), t('think.none')],
+        enumDescriptions: [t('think.adaptive.hint'), t('think.none.hint')],
+        default: 'adaptive',
+        group: 'navigation',
+      },
+    },
+  } as const;
+}
+
+function mmImagePart(data: Uint8Array, mimeType: string): Record<string, unknown> {
+  const base64 = Buffer.from(data).toString('base64');
+
+  return { type: 'image_url', image_url: { url: `data:${mimeType};base64,${base64}` } };
 }
 
 export const MINIMAX: Provider = {
@@ -25,6 +56,13 @@ export const MINIMAX: Provider = {
 const MM_ABILITY: ReasoningAbility = {
   maxTools: 32,
   acceptsImages: false,
+  reasoning: true,
+  thinkTag: 'think',
+};
+
+const MM_M3_ABILITY: ReasoningAbility = {
+  maxTools: 64,
+  acceptsImages: true,
   reasoning: true,
   thinkTag: 'think',
 };
@@ -94,5 +132,22 @@ export const MM_MODELS: readonly Model[] = [
     apiId: 'MiniMax-M2.7-highspeed',
     version: '2.7',
     detailKey: 'model.minimax-m2.7-highspeed.detail',
+  },
+  {
+    id: 'minimax-m3',
+    label: 'MiniMax M3',
+    maxTokensField: 'max_completion_tokens',
+    apiId: 'MiniMax-M3',
+    family: 'minimax',
+    version: '3',
+    maxInputTokens: 1_000_000,
+    maxOutputTokens: 40960,
+    ability: MM_M3_ABILITY,
+    detailKey: 'model.minimax-m3.detail',
+    provider: MINIMAX,
+    requestExtras: m3RequestExtras,
+    configSchema: m3ConfigSchema,
+    createContentParser: mmCreateContentParser,
+    formatImagePart: mmImagePart,
   },
 ];

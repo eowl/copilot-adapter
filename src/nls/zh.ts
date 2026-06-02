@@ -13,6 +13,7 @@ export const zh: Translation = {
   'model.minimax-m2.5-highspeed.detail': '深度推理，高速版',
   'model.minimax-m2.7.detail': '深度推理模型',
   'model.minimax-m2.7-highspeed.detail': '深度推理，高速版',
+  'model.minimax-m3.detail': '深度推理，支持图像',
 
   'auth.keyInput': '请输入 {0} API Key',
   'auth.keyInputHinted': '请输入 {0} API Key（格式：{1}）',
@@ -28,6 +29,8 @@ export const zh: Translation = {
   'think.label': '思考模式',
   'think.none': '无',
   'think.none.hint': '无推理步骤',
+  'think.adaptive': '自适应',
+  'think.adaptive.hint': '模型自动调整推理深度',
   'think.high': '高',
   'think.high.hint': '适合日常任务',
   'think.max': '最大',

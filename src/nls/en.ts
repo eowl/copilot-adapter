@@ -13,6 +13,7 @@ export const en: Translation = {
   'model.minimax-m2.5-highspeed.detail': 'Deep reasoning, high-speed',
   'model.minimax-m2.7.detail': 'Deep reasoning model',
   'model.minimax-m2.7-highspeed.detail': 'Deep reasoning, high-speed',
+  'model.minimax-m3.detail': 'Deep reasoning with vision support',
 
   'auth.keyInput': 'Enter {0} API Key',
   'auth.keyInputHinted': 'Enter {0} API Key (format: {1})',
@@ -28,6 +29,8 @@ export const en: Translation = {
   'think.label': 'Thinking Mode',
   'think.none': 'None',
   'think.none.hint': 'No reasoning steps; fastest output',
+  'think.adaptive': 'Adaptive',
+  'think.adaptive.hint': 'Model auto-adjusts reasoning depth',
   'think.high': 'High',
   'think.high.hint': 'Good for day-to-day coding tasks',
   'think.max': 'Max',
