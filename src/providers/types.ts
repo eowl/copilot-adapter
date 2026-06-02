@@ -37,6 +37,10 @@ export interface Model {
   readonly ability: ModelAbility;
   readonly detailKey: string;
   readonly provider: Provider;
+
+  requestExtras?(modelConfig: Record<string, unknown> | undefined): Record<string, unknown>;
+  configSchema?(): Record<string, unknown> | undefined;
+  createContentParser?(): ContentParser | undefined;
 }
 
 export interface Provider {
@@ -49,13 +53,4 @@ export interface Provider {
   readonly supportsStreamUsage?: boolean;
   readonly links?: ProviderLinks;
   readonly apiKeyHint?: string;
-
-  requestExtras?(
-    modelConfig: Record<string, unknown> | undefined,
-    model: Model,
-  ): Record<string, unknown>;
-
-  configSchema?(model: Model): Record<string, unknown> | undefined;
-
-  createContentParser?(model: Model): ContentParser | undefined;
 }

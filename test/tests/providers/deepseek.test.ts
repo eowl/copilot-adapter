@@ -2,16 +2,16 @@ import assert from 'node:assert/strict';
 import { suite, test } from 'mocha';
 import { DEEPSEEK, DS_MODELS } from '../../../src/providers/deepseek';
 
-suite('providers/deepseek — DEEPSEEK.requestExtras()', () => {
-  const requestExtras = DEEPSEEK.requestExtras!.bind(DEEPSEEK);
+suite('providers/deepseek — model.requestExtras()', () => {
+  const requestExtras = DS_MODELS[0].requestExtras!;
 
   test('effort "none" → thinking disabled', () => {
-    const result = requestExtras({ reasoningEffort: 'none' }, undefined as never);
+    const result = requestExtras({ reasoningEffort: 'none' });
     assert.deepEqual(result, { thinking: { type: 'disabled' } });
   });
 
   test('effort "high" → thinking enabled with high', () => {
-    const result = requestExtras({ reasoningEffort: 'high' }, undefined as never);
+    const result = requestExtras({ reasoningEffort: 'high' });
     assert.deepEqual(result, {
       thinking: { type: 'enabled' },
       reasoning_effort: 'high',
@@ -19,7 +19,7 @@ suite('providers/deepseek — DEEPSEEK.requestExtras()', () => {
   });
 
   test('effort "max" → thinking enabled with max', () => {
-    const result = requestExtras({ reasoningEffort: 'max' }, undefined as never);
+    const result = requestExtras({ reasoningEffort: 'max' });
     assert.deepEqual(result, {
       thinking: { type: 'enabled' },
       reasoning_effort: 'max',
@@ -27,7 +27,7 @@ suite('providers/deepseek — DEEPSEEK.requestExtras()', () => {
   });
 
   test('unknown effort value defaults to "high"', () => {
-    const result = requestExtras({ reasoningEffort: 'medium' }, undefined as never);
+    const result = requestExtras({ reasoningEffort: 'medium' });
     assert.deepEqual(result, {
       thinking: { type: 'enabled' },
       reasoning_effort: 'high',
@@ -35,7 +35,7 @@ suite('providers/deepseek — DEEPSEEK.requestExtras()', () => {
   });
 
   test('undefined effort defaults to "high"', () => {
-    const result = requestExtras({}, undefined as never);
+    const result = requestExtras({});
     assert.deepEqual(result, {
       thinking: { type: 'enabled' },
       reasoning_effort: 'high',
@@ -43,7 +43,7 @@ suite('providers/deepseek — DEEPSEEK.requestExtras()', () => {
   });
 
   test('undefined modelConfig defaults to "high"', () => {
-    const result = requestExtras(undefined, undefined as never);
+    const result = requestExtras(undefined);
     assert.deepEqual(result, {
       thinking: { type: 'enabled' },
       reasoning_effort: 'high',

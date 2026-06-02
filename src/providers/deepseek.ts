@@ -10,6 +10,34 @@ function parseEffort(raw: unknown): ThinkingEffort {
   return 'high';
 }
 
+function dsRequestExtras(modelConfig: Record<string, unknown> | undefined): Record<string, unknown> {
+  const effort = parseEffort(modelConfig?.reasoningEffort);
+  if (effort === 'none') {
+    return { thinking: { type: 'disabled' } };
+  }
+  
+  return {
+    thinking: { type: 'enabled' },
+    reasoning_effort: effort === 'max' ? 'max' : 'high',
+  };
+}
+
+function dsConfigSchema(): Record<string, unknown> {
+  return {
+    properties: {
+      reasoningEffort: {
+        type: 'string',
+        title: t('think.label'),
+        enum: ['none', 'high', 'max'],
+        enumItemLabels: [t('think.none'), t('think.high'), t('think.max')],
+        enumDescriptions: [t('think.none.hint'), t('think.high.hint'), t('think.max.hint')],
+        default: 'high',
+        group: 'navigation',
+      },
+    },
+  } as const;
+}
+
 export const DEEPSEEK: Provider = {
   id: 'deepseek',
   label: 'DeepSeek',
@@ -23,34 +51,6 @@ export const DEEPSEEK: Provider = {
     apiKeys: 'https://platform.deepseek.com/api_keys',
     usage: 'https://platform.deepseek.com/usage',
     status: 'https://status.deepseek.com',
-  },
-
-  requestExtras(modelConfig, _model) {
-    const effort = parseEffort(modelConfig?.reasoningEffort);
-    if (effort === 'none') {
-      return { thinking: { type: 'disabled' } };
-    }
-    return {
-      thinking: { type: 'enabled' },
-      reasoning_effort: effort === 'max' ? 'max' : 'high',
-    };
-  },
-
-  configSchema(model) {
-    if (!model.ability.reasoning) return undefined;
-    return {
-      properties: {
-        reasoningEffort: {
-          type: 'string',
-          title: t('think.label'),
-          enum: ['none', 'high', 'max'],
-          enumItemLabels: [t('think.none'), t('think.high'), t('think.max')],
-          enumDescriptions: [t('think.none.hint'), t('think.high.hint'), t('think.max.hint')],
-          default: 'high',
-          group: 'navigation',
-        },
-      },
-    } as const;
   },
 };
 
@@ -72,6 +72,8 @@ export const DS_MODELS: readonly Model[] = [
     ability: DS_ABILITY,
     detailKey: 'model.deepseek-v4-flash.detail',
     provider: DEEPSEEK,
+    requestExtras: dsRequestExtras,
+    configSchema: dsConfigSchema,
   },
   {
     id: 'deepseek-v4-pro',
@@ -84,5 +86,7 @@ export const DS_MODELS: readonly Model[] = [
     ability: DS_ABILITY,
     detailKey: 'model.deepseek-v4-pro.detail',
     provider: DEEPSEEK,
+    requestExtras: dsRequestExtras,
+    configSchema: dsConfigSchema,
   },
 ];

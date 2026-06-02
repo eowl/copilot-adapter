@@ -12,53 +12,51 @@ function nonReasoningModel(): Model {
   return MM_MODELS.find((m) => !m.ability.reasoning)! as Model;
 }
 
-suite('providers/minimax — MINIMAX.requestExtras()', () => {
-  const requestExtras = MINIMAX.requestExtras!.bind(MINIMAX);
+suite('providers/minimax — model.requestExtras()', () => {
+  const requestExtras = reasoningModel().requestExtras!;
 
   test('tier "off" → thinking disabled', () => {
-    const result = requestExtras({ thinkingBudget: 'off' }, reasoningModel());
+    const result = requestExtras({ thinkingBudget: 'off' });
     assert.deepEqual(result, { thinking: { type: 'disabled' } });
   });
 
   test('tier "standard" → thinking enabled, budget_tokens = 8000', () => {
-    const result = requestExtras({ thinkingBudget: 'standard' }, reasoningModel());
+    const result = requestExtras({ thinkingBudget: 'standard' });
     assert.deepEqual(result, { thinking: { type: 'enabled', budget_tokens: 8000 } });
   });
 
   test('tier "deep" → thinking enabled, budget_tokens = 80000', () => {
-    const result = requestExtras({ thinkingBudget: 'deep' }, reasoningModel());
+    const result = requestExtras({ thinkingBudget: 'deep' });
     assert.deepEqual(result, { thinking: { type: 'enabled', budget_tokens: 80000 } });
   });
 
   test('unknown tier defaults to "standard"', () => {
-    const result = requestExtras({ thinkingBudget: 'extreme' }, reasoningModel());
+    const result = requestExtras({ thinkingBudget: 'extreme' });
     assert.deepEqual(result, { thinking: { type: 'enabled', budget_tokens: 8000 } });
   });
 
   test('undefined thinkingBudget defaults to "standard"', () => {
-    const result = requestExtras({}, reasoningModel());
+    const result = requestExtras({});
     assert.deepEqual(result, { thinking: { type: 'enabled', budget_tokens: 8000 } });
   });
 
-  test('non-reasoning model → empty object', () => {
-    const result = requestExtras({ thinkingBudget: 'deep' }, nonReasoningModel());
-    assert.deepEqual(result, {});
+  test('non-reasoning model has no requestExtras', () => {
+    assert.equal(nonReasoningModel().requestExtras, undefined);
   });
 });
 
-suite('providers/minimax — MINIMAX.createContentParser()', () => {
+suite('providers/minimax — model.createContentParser()', () => {
   test('returns a ThinkTagParser for reasoning models', () => {
-    const parser = MINIMAX.createContentParser!(reasoningModel());
+    const parser = reasoningModel().createContentParser!();
     assert.ok(parser instanceof ThinkTagParser, `Expected ThinkTagParser, got: ${parser}`);
   });
 
-  test('returns undefined for non-reasoning models', () => {
-    const parser = MINIMAX.createContentParser!(nonReasoningModel());
-    assert.equal(parser, undefined);
+  test('non-reasoning model has no createContentParser', () => {
+    assert.equal(nonReasoningModel().createContentParser, undefined);
   });
 
   test('the returned parser processes <think> tags correctly', () => {
-    const parser = MINIMAX.createContentParser!(reasoningModel())!;
+    const parser = reasoningModel().createContentParser!()!;
     const events = [...parser.feed('<think>thinking</think>reply'), ...parser.flush()];
     assert.deepEqual(events, [
       { kind: 'thinking', text: 'thinking' },

@@ -1,5 +1,5 @@
 import { t } from '../nls';
-import type { Model, Provider, ReasoningAbility } from './types';
+import type { ContentParser, Model, Provider, ReasoningAbility } from './types';
 import { ThinkTagParser } from './parsers/tag';
 
 type BudgetTier = 'off' | 'standard' | 'deep';
@@ -8,6 +8,33 @@ function parseBudget(raw: unknown): BudgetTier {
   if (raw === 'off') return 'off';
   if (raw === 'deep') return 'deep';
   return 'standard';
+}
+
+function mmRequestExtras(modelConfig: Record<string, unknown> | undefined): Record<string, unknown> {
+  const tier = parseBudget(modelConfig?.thinkingBudget);
+  if (tier === 'off') return { thinking: { type: 'disabled' } };
+  const budget = tier === 'deep' ? 80000 : 8000;
+  return { thinking: { type: 'enabled', budget_tokens: budget } };
+}
+
+function mmConfigSchema(): Record<string, unknown> {
+  return {
+    properties: {
+      thinkingBudget: {
+        type: 'string',
+        title: t('think.label'),
+        enum: ['off', 'standard', 'deep'],
+        enumItemLabels: [t('think.none'), t('think.high'), t('think.max')],
+        enumDescriptions: [t('think.none.hint'), t('think.high.hint'), t('think.max.hint')],
+        default: 'standard',
+        group: 'navigation',
+      },
+    },
+  } as const;
+}
+
+function mmCreateContentParser(): ContentParser {
+  return new ThinkTagParser('think');
 }
 
 export const MINIMAX: Provider = {
@@ -25,39 +52,6 @@ export const MINIMAX: Provider = {
     usage: 'https://www.minimax.io/platform/cost-management/record',
     status: 'https://status.minimax.io',
   },
-
-  requestExtras(modelConfig, model) {
-    if (!model.ability.reasoning) return {};
-    const tier = parseBudget(modelConfig?.thinkingBudget);
-    if (tier === 'off') return { thinking: { type: 'disabled' } };
-    const budget = tier === 'deep' ? 80000 : 8000;
-    return { thinking: { type: 'enabled', budget_tokens: budget } };
-  },
-
-  configSchema(model) {
-    if (!model.ability.reasoning) return undefined;
-
-    return {
-      properties: {
-        thinkingBudget: {
-          type: 'string',
-          title: t('think.label'),
-          enum: ['off', 'standard', 'deep'],
-          enumItemLabels: [t('think.none'), t('think.high'), t('think.max')],
-          enumDescriptions: [t('think.none.hint'), t('think.high.hint'), t('think.max.hint')],
-          default: 'standard',
-          group: 'navigation',
-        },
-      },
-    } as const;
-  },
-
-  createContentParser(model) {
-    if (!model.ability.reasoning) return undefined;
-    const tag = model.ability.thinkTag ?? 'think';
-
-    return new ThinkTagParser(tag);
-  },
 };
 
 const MM_ABILITY: ReasoningAbility = {
@@ -73,6 +67,9 @@ const MM_M2 = {
   maxOutputTokens: 196_608,
   ability: MM_ABILITY,
   provider: MINIMAX,
+  requestExtras: mmRequestExtras,
+  configSchema: mmConfigSchema,
+  createContentParser: mmCreateContentParser,
 };
 
 export const MM_MODELS: readonly Model[] = [
@@ -99,6 +96,9 @@ export const MM_MODELS: readonly Model[] = [
     ability: MM_ABILITY,
     detailKey: 'model.minimax-m1.detail',
     provider: MINIMAX,
+    requestExtras: mmRequestExtras,
+    configSchema: mmConfigSchema,
+    createContentParser: mmCreateContentParser,
   },
   {
     ...MM_M2,

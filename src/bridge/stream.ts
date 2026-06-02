@@ -44,7 +44,7 @@ export async function forwardStream(
           apiKey,
           body,
           provider.thinkingField,
-          provider.createContentParser?.(ready.model),
+          ready.model.createContentParser?.(),
           effectiveSignal,
           provider.links,
         );

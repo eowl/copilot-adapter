@@ -61,7 +61,7 @@ export async function assembleChatReq(ctx: PrepContext): Promise<ReadyReq> {
     tools = undefined;
   }
 
-  const extras = provider.requestExtras?.(modelConfig, model) ?? {};
+  const extras = model.requestExtras?.(modelConfig) ?? {};
 
   const maxOut = Settings.tokenLimit() ?? model.maxOutputTokens;
 

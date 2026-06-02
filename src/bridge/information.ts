@@ -21,7 +21,7 @@ export function buildChatInfo(
   hasVisionProxy = false,
 ): ChatInfo {
   const provider = model.provider;
-  const schema = provider.configSchema?.(model);
+  const schema = model.configSchema?.();
   const notConfigured = !hasKey;
 
   return {
