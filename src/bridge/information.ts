@@ -19,6 +19,7 @@ export function buildChatInfo(model: Model, hasKey: boolean, hasVisionProxy = fa
   const provider = model.provider;
   const schema = model.configSchema?.();
   const notConfigured = !hasKey;
+  const detail = t(model.detailKey);
 
   return {
     id: model.id,
@@ -31,8 +32,8 @@ export function buildChatInfo(model: Model, hasKey: boolean, hasVisionProxy = fa
       imageInput: model.ability.acceptsImages || hasVisionProxy,
       toolCalling: model.ability.maxTools ?? (model.ability.maxTools === undefined ? true : false),
     },
-    tooltip: notConfigured ? t('auth.noKeyTooltip', provider.label) : undefined,
-    detail: t(model.detailKey),
+    tooltip: detail,
+    detail: detail,
     statusIcon: notConfigured ? new vscode.ThemeIcon('warning') : undefined,
     configurationSchema: schema,
   } as unknown as ChatInfo;
