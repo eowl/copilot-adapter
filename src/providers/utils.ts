@@ -1,10 +1,10 @@
 import { Settings } from '../settings';
-import type { Model, Provider, ProviderDefaults } from './types';
+import type { ApiTraits, Model, Provider } from './types';
 
-export function resolveDefault<K extends keyof ProviderDefaults>(
+export function resolveTrait<K extends keyof ApiTraits>(
   model: Model,
   key: K,
-): ProviderDefaults[K] {
+): ApiTraits[K] {
   return model[key] ?? model.provider[key];
 }
 

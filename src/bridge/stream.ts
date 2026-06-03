@@ -4,7 +4,7 @@ import type { MarkerPayload } from '../marker/types';
 import { streamHttp } from '../client/http';
 import { ApiError } from '../client/error';
 import { Settings } from '../settings';
-import { resolveDefault } from '../providers/utils';
+import { resolveTrait } from '../providers/utils';
 import type { ReadyReq } from './prepare';
 
 type Progress = vscode.Progress<vscode.LanguageModelResponsePart>;
@@ -44,7 +44,7 @@ export async function forwardStream(
           endpoint,
           apiKey,
           body,
-          resolveDefault(ready.model, 'thinkingField'),
+          resolveTrait(ready.model, 'thinkingField'),
           ready.model.createContentParser?.(),
           effectiveSignal,
           provider.links,

@@ -26,12 +26,12 @@ export interface NonReasoningAbility extends BaseAbility {
 
 export type ModelAbility = ReasoningAbility | NonReasoningAbility;
 
-export interface ProviderDefaults {
+export interface ApiTraits {
   readonly tokenRatio?: number;
   readonly thinkingField?: string;
 }
 
-export interface Provider extends ProviderDefaults {
+export interface Provider extends ApiTraits {
   readonly id: string;
   readonly label: string;
   readonly detailKey: string;
@@ -41,7 +41,7 @@ export interface Provider extends ProviderDefaults {
   readonly apiKeyHint?: string;
 }
 
-export interface Model extends ProviderDefaults {
+export interface Model extends ApiTraits {
   readonly id: string;
   readonly label: string;
   readonly apiId: string;
