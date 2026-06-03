@@ -44,7 +44,7 @@ export async function dumpRequest(
 
     await fs.writeFile(dumpPath, packPretty(payload), 'utf8');
 
-    channel.debug(`Dump written → ${dumpPath}`);
+    channel.debug(`Dump written ${dumpPath}`);
   } catch (err) {
     channel.warn('Failed to write request dump', err);
   }

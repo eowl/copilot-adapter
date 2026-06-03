@@ -50,10 +50,10 @@ suite('bridge/session', () => {
     });
 
     test('source is "new" when marker has no segmentId', () => {
-      // encodeMarker with no segmentId → marker without segmentId field
+      // encodeMarker with no segmentId: marker without segmentId field
       const messages = [makeAssistantWithMarker()];
       const session = Session.fromMessages(messages);
-      // valid marker but no segmentId → falls through to "new"
+      // valid marker but no segmentId: falls through to "new"
       assert.equal(session.source, 'new');
     });
 

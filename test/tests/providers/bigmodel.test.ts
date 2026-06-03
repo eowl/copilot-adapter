@@ -9,13 +9,13 @@ suite('providers/bigmodel', () => {
   suite('thinking-capable models — requestExtras()', () => {
     const requestExtras = thinkingModel.requestExtras!;
 
-    test('thinkingMode "disabled" → thinking type disabled', () => {
+    test('thinkingMode "disabled": thinking type disabled', () => {
       assert.deepEqual(requestExtras({ thinkingMode: 'disabled' }), {
         thinking: { type: 'disabled' },
       });
     });
 
-    test('thinkingMode "adaptive" → thinking type enabled', () => {
+    test('thinkingMode "adaptive": thinking type enabled', () => {
       assert.deepEqual(requestExtras({ thinkingMode: 'adaptive' }), {
         thinking: { type: 'enabled' },
       });

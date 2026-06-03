@@ -71,7 +71,7 @@ suite('trace/tag — tagRequest()', () => {
   });
 
   test('terminal-steering check precedes keyword check (priority)', () => {
-    // Message contains "todo" but has runInTerminal tool → terminal-steering wins
+    // Message contains "todo" but has runInTerminal tool: terminal-steering wins
     const tools = [makeTool('runInTerminal')];
     assert.equal(tagRequest([userMsg('todo: run this')], tools), 'terminal-steering');
   });
@@ -79,10 +79,10 @@ suite('trace/tag — tagRequest()', () => {
   test('uses the LAST user message for classification', () => {
     const messages = [
       userMsg('configure the settings'),   // would match settings-resolver
-      userMsg('implement a feature'),        // no keyword → main-agent
+      userMsg('implement a feature'),        // no keyword: main-agent
     ];
     const tools = [makeTool('some_tool')];
-    // Last user message is "implement a feature" → main-agent
+    // Last user message is "implement a feature": main-agent
     assert.equal(tagRequest(messages, tools), 'main-agent');
   });
 });

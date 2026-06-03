@@ -26,19 +26,19 @@ suite('providers/index', () => {
   });
 
   suite('providerById', () => {
-    test('maps "deepseek" → DEEPSEEK', () => {
+    test('maps "deepseek": DEEPSEEK', () => {
       assert.strictEqual(providerById.get('deepseek'), DEEPSEEK);
     });
 
-    test('maps "minimax" → MINIMAX', () => {
+    test('maps "minimax": MINIMAX', () => {
       assert.strictEqual(providerById.get('minimax'), MINIMAX);
     });
 
-    test('maps "qwen" → QWEN', () => {
+    test('maps "qwen": QWEN', () => {
       assert.strictEqual(providerById.get('qwen'), QWEN);
     });
 
-    test('maps "bigmodel" → BIGMODEL', () => {
+    test('maps "bigmodel": BIGMODEL', () => {
       assert.strictEqual(providerById.get('bigmodel'), BIGMODEL);
     });
 

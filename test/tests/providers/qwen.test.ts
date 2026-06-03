@@ -5,12 +5,12 @@ import { QWEN, QWEN_MODELS } from '../../../src/providers/qwen';
 suite('providers/qwen — model.requestExtras()', () => {
   const requestExtras = QWEN_MODELS[0].requestExtras!;
 
-  test('thinkingMode "disabled" → enable_thinking false', () => {
+  test('thinkingMode "disabled": enable_thinking false', () => {
     const result = requestExtras({ thinkingMode: 'disabled' });
     assert.deepEqual(result, { enable_thinking: false });
   });
 
-  test('thinkingMode "adaptive" → enable_thinking true', () => {
+  test('thinkingMode "adaptive": enable_thinking true', () => {
     const result = requestExtras({ thinkingMode: 'adaptive' });
     assert.deepEqual(result, { enable_thinking: true });
   });

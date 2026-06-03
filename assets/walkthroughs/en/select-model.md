@@ -18,4 +18,4 @@ Click the model name at the top of the chat panel to open the model picker. Deep
 
 Language models may be hidden by default. Open the Language Models panel and make sure the providers are enabled.
 
-[Open Language Models →](command:workbench.action.chat.manage)
+[Open Language Models](command:workbench.action.chat.manage)

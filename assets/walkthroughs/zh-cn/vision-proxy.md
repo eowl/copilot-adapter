@@ -14,7 +14,7 @@
 
 从当前 Copilot Chat 中可用的模型里选择一个支持图片的模型：
 
-[配置视觉代理 →](command:copilot-adapter.setVisionProxyModel)
+[配置视觉代理](command:copilot-adapter.setVisionProxyModel)
 
 任何支持图片输入的模型均可——如 GPT-4o、Claude 3.5 Sonnet、Gemini 1.5 Pro 等。
 
@@ -24,6 +24,6 @@
 
 在设置中将 `copilot-adapter.visionProxyModel` 设为 `off`，或运行：
 
-[配置视觉代理 →](command:copilot-adapter.setVisionProxyModel)
+[配置视觉代理](command:copilot-adapter.setVisionProxyModel)
 
 然后在列表中选择**禁用视觉代理**。

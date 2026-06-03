@@ -39,13 +39,13 @@ suite('bridge/utils/preflight', () => {
       assert.equal(a, b);
     });
 
-    test('different round → different callId', () => {
+    test('different round: different callId', () => {
       const a = makeWarmupCallId(1, ACTIVATE_TOOL);
       const b = makeWarmupCallId(2, ACTIVATE_TOOL);
       assert.notEqual(a, b);
     });
 
-    test('different toolName → different callId', () => {
+    test('different toolName: different callId', () => {
       const a = makeWarmupCallId(1, 'activate_a');
       const b = makeWarmupCallId(1, 'activate_b');
       assert.notEqual(a, b);

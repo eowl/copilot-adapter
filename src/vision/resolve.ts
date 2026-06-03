@@ -88,7 +88,7 @@ export async function resolveImages(
 
 /**
  * Scan all assistant messages and build a map of
- * `userMessageIndex → visionText` using the markers stored in their responses.
+ * `userMessageIndex visionText` using the markers stored in their responses.
  *
  * For each assistant message that carries a visionText in its marker,
  * we find the nearest preceding user message that contains images and bind them.
@@ -216,7 +216,7 @@ async function callVisionProxy(
     new vscode.LanguageModelTextPart(prompt),
   ]);
 
-  channel.info(`Vision proxy: ${imageParts.length} image(s) → ${model.name} (${model.id})`);
+  channel.info(`Vision proxy: ${imageParts.length} image(s) ${model.name} (${model.id})`);
 
   // Use a fresh cancellation token to avoid sharing the outer request context,
   // which can cause VS Code's LM router to misroute the inner response stream.

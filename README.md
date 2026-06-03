@@ -34,12 +34,12 @@ Extend VS Code's native Copilot Chat with third-party AI models. Switch between 
 ## Quick Start
 
 1. Install the extension.
-2. Open the **Language Models** panel (`Ctrl/Cmd+Shift+P` → *Language Models*), select a provider, and enter your API key — this is the native VS Code approach and the recommended way.
+2. Open the **Language Models** panel (`Ctrl/Cmd+Shift+P` *Language Models*), select a provider, and enter your API key — this is the native VS Code approach and the recommended way.
 3. Open Copilot Chat, click the model selector, and choose a model.
 
 > **Alternative:** Use the command **Copilot Adapter: Add API Key** (`Ctrl/Cmd+Shift+P`) to store a key without opening the Language Models panel.
 
-A step-by-step walkthrough covers all of the above: open it via `Ctrl/Cmd+Shift+P` → **Welcome: Open Walkthrough** → *AI Models Adapter for Copilot Chat*.
+A step-by-step walkthrough covers all of the above: open it via `Ctrl/Cmd+Shift+P` **Welcome: Open Walkthrough** *AI Models Adapter for Copilot Chat*.
 
 For a visual guide with screenshots, see [How to Add a Model Provider](docs/add-model.md).
 

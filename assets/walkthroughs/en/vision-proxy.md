@@ -14,7 +14,7 @@ When an image is attached to a chat message, the proxy:
 
 Choose a vision-capable model from the ones currently available in Copilot Chat:
 
-[Configure Vision Proxy →](command:copilot-adapter.setVisionProxyModel)
+[Configure Vision Proxy](command:copilot-adapter.setVisionProxyModel)
 
 Any model that supports image inputs works — e.g. GPT-4o, Claude 3.5 Sonnet, Gemini 1.5 Pro.
 
@@ -24,6 +24,6 @@ Any model that supports image inputs works — e.g. GPT-4o, Claude 3.5 Sonnet, G
 
 Set `copilot-adapter.visionProxyModel` to `off` in settings, or run:
 
-[Configure Vision Proxy →](command:copilot-adapter.setVisionProxyModel)
+[Configure Vision Proxy](command:copilot-adapter.setVisionProxyModel)
 
 and select **Disable Vision Proxy** from the list.
