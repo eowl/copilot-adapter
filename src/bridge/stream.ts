@@ -88,6 +88,26 @@ export async function forwardStream(
 
             case 'usage':
               promptTokens = event.data.prompt_tokens ?? 0;
+              // Report usage back to Copilot Chat so it can populate the
+              // Context Window panel (token counter / breakdown). The host
+              // listens for a DataPart with mime "usage" containing an
+              // OpenAI-shaped JSON payload.
+              {
+                const usagePayload = {
+                  prompt_tokens: event.data.prompt_tokens ?? 0,
+                  completion_tokens: event.data.completion_tokens ?? 0,
+                  total_tokens: event.data.total_tokens ?? 0,
+                  prompt_tokens_details: {
+                    cached_tokens: event.data.prompt_cache_hit_tokens ?? 0,
+                  },
+                };
+                progress.report(
+                  new vscode.LanguageModelDataPart(
+                    new TextEncoder().encode(JSON.stringify(usagePayload)),
+                    'usage',
+                  ),
+                );
+              }
               break;
           }
         }
@@ -98,8 +118,10 @@ export async function forwardStream(
           attempt++;
           const delayMs = Math.min(1000 * 2 ** (attempt - 1), 30_000);
           await new Promise<void>((r) => setTimeout(r, delayMs));
+          
           continue;
         }
+
         throw err;
       }
     }
