@@ -2,17 +2,29 @@ import vscode from 'vscode';
 import { t } from '../nls';
 import { EXT_ID } from '../defines';
 import { Settings } from '../settings';
+import { ALL_MODELS } from '../providers';
 
-/** Setting value that explicitly disables the vision proxy. */
 const VISION_OFF = 'off';
 
-/** LanguageModelChat extended with runtime capabilities (not in stable typings). */
 interface ModelWithCapabilities extends vscode.LanguageModelChat {
   capabilities?: { imageInput?: boolean };
 }
 
-/** QuickPickItem with an optional model id payload. */
 type PickItem = vscode.QuickPickItem & { id?: string };
+
+const OWN_VENDOR_PREFIX = `${EXT_ID}-`;
+
+function isVisionCandidate(m: vscode.LanguageModelChat): boolean {
+  if (m.vendor.startsWith(OWN_VENDOR_PREFIX)) {
+    const own = ALL_MODELS.find((x) => x.id === m.id);
+
+    return own?.ability.acceptsImages === true;
+  }
+
+  const cap = (m as ModelWithCapabilities).capabilities;
+
+  return cap?.imageInput !== false;
+}
 
 /**
  * Resolves and caches the vision proxy model.
@@ -29,18 +41,13 @@ export class VisionModelPicker {
 
     const preferred = setting;
     const candidates = await vscode.lm.selectChatModels();
-    const external = candidates.filter((m) => !m.vendor.startsWith(EXT_ID));
+    const pool = candidates.filter(isVisionCandidate);
 
-    if (!external.length) return undefined;
-
-    // Prefer models that explicitly support image input
-    const visionCapable = external.filter(
-      (m) => (m as ModelWithCapabilities).capabilities?.imageInput,
-    );
-    const pool = visionCapable.length > 0 ? visionCapable : external;
+    if (!pool.length) return undefined;
 
     const match = pool.find((m) => m.id === preferred || m.name === preferred);
     this.cached = match ?? pool[0];
+
     return this.cached;
   }
 
@@ -51,11 +58,7 @@ export class VisionModelPicker {
   /** Let the user interactively choose the vision proxy model via a QuickPick. */
   static async pick(): Promise<void> {
     const candidates = await vscode.lm.selectChatModels();
-    const external = candidates.filter((m) => !m.vendor.startsWith(EXT_ID));
-    const visionCapable = external.filter(
-      (m) => (m as ModelWithCapabilities).capabilities?.imageInput,
-    );
-    const pool = visionCapable.length > 0 ? visionCapable : external;
+    const pool = candidates.filter(isVisionCandidate);
 
     const setting = Settings.visionModel();
     const isOff = !setting || setting === VISION_OFF;
