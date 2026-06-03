@@ -24,7 +24,6 @@
   "copilot-adapter.walkthrough.visionProxy.description": "将图片附件通过具有视觉能力的模型转化为文字描述，让约文本模型也能处理图片。\n[配置视觉代理](command:copilot-adapter.setVisionProxyModel)",
   "copilot-adapter.walkthrough.visionProxy.media": "assets/walkthroughs/zh-cn/vision-proxy.md",
   "copilot-adapter.config.title": "AI 模型适配器",
-  "copilot-adapter.config.providers.description": "各 provider 的配置，键为 provider ID（如 `deepseek`）。每项支持 `enabled`（是否启用）和 `baseUrl`（覆盖默认 API 端点）。",
   "copilot-adapter.config.maxTokens.description": "每次请求的输出 Token 上限，填 0 表示不限制（使用提供商默认值），调低此值可控制成本。",
   "copilot-adapter.config.debug.description": "控制诊断输出级别。token 用量始终上报给 Copilot。\n\n- `off` — 无输出\n- `info` — 仅元数据，可安全分享\n- `meta` — 在 info 基础上增加模型 id、apiId 及端点详情\n- `verbose` — 完整请求 dump + 掩码后的 API Key 写入磁盘",
   "copilot-adapter.config.debug.off.label": "关闭",

@@ -6,21 +6,6 @@ Fine-tune providers, enable vision support, and control diagnostic output.
 
 ---
 
-### Per-provider settings
-
-Under `copilot-adapter.providers`, each provider ID (e.g. `deepseek`, `minimax`) supports:
-
-| Key | Description |
-|-----|-------------|
-| `enabled` | Enable or disable the provider |
-| `baseUrl` | Override the API endpoint (useful for proxies) |
-| `temperature` | Sampling temperature (0–2) |
-| `topP` | Top-p nucleus sampling (0–1) |
-| `tokenRatio` | Characters-per-token estimate for context tracking |
-| `streamUsage` | Set `false` if your proxy doesn't support stream usage stats |
-
----
-
 ### Vision proxy
 
 The vision proxy converts image attachments to text descriptions before sending them to text-only models.

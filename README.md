@@ -76,40 +76,12 @@ Text-only models cannot accept image attachments directly. When a vision proxy i
 Set up via **Copilot Adapter: Set Vision Proxy Model** or the `copilot-adapter.visionProxyModel` setting.  
 Disable at any time by setting the value to `off`.
 
-### Per-Provider Settings
-
-> **Advanced customization — no configuration needed for normal use.**
-
-Each provider can be configured independently under `copilot-adapter.providers`:
-
-```jsonc
-"copilot-adapter.providers": {
-  "deepseek": {
-    "enabled": true,
-    "temperature": 0.7
-  },
-  "minimax": {
-    "enabled": false
-  }
-}
-```
-
-| Key | Type | Description |
-|---|---|---|
-| `enabled` | boolean | Enable or disable the provider (default: `true` for DeepSeek) |
-| `baseUrl` | string | Override the API endpoint (useful with compatible proxies) |
-| `temperature` | number (0–2) | Sampling temperature |
-| `topP` | number (0–1) | Top-p nucleus sampling |
-| `tokenRatio` | number | Characters-per-token ratio for context size estimation |
-| `streamUsage` | boolean | Set `false` for proxies that don't support streaming usage stats |
-
 ---
 
 ## Configuration Reference
 
 | Setting | Default | Description |
 |---|---|---|
-| `copilot-adapter.providers` | `{ deepseek: { enabled: true } }` | Per-provider configuration object — see [above](#per-provider-settings) |
 | `copilot-adapter.maxTokens` | `0` | Max output tokens; `0` uses the model's built-in default |
 | `copilot-adapter.visionProxyModel` | `"off"` | Model ID to use as vision proxy, or `"off"` to disable — see [Vision Proxy](#vision-proxy) |
 | `copilot-adapter.requestTimeout` | `60` | Request timeout in seconds |

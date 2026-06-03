@@ -139,49 +139,6 @@
     "configuration": {
       "title": "%copilot-adapter.config.title%",
       "properties": {
-        "copilot-adapter.providers": {
-          "type": "object",
-          "default": {
-            "deepseek": {
-              "enabled": true
-            }
-          },
-          "markdownDescription": "%copilot-adapter.config.providers.description%",
-          "additionalProperties": {
-            "type": "object",
-            "properties": {
-              "enabled": {
-                "type": "boolean",
-                "description": "Whether this provider is enabled."
-              },
-              "baseUrl": {
-                "type": "string",
-                "description": "API base URL override. Leave empty to use the provider's default endpoint."
-              },
-              "tokenRatio": {
-                "type": "number",
-                "minimum": 0.1,
-                "description": "Characters-per-token ratio used for token counting. Overrides the provider's built-in default."
-              },
-              "temperature": {
-                "type": "number",
-                "minimum": 0,
-                "maximum": 2,
-                "description": "Sampling temperature (0–2). Lower values are more focused; higher values more creative."
-              },
-              "topP": {
-                "type": "number",
-                "minimum": 0,
-                "maximum": 1,
-                "description": "Top-p nucleus sampling (0–1). Leave unset to use the provider's default."
-              },
-              "streamUsage": {
-                "type": "boolean",
-                "description": "Set to false to disable stream_options.include_usage for this provider (e.g. when using a proxy that does not support it)."
-              }
-            }
-          }
-        },
         "copilot-adapter.maxTokens": {
           "type": "number",
           "default": 0,

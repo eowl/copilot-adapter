@@ -24,7 +24,6 @@
   "copilot-adapter.walkthrough.visionProxy.description": "Route image attachments through a vision-capable model so text-only models can handle them.\n[Configure Vision Proxy](command:copilot-adapter.setVisionProxyModel)",
   "copilot-adapter.walkthrough.visionProxy.media": "assets/walkthroughs/en/vision-proxy.md",
   "copilot-adapter.config.title": "AI Models Adapter",
-  "copilot-adapter.config.providers.description": "Per-provider configuration. Keys are provider IDs (e.g. `deepseek`). Each entry supports `enabled` (boolean) and `baseUrl` (string) to override the default API endpoint.",
   "copilot-adapter.config.maxTokens.description": "Cap on output tokens per request. Use 0 for the provider's default (no limit). Lower values help manage costs.",
   "copilot-adapter.config.debug.description": "Controls diagnostic output level. Token usage is always reported to Copilot.\n\n- `off` — no output\n- `info` — metadata only, safe to share\n- `meta` — adds model id, apiId and endpoint details\n- `verbose` — full request dump + masked API key written to disk",
   "copilot-adapter.config.debug.off.label": "Off",

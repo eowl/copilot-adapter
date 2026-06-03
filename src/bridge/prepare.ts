@@ -70,10 +70,7 @@ export async function assembleChatReq(ctx: PrepContext): Promise<ReadyReq> {
 
   const maxOut = Settings.tokenLimit() ?? model.maxOutputTokens;
 
-  const temperature = Settings.providerTemperature(provider.id);
-  const topP = Settings.providerTopP(provider.id);
-  const streamUsage =
-    Settings.providerStreamUsage(provider.id) !== false && provider.supportsStreamUsage !== false;
+  const streamUsage = provider.supportsStreamUsage !== false;
 
   const body: ApiReq = {
     model: model.apiId,
@@ -82,8 +79,6 @@ export async function assembleChatReq(ctx: PrepContext): Promise<ReadyReq> {
     stream: true,
     ...(streamUsage ? { stream_options: { include_usage: true } } : {}),
     ...(tools ? { tools } : {}),
-    ...(temperature !== undefined ? { temperature } : {}),
-    ...(topP !== undefined ? { top_p: topP } : {}),
     ...extras,
   };
 

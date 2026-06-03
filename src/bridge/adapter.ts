@@ -83,8 +83,6 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     _options: PrepareOptions,
     _token: vscode.CancellationToken,
   ): Promise<ChatInfo[]> {
-    if (!Settings.providerEnabled(this.filteredProviderId)) return [];
-
     const providerModels = ALL_MODELS.filter((m) => m.provider.id === this.filteredProviderId);
     if (providerModels.length === 0) return [];
 
@@ -124,7 +122,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       throw new Error(t('auth.noKey', provider.label));
     }
 
-    const endpoint = Settings.baseUrl(provider.endpoint, provider.id);
+    const endpoint = provider.endpoint;
     const session = Session.fromMessages(messages);
 
     channel.info(
@@ -179,7 +177,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
   ): Promise<number> {
     const entry = modelById.get(modelInfo.id);
     const charsPerToken = entry
-      ? (Settings.providerTokenRatio(entry.provider.id) ?? entry.provider.tokenRatio ?? 4.0)
+      ? (entry.provider.tokenRatio ?? 4.0)
       : 4.0;
 
     return estimateTokens(content, charsPerToken);

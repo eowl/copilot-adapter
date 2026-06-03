@@ -18,18 +18,6 @@ export class Settings {
     return vscode.workspace.getConfiguration(EXT_ID);
   }
 
-  static baseUrl(defaultUrl: string, providerId: string): string {
-    const map = this.section().get<Record<string, { baseUrl?: string }>>('providers') ?? {};
-
-    return map[providerId]?.baseUrl?.trim() || defaultUrl;
-  }
-
-  static providerEnabled(providerId: string): boolean {
-    const map = this.section().get<Record<string, { enabled?: boolean }>>('providers') ?? {};
-
-    return map[providerId]?.enabled !== false;
-  }
-
   static tokenLimit(): number | undefined {
     const n = this.section().get<number>('maxTokens', 0);
 
@@ -78,35 +66,5 @@ export class Settings {
 
   static maxWarmupRounds(): number {
     return this.section().get<number>('maxWarmupRounds', 3);
-  }
-
-  private static providerEntry(id: string): Record<string, unknown> {
-    const map = this.section().get<Record<string, Record<string, unknown>>>('providers') ?? {};
-
-    return map[id] ?? {};
-  }
-
-  static providerTokenRatio(id: string): number | undefined {
-    const v = this.providerEntry(id)['tokenRatio'];
-
-    return typeof v === 'number' && v > 0 ? v : undefined;
-  }
-
-  static providerTemperature(id: string): number | undefined {
-    const v = this.providerEntry(id)['temperature'];
-
-    return typeof v === 'number' ? v : undefined;
-  }
-
-  static providerTopP(id: string): number | undefined {
-    const v = this.providerEntry(id)['topP'];
-
-    return typeof v === 'number' ? v : undefined;
-  }
-
-  static providerStreamUsage(id: string): boolean | undefined {
-    const v = this.providerEntry(id)['streamUsage'];
-
-    return typeof v === 'boolean' ? v : undefined;
   }
 }

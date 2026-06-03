@@ -76,40 +76,12 @@ API Key 仅存储于 [VS Code Secret Storage](https://code.visualstudio.com/api/
 通过命令 **Copilot Adapter: Set Vision Proxy Model** 或设置项 `copilot-adapter.visionProxyModel` 进行配置。  
 将值设为 `off` 即可随时禁用。
 
-### 提供商独立配置
-
-> **进阶自定义用法，正常使用无需配置。**
-
-每个提供商可在 `copilot-adapter.providers` 下独立配置：
-
-```jsonc
-"copilot-adapter.providers": {
-  "deepseek": {
-    "enabled": true,
-    "temperature": 0.7
-  },
-  "minimax": {
-    "enabled": false
-  }
-}
-```
-
-| 字段 | 类型 | 说明 |
-|---|---|---|
-| `enabled` | boolean | 是否启用该提供商（DeepSeek 默认为 `true`） |
-| `baseUrl` | string | 覆盖 API 端点地址（适用于兼容代理） |
-| `temperature` | number（0–2） | 采样温度 |
-| `topP` | number（0–1） | Top-p 核采样 |
-| `tokenRatio` | number | 字符/Token 比例，用于上下文大小估算 |
-| `streamUsage` | boolean | 对不支持流式用量统计的代理设为 `false` |
-
 ---
 
 ## 配置参考
 
 | 设置项 | 默认值 | 说明 |
 |---|---|---|
-| `copilot-adapter.providers` | `{ deepseek: { enabled: true } }` | 提供商配置对象，详见[提供商独立配置](#提供商独立配置) |
 | `copilot-adapter.maxTokens` | `0` | 最大输出 Token 数；`0` 表示使用模型内置默认值 |
 | `copilot-adapter.visionProxyModel` | `"off"` | 视觉代理使用的模型 ID，`"off"` 表示禁用，详见[视觉代理](#视觉代理) |
 | `copilot-adapter.requestTimeout` | `60` | 请求超时时间（秒） |
