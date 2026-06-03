@@ -57,7 +57,7 @@ export const MINIMAX: Provider = {
 };
 
 const MM_ABILITY: ReasoningAbility = {
-  maxTools: 32,
+  maxTools: 64,
   acceptsImages: false,
   reasoning: true,
   thinkTag: 'think',
