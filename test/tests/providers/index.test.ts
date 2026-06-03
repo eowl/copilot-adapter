@@ -1,11 +1,11 @@
 import assert from 'node:assert/strict';
 import { suite, test } from 'mocha';
-import { ALL_MODELS, ALL_PROVIDERS, providerById, modelById, DEEPSEEK, MINIMAX, QWEN } from '../../../src/providers/index';
+import { ALL_MODELS, ALL_PROVIDERS, providerById, modelById, DEEPSEEK, MINIMAX, QWEN, BIGMODEL } from '../../../src/providers/index';
 
 suite('providers/index', () => {
   suite('ALL_PROVIDERS', () => {
-    test('has exactly 3 providers', () => {
-      assert.equal(ALL_PROVIDERS.length, 3);
+    test('has exactly 4 providers', () => {
+      assert.equal(ALL_PROVIDERS.length, 4);
     });
 
     test('first provider is DEEPSEEK', () => {
@@ -18,6 +18,10 @@ suite('providers/index', () => {
 
     test('third provider is QWEN', () => {
       assert.strictEqual(ALL_PROVIDERS[2], QWEN);
+    });
+
+    test('fourth provider is BIGMODEL', () => {
+      assert.strictEqual(ALL_PROVIDERS[3], BIGMODEL);
     });
   });
 
@@ -34,12 +38,16 @@ suite('providers/index', () => {
       assert.strictEqual(providerById.get('qwen'), QWEN);
     });
 
+    test('maps "bigmodel" → BIGMODEL', () => {
+      assert.strictEqual(providerById.get('bigmodel'), BIGMODEL);
+    });
+
     test('returns undefined for unknown provider id', () => {
       assert.equal(providerById.get('unknown-provider'), undefined);
     });
 
-    test('has exactly 3 entries', () => {
-      assert.equal(providerById.size, 3);
+    test('has exactly 4 entries', () => {
+      assert.equal(providerById.size, 4);
     });
   });
 

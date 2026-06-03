@@ -7,6 +7,8 @@
   "copilot-adapter.provider.minimax.apiKey.description": "Your MiniMax API key. Keys start with 'sk-'.",
   "copilot-adapter.provider.qwen.apiKey.title": "Qwen API Key",
   "copilot-adapter.provider.qwen.apiKey.description": "Your Alibaba DashScope API key for Qwen. Keys start with 'sk-'.",
+  "copilot-adapter.provider.bigmodel.apiKey.title": "BigModel API Key",
+  "copilot-adapter.provider.bigmodel.apiKey.description": "Your Zhipu BigModel API key for the GLM series.",
   "copilot-adapter.command.visionProxy": "Copilot Adapter: Configure Vision Proxy",
   "copilot-adapter.command.settings": "Copilot Adapter: Extension Settings",
   "copilot-adapter.command.logs": "Copilot Adapter: View Logs",
@@ -45,5 +47,6 @@
   "copilot-adapter.config.providerEndpoints.description": "Per-provider endpoint overrides. Set a custom base URL for any provider; leave a value empty to use the built-in default.",
   "copilot-adapter.config.providerEndpoints.deepseek.description": "Custom endpoint for the DeepSeek provider. Leave empty to use the default `https://api.deepseek.com`.",
   "copilot-adapter.config.providerEndpoints.minimax.description": "Custom endpoint for the MiniMax provider. Leave empty to use the default `https://api.minimaxi.com/v1`.",
-  "copilot-adapter.config.providerEndpoints.qwen.description": "Custom endpoint for the Qwen (Alibaba DashScope) provider. Use a region-specific URL when needed (e.g. `https://dashscope-us.aliyuncs.com/compatible-mode/v1`). Leave empty to use the default Beijing endpoint."
+  "copilot-adapter.config.providerEndpoints.qwen.description": "Custom endpoint for the Qwen (Alibaba DashScope) provider. Use a region-specific URL when needed (e.g. `https://dashscope-us.aliyuncs.com/compatible-mode/v1`). Leave empty to use the default Beijing endpoint.",
+  "copilot-adapter.config.providerEndpoints.bigmodel.description": "Custom endpoint for the Zhipu BigModel (GLM) provider. Leave empty to use the default `https://open.bigmodel.cn/api/paas/v4`."
 }

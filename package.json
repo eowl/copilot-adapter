@@ -24,6 +24,8 @@
     "deepseek",
     "minimax",
     "qwen",
+    "bigmodel",
+    "glm",
     "language model"
   ],
   "activationEvents": [
@@ -82,6 +84,24 @@
               "type": "string",
               "title": "%copilot-adapter.provider.qwen.apiKey.title%",
               "description": "%copilot-adapter.provider.qwen.apiKey.description%",
+              "secret": true
+            }
+          }
+        }
+      },
+      {
+        "vendor": "copilot-adapter-bigmodel",
+        "displayName": "BigModel",
+        "configuration": {
+          "type": "object",
+          "required": [
+            "apiKey"
+          ],
+          "properties": {
+            "apiKey": {
+              "type": "string",
+              "title": "%copilot-adapter.provider.bigmodel.apiKey.title%",
+              "description": "%copilot-adapter.provider.bigmodel.apiKey.description%",
               "secret": true
             }
           }
@@ -177,12 +197,18 @@
               "type": "string",
               "default": "https://dashscope.aliyuncs.com/compatible-mode/v1",
               "description": "%copilot-adapter.config.providerEndpoints.qwen.description%"
+            },
+            "bigmodel": {
+              "type": "string",
+              "default": "https://open.bigmodel.cn/api/paas/v4",
+              "description": "%copilot-adapter.config.providerEndpoints.bigmodel.description%"
             }
           },
           "default": {
             "deepseek": "https://api.deepseek.com",
             "minimax": "https://api.minimaxi.com/v1",
-            "qwen": "https://dashscope.aliyuncs.com/compatible-mode/v1"
+            "qwen": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+            "bigmodel": "https://open.bigmodel.cn/api/paas/v4"
           }
         },
         "copilot-adapter.maxTokens": {
