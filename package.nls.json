@@ -41,5 +41,9 @@
   "copilot-adapter.config.requestTimeout.description": "HTTP request timeout in seconds. Set to 0 to disable the timeout.",
   "copilot-adapter.config.requestRetries.description": "Number of automatic retries on rate-limited (429) or unavailable (503) responses. Retries use exponential back-off and only occur before any content is streamed.",
   "copilot-adapter.config.imageTokenEstimate.description": "Estimated token cost per image used when counting tokens for context-window tracking.",
-  "copilot-adapter.config.maxWarmupRounds.description": "Maximum preflight warmup rounds per request when tool stabilization is enabled."
+  "copilot-adapter.config.maxWarmupRounds.description": "Maximum preflight warmup rounds per request when tool stabilization is enabled.",
+  "copilot-adapter.config.providerEndpoints.description": "Per-provider endpoint overrides. Set a custom base URL for any provider; leave a value empty to use the built-in default.",
+  "copilot-adapter.config.providerEndpoints.deepseek.description": "Custom endpoint for the DeepSeek provider. Leave empty to use the default `https://api.deepseek.com`.",
+  "copilot-adapter.config.providerEndpoints.minimax.description": "Custom endpoint for the MiniMax provider. Leave empty to use the default `https://api.minimaxi.com/v1`.",
+  "copilot-adapter.config.providerEndpoints.qwen.description": "Custom endpoint for the Qwen (Alibaba DashScope) provider. Use a region-specific URL when needed (e.g. `https://dashscope-us.aliyuncs.com/compatible-mode/v1`). Leave empty to use the default Beijing endpoint."
 }

@@ -41,5 +41,9 @@
   "copilot-adapter.config.requestTimeout.description": "HTTP 请求超时时间（秒）。设为 0 表示不超时。",
   "copilot-adapter.config.requestRetries.description": "遇到速率限制（429）或服务不可用（503）时的自动重试次数。重试采用指数退避策略，且仅在流式内容开始之前触发。",
   "copilot-adapter.config.imageTokenEstimate.description": "计算 token 数时每张图片的估算 token 消耗，用于上下文窗口追踪。",
-  "copilot-adapter.config.maxWarmupRounds.description": "启用工具稳定化时，每次请求的最大预热轮数。"
+  "copilot-adapter.config.maxWarmupRounds.description": "启用工具稳定化时，每次请求的最大预热轮数。",
+  "copilot-adapter.config.providerEndpoints.description": "按 provider 覆盖端点 URL。为任意 provider 设置自定义 base URL；留空则使用代码内置默认值。",
+  "copilot-adapter.config.providerEndpoints.deepseek.description": "DeepSeek 的自定义端点。留空则使用默认 `https://api.deepseek.com`。",
+  "copilot-adapter.config.providerEndpoints.minimax.description": "MiniMax 的自定义端点。留空则使用默认 `https://api.minimaxi.com/v1`。",
+  "copilot-adapter.config.providerEndpoints.qwen.description": "通义千问（阿里云 DashScope）的自定义端点，可根据区域填写（例如 `https://dashscope-us.aliyuncs.com/compatible-mode/v1`）。留空则使用默认北京端点。"
 }

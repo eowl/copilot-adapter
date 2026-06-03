@@ -158,6 +158,33 @@
     "configuration": {
       "title": "%copilot-adapter.config.title%",
       "properties": {
+        "copilot-adapter.providerEndpoints": {
+          "type": "object",
+          "additionalProperties": false,
+          "markdownDescription": "%copilot-adapter.config.providerEndpoints.description%",
+          "properties": {
+            "deepseek": {
+              "type": "string",
+              "default": "https://api.deepseek.com",
+              "description": "%copilot-adapter.config.providerEndpoints.deepseek.description%"
+            },
+            "minimax": {
+              "type": "string",
+              "default": "https://api.minimaxi.com/v1",
+              "description": "%copilot-adapter.config.providerEndpoints.minimax.description%"
+            },
+            "qwen": {
+              "type": "string",
+              "default": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+              "description": "%copilot-adapter.config.providerEndpoints.qwen.description%"
+            }
+          },
+          "default": {
+            "deepseek": "https://api.deepseek.com",
+            "minimax": "https://api.minimaxi.com/v1",
+            "qwen": "https://dashscope.aliyuncs.com/compatible-mode/v1"
+          }
+        },
         "copilot-adapter.maxTokens": {
           "type": "number",
           "default": 0,
