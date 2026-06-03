@@ -23,6 +23,7 @@
     "byok",
     "deepseek",
     "minimax",
+    "qwen",
     "language model"
   ],
   "activationEvents": [
@@ -63,6 +64,24 @@
               "type": "string",
               "title": "%copilot-adapter.provider.minimax.apiKey.title%",
               "description": "%copilot-adapter.provider.minimax.apiKey.description%",
+              "secret": true
+            }
+          }
+        }
+      },
+      {
+        "vendor": "copilot-adapter-qwen",
+        "displayName": "Qwen",
+        "configuration": {
+          "type": "object",
+          "required": [
+            "apiKey"
+          ],
+          "properties": {
+            "apiKey": {
+              "type": "string",
+              "title": "%copilot-adapter.provider.qwen.apiKey.title%",
+              "description": "%copilot-adapter.provider.qwen.apiKey.description%",
               "secret": true
             }
           }

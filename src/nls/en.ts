@@ -3,6 +3,7 @@ import type { Translation } from './types';
 export const en: Translation = {
   'provider.deepseek.detail': 'General-purpose & deep reasoning — {0} models',
   'provider.minimax.detail': 'Deep reasoning with long context support — {0} models',
+  'provider.qwen.detail': 'Alibaba Qwen series — {0} models',
 
   'model.deepseek-v4-flash.detail': 'Fast, general-purpose model',
   'model.deepseek-v4-pro.detail': 'Deep reasoning model',
@@ -14,6 +15,10 @@ export const en: Translation = {
   'model.minimax-m2.7.detail': 'Deep reasoning model',
   'model.minimax-m2.7-highspeed.detail': 'Deep reasoning, high-speed',
   'model.minimax-m3.detail': 'Deep reasoning with vision support',
+  'model.qwen3-max.detail': 'Flagship model with adaptive thinking',
+  'model.qwen-plus.detail': 'Balanced general-purpose model',
+  'model.qwen-turbo.detail': 'Fast, low-cost model with long context',
+  'model.qwen3-coder-plus.detail': 'Coding-focused model with long context',
 
   'auth.keyInput': 'Enter {0} API Key',
   'auth.keyInputHinted': 'Enter {0} API Key (format: {1})',

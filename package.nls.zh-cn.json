@@ -5,6 +5,8 @@
   "copilot-adapter.provider.deepseek.apiKey.description": "你的 DeepSeek API Key，以 'sk-' 开头。",
   "copilot-adapter.provider.minimax.apiKey.title": "MiniMax API Key",
   "copilot-adapter.provider.minimax.apiKey.description": "你的 MiniMax API Key，以 'sk-' 开头。",
+  "copilot-adapter.provider.qwen.apiKey.title": "Qwen API Key",
+  "copilot-adapter.provider.qwen.apiKey.description": "你的阿里云百炼 DashScope API Key（用于通义千问），以 'sk-' 开头。",
   "copilot-adapter.command.visionProxy": "Copilot Adapter: 配置视觉代理",
   "copilot-adapter.command.settings": "Copilot Adapter: 扩展设置",
   "copilot-adapter.command.logs": "Copilot Adapter: 查看日志",

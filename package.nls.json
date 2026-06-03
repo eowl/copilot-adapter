@@ -5,6 +5,8 @@
   "copilot-adapter.provider.deepseek.apiKey.description": "Your DeepSeek API key. Keys start with 'sk-'.",
   "copilot-adapter.provider.minimax.apiKey.title": "MiniMax API Key",
   "copilot-adapter.provider.minimax.apiKey.description": "Your MiniMax API key. Keys start with 'sk-'.",
+  "copilot-adapter.provider.qwen.apiKey.title": "Qwen API Key",
+  "copilot-adapter.provider.qwen.apiKey.description": "Your Alibaba DashScope API key for Qwen. Keys start with 'sk-'.",
   "copilot-adapter.command.visionProxy": "Copilot Adapter: Configure Vision Proxy",
   "copilot-adapter.command.settings": "Copilot Adapter: Extension Settings",
   "copilot-adapter.command.logs": "Copilot Adapter: View Logs",

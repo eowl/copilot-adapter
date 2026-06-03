@@ -3,6 +3,7 @@ import type { Translation } from './types';
 export const zh: Translation = {
   'provider.deepseek.detail': '通用对话与深度推理，{0} 个模型',
   'provider.minimax.detail': '深度推理，支持超长上下文，{0} 个模型',
+  'provider.qwen.detail': '阿里云通义千问系列，{0} 个模型',
 
   'model.deepseek-v4-flash.detail': '快速通用模型',
   'model.deepseek-v4-pro.detail': '深度推理模型',
@@ -14,6 +15,10 @@ export const zh: Translation = {
   'model.minimax-m2.7.detail': '深度推理模型',
   'model.minimax-m2.7-highspeed.detail': '深度推理，高速版',
   'model.minimax-m3.detail': '深度推理，支持图像',
+  'model.qwen3-max.detail': '旗舰模型，支持自适应思考',
+  'model.qwen-plus.detail': '均衡型通用模型',
+  'model.qwen-turbo.detail': '快速低成本，超长上下文',
+  'model.qwen3-coder-plus.detail': '代码专精模型，超长上下文',
 
   'auth.keyInput': '请输入 {0} API Key',
   'auth.keyInputHinted': '请输入 {0} API Key（格式：{1}）',
