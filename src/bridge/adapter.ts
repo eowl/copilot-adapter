@@ -176,9 +176,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     _token: vscode.CancellationToken,
   ): Promise<number> {
     const entry = modelById.get(modelInfo.id);
-    const charsPerToken = entry
-      ? (entry.provider.tokenRatio ?? 4.0)
-      : 4.0;
+    const charsPerToken = entry ? (entry.provider.tokenRatio ?? 4.0) : 4.0;
 
     return estimateTokens(content, charsPerToken);
   }
