@@ -21,14 +21,21 @@ export function buildToolList(
     tools = vsTools.slice(0, maxTools);
   }
 
-  return tools.map((tool) => ({
-    type: 'function' as const,
-    function: {
-      name: tool.name,
-      description: tool.description,
-      parameters: tool.inputSchema as Record<string, unknown> | undefined,
-    },
-  }));
+  const result = tools.flatMap((tool) => {
+    if (!tool.name) return [];
+    const schema = tool.inputSchema as Record<string, unknown> | undefined;
+    const parameters =
+      schema && typeof schema === 'object' && Object.keys(schema).length > 0
+        ? schema
+        : { type: 'object', properties: {} };
+    return [
+      {
+        type: 'function' as const,
+        function: { name: tool.name, description: tool.description || tool.name, parameters },
+      },
+    ];
+  });
+  return result.length > 0 ? result : undefined;
 }
 
 export function gatherTrailingResultIds(

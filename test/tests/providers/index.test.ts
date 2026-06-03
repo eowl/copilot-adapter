@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { suite, test } from 'mocha';
-import { ALL_PROVIDERS, providerById, modelById, DEEPSEEK, MINIMAX } from '../../../src/providers/index';
+import { ALL_MODELS, ALL_PROVIDERS, providerById, modelById, DEEPSEEK, MINIMAX } from '../../../src/providers/index';
 
 suite('providers/index', () => {
   suite('ALL_PROVIDERS', () => {
@@ -40,7 +40,7 @@ suite('providers/index', () => {
       const entry = modelById.get('deepseek-v4-flash');
       assert.ok(entry !== undefined, 'deepseek-v4-flash not found in modelById');
       assert.strictEqual(entry!.provider, DEEPSEEK);
-      assert.equal(entry!.model.id, 'deepseek-v4-flash');
+      assert.equal(entry!.id, 'deepseek-v4-flash');
     });
 
     test('minimax-m2.7-highspeed maps to MINIMAX provider', () => {
@@ -50,8 +50,7 @@ suite('providers/index', () => {
     });
 
     test('contains all models from all providers', () => {
-      const totalModels = ALL_PROVIDERS.reduce((sum, p) => sum + p.models.length, 0);
-      assert.equal(modelById.size, totalModels);
+      assert.equal(modelById.size, ALL_MODELS.length);
     });
 
     test('returns undefined for unknown model id', () => {

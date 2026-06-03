@@ -1,28 +1,21 @@
 import vscode from 'vscode';
 import { channel } from '../logger';
-import type { KeyStore } from '../secrets';
-import { ALL_PROVIDERS } from '../providers';
 import { EXT_ID } from '../defines';
 
 const WELCOME_KEY = `${EXT_ID}.welcomeShown`;
 
 export async function maybeShowWelcome(
   context: vscode.ExtensionContext,
-  keys: KeyStore,
+  hasExistingKeys: boolean,
 ): Promise<void> {
   const shown = context.globalState.get<boolean>(WELCOME_KEY);
   if (shown) return;
 
-  for (const provider of ALL_PROVIDERS) {
-    if (await keys.has(provider.id)) {
-      await context.globalState.update(WELCOME_KEY, true);
-      return;
-    }
-  }
+  await context.globalState.update(WELCOME_KEY, true);
+
+  if (hasExistingKeys) return;
 
   channel.info('First run: no API keys configured, opening walkthrough.');
-
-  await context.globalState.update(WELCOME_KEY, true);
 
   try {
     await vscode.commands.executeCommand(

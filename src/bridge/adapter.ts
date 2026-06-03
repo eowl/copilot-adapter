@@ -2,8 +2,7 @@ import vscode from 'vscode';
 import { EXT_ID } from '../defines';
 import { channel } from '../logger';
 import { t } from '../nls';
-import { ALL_PROVIDERS, modelById } from '../providers';
-import { KeyStore } from '../secrets';
+import { ALL_MODELS, ALL_PROVIDERS, modelById } from '../providers';
 import { Settings } from '../settings';
 import { buildChatInfo, type ChatInfo, type ReqOptions } from './information';
 import { Session } from './session';
@@ -12,6 +11,7 @@ import { assembleChatReq } from './prepare';
 import { forwardStream } from './stream';
 import { estimateTokens } from './tally';
 import { ApiError } from '../client/error';
+import { seedManagedGroup } from './managed';
 import { dumpRequest } from '../trace/dump';
 import { tagRequest } from '../trace/tag';
 
@@ -30,7 +30,6 @@ type Progress = vscode.Progress<vscode.LanguageModelResponsePart>;
  * Registered with vscode.lm.registerChatModelProvider.
  */
 export class Adapter implements vscode.LanguageModelChatProvider {
-  private readonly keys: KeyStore;
   private readonly picker: VisionModelPicker;
   private readonly storageUri: vscode.Uri;
 
@@ -49,12 +48,10 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     readonly filteredProviderId: string,
     private readonly onKeyChange?: () => void,
   ) {
-    this.keys = new KeyStore(context);
     this.picker = new VisionModelPicker();
     this.storageUri = context.globalStorageUri;
     this.onDidChangeLanguageModelChatInformation = this.changeEmitter.event;
 
-    // Notify VS Code when API keys or settings change
     context.subscriptions.push(
       vscode.workspace.onDidChangeConfiguration((e) => {
         if (e.affectsConfiguration(EXT_ID)) {
@@ -72,14 +69,10 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     );
   }
 
-  /**
-   * Probe vision proxy availability and notify VS Code if the result changed.
-   * Safe to call from any context except inside provideLanguageModelChatInformation
-   * (would cause re-entrant selectChatModels() calls).
-   */
   async refreshVisionProxy(): Promise<void> {
     const model = await this.picker.resolve();
     const available = model !== undefined;
+
     if (available !== this.visionProxyAvailable) {
       this.visionProxyAvailable = available;
       this.changeEmitter.fire();
@@ -90,25 +83,26 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     _options: PrepareOptions,
     _token: vscode.CancellationToken,
   ): Promise<ChatInfo[]> {
-    const provider = ALL_PROVIDERS.find((p) => p.id === this.filteredProviderId);
-    if (!provider || !Settings.providerEnabled(this.filteredProviderId)) return [];
+    if (!Settings.providerEnabled(this.filteredProviderId)) return [];
+
+    const providerModels = ALL_MODELS.filter((m) => m.provider.id === this.filteredProviderId);
+    if (providerModels.length === 0) return [];
 
     const opts = _options as GroupOptions;
     const groupCfg = opts.configuration;
 
-    if (groupCfg !== undefined) {
-      const apiKey = typeof groupCfg['apiKey'] === 'string' ? (groupCfg['apiKey'] as string) : '';
-      this.groupApiKey = apiKey.length > 0 ? apiKey : undefined;
-      const hasKey = this.groupApiKey !== undefined;
-      return provider.models.map(
-        (model) => buildChatInfo(model, provider, hasKey, this.visionProxyAvailable) as ChatInfo,
-      );
+    if (groupCfg === undefined) {
+      this.groupApiKey = undefined;
+
+      return [];
     }
 
-    const hasKey = await this.keys.has(this.filteredProviderId);
-    if (!hasKey) return [];
-    return provider.models.map(
-      (model) => buildChatInfo(model, provider, true, this.visionProxyAvailable) as ChatInfo,
+    const apiKey = typeof groupCfg['apiKey'] === 'string' ? (groupCfg['apiKey'] as string) : '';
+    this.groupApiKey = apiKey.length > 0 ? apiKey : undefined;
+    const hasKey = this.groupApiKey !== undefined;
+
+    return providerModels.map(
+      (model) => buildChatInfo(model, hasKey, this.visionProxyAvailable) as ChatInfo,
     );
   }
 
@@ -119,20 +113,18 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     progress: Progress,
     token: vscode.CancellationToken,
   ): Promise<void> {
-    const entry = modelById.get(modelInfo.id);
-    if (!entry) {
+    const model = modelById.get(modelInfo.id);
+    if (!model) {
       throw new Error(t('err.unknownModel', modelInfo.id));
     }
-    const { provider, model } = entry;
+    const { provider } = model;
 
-    const apiKey = this.groupApiKey ?? (await this.keys.get(provider.id));
-    const usingGroupKey = this.groupApiKey !== undefined;
+    const apiKey = this.groupApiKey;
     if (!apiKey) {
-      await this.keys.prompt(provider.id, provider.label);
       throw new Error(t('auth.noKey', provider.label));
     }
 
-    const endpoint = Settings.baseUrl(provider.defaultEndpoint, provider.id);
+    const endpoint = Settings.baseUrl(provider.endpoint, provider.id);
     const session = Session.fromMessages(messages);
 
     channel.info(
@@ -149,7 +141,6 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       const ready = await assembleChatReq({
         messages,
         options,
-        provider,
         model,
         apiKey,
         token,
@@ -174,11 +165,9 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       if (err instanceof ApiError) {
         channel.error(err.summary, err.diagnostic);
 
-        if (err.diagnostic.startsWith('HTTP 401') && !usingGroupKey) {
-          void this.keys.prompt(provider.id, provider.label);
-        }
         throw new Error(err.summary);
       }
+
       throw err;
     }
   }
@@ -192,70 +181,70 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     const charsPerToken = entry
       ? (Settings.providerTokenRatio(entry.provider.id) ?? entry.provider.tokenRatio ?? 4.0)
       : 4.0;
+
     return estimateTokens(content, charsPerToken);
   }
 
   async configureApiKey(providerId?: string): Promise<void> {
-    if (providerId) {
-      const entry = ALL_PROVIDERS.find((p) => p.id === providerId);
-      if (entry) {
-        await this.keys.prompt(entry.id, entry.label, entry.apiKeyHint);
-        this.changeEmitter.fire();
-        this.onKeyChange?.();
-      }
+    let provider = providerId ? ALL_PROVIDERS.find((p) => p.id === providerId) : undefined;
+
+    if (!provider) {
+      const items = ALL_PROVIDERS.map((p) => ({
+        label: p.label,
+        description: p.id,
+        detail: t(p.detailKey, String(ALL_MODELS.filter((m) => m.provider.id === p.id).length)),
+      }));
+
+      const picked = await vscode.window.showQuickPick(items, {
+        title: t('auth.chooseProvider'),
+        ignoreFocusOut: true,
+      });
+
+      if (!picked) return;
+      provider = ALL_PROVIDERS.find((p) => p.id === picked.description);
+    }
+    if (!provider) return;
+
+    const hint = provider.apiKeyHint;
+    const title = hint
+      ? t('auth.keyInputHinted', provider.label, hint)
+      : t('auth.keyInput', provider.label);
+    const placeHolder = hint ?? t('auth.keyHint');
+    const input = await vscode.window.showInputBox({
+      title,
+      placeHolder,
+      password: true,
+      ignoreFocusOut: true,
+      validateInput: (v) => (v.trim() ? undefined : t('auth.keyRequired')),
+    });
+    const apiKey = input?.trim();
+    if (!apiKey) return;
+
+    const ok = await seedManagedGroup(provider, apiKey);
+    if (ok) {
+      channel.info(`${provider.label} API Key saved.`);
+      void vscode.window.showInformationMessage(t('auth.keyStored', provider.label));
+      this.changeEmitter.fire();
+      this.onKeyChange?.();
+
       return;
     }
 
-    const items = ALL_PROVIDERS.map((p) => ({
-      label: p.label,
-      description: p.id,
-      detail: t(p.detailKey, String(p.models.length)),
-    }));
-    const picked = await vscode.window.showQuickPick(items, {
-      title: t('auth.chooseProvider'),
-      ignoreFocusOut: true,
-    });
-    if (!picked) return;
-    const provider = ALL_PROVIDERS.find((p) => p.id === picked.description);
-    if (provider) {
-      await this.keys.prompt(provider.id, provider.label, provider.apiKeyHint);
-      this.changeEmitter.fire();
-      this.onKeyChange?.();
+    const open = t('action.openManageUI');
+    const choice = await vscode.window.showErrorMessage(t('auth.seedFailed', provider.label), open);
+
+    if (choice === open) {
+      void vscode.commands.executeCommand('workbench.action.chat.manage');
     }
   }
 
-  async removeApiKey(providerId?: string): Promise<void> {
-    if (providerId) {
-      await this.keys.remove(providerId);
-      this.changeEmitter.fire();
-      this.onKeyChange?.();
-      return;
-    }
+  async removeApiKey(_providerId?: string): Promise<void> {
+    const open = t('action.openManageUI');
+    const choice = await vscode.window.showInformationMessage(t('auth.removeViaUI'), open);
 
-    const configured: Array<{ label: string; description: string; detail: string }> = [];
-    for (const p of ALL_PROVIDERS) {
-      if (await this.keys.has(p.id)) {
-        configured.push({
-          label: p.label,
-          description: p.id,
-          detail: t(p.detailKey, String(p.models.length)),
-        });
-      }
+    if (choice === open) {
+      void vscode.commands.executeCommand('workbench.action.chat.manage');
     }
-
-    if (configured.length === 0) {
-      void vscode.window.showInformationMessage(t('auth.noKeysFound'));
-      return;
-    }
-
-    const picked = await vscode.window.showQuickPick(configured, {
-      title: t('auth.chooseClearTarget'),
-      ignoreFocusOut: true,
-    });
-    if (!picked) return;
-    await this.keys.remove(picked.description!);
-    this.changeEmitter.fire();
-    this.onKeyChange?.();
   }
 
   async setVisionProxyModel(): Promise<void> {

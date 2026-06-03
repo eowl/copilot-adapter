@@ -1,6 +1,6 @@
 import vscode from 'vscode';
 import { channel } from '../logger';
-import { KeyStore } from '../secrets';
+import { migrateLegacySecrets } from '../bridge/managed';
 import { registerCommands } from './commands';
 import { registerUriHandler } from './links';
 import { logStartupDiagnostics } from './diag';
@@ -16,8 +16,12 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 
   context.subscriptions.push(registerUriHandler(context, adapters[0]));
 
-  const keys = new KeyStore(context);
-  await maybeShowWelcome(context, keys);
+  const migratedCount = await migrateLegacySecrets(context);
+  if (migratedCount > 0) {
+    adapters.forEach((a) => a.notifyChange());
+  }
+
+  await maybeShowWelcome(context, migratedCount > 0);
 
   channel.info('copilot-adapter activated');
 }

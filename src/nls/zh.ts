@@ -6,8 +6,6 @@ export const zh: Translation = {
 
   'model.deepseek-v4-flash.detail': '快速通用模型',
   'model.deepseek-v4-pro.detail': '深度推理模型',
-  'model.minimax-text-01.detail': '超长上下文，支持图像',
-  'model.minimax-m1.detail': '深度推理模型',
   'model.minimax-m2.detail': '深度推理模型',
   'model.minimax-m2.1.detail': '深度推理模型',
   'model.minimax-m2.1-highspeed.detail': '深度推理，高速版',
@@ -15,6 +13,7 @@ export const zh: Translation = {
   'model.minimax-m2.5-highspeed.detail': '深度推理，高速版',
   'model.minimax-m2.7.detail': '深度推理模型',
   'model.minimax-m2.7-highspeed.detail': '深度推理，高速版',
+  'model.minimax-m3.detail': '深度推理，支持图像',
 
   'auth.keyInput': '请输入 {0} API Key',
   'auth.keyInputHinted': '请输入 {0} API Key（格式：{1}）',
@@ -22,14 +21,18 @@ export const zh: Translation = {
   'auth.keyRequired': '请输入有效的 API Key',
   'auth.keyStored': '{0} API Key 已安全保存。',
   'auth.chooseProvider': '选择提供商',
-  'auth.chooseClearTarget': '选择要清除 API Key 的提供商',
-  'auth.noKeysFound': '当前没有已配置的 API Key',
   'auth.noKey': '{0} 未配置 API Key。',
   'auth.noKeyTooltip': '{0} 未配置 API Key，请在语言模型面板中添加。',
+  'auth.removeViaUI':
+    'API Key 由 VS Code 统一管理。请打开语言模型面板，点击对应提供商分组旁的齿轮菜单进行删除。',
+  'auth.seedFailed': '无法自动保存 {0} 的 API Key，可以通过语言模型面板手动添加。',
+  'action.openManageUI': '打开语言模型面板',
 
   'think.label': '思考模式',
   'think.none': '无',
   'think.none.hint': '无推理步骤',
+  'think.adaptive': '自适应',
+  'think.adaptive.hint': '模型自动调整推理深度',
   'think.high': '高',
   'think.high.hint': '适合日常任务',
   'think.max': '最大',

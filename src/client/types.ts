@@ -3,7 +3,7 @@ export type MsgRole = 'system' | 'user' | 'assistant' | 'tool';
 /** A single message in the chat conversation sent to the API. */
 export interface Msg {
   role: MsgRole;
-  content: string;
+  content: string | Array<Record<string, unknown>>;
   tool_call_id?: string;
   tool_calls?: ToolCall[];
   /** Extra provider-specific fields (e.g. reasoning_content, thinking_content). */

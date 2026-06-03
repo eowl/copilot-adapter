@@ -3,16 +3,22 @@ import { pack } from '../serialize';
 import { readMarkerFromMessage } from '../marker/codec';
 import type { Msg, Tool, ToolCall } from '../client/types';
 
+export interface TranslateOptions {
+  thinkingField?: string;
+  formatImagePart?: (data: Uint8Array, mimeType: string) => Record<string, unknown>;
+}
+
 /**
  * Converts VS Code chat messages to the LLM wire format.
  *
- * When `thinkingField` is provided, injects stored reasoning content from
+ * When `options.thinkingField` is provided, injects stored reasoning content from
  * the replay marker into assistant messages under that field name.
  */
 export function translateMessages(
   messages: readonly vscode.LanguageModelChatRequestMessage[],
-  thinkingField?: string,
+  options?: TranslateOptions,
 ): Msg[] {
+  const { thinkingField, formatImagePart } = options ?? {};
   const out: Msg[] = [];
 
   for (const msg of messages) {
@@ -20,6 +26,7 @@ export function translateMessages(
 
     let textContent = '';
     let thinkingContent = '';
+    const imageParts: Array<Record<string, unknown>> = [];
     const toolCalls: ToolCall[] = [];
     const toolResults: { callId: string; text: string }[] = [];
 
@@ -40,8 +47,14 @@ export function translateMessages(
           if (item instanceof vscode.LanguageModelTextPart) text += item.value;
         }
         toolResults.push({ callId: part.callId, text: text || pack(part.content) });
+      } else if (
+        formatImagePart &&
+        part instanceof vscode.LanguageModelDataPart &&
+        part.mimeType.startsWith('image/')
+      ) {
+        imageParts.push(formatImagePart(part.data, part.mimeType));
       }
-      // DataParts (image markers, replay markers) are intentionally skipped here —
+      // Non-image DataParts (markers, etc.) are intentionally skipped here —
       // vision text is injected at the pre-processing stage in describe.ts
     }
 
@@ -55,7 +68,12 @@ export function translateMessages(
         out.push(m);
       }
     } else {
-      if (textContent) {
+      if (imageParts.length > 0) {
+        const parts: Array<Record<string, unknown>> = [];
+        if (textContent) parts.push({ type: 'text', text: textContent });
+        parts.push(...imageParts);
+        out.push({ role, content: parts });
+      } else if (textContent) {
         out.push({ role, content: textContent });
       }
     }
@@ -82,27 +100,40 @@ export function translateTools(
   tools: readonly vscode.LanguageModelChatTool[] | undefined,
 ): Tool[] | undefined {
   if (!tools || tools.length === 0) return undefined;
-  return tools.map((t) => ({
-    type: 'function' as const,
-    function: {
-      name: t.name,
-      description: t.description || t.name,
-      parameters: (t.inputSchema as Record<string, unknown> | undefined) ?? {
-        type: 'object',
-        properties: {},
+  const result = tools.flatMap((t) => {
+    if (!t.name) return [];
+    const schema = t.inputSchema as Record<string, unknown> | undefined;
+    const parameters =
+      schema && typeof schema === 'object' && Object.keys(schema).length > 0
+        ? schema
+        : { type: 'object', properties: {} };
+
+    return [
+      {
+        type: 'function' as const,
+        function: { name: t.name, description: t.description || t.name, parameters },
       },
-    },
-  }));
+    ];
+  });
+
+  return result.length > 0 ? result : undefined;
 }
 
 export function countMsgChars(messages: Msg[]): number {
   let n = 0;
   for (const m of messages) {
-    n += m.content.length;
+    if (typeof m.content === 'string') {
+      n += m.content.length;
+    } else {
+      for (const p of m.content) {
+        if (typeof p['text'] === 'string') n += (p['text'] as string).length;
+      }
+    }
     if (m.tool_calls) {
       for (const tc of m.tool_calls) n += tc.function.arguments.length + tc.function.name.length;
     }
   }
+
   return n;
 }
 
@@ -119,5 +150,6 @@ function isThinkingPart(part: unknown): part is vscode.LanguageModelThinkingPart
 
 function extractThinkingText(part: vscode.LanguageModelThinkingPart): string {
   const v = part.value;
+
   return Array.isArray(v) ? v.join('') : v;
 }

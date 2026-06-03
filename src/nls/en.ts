@@ -6,8 +6,6 @@ export const en: Translation = {
 
   'model.deepseek-v4-flash.detail': 'Fast, general-purpose model',
   'model.deepseek-v4-pro.detail': 'Deep reasoning model',
-  'model.minimax-text-01.detail': 'Long context with image support',
-  'model.minimax-m1.detail': 'Deep reasoning model',
   'model.minimax-m2.detail': 'Deep reasoning model',
   'model.minimax-m2.1.detail': 'Deep reasoning model',
   'model.minimax-m2.1-highspeed.detail': 'Deep reasoning, high-speed',
@@ -15,6 +13,7 @@ export const en: Translation = {
   'model.minimax-m2.5-highspeed.detail': 'Deep reasoning, high-speed',
   'model.minimax-m2.7.detail': 'Deep reasoning model',
   'model.minimax-m2.7-highspeed.detail': 'Deep reasoning, high-speed',
+  'model.minimax-m3.detail': 'Deep reasoning with vision support',
 
   'auth.keyInput': 'Enter {0} API Key',
   'auth.keyInputHinted': 'Enter {0} API Key (format: {1})',
@@ -22,14 +21,19 @@ export const en: Translation = {
   'auth.keyRequired': 'API Key must not be blank',
   'auth.keyStored': '{0} API Key saved securely.',
   'auth.chooseProvider': 'Select a provider',
-  'auth.chooseClearTarget': 'Select provider to clear API Key',
-  'auth.noKeysFound': 'No API keys configured',
   'auth.noKey': 'No API key configured for {0}.',
   'auth.noKeyTooltip': 'No API key configured for {0}. Add one via the Language Models panel.',
+  'auth.removeViaUI':
+    'API keys are managed by VS Code. Open the Language Models panel and use the gear menu next to a provider group to remove its key.',
+  'auth.seedFailed':
+    'Could not save the {0} API key automatically. You can add it manually via the Language Models panel.',
+  'action.openManageUI': 'Open Language Models',
 
   'think.label': 'Thinking Mode',
   'think.none': 'None',
   'think.none.hint': 'No reasoning steps; fastest output',
+  'think.adaptive': 'Adaptive',
+  'think.adaptive.hint': 'Model auto-adjusts reasoning depth',
   'think.high': 'High',
   'think.high.hint': 'Good for day-to-day coding tasks',
   'think.max': 'Max',
