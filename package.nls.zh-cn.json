@@ -9,6 +9,8 @@
   "copilot-adapter.provider.qwen.apiKey.description": "你的阿里云百炼 DashScope API Key（用于通义千问），以 'sk-' 开头。",
   "copilot-adapter.provider.bigmodel.apiKey.title": "BigModel API Key",
   "copilot-adapter.provider.bigmodel.apiKey.description": "你的智谱 BigModel API Key（用于 GLM 系列）。",
+  "copilot-adapter.provider.moonshot.apiKey.title": "Moonshot API Key",
+  "copilot-adapter.provider.moonshot.apiKey.description": "你的月之暗面 Moonshot API Key（用于 Kimi 系列），以 'sk-' 开头。",
   "copilot-adapter.command.visionProxy": "Copilot Adapter: 配置视觉代理",
   "copilot-adapter.command.settings": "Copilot Adapter: 扩展设置",
   "copilot-adapter.command.logs": "Copilot Adapter: 查看日志",
@@ -48,5 +50,6 @@
   "copilot-adapter.config.providerEndpoints.deepseek.description": "DeepSeek 的自定义端点。留空则使用默认 `https://api.deepseek.com`。",
   "copilot-adapter.config.providerEndpoints.minimax.description": "MiniMax 的自定义端点。留空则使用默认 `https://api.minimaxi.com/v1`。",
   "copilot-adapter.config.providerEndpoints.qwen.description": "通义千问（阿里云 DashScope）的自定义端点，可根据区域填写（例如 `https://dashscope-us.aliyuncs.com/compatible-mode/v1`）。留空则使用默认北京端点。",
-  "copilot-adapter.config.providerEndpoints.bigmodel.description": "智谱 BigModel（GLM）的自定义端点。留空则使用默认 `https://open.bigmodel.cn/api/paas/v4`。"
+  "copilot-adapter.config.providerEndpoints.bigmodel.description": "智谱 BigModel（GLM）的自定义端点。留空则使用默认 `https://open.bigmodel.cn/api/paas/v4`。",
+  "copilot-adapter.config.providerEndpoints.moonshot.description": "月之暗面 Moonshot（Kimi）的自定义端点。留空则使用默认 `https://api.moonshot.cn/v1`。"
 }

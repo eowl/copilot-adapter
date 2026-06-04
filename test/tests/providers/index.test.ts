@@ -1,11 +1,11 @@
 import assert from 'node:assert/strict';
 import { suite, test } from 'mocha';
-import { ALL_MODELS, ALL_PROVIDERS, providerById, modelById, DEEPSEEK, MINIMAX, QWEN, BIGMODEL } from '../../../src/providers/index';
+import { ALL_MODELS, ALL_PROVIDERS, providerById, modelById, DEEPSEEK, MINIMAX, MOONSHOT, QWEN, BIGMODEL } from '../../../src/providers/index';
 
 suite('providers/index', () => {
   suite('ALL_PROVIDERS', () => {
-    test('has exactly 4 providers', () => {
-      assert.equal(ALL_PROVIDERS.length, 4);
+    test('has exactly 5 providers', () => {
+      assert.equal(ALL_PROVIDERS.length, 5);
     });
 
     test('first provider is DEEPSEEK', () => {
@@ -16,12 +16,16 @@ suite('providers/index', () => {
       assert.strictEqual(ALL_PROVIDERS[1], MINIMAX);
     });
 
-    test('third provider is QWEN', () => {
-      assert.strictEqual(ALL_PROVIDERS[2], QWEN);
+    test('third provider is MOONSHOT', () => {
+      assert.strictEqual(ALL_PROVIDERS[2], MOONSHOT);
     });
 
-    test('fourth provider is BIGMODEL', () => {
-      assert.strictEqual(ALL_PROVIDERS[3], BIGMODEL);
+    test('fourth provider is QWEN', () => {
+      assert.strictEqual(ALL_PROVIDERS[3], QWEN);
+    });
+
+    test('fifth provider is BIGMODEL', () => {
+      assert.strictEqual(ALL_PROVIDERS[4], BIGMODEL);
     });
   });
 
@@ -32,6 +36,10 @@ suite('providers/index', () => {
 
     test('maps "minimax": MINIMAX', () => {
       assert.strictEqual(providerById.get('minimax'), MINIMAX);
+    });
+
+    test('maps "moonshot": MOONSHOT', () => {
+      assert.strictEqual(providerById.get('moonshot'), MOONSHOT);
     });
 
     test('maps "qwen": QWEN', () => {
@@ -46,8 +54,8 @@ suite('providers/index', () => {
       assert.equal(providerById.get('unknown-provider'), undefined);
     });
 
-    test('has exactly 4 entries', () => {
-      assert.equal(providerById.size, 4);
+    test('has exactly 5 entries', () => {
+      assert.equal(providerById.size, 5);
     });
   });
 
