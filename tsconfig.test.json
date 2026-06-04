@@ -2,7 +2,8 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "rootDir": ".",
-    "outDir": "out-test"
+    "outDir": "out-test",
+    "types": ["node", "mocha"]
   },
   "files": ["vscode.proposed.languageModelThinkingPart.d.ts"],
   "include": ["src/**/*", "test/**/*"],

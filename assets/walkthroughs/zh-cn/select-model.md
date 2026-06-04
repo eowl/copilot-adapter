@@ -18,4 +18,4 @@
 
 语言模型默认可能处于隐藏状态。打开语言模型面板，确认提供商已启用。
 
-[打开语言模型管理 →](command:workbench.action.chat.manage)
+[打开语言模型管理](command:workbench.action.chat.manage)

@@ -3,6 +3,7 @@ import { EXT_ID } from '../defines';
 import { channel } from '../logger';
 import { t } from '../nls';
 import { ALL_MODELS, ALL_PROVIDERS, modelById } from '../providers';
+import { resolveTrait, getEndpoint } from '../providers/utils';
 import { Settings } from '../settings';
 import { buildChatInfo, type ChatInfo, type ReqOptions } from './information';
 import { Session } from './session';
@@ -122,7 +123,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       throw new Error(t('auth.noKey', provider.label));
     }
 
-    const endpoint = provider.endpoint;
+    const endpoint = getEndpoint(provider);
     const session = Session.fromMessages(messages);
 
     channel.info(
@@ -176,7 +177,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     _token: vscode.CancellationToken,
   ): Promise<number> {
     const entry = modelById.get(modelInfo.id);
-    const charsPerToken = entry ? (entry.provider.tokenRatio ?? 4.0) : 4.0;
+    const charsPerToken = entry ? (resolveTrait(entry, 'tokenRatio') ?? 4.0) : 4.0;
 
     return estimateTokens(content, charsPerToken);
   }

@@ -34,12 +34,12 @@
 ## 快速开始
 
 1. 安装扩展。
-2. 打开 **Language Models** 面板（`Ctrl/Cmd+Shift+P` → *Language Models*），选择提供商并输入 API Key——这是 VS Code 原生方式，也是推荐做法。
+2. 打开 **Language Models** 面板（`Ctrl/Cmd+Shift+P` *Language Models*），选择提供商并输入 API Key——这是 VS Code 原生方式，也是推荐做法。
 3. 打开 Copilot Chat，点击模型选择器，选择一个模型即可使用。
 
 > **备用方式：** 执行命令 **Copilot Adapter: Add API Key**（`Ctrl/Cmd+Shift+P`）可在不打开 Language Models 面板的情况下存储 Key。
 
-完整的分步引导可通过 `Ctrl/Cmd+Shift+P` → **Welcome: Open Walkthrough** → *AI Models Adapter for Copilot Chat* 打开。
+完整的分步引导可通过 `Ctrl/Cmd+Shift+P` **Welcome: Open Walkthrough** *AI Models Adapter for Copilot Chat* 打开。
 
 如需带截图的详细操作说明，请参阅[如何添加模型提供商](docs/add-model.zh-cn.md)。
 

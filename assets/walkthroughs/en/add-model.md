@@ -7,7 +7,7 @@ There are two ways to connect a provider. **Method 1 is the native VS Code appro
 ### Method 1 — Language Models panel (native, recommended)
 
 1. Open the Language Models panel:
-   [Open Language Models →](command:workbench.action.chat.manage)
+   [Open Language Models](command:workbench.action.chat.manage)
 
 2. Under **Language Model Providers**, find **DeepSeek** or **MiniMax**.
 
@@ -26,4 +26,4 @@ Get your API keys here:
 
 Run the command below, select a provider, and enter your key. The key is stored in the extension's own secret storage.
 
-[Add API Key →](command:copilot-adapter.addApiKey)
+[Add API Key](command:copilot-adapter.addApiKey)

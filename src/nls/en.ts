@@ -3,9 +3,12 @@ import type { Translation } from './types';
 export const en: Translation = {
   'provider.deepseek.detail': 'General-purpose & deep reasoning — {0} models',
   'provider.minimax.detail': 'Deep reasoning with long context support — {0} models',
+  'provider.qwen.detail': 'Alibaba Qwen series — {0} models',
+  'provider.bigmodel.detail': 'Zhipu BigModel GLM series — {0} models',
 
   'model.deepseek-v4-flash.detail': 'Fast, general-purpose model',
   'model.deepseek-v4-pro.detail': 'Deep reasoning model',
+
   'model.minimax-m2.detail': 'Deep reasoning model',
   'model.minimax-m2.1.detail': 'Deep reasoning model',
   'model.minimax-m2.1-highspeed.detail': 'Deep reasoning, high-speed',
@@ -14,6 +17,43 @@ export const en: Translation = {
   'model.minimax-m2.7.detail': 'Deep reasoning model',
   'model.minimax-m2.7-highspeed.detail': 'Deep reasoning, high-speed',
   'model.minimax-m3.detail': 'Deep reasoning with vision support',
+
+  'model.qwen3.7-max.detail': 'Flagship model, latest generation',
+  'model.qwen3.7-plus.detail': 'Balanced general-purpose model',
+  'model.qwen3.6-max.detail': 'Flagship model',
+  'model.qwen3.6-plus.detail': 'Balanced general-purpose model',
+  'model.qwen3.6-flash.detail': 'Fast, low-cost model',
+  'model.qwen3.5-plus.detail': 'Balanced general-purpose model',
+  'model.qwen3.5-flash.detail': 'Fast, low-cost model',
+  'model.qwen3-max.detail': 'Flagship model, long context',
+  'model.qwen3-coder-plus.detail': 'Coding-focused model',
+  'model.qwen3-coder-flash.detail': 'Fast coding-focused model',
+  'model.qwen-plus-us.detail': 'Balanced model — only available on the US region endpoint',
+  'model.qwen-flash-us.detail': 'Fast, low-cost model — only available on the US region endpoint',
+
+  'model.glm-5.1.detail': 'Latest flagship — coding parity with Claude Opus 4.6',
+  'model.glm-5.detail': 'High-intelligence base model — agentic long-horizon planning',
+  'model.glm-5-turbo.detail': 'Lobster-tuned base model — optimized for long-task execution',
+  'model.glm-4.7.detail': 'High-intelligence model — upgraded chat, reasoning and agentic skills',
+  'model.glm-4.7-flashx.detail': 'Lightweight high-speed model for general writing and translation',
+  'model.glm-4.6.detail': 'High-performance model — 200K context, advanced coding & tool use',
+  'model.glm-4.5-air.detail': 'Cost-effective model — strong reasoning, coding and agentic tasks',
+  'model.glm-4.5-airx.detail': 'Cost-effective ultra-fast variant — low latency at moderate price',
+  'model.glm-4-long.detail': 'Ultra-long input — up to 1M context window',
+  'model.glm-4-flashx-250414.detail': 'Enhanced Flash variant — fast inference, high concurrency',
+  'model.glm-4.7-flash.detail': 'Free tier of the latest base model',
+  'model.glm-4.5-flash.detail': 'Free model with deep-thinking mode (deprecated soon)',
+  'model.glm-4-flash-250414.detail': 'Free model — long-context, multilingual, tool calls',
+  'model.glm-5v-turbo.detail': 'Multimodal coding base — vision + complex visual reasoning',
+  'model.glm-4.6v.detail':
+    'Vision reasoning — native tool calls, long context, frontend reproduction',
+  'model.glm-ocr.detail': 'Lightweight OCR — SOTA accuracy, supports complex documents',
+  'model.glm-4.1v-thinking-flashx.detail':
+    'Lightweight visual reasoning — multi-step analysis, high concurrency',
+  'model.glm-4.6v-flash.detail': 'Free vision model — tool calls and toggleable thinking mode',
+  'model.glm-4.1v-thinking-flash.detail':
+    'Free visual reasoning — complex scenes, multi-step analysis',
+  'model.glm-4v-flash.detail': 'Free model — image understanding, multilingual',
 
   'auth.keyInput': 'Enter {0} API Key',
   'auth.keyInputHinted': 'Enter {0} API Key (format: {1})',

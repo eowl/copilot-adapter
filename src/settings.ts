@@ -67,4 +67,14 @@ export class Settings {
   static maxWarmupRounds(): number {
     return this.section().get<number>('maxWarmupRounds', 3);
   }
+
+  static providerEndpoint(providerId: string): string | undefined {
+    const map = this.section().get<Record<string, unknown>>('providerEndpoints', {});
+    const raw = map?.[providerId];
+
+    if (typeof raw !== 'string') return undefined;
+    const trimmed = raw.trim();
+
+    return trimmed.length > 0 ? trimmed : undefined;
+  }
 }

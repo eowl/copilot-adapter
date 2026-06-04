@@ -1,4 +1,5 @@
 import { t } from '../nls';
+import { DEFAULT_ENDPOINTS } from './endpoints';
 import type { Model, Provider, ReasoningAbility } from './types';
 
 type ThinkingEffort = 'none' | 'high' | 'max';
@@ -44,7 +45,7 @@ export const DEEPSEEK: Provider = {
   id: 'deepseek',
   label: 'DeepSeek',
   detailKey: 'provider.deepseek.detail',
-  endpoint: 'https://api.deepseek.com',
+  endpoint: DEFAULT_ENDPOINTS.deepseek,
   tokenRatio: 4.0,
   thinkingField: 'reasoning_content',
   apiKeyHint: 'sk-...',

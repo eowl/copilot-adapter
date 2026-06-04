@@ -2,7 +2,7 @@
 
 Fine-tune providers, enable vision support, and control diagnostic output.
 
-[Open Extension Settings →](command:copilot-adapter.openSettings)
+[Open Extension Settings](command:copilot-adapter.openSettings)
 
 ---
 
@@ -12,7 +12,7 @@ The vision proxy converts image attachments to text descriptions before sending 
 
 Set a vision-capable model (e.g. a GPT-4o or Claude model available in Copilot Chat):
 
-[Configure Vision Proxy →](command:copilot-adapter.setVisionProxyModel)
+[Configure Vision Proxy](command:copilot-adapter.setVisionProxyModel)
 
 ---
 

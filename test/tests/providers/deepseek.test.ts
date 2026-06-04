@@ -5,12 +5,12 @@ import { DEEPSEEK, DS_MODELS } from '../../../src/providers/deepseek';
 suite('providers/deepseek — model.requestExtras()', () => {
   const requestExtras = DS_MODELS[0].requestExtras!;
 
-  test('effort "none" → thinking disabled', () => {
+  test('effort "none": thinking disabled', () => {
     const result = requestExtras({ reasoningEffort: 'none' });
     assert.deepEqual(result, { thinking: { type: 'disabled' } });
   });
 
-  test('effort "high" → thinking enabled with high', () => {
+  test('effort "high": thinking enabled with high', () => {
     const result = requestExtras({ reasoningEffort: 'high' });
     assert.deepEqual(result, {
       thinking: { type: 'enabled' },
@@ -18,7 +18,7 @@ suite('providers/deepseek — model.requestExtras()', () => {
     });
   });
 
-  test('effort "max" → thinking enabled with max', () => {
+  test('effort "max": thinking enabled with max', () => {
     const result = requestExtras({ reasoningEffort: 'max' });
     assert.deepEqual(result, {
       thinking: { type: 'enabled' },

@@ -2,7 +2,7 @@
 
 精细调整提供商设置、启用视觉支持并控制诊断输出。
 
-[打开扩展设置 →](command:copilot-adapter.openSettings)
+[打开扩展设置](command:copilot-adapter.openSettings)
 
 ---
 
@@ -12,7 +12,7 @@
 
 选择一个支持视觉的模型（如 Copilot Chat 中可用的 GPT-4o 或 Claude 模型）：
 
-[配置视觉代理 →](command:copilot-adapter.setVisionProxyModel)
+[配置视觉代理](command:copilot-adapter.setVisionProxyModel)
 
 ---
 

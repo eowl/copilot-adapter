@@ -71,27 +71,27 @@ suite('client/fault', () => {
       assert.strictEqual(result, original);
     });
 
-    test('detects abort/cancel → network kind', () => {
+    test('detects abort/cancel: network kind', () => {
       const err = new Error('request was aborted');
       const result = wrapFetchError(err, 'https://api.example.com');
       assert.equal(result.kind, 'network');
       assert.ok(result.summary.includes('cancel') || result.summary.toLowerCase().includes('cancel'), result.summary);
     });
 
-    test('detects timeout → network kind', () => {
+    test('detects timeout: network kind', () => {
       const err = new Error('Request timed out after 30s');
       const result = wrapFetchError(err, 'https://api.example.com');
       assert.equal(result.kind, 'network');
     });
 
-    test('detects ENOTFOUND (DNS) → network kind with hostname', () => {
+    test('detects ENOTFOUND (DNS): network kind with hostname', () => {
       const err = new Error('getaddrinfo ENOTFOUND api.example.com');
       const result = wrapFetchError(err, 'https://api.example.com/v1');
       assert.equal(result.kind, 'network');
       assert.ok(result.summary.includes('api.example.com'), `summary: ${result.summary}`);
     });
 
-    test('unknown error → kind "unknown"', () => {
+    test('unknown error: kind "unknown"', () => {
       const err = new Error('some weird error');
       const result = wrapFetchError(err, 'https://api.example.com');
       assert.equal(result.kind, 'unknown');

@@ -7,7 +7,7 @@
 ### 方式一 — 语言模型面板（原生方式，推荐）
 
 1. 打开语言模型面板：
-   [打开语言模型管理 →](command:workbench.action.chat.manage)
+   [打开语言模型管理](command:workbench.action.chat.manage)
 
 2. 在 **Language Model Providers** 下找到 **DeepSeek** 或 **MiniMax**。
 
@@ -26,4 +26,4 @@
 
 运行下方命令，选择提供商后输入密钥。密钥将存储在扩展自身的 Secret Storage 中。
 
-[添加 API Key →](command:copilot-adapter.addApiKey)
+[添加 API Key](command:copilot-adapter.addApiKey)

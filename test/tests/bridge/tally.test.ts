@@ -32,23 +32,25 @@ suite('bridge/tally', () => {
       assert.equal(estimateTokens(msg, 4), 3);
     });
 
-    test('counts ToolCallPart name + serialized input', () => {
+    test('counts ToolCallPart callId + name + serialized input', () => {
       const msg = vscode.LanguageModelChatMessage.Assistant([
         new vscode.LanguageModelToolCallPart('call-1', 'my_tool', { arg: 'val' }),
       ]);
+      const callIdLen = 'call-1'.length; // 6
       const nameLen = 'my_tool'.length; // 7
       const inputLen = JSON.stringify({ arg: 'val' }).length; // 11
-      const expected = Math.ceil((nameLen + inputLen) / 4);
+      const expected = Math.ceil((callIdLen + nameLen + inputLen) / 4);
       assert.equal(estimateTokens(msg, 4), expected);
     });
 
-    test('sums text items inside ToolResultPart', () => {
+    test('sums text items inside ToolResultPart (includes callId)', () => {
       const msg = vscode.LanguageModelChatMessage.User([
         new vscode.LanguageModelToolResultPart('call-1', [
           new vscode.LanguageModelTextPart('done!'), // 5
         ]),
       ]);
-      assert.equal(estimateTokens(msg, 5), 1); // 5/5=1
+      // callId='call-1' (6) + 'done!' (5) = 11 chars / 5 = 2.2 → ceil = 3
+      assert.equal(estimateTokens(msg, 5), 3);
     });
 
     test('marker DataPart contributes 0 tokens', () => {

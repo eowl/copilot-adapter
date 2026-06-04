@@ -5,8 +5,8 @@ import type { ContentParser } from '../types';
  * separate thinking and content events.
  *
  * Example: "<think>reasoning…</think>actual reply"
- * → { kind: 'thinking', text: 'reasoning…' }
- * → { kind: 'content',  text: 'actual reply' }
+ * { kind: 'thinking', text: 'reasoning…' }
+ * { kind: 'content',  text: 'actual reply' }
  *
  * Safe to use with chunked/partial delivery — buffers until a safe emit boundary.
  * Can be reused by any provider that embeds reasoning in the content stream via XML tags.

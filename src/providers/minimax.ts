@@ -1,4 +1,5 @@
 import { t } from '../nls';
+import { DEFAULT_ENDPOINTS } from './endpoints';
 import type { ContentParser, Model, Provider, ReasoningAbility } from './types';
 import { ThinkTagParser } from './parsers/tag';
 
@@ -42,7 +43,7 @@ export const MINIMAX: Provider = {
   id: 'minimax',
   label: 'MiniMax',
   detailKey: 'provider.minimax.detail',
-  endpoint: 'https://api.minimaxi.com/v1',
+  endpoint: DEFAULT_ENDPOINTS.minimax,
   tokenRatio: 4.0,
   thinkingField: 'thinking_content',
   supportsStreamUsage: false,
@@ -56,7 +57,7 @@ export const MINIMAX: Provider = {
 };
 
 const MM_ABILITY: ReasoningAbility = {
-  maxTools: 32,
+  maxTools: 64,
   acceptsImages: false,
   reasoning: true,
   thinkTag: 'think',
