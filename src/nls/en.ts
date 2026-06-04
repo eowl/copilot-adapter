@@ -3,11 +3,15 @@ import type { Translation } from './types';
 export const en: Translation = {
   'provider.deepseek.detail': 'General-purpose & deep reasoning — {0} models',
   'provider.minimax.detail': 'Deep reasoning with long context support — {0} models',
+  'provider.moonshot.detail': 'Moonshot Kimi series — {0} models',
   'provider.qwen.detail': 'Alibaba Qwen series — {0} models',
   'provider.bigmodel.detail': 'Zhipu BigModel GLM series — {0} models',
 
   'model.deepseek-v4-flash.detail': 'Fast, general-purpose model',
   'model.deepseek-v4-pro.detail': 'Deep reasoning model',
+
+  'model.kimi-k2.6.detail': 'Latest flagship — enhanced long-range coding & reasoning',
+  'model.kimi-k2.5.detail': 'Deep reasoning model with vision support',
 
   'model.minimax-m2.detail': 'Deep reasoning model',
   'model.minimax-m2.1.detail': 'Deep reasoning model',
@@ -78,6 +82,14 @@ export const en: Translation = {
   'think.high.hint': 'Good for day-to-day coding tasks',
   'think.max': 'Max',
   'think.max.hint': 'Full reasoning depth for hard problems',
+  'think.keep': 'Keep',
+  'think.keep.hint': 'Preserve reasoning across multi-turn conversations',
+  'think.enabled': 'Enabled',
+  'think.enabled.hint': 'Standard thinking mode',
+  'think.enabledKeep': 'Enabled with Keep',
+  'think.enabledKeep.hint': 'Preserve reasoning across multi-turn conversations',
+  'think.disabled': 'Disabled',
+  'think.disabled.hint': 'No reasoning steps; fastest output',
 
   'vision.chooseProxy': 'Select image description model (default {0})',
   'vision.activeLabel': 'current',

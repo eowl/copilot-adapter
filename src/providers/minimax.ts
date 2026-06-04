@@ -2,6 +2,7 @@ import { t } from '../nls';
 import { DEFAULT_ENDPOINTS } from './endpoints';
 import type { ContentParser, Model, Provider, ReasoningAbility } from './types';
 import { ThinkTagParser } from './parsers/tag';
+import { imagePart } from './utils';
 
 function mmCreateContentParser(): ContentParser {
   return new ThinkTagParser('think');
@@ -31,12 +32,6 @@ function m3ConfigSchema(): Record<string, unknown> {
       },
     },
   } as const;
-}
-
-function mmImagePart(data: Uint8Array, mimeType: string): Record<string, unknown> {
-  const base64 = Buffer.from(data).toString('base64');
-
-  return { type: 'image_url', image_url: { url: `data:${mimeType};base64,${base64}` } };
 }
 
 export const MINIMAX: Provider = {
@@ -151,6 +146,6 @@ export const MM_MODELS: readonly Model[] = [
     requestExtras: m3RequestExtras,
     configSchema: m3ConfigSchema,
     createContentParser: mmCreateContentParser,
-    formatImagePart: mmImagePart,
+    formatImagePart: imagePart(),
   },
 ];

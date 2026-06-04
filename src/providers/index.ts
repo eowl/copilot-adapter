@@ -1,15 +1,17 @@
 import { DEEPSEEK, DS_MODELS } from './deepseek';
 import { MINIMAX, MM_MODELS } from './minimax';
+import { MOONSHOT, MS_MODELS } from './moonshot';
 import { QWEN, QWEN_MODELS } from './qwen';
 import { BIGMODEL, BM_MODELS } from './bigmodel';
 import type { Model, Provider } from './types';
 
-export { DEEPSEEK, MINIMAX, QWEN, BIGMODEL };
+export { DEEPSEEK, MINIMAX, MOONSHOT, QWEN, BIGMODEL };
 export type { Provider, Model };
 
 export const ALL_MODELS: readonly Model[] = [
   ...DS_MODELS,
   ...MM_MODELS,
+  ...MS_MODELS,
   ...QWEN_MODELS,
   ...BM_MODELS,
 ];

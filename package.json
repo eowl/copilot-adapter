@@ -23,6 +23,8 @@
     "byok",
     "deepseek",
     "minimax",
+    "moonshot",
+    "kimi",
     "qwen",
     "bigmodel",
     "glm",
@@ -102,6 +104,24 @@
               "type": "string",
               "title": "%copilot-adapter.provider.bigmodel.apiKey.title%",
               "description": "%copilot-adapter.provider.bigmodel.apiKey.description%",
+              "secret": true
+            }
+          }
+        }
+      },
+      {
+        "vendor": "copilot-adapter-moonshot",
+        "displayName": "Moonshot",
+        "configuration": {
+          "type": "object",
+          "required": [
+            "apiKey"
+          ],
+          "properties": {
+            "apiKey": {
+              "type": "string",
+              "title": "%copilot-adapter.provider.moonshot.apiKey.title%",
+              "description": "%copilot-adapter.provider.moonshot.apiKey.description%",
               "secret": true
             }
           }
@@ -202,13 +222,19 @@
               "type": "string",
               "default": "https://open.bigmodel.cn/api/paas/v4",
               "description": "%copilot-adapter.config.providerEndpoints.bigmodel.description%"
+            },
+            "moonshot": {
+              "type": "string",
+              "default": "https://api.moonshot.cn/v1",
+              "description": "%copilot-adapter.config.providerEndpoints.moonshot.description%"
             }
           },
           "default": {
             "deepseek": "https://api.deepseek.com",
             "minimax": "https://api.minimaxi.com/v1",
             "qwen": "https://dashscope.aliyuncs.com/compatible-mode/v1",
-            "bigmodel": "https://open.bigmodel.cn/api/paas/v4"
+            "bigmodel": "https://open.bigmodel.cn/api/paas/v4",
+            "moonshot": "https://api.moonshot.cn/v1"
           }
         },
         "copilot-adapter.maxTokens": {

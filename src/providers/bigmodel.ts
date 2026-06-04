@@ -1,6 +1,7 @@
 import { t } from '../nls';
 import { DEFAULT_ENDPOINTS } from './endpoints';
 import type { Model, NonReasoningAbility, Provider, ReasoningAbility } from './types';
+import { imagePart } from './utils';
 
 function bmRequestExtras(
   modelConfig: Record<string, unknown> | undefined,
@@ -26,12 +27,6 @@ function bmConfigSchema(): Record<string, unknown> {
       },
     },
   } as const;
-}
-
-function bmImagePart(data: Uint8Array, mimeType: string): Record<string, unknown> {
-  const base64 = Buffer.from(data).toString('base64');
-
-  return { type: 'image_url', image_url: { url: `data:${mimeType};base64,${base64}` } };
 }
 
 export const BIGMODEL: Provider = {
@@ -94,14 +89,14 @@ const BM_VISION_THINK_BASE = {
   provider: BIGMODEL,
   requestExtras: bmRequestExtras,
   configSchema: bmConfigSchema,
-  formatImagePart: bmImagePart,
+  formatImagePart: imagePart(),
 };
 
 const BM_VISION_PLAIN_BASE = {
   family: 'glm' as const,
   ability: BM_VISION_PLAIN_ABILITY,
   provider: BIGMODEL,
-  formatImagePart: bmImagePart,
+  formatImagePart: imagePart(),
 };
 
 export const BM_MODELS: readonly Model[] = [

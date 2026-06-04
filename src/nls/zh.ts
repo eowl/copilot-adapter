@@ -3,11 +3,15 @@ import type { Translation } from './types';
 export const zh: Translation = {
   'provider.deepseek.detail': '通用对话与深度推理，{0} 个模型',
   'provider.minimax.detail': '深度推理，支持超长上下文，{0} 个模型',
+  'provider.moonshot.detail': '月之暗面 Kimi 系列，{0} 个模型',
   'provider.qwen.detail': '阿里云通义千问系列，{0} 个模型',
   'provider.bigmodel.detail': '智谱 BigModel GLM 系列，{0} 个模型',
 
   'model.deepseek-v4-flash.detail': '快速通用模型',
   'model.deepseek-v4-pro.detail': '深度推理模型',
+
+  'model.kimi-k2.6.detail': '最新旗舰——长程代码编写与推理能力增强',
+  'model.kimi-k2.5.detail': '深度推理模型，支持图像',
 
   'model.minimax-m2.detail': '深度推理模型',
   'model.minimax-m2.1.detail': '深度推理模型',
@@ -74,6 +78,14 @@ export const zh: Translation = {
   'think.high.hint': '适合日常任务',
   'think.max': '最大',
   'think.max.hint': '适合复杂问题',
+  'think.keep': '保留',
+  'think.keep.hint': '多轮对话中保留完整推理过程',
+  'think.enabled': '启用',
+  'think.enabled.hint': '标准思考模式',
+  'think.enabledKeep': '启用并保留',
+  'think.enabledKeep.hint': '多轮对话中保留推理内容',
+  'think.disabled': '禁用',
+  'think.disabled.hint': '不进行推理，最快输出',
 
   'vision.chooseProxy': '选择图像描述模型（默认 {0}）',
   'vision.activeLabel': '当前',
