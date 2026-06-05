@@ -97,9 +97,9 @@ API Key 仅存储于 [VS Code Secret Storage](https://code.visualstudio.com/api/
 | 级别 | 输出频道 | 模型 `id` / `apiId` / 端点 | 请求 dump 写入磁盘 |
 |---|---|---|---|
 | `off` | — | — | — |
-| `info` | ✔ 请求元数据 | — | — |
-| `meta` | ✔ 请求元数据 | ✔ | — |
-| `verbose` | ✔ 请求元数据 | ✔ | ✔ |
+| `info` | 是（请求元数据） | — | — |
+| `meta` | 是（请求元数据） | 是 | — |
+| `verbose` | 是（请求元数据） | 是 | 是 |
 
 ---
 

@@ -2,7 +2,7 @@
   "name": "copilot-adapter",
   "displayName": "Copilot Adapter",
   "description": "AI Models Adapter for Copilot Chat",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publisher": "Eowl",
   "license": "MIT",
   "icon": "assets/icon.png",
@@ -68,7 +68,10 @@
             "apiEndpoint": {
               "type": "string",
               "title": "%copilot-adapter.provider.minimax.apiEndpoint.title%",
-              "enum": ["minimaxi.com", "minimax.io"],
+              "enum": [
+                "minimaxi.com",
+                "minimax.io"
+              ],
               "enumDescriptions": [
                 "%copilot-adapter.provider.minimax.apiEndpoint.option.minimaxi.com%",
                 "%copilot-adapter.provider.minimax.apiEndpoint.option.minimax.io%"
@@ -120,7 +123,12 @@
             "apiEndpoint": {
               "type": "string",
               "title": "%copilot-adapter.provider.zhipu.apiEndpoint.title%",
-              "enum": ["bigmodel", "bigmodel-coding", "z.ai", "z.ai-coding"],
+              "enum": [
+                "bigmodel",
+                "bigmodel-coding",
+                "z.ai",
+                "z.ai-coding"
+              ],
               "enumDescriptions": [
                 "%copilot-adapter.provider.zhipu.apiEndpoint.option.bigmodel%",
                 "%copilot-adapter.provider.zhipu.apiEndpoint.option.bigmodel-coding%",
@@ -151,7 +159,10 @@
             "apiEndpoint": {
               "type": "string",
               "title": "%copilot-adapter.provider.moonshot.apiEndpoint.title%",
-              "enum": ["moonshot.cn", "moonshot.ai"],
+              "enum": [
+                "moonshot.cn",
+                "moonshot.ai"
+              ],
               "enumDescriptions": [
                 "%copilot-adapter.provider.moonshot.apiEndpoint.option.moonshot.cn%",
                 "%copilot-adapter.provider.moonshot.apiEndpoint.option.moonshot.ai%"
