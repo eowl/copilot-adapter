@@ -2,26 +2,20 @@ import { DEEPSEEK, DEEPSEEK_ENDPOINTS } from './deepseek';
 import { MINIMAX, MINIMAX_ENDPOINTS } from './minimax';
 import { MOONSHOT, MOONSHOT_ENDPOINTS } from './moonshot';
 import { QWEN, QWEN_ENDPOINTS } from './qwen';
-import { BIGMODEL, BIGMODEL_ENDPOINTS } from './bigmodel';
+import { ZHIPU, ZHIPU_ENDPOINTS } from './bigmodel';
 import { composeModelProvider } from './utils';
 import type { ModelItem, ModelProvider, ModelEndpoint } from './types';
 
-export { DEEPSEEK, MINIMAX, MOONSHOT, QWEN, BIGMODEL };
+export { DEEPSEEK, MINIMAX, MOONSHOT, QWEN, ZHIPU };
 export type { ModelProvider, ModelEndpoint, ModelItem };
 
 composeModelProvider(DEEPSEEK, DEEPSEEK_ENDPOINTS);
 composeModelProvider(MINIMAX, MINIMAX_ENDPOINTS);
 composeModelProvider(MOONSHOT, MOONSHOT_ENDPOINTS);
 composeModelProvider(QWEN, QWEN_ENDPOINTS);
-composeModelProvider(BIGMODEL, BIGMODEL_ENDPOINTS);
+composeModelProvider(ZHIPU, ZHIPU_ENDPOINTS);
 
-export const ALL_PROVIDERS: readonly ModelProvider[] = [
-  DEEPSEEK,
-  MINIMAX,
-  MOONSHOT,
-  QWEN,
-  BIGMODEL,
-];
+export const ALL_PROVIDERS: readonly ModelProvider[] = [DEEPSEEK, MINIMAX, MOONSHOT, QWEN, ZHIPU];
 
 export const ALL_MODELS: readonly ModelItem[] = (() => {
   const seen = new Set<string>();

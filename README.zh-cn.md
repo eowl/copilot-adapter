@@ -6,28 +6,32 @@
   <a href="https://github.com/eowl/copilot-adapter/actions/workflows/ci.yml"><img src="https://github.com/eowl/copilot-adapter/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
 </p>
 
-让 VS Code 原生 Copilot Chat 无缝接入第三方 AI 模型。无需 Copilot 订阅，无需本地代理，使用自己的 API Key，即可在 Copilot Chat 的模型选择器中直接切换 DeepSeek、MiniMax 等第三方模型——体验与 Copilot 内置模型完全一致。
+让 VS Code 原生 Copilot Chat 无缝接入第三方 AI 模型。无需 Copilot 订阅，无需本地代理，使用自己的 API Key，即可在 Copilot Chat 的模型选择器中直接切换[支持的模型](#模型)——体验与 Copilot 内置模型完全一致。
 
 [English](README.md)
 
-- [支持的提供商](#支持的提供商)
+- [模型](#模型)
 - [快速开始](#快速开始)
 - [安全性](#安全性)
 - [功能特性](#功能特性)
   - [思考模式](#思考模式)
   - [视觉代理](#视觉代理)
-  - [提供商独立配置](#提供商独立配置)
 - [配置参考](#配置参考)
 - [命令](#命令)
 
 ---
 
-## 支持的提供商
+## 模型
 
-| 提供商 | 模型 | API Keys |
+| 提供商 | 端点 | 模型 |
 |---|---|---|
-| [DeepSeek](https://platform.deepseek.com) | V4 Flash · V4 Pro | [platform.deepseek.com](https://platform.deepseek.com/api_keys) |
-| [MiniMax](https://www.minimax.io) | Text-01 · M1 · M2 · M2.1 · M2.5 · M2.7（含高速版） | [minimax.io](https://www.minimax.io/platform/user-center/basic-information/interface-key) |
+| **DeepSeek** | `api.deepseek.com` | `V4 Flash` `V4 Pro` |
+| **MiniMax** | `api.minimaxi.com` `api.minimax.io` | `M2` `M2.1` `M2.1 Highspeed` `M2.5` `M2.5 Highspeed` `M2.7` `M2.7 Highspeed` `M3` |
+| **Qwen** | `CN` `US` `Singapore` `EU (Frankfurt)` | `Qwen3.7 Max` `Qwen3.7 Plus` `Qwen3.6 Max` `Qwen3.6 Plus` `Qwen3.6 Flash` `Qwen3.5 Plus` `Qwen3.5 Flash` `Qwen3 Max` `Qwen3 Coder Plus` `Qwen3 Coder Flash` `Qwen Plus (US)` `Qwen Flash (US)` |
+| **智谱 (GLM)** | `open.bigmodel.cn` `api.z.ai`（标准版与 Coding Plan） | `GLM-5.1` `GLM-5` `GLM-5-Turbo` `GLM-4.7` `GLM-4.7-FlashX` `GLM-4.6` `GLM-4.5-Air` `GLM-4.5-AirX` `GLM-4-Long` `GLM-4-FlashX-250414` `GLM-4.7-Flash` `GLM-4.5-Flash` `GLM-4-Flash-250414` `GLM-5V-Turbo` `GLM-4.6V` `GLM-OCR` `GLM-4.1V-Thinking-FlashX` `GLM-4.6V-Flash` `GLM-4.1V-Thinking-Flash` `GLM-4V-Flash` |
+| **Moonshot (Kimi)** | `api.moonshot.cn` `api.moonshot.ai` | `Kimi K2.6` `Kimi K2.5` |
+
+> 请至各提供商官网注册并获取 API Key。
 
 ---
 
@@ -51,7 +55,7 @@ API Key 仅存储于 [VS Code Secret Storage](https://code.visualstudio.com/api/
 
 - **永远不会写入 `settings.json`** — Key 作为 Secret 存储，与 VS Code 设置完全隔离，不会通过 Settings Sync 同步，也不会出现在磁盘上的任何配置文件中。
 - **不可能被意外提交** — Key 仅存在于操作系统凭据库中，不存在可被 git 追踪的文件。
-- **日志中全程掩码** — 即使将 `debugMode` 设为 `verbose`，输出频道中的 API Key 也会以掩码形式显示（如 `sk-12345678••••••••cdef`），原始值绝不会出现在日志中。
+- **零运行时依赖** — 扩展在运行时没有任何第三方库依赖或外部服务依赖，所有网络通信均使用 VS Code 内置的 HTTP 设施。
 
 ---
 
@@ -59,7 +63,7 @@ API Key 仅存储于 [VS Code Secret Storage](https://code.visualstudio.com/api/
 
 ### 思考模式
 
-推理模型（DeepSeek V4 Pro、MiniMax M 系列）支持配置推理深度，可在 Language Models 面板的模型设置中调整：
+推理模型（DeepSeek V4 系列、MiniMax M 系列、Qwen3、GLM、Kimi K2）支持配置推理深度，可在 Language Models 面板的模型设置中调整：
 
 | 级别 | 说明 |
 |---|---|

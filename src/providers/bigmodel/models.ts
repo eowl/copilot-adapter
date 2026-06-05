@@ -1,7 +1,7 @@
 import { t } from '../../nls';
 import type { ModelItem, NonReasoningAbility, ReasoningAbility } from '../types';
 import { imagePart } from '../utils';
-import { BIGMODEL } from './provider';
+import { ZHIPU } from './provider';
 
 function bmRequestExtras(
   modelConfig: Record<string, unknown> | undefined,
@@ -56,7 +56,7 @@ const BM_VISION_PLAIN_ABILITY: NonReasoningAbility = {
 const BM_THINK_BASE = {
   family: 'glm' as const,
   ability: BM_REASONING_ABILITY,
-  provider: BIGMODEL,
+  provider: ZHIPU,
   requestExtras: bmRequestExtras,
   configSchema: bmConfigSchema,
 };
@@ -64,13 +64,13 @@ const BM_THINK_BASE = {
 const BM_PLAIN_BASE = {
   family: 'glm' as const,
   ability: BM_PLAIN_ABILITY,
-  provider: BIGMODEL,
+  provider: ZHIPU,
 };
 
 const BM_VISION_THINK_BASE = {
   family: 'glm' as const,
   ability: BM_VISION_REASONING_ABILITY,
-  provider: BIGMODEL,
+  provider: ZHIPU,
   requestExtras: bmRequestExtras,
   configSchema: bmConfigSchema,
   formatImagePart: imagePart(),
@@ -79,11 +79,11 @@ const BM_VISION_THINK_BASE = {
 const BM_VISION_PLAIN_BASE = {
   family: 'glm' as const,
   ability: BM_VISION_PLAIN_ABILITY,
-  provider: BIGMODEL,
+  provider: ZHIPU,
   formatImagePart: imagePart(),
 };
 
-export const BM_MODELS: readonly ModelItem[] = [
+export const ZP_MODELS: readonly ModelItem[] = [
   {
     ...BM_THINK_BASE,
     id: 'glm-5.1',

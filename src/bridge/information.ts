@@ -27,10 +27,11 @@ export function buildChatInfo(
   const detail = t(modelItem.detailKey);
 
   const infoId = idPrefix ? `${idPrefix}::${modelItem.id}` : modelItem.id;
+  const suffix = idPrefix ? '\u200B'.repeat(Number(idPrefix) || 1) : '';
   const info = {
     id: infoId,
-    name: modelItem.label,
-    family: modelItem.family,
+    name: `${modelItem.label}${suffix}`,
+    family: `${modelItem.family}${suffix}`,
     version: modelItem.version,
     maxInputTokens: modelItem.maxInputTokens,
     maxOutputTokens: modelItem.maxOutputTokens,

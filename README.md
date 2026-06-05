@@ -6,28 +6,32 @@
   <a href="https://github.com/eowl/copilot-adapter/actions/workflows/ci.yml"><img src="https://github.com/eowl/copilot-adapter/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
 </p>
 
-Extend VS Code's native Copilot Chat with third-party AI models. Switch between DeepSeek, MiniMax, and more directly from the Copilot model selector — the same experience as built-in Copilot models, with your own API keys, no Copilot subscription, and no local proxy needed.
+Extend VS Code's native Copilot Chat with third-party AI models. Switch between [supported models](#models) directly from the Copilot model selector — the same experience as built-in Copilot models, with your own API keys, no Copilot subscription, and no local proxy needed.
 
 [简体中文](README.zh-cn.md)
 
-- [Providers](#providers)
+- [Models](#models)
 - [Quick Start](#quick-start)
 - [Security](#security)
 - [Features](#features)
   - [Thinking Modes](#thinking-modes)
   - [Vision Proxy](#vision-proxy)
-  - [Per-Provider Settings](#per-provider-settings)
 - [Configuration Reference](#configuration-reference)
 - [Commands](#commands)
 
 ---
 
-## Providers
+## Models
 
-| Provider | Models | API Keys |
+| Provider | Endpoints | Models |
 |---|---|---|
-| [DeepSeek](https://platform.deepseek.com) | V4 Flash · V4 Pro | [platform.deepseek.com](https://platform.deepseek.com/api_keys) |
-| [MiniMax](https://www.minimax.io) | Text-01 · M1 · M2 · M2.1 · M2.5 · M2.7 (+ highspeed variants) | [minimax.io](https://www.minimax.io/platform/user-center/basic-information/interface-key) |
+| **DeepSeek** | `api.deepseek.com` | `V4 Flash` `V4 Pro` |
+| **MiniMax** | `api.minimaxi.com` `api.minimax.io` | `M2` `M2.1` `M2.1 Highspeed` `M2.5` `M2.5 Highspeed` `M2.7` `M2.7 Highspeed` `M3` |
+| **Qwen** | `CN` `US` `Singapore` `EU (Frankfurt)` | `Qwen3.7 Max` `Qwen3.7 Plus` `Qwen3.6 Max` `Qwen3.6 Plus` `Qwen3.6 Flash` `Qwen3.5 Plus` `Qwen3.5 Flash` `Qwen3 Max` `Qwen3 Coder Plus` `Qwen3 Coder Flash` `Qwen Plus (US)` `Qwen Flash (US)` |
+| **Zhipu (GLM)** | `open.bigmodel.cn` `api.z.ai` (std & coding) | `GLM-5.1` `GLM-5` `GLM-5-Turbo` `GLM-4.7` `GLM-4.7-FlashX` `GLM-4.6` `GLM-4.5-Air` `GLM-4.5-AirX` `GLM-4-Long` `GLM-4-FlashX-250414` `GLM-4.7-Flash` `GLM-4.5-Flash` `GLM-4-Flash-250414` `GLM-5V-Turbo` `GLM-4.6V` `GLM-OCR` `GLM-4.1V-Thinking-FlashX` `GLM-4.6V-Flash` `GLM-4.1V-Thinking-Flash` `GLM-4V-Flash` |
+| **Moonshot (Kimi)** | `api.moonshot.cn` `api.moonshot.ai` | `Kimi K2.6` `Kimi K2.5` |
+
+> See each provider's website for API key registration and billing details.
 
 ---
 
@@ -51,7 +55,7 @@ API keys are stored exclusively in [VS Code's Secret Storage](https://code.visua
 
 - **Never written to `settings.json`** — keys are stored as secrets, completely separate from VS Code settings. They cannot be synced via Settings Sync and will never appear in any configuration file on disk.
 - **Cannot be accidentally committed** — because keys exist only in the OS credential store, there is no file to stage or push.
-- **Masked in all logs** — even when `debugMode` is set to `verbose`, API keys are masked in the output channel (e.g. `sk-12345678••••••••cdef`). The raw key value is never logged.
+- **Zero runtime dependencies** — the extension has no third-party library or external service dependencies at runtime. All networking uses VS Code's built-in HTTP facilities.
 
 ---
 
@@ -59,7 +63,7 @@ API keys are stored exclusively in [VS Code's Secret Storage](https://code.visua
 
 ### Thinking Modes
 
-Reasoning models (DeepSeek V4 Pro, MiniMax M-series) expose a configurable effort level, accessible in the model's settings inside the Language Models panel:
+Reasoning models (DeepSeek V4 series, MiniMax M-series, Qwen3, GLM, Kimi K2) expose a configurable thinking level accessible in the model's settings inside the Language Models panel:
 
 | Level | Description |
 |---|---|

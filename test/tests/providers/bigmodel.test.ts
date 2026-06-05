@@ -1,10 +1,10 @@
 import assert from 'node:assert/strict';
 import { suite, test } from 'mocha';
-import { BIGMODEL, BM_MODELS } from '../../../src/providers/bigmodel';
+import { ZHIPU, ZP_MODELS } from '../../../src/providers/bigmodel';
 
 suite('providers/bigmodel', () => {
-  const thinkingModel = BM_MODELS.find((m) => m.id === 'glm-5.1')!;
-  const plainModel = BM_MODELS.find((m) => m.id === 'glm-4.5-air')!;
+  const thinkingModel = ZP_MODELS.find((m) => m.id === 'glm-5.1')!;
+  const plainModel = ZP_MODELS.find((m) => m.id === 'glm-4.5-air')!;
 
   suite('thinking-capable models requestExtras()', () => {
     const requestExtras = thinkingModel.requestExtras!;
@@ -44,23 +44,23 @@ suite('providers/bigmodel', () => {
   });
 
   suite('provider metadata', () => {
-    test('id is "bigmodel"', () => {
-      assert.equal(BIGMODEL.id, 'bigmodel');
+    test('id is "zhipu"', () => {
+      assert.equal(ZHIPU.id, 'zhipu');
     });
 
-    test('url points to BigModel paas v4', () => {
-      assert.equal(BIGMODEL.url, 'https://open.bigmodel.cn/api/paas/v4');
+    test('url points to Zhipu paas v4', () => {
+      assert.equal(ZHIPU.url, 'https://open.bigmodel.cn/api/paas/v4');
     });
 
     test('thinkingField is reasoning_content', () => {
-      assert.equal(BIGMODEL.thinkingField, 'reasoning_content');
+      assert.equal(ZHIPU.thinkingField, 'reasoning_content');
     });
   });
 
   suite('model registry', () => {
     test('exposes the expected ids in screenshot order', () => {
       assert.deepEqual(
-        BM_MODELS.map((m) => m.id),
+        ZP_MODELS.map((m) => m.id),
         [
           'glm-5.1',
           'glm-5',
@@ -87,7 +87,7 @@ suite('providers/bigmodel', () => {
     });
 
     test('thinking-capable models match the documented set', () => {
-      const reasoning = BM_MODELS.filter((m) => m.ability.reasoning).map((m) => m.id);
+      const reasoning = ZP_MODELS.filter((m) => m.ability.reasoning).map((m) => m.id);
       assert.deepEqual(reasoning, [
         'glm-5.1',
         'glm-5',
@@ -112,14 +112,14 @@ suite('providers/bigmodel', () => {
         'glm-4v-flash',
       ];
       for (const id of visionIds) {
-        const m = BM_MODELS.find((x) => x.id === id)!;
+        const m = ZP_MODELS.find((x) => x.id === id)!;
         assert.equal(m.ability.acceptsImages, true, `${id} acceptsImages`);
         assert.equal(typeof m.formatImagePart, 'function', `${id} formatImagePart`);
       }
     });
 
     test('text-only models do not accept images', () => {
-      const textIds = BM_MODELS.filter((m) => !m.ability.acceptsImages).map((m) => m.id);
+      const textIds = ZP_MODELS.filter((m) => !m.ability.acceptsImages).map((m) => m.id);
       assert.deepEqual(textIds, [
         'glm-5.1',
         'glm-5',

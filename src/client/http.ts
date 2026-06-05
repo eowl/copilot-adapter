@@ -16,6 +16,7 @@ export async function* streamHttp(
   const url = apiUrl.endsWith('/chat/completions') ? apiUrl : `${apiUrl}/chat/completions`;
 
   const reqBody = pack({ ...body, stream: true });
+  channel.debug(`POST ${url}`);
   channel.debug(`Request body: ${reqBody}`);
 
   let response: Response;
