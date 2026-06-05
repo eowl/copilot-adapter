@@ -8,7 +8,7 @@ import {
   DRIFT_NOTICE_END,
 } from '../../../../src/bridge/utils/defines';
 
-suite('bridge/utils/defines — constants', () => {
+suite('bridge/utils/defines constants', () => {
   test('ACTIVATE_PREFIX is "activate_"', () => {
     assert.equal(ACTIVATE_PREFIX, 'activate_');
   });

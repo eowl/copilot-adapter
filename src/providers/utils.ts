@@ -1,12 +1,70 @@
 import { Settings } from '../settings';
-import type { ApiTraits, Model, Provider } from './types';
+import type { ApiTraits, ModelItem, ModelProvider, ModelEndpoint } from './types';
 
-export function resolveTrait<K extends keyof ApiTraits>(model: Model, key: K): ApiTraits[K] {
-  return model[key] ?? model.provider[key];
+export function resolveTrait<K extends keyof ApiTraits>(
+  modelItem: ModelItem,
+  key: K,
+): ApiTraits[K] {
+  return (
+    (modelItem as ApiTraits)[key] ??
+    (modelItem.endpoint as ApiTraits)?.[key] ??
+    (modelItem.provider as ApiTraits)[key]
+  );
 }
 
-export function getEndpoint(provider: Provider): string {
-  return Settings.providerEndpoint(provider.id) ?? provider.endpoint;
+export function getEndpoint(modelProvider: ModelProvider, apiEndpoint?: string): string {
+  const globalOverride = Settings.providerEndpoint(modelProvider.id);
+  if (globalOverride) return globalOverride;
+
+  if (apiEndpoint) {
+    // Text-input mode (Qwen): user typed a full URL then use it directly
+    if (apiEndpoint.includes('://')) return apiEndpoint;
+
+    // Dropdown mode: match by endpoint key
+    if (modelProvider.endpoints) {
+      const ep = modelProvider.endpoints.find((s) => s.key === apiEndpoint);
+      if (ep) return ep.url!;
+    }
+  }
+
+  return modelProvider.endpoints?.[0]?.url ?? modelProvider.url;
+}
+
+export function resolveEndpoint(
+  modelProvider: ModelProvider,
+  apiEndpoint: string,
+): ModelEndpoint | undefined {
+  if (!modelProvider.endpoints) return undefined;
+
+  const exact = modelProvider.endpoints.find((s) => s.key === apiEndpoint);
+  if (exact) return exact;
+
+  return modelProvider.endpoints.find((s) => s.matchStr && apiEndpoint.includes(s.matchStr));
+}
+
+export function composeModelProvider(
+  modelProvider: ModelProvider,
+  modelEndpoints: readonly ModelEndpoint[],
+): void {
+  modelProvider.endpoints = modelEndpoints as ModelEndpoint[];
+  for (const me of modelProvider.endpoints) {
+    me.provider = modelProvider;
+    for (const mi of me.models ?? []) {
+      mi.provider = modelProvider;
+    }
+  }
+}
+
+export function composeModelEndpoint(
+  modelEndpoint: ModelEndpoint,
+  modelItems: readonly ModelItem[],
+): ModelEndpoint {
+  modelEndpoint.models = modelItems as ModelItem[];
+  for (const mi of modelItems) {
+    mi.endpoint = modelEndpoint;
+  }
+
+  return modelEndpoint;
 }
 
 export function imagePart(

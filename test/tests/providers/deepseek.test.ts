@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { suite, test } from 'mocha';
 import { DEEPSEEK, DS_MODELS } from '../../../src/providers/deepseek';
 
-suite('providers/deepseek — model.requestExtras()', () => {
+suite('providers/deepseek model.requestExtras()', () => {
   const requestExtras = DS_MODELS[0].requestExtras!;
 
   test('effort "none": thinking disabled', () => {

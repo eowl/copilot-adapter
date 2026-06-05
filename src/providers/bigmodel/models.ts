@@ -1,7 +1,7 @@
-import { t } from '../nls';
-import { DEFAULT_ENDPOINTS } from './endpoints';
-import type { Model, NonReasoningAbility, Provider, ReasoningAbility } from './types';
-import { imagePart } from './utils';
+import { t } from '../../nls';
+import type { ModelItem, NonReasoningAbility, ReasoningAbility } from '../types';
+import { imagePart } from '../utils';
+import { BIGMODEL } from './provider';
 
 function bmRequestExtras(
   modelConfig: Record<string, unknown> | undefined,
@@ -28,22 +28,6 @@ function bmConfigSchema(): Record<string, unknown> {
     },
   } as const;
 }
-
-export const BIGMODEL: Provider = {
-  id: 'bigmodel',
-  label: 'BigModel',
-  detailKey: 'provider.bigmodel.detail',
-  endpoint: DEFAULT_ENDPOINTS.bigmodel,
-  tokenRatio: 4.0,
-  thinkingField: 'reasoning_content',
-  apiKeyHint: '...',
-  links: {
-    apiHost: 'open.bigmodel.cn',
-    apiKeys: 'https://open.bigmodel.cn/usercenter/apikeys',
-    usage: 'https://open.bigmodel.cn/usercenter/financial',
-    status: 'https://open.bigmodel.cn',
-  },
-};
 
 const BM_REASONING_ABILITY: ReasoningAbility = {
   maxTools: 128,
@@ -99,7 +83,7 @@ const BM_VISION_PLAIN_BASE = {
   formatImagePart: imagePart(),
 };
 
-export const BM_MODELS: readonly Model[] = [
+export const BM_MODELS: readonly ModelItem[] = [
   {
     ...BM_THINK_BASE,
     id: 'glm-5.1',

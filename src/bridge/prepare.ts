@@ -4,16 +4,16 @@ import type { VisionModelPicker } from '../vision/model';
 import { translateMessages, translateTools } from './translate';
 import { routeToolFlow, type GateAction } from './utils/router';
 import { resolveModelConfig } from './information';
-import type { Model } from '../providers/types';
+import type { ModelItem } from '../providers/types';
 import type { ReqOptions } from './information';
 import type { ApiReq } from '../client/types';
 import { Settings } from '../settings';
 
 export interface ReadyReq {
-  endpoint: string;
+  url: string;
   apiKey: string;
   body: ApiReq;
-  model: Model;
+  model: ModelItem;
   gate: GateAction;
   visionText: string;
 }
@@ -21,11 +21,11 @@ export interface ReadyReq {
 export interface PrepContext {
   messages: readonly vscode.LanguageModelChatRequestMessage[];
   options: ReqOptions;
-  model: Model;
+  model: ModelItem;
   apiKey: string;
   token: vscode.CancellationToken;
   picker: VisionModelPicker;
-  endpoint: string;
+  url: string;
 }
 
 /**
@@ -34,7 +34,7 @@ export interface PrepContext {
  */
 export async function assembleChatReq(ctx: PrepContext): Promise<ReadyReq> {
   const { model, options, token } = ctx;
-  const provider = model.provider;
+  const modelProvider = model.provider;
   const modelConfig = resolveModelConfig(options);
 
   let processedMessages = ctx.messages;
@@ -45,13 +45,13 @@ export async function assembleChatReq(ctx: PrepContext): Promise<ReadyReq> {
     visionText = visionResult.newVisionText;
   }
 
-  const gate = routeToolFlow(options.tools, processedMessages, model, provider);
+  const gate = routeToolFlow(options.tools, processedMessages, model, modelProvider);
 
   let msgs: ReturnType<typeof translateMessages>;
   let tools: ReturnType<typeof translateTools>;
 
   const translateOpts = {
-    thinkingField: provider.thinkingField,
+    thinkingField: modelProvider.thinkingField,
     formatImagePart: model.formatImagePart,
   };
 
@@ -70,7 +70,7 @@ export async function assembleChatReq(ctx: PrepContext): Promise<ReadyReq> {
 
   const maxOut = Settings.tokenLimit() ?? model.maxOutputTokens;
 
-  const streamUsage = provider.supportsStreamUsage !== false;
+  const streamUsage = modelProvider.supportsStreamUsage !== false;
 
   const body: ApiReq = {
     model: model.apiId,
@@ -83,7 +83,7 @@ export async function assembleChatReq(ctx: PrepContext): Promise<ReadyReq> {
   };
 
   return {
-    endpoint: ctx.endpoint,
+    url: ctx.url,
     apiKey: ctx.apiKey,
     body,
     model,

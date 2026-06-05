@@ -19,7 +19,7 @@ function stubDebugMode(level: DebugLevel | undefined): () => void {
   return stub(vscode.workspace, 'getConfiguration', () => mockConfig);
 }
 
-suite('Settings — debug level', () => {
+suite('Settings debug level', () => {
   let restore: () => void;
 
   afterEach(() => restore?.());

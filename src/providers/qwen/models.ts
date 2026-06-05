@@ -1,6 +1,6 @@
-import { t } from '../nls';
-import { DEFAULT_ENDPOINTS } from './endpoints';
-import type { Model, Provider, ReasoningAbility } from './types';
+import { t } from '../../nls';
+import type { ModelItem, ReasoningAbility } from '../types';
+import { QWEN } from './provider';
 
 function qwenRequestExtras(
   modelConfig: Record<string, unknown> | undefined,
@@ -28,22 +28,6 @@ function qwenConfigSchema(): Record<string, unknown> {
   } as const;
 }
 
-export const QWEN: Provider = {
-  id: 'qwen',
-  label: 'Qwen',
-  detailKey: 'provider.qwen.detail',
-  endpoint: DEFAULT_ENDPOINTS.qwen,
-  tokenRatio: 4.0,
-  thinkingField: 'reasoning_content',
-  apiKeyHint: 'sk-...',
-  links: {
-    apiHost: 'dashscope.aliyuncs.com',
-    apiKeys: 'https://bailian.console.aliyun.com/?apiKey=1',
-    usage: 'https://bailian.console.aliyun.com/#/expense',
-    status: 'https://status.aliyun.com',
-  },
-};
-
 const QWEN_ABILITY: ReasoningAbility = {
   maxTools: 128,
   acceptsImages: false,
@@ -59,7 +43,7 @@ const QWEN_BASE = {
   configSchema: qwenConfigSchema,
 };
 
-export const QWEN_MODELS: readonly Model[] = [
+export const QWEN_BASE_MODELS: readonly ModelItem[] = [
   {
     ...QWEN_BASE,
     id: 'qwen3.7-max',
@@ -160,6 +144,9 @@ export const QWEN_MODELS: readonly Model[] = [
     maxOutputTokens: 65_536,
     detailKey: 'model.qwen3-coder-flash.detail',
   },
+];
+
+export const QWEN_US_MODELS: readonly ModelItem[] = [
   {
     ...QWEN_BASE,
     id: 'qwen-plus-us',

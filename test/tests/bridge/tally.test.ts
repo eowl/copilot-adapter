@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
 import { estimateTokens, refineRatio } from '../../../src/bridge/tally';
 
 suite('bridge/tally', () => {
-  suite('estimateTokens() — string input', () => {
+  suite('estimateTokens() string input', () => {
     test('empty string returns 0', () => {
       assert.equal(estimateTokens('', 4), 0);
     });
@@ -23,7 +23,7 @@ suite('bridge/tally', () => {
     });
   });
 
-  suite('estimateTokens() — message input', () => {
+  suite('estimateTokens() message input', () => {
     test('sums chars from TextParts in user message', () => {
       const msg = vscode.LanguageModelChatMessage.User([
         new vscode.LanguageModelTextPart('hello'), // 5
@@ -49,7 +49,6 @@ suite('bridge/tally', () => {
           new vscode.LanguageModelTextPart('done!'), // 5
         ]),
       ]);
-      // callId='call-1' (6) + 'done!' (5) = 11 chars / 5 = 2.2 → ceil = 3
       assert.equal(estimateTokens(msg, 5), 3);
     });
 

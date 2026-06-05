@@ -61,9 +61,20 @@
         "configuration": {
           "type": "object",
           "required": [
+            "apiEndpoint",
             "apiKey"
           ],
           "properties": {
+            "apiEndpoint": {
+              "type": "string",
+              "title": "%copilot-adapter.provider.minimax.apiEndpoint.title%",
+              "enum": ["minimaxi.com", "minimax.io"],
+              "enumDescriptions": [
+                "%copilot-adapter.provider.minimax.apiEndpoint.option.minimaxi.com%",
+                "%copilot-adapter.provider.minimax.apiEndpoint.option.minimax.io%"
+              ],
+              "description": "%copilot-adapter.provider.minimax.apiEndpoint.description%"
+            },
             "apiKey": {
               "type": "string",
               "title": "%copilot-adapter.provider.minimax.apiKey.title%",
@@ -79,9 +90,15 @@
         "configuration": {
           "type": "object",
           "required": [
+            "apiEndpoint",
             "apiKey"
           ],
           "properties": {
+            "apiEndpoint": {
+              "type": "string",
+              "title": "%copilot-adapter.provider.qwen.apiEndpoint.title%",
+              "description": "%copilot-adapter.provider.qwen.apiEndpoint.description%"
+            },
             "apiKey": {
               "type": "string",
               "title": "%copilot-adapter.provider.qwen.apiKey.title%",
@@ -97,9 +114,22 @@
         "configuration": {
           "type": "object",
           "required": [
+            "apiEndpoint",
             "apiKey"
           ],
           "properties": {
+            "apiEndpoint": {
+              "type": "string",
+              "title": "%copilot-adapter.provider.bigmodel.apiEndpoint.title%",
+              "enum": ["bigmodel", "bigmodel-coding", "z.ai", "z.ai-coding"],
+              "enumDescriptions": [
+                "%copilot-adapter.provider.bigmodel.apiEndpoint.option.bigmodel%",
+                "%copilot-adapter.provider.bigmodel.apiEndpoint.option.bigmodel-coding%",
+                "%copilot-adapter.provider.bigmodel.apiEndpoint.option.z.ai%",
+                "%copilot-adapter.provider.bigmodel.apiEndpoint.option.z.ai-coding%"
+              ],
+              "description": "%copilot-adapter.provider.bigmodel.apiEndpoint.description%"
+            },
             "apiKey": {
               "type": "string",
               "title": "%copilot-adapter.provider.bigmodel.apiKey.title%",
@@ -115,9 +145,20 @@
         "configuration": {
           "type": "object",
           "required": [
+            "apiEndpoint",
             "apiKey"
           ],
           "properties": {
+            "apiEndpoint": {
+              "type": "string",
+              "title": "%copilot-adapter.provider.moonshot.apiEndpoint.title%",
+              "enum": ["moonshot.cn", "moonshot.ai"],
+              "enumDescriptions": [
+                "%copilot-adapter.provider.moonshot.apiEndpoint.option.moonshot.cn%",
+                "%copilot-adapter.provider.moonshot.apiEndpoint.option.moonshot.ai%"
+              ],
+              "description": "%copilot-adapter.provider.moonshot.apiEndpoint.description%"
+            },
             "apiKey": {
               "type": "string",
               "title": "%copilot-adapter.provider.moonshot.apiKey.title%",
@@ -205,36 +246,36 @@
           "properties": {
             "deepseek": {
               "type": "string",
-              "default": "https://api.deepseek.com",
+              "default": "",
               "description": "%copilot-adapter.config.providerEndpoints.deepseek.description%"
             },
             "minimax": {
               "type": "string",
-              "default": "https://api.minimaxi.com/v1",
+              "default": "",
               "description": "%copilot-adapter.config.providerEndpoints.minimax.description%"
             },
             "qwen": {
               "type": "string",
-              "default": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+              "default": "",
               "description": "%copilot-adapter.config.providerEndpoints.qwen.description%"
             },
             "bigmodel": {
               "type": "string",
-              "default": "https://open.bigmodel.cn/api/paas/v4",
+              "default": "",
               "description": "%copilot-adapter.config.providerEndpoints.bigmodel.description%"
             },
             "moonshot": {
               "type": "string",
-              "default": "https://api.moonshot.cn/v1",
+              "default": "",
               "description": "%copilot-adapter.config.providerEndpoints.moonshot.description%"
             }
           },
           "default": {
-            "deepseek": "https://api.deepseek.com",
-            "minimax": "https://api.minimaxi.com/v1",
-            "qwen": "https://dashscope.aliyuncs.com/compatible-mode/v1",
-            "bigmodel": "https://open.bigmodel.cn/api/paas/v4",
-            "moonshot": "https://api.moonshot.cn/v1"
+            "deepseek": "",
+            "minimax": "",
+            "qwen": "",
+            "bigmodel": "",
+            "moonshot": ""
           }
         },
         "copilot-adapter.maxTokens": {

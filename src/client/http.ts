@@ -4,22 +4,8 @@ import { buildHttpError, toApiError, type ProviderLinks } from './error';
 import { channel } from '../logger';
 import type { ContentParser } from '../providers/types';
 
-/**
- * Streams a chat completion from an OpenAI-compatible endpoint.
- *
- * Yields typed StreamEvent values — content, thinking, tool-call, usage —
- * via async generator rather than callbacks.
- *
- * @param endpoint      Base URL, e.g. "https://api.deepseek.com" or "https://api.minimax.io/v1"
- * @param apiKey        Bearer token for Authorization header
- * @param body          Request payload (already constructed by caller)
- * @param thinkingField  Provider-specific delta field for reasoning text (e.g. "reasoning_content")
- * @param contentParser  Optional per-request parser for providers that embed reasoning in content
- * @param signal         AbortSignal for cancellation
- * @param links          Optional provider links for richer error messages
- */
 export async function* streamHttp(
-  endpoint: string,
+  apiUrl: string,
   apiKey: string,
   body: ApiReq,
   thinkingField: string | undefined,
@@ -27,7 +13,7 @@ export async function* streamHttp(
   signal: AbortSignal,
   links?: ProviderLinks,
 ): AsyncGenerator<StreamEvent> {
-  const url = endpoint.endsWith('/chat/completions') ? endpoint : `${endpoint}/chat/completions`;
+  const url = apiUrl.endsWith('/chat/completions') ? apiUrl : `${apiUrl}/chat/completions`;
 
   const reqBody = pack({ ...body, stream: true });
   channel.debug(`Request body: ${reqBody}`);
@@ -44,7 +30,7 @@ export async function* streamHttp(
       signal,
     });
   } catch (err) {
-    throw toApiError(err, endpoint, links);
+    throw toApiError(err, apiUrl, links);
   }
 
   if (!response.ok) {
@@ -52,7 +38,7 @@ export async function* streamHttp(
   }
 
   if (!response.body) {
-    throw toApiError(new Error('No response body'), endpoint, links);
+    throw toApiError(new Error('No response body'), apiUrl, links);
   }
 
   const reader = response.body.getReader();

@@ -2,12 +2,11 @@ import assert from 'node:assert/strict';
 import { suite, test } from 'mocha';
 import * as vscode from 'vscode';
 import { routeToolFlow } from '../../../../src/bridge/utils/router';
-import type { Model, Provider } from '../../../../src/providers/types';
+import type { ModelItem, ModelProvider } from '../../../../src/providers/types';
 
-// Minimal stub — routeToolFlow does not use _provider for the stabilize=false path
-const stubProvider = {} as unknown as Provider;
+const stubProvider = {} as unknown as ModelProvider;
 
-function makeModel(maxTools?: number): Model {
+function makeModel(maxTools?: number): ModelItem {
   return {
     id: 'test-model',
     label: 'Test Model',
@@ -26,7 +25,7 @@ function makeModel(maxTools?: number): Model {
   };
 }
 
-suite('bridge/utils/router — routeToolFlow', () => {
+suite('bridge/utils/router routeToolFlow', () => {
   test('always returns kind "proceed" (stabilize is false)', () => {
     const result = routeToolFlow([], [], makeModel(), stubProvider);
     assert.equal(result.kind, 'proceed');

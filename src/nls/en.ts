@@ -71,6 +71,9 @@ export const en: Translation = {
     'API keys are managed by VS Code. Open the Language Models panel and use the gear menu next to a provider group to remove its key.',
   'auth.seedFailed':
     'Could not save the {0} API key automatically. You can add it manually via the Language Models panel.',
+  'auth.alreadyConfigured':
+    '{0} is already configured. To update your API key or endpoint, use the gear menu in the Language Models panel.',
+  'auth.chooseEndpoint': 'Select {0} API Endpoint',
   'action.openManageUI': 'Open Language Models',
 
   'think.label': 'Thinking Mode',

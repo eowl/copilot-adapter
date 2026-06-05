@@ -6,7 +6,7 @@
  * in package.json — JSON cannot import from TS, so the manifest mirrors
  * these constants manually.
  */
-export const DEFAULT_ENDPOINTS = {
+export const DEFAULT_ENDPOINT_URLS = {
   deepseek: 'https://api.deepseek.com',
   minimax: 'https://api.minimaxi.com/v1',
   moonshot: 'https://api.moonshot.cn/v1',

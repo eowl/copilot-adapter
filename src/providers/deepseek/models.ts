@@ -1,6 +1,6 @@
-import { t } from '../nls';
-import { DEFAULT_ENDPOINTS } from './endpoints';
-import type { Model, Provider, ReasoningAbility } from './types';
+import { t } from '../../nls';
+import type { ModelItem, ReasoningAbility } from '../types';
+import { DEEPSEEK } from './provider';
 
 type ThinkingEffort = 'none' | 'high' | 'max';
 
@@ -41,29 +41,13 @@ function dsConfigSchema(): Record<string, unknown> {
   } as const;
 }
 
-export const DEEPSEEK: Provider = {
-  id: 'deepseek',
-  label: 'DeepSeek',
-  detailKey: 'provider.deepseek.detail',
-  endpoint: DEFAULT_ENDPOINTS.deepseek,
-  tokenRatio: 4.0,
-  thinkingField: 'reasoning_content',
-  apiKeyHint: 'sk-...',
-  links: {
-    apiHost: 'api.deepseek.com',
-    apiKeys: 'https://platform.deepseek.com/api_keys',
-    usage: 'https://platform.deepseek.com/usage',
-    status: 'https://status.deepseek.com',
-  },
-};
-
 const DS_ABILITY: ReasoningAbility = {
   maxTools: 128,
   acceptsImages: false,
   reasoning: true,
 };
 
-export const DS_MODELS: readonly Model[] = [
+export const DS_MODELS: readonly ModelItem[] = [
   {
     id: 'deepseek-v4-flash',
     label: 'DeepSeek V4 Flash',

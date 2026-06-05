@@ -2,13 +2,13 @@ import assert from 'node:assert/strict';
 import { suite, test } from 'mocha';
 import { MINIMAX, MM_MODELS } from '../../../src/providers/minimax';
 import { ThinkTagParser } from '../../../src/providers/parsers/tag';
-import type { Model } from '../../../src/providers/types';
+import type { ModelItem } from '../../../src/providers/types';
 
-function reasoningModel(): Model {
-  return MM_MODELS.find((m) => m.ability.reasoning)! as Model;
+function reasoningModel(): ModelItem {
+  return MM_MODELS.find((m) => m.ability.reasoning)! as ModelItem;
 }
 
-suite('providers/minimax — model.createContentParser()', () => {
+suite('providers/minimax model.createContentParser()', () => {
   test('returns a ThinkTagParser for reasoning models', () => {
     const parser = reasoningModel().createContentParser!();
     assert.ok(parser instanceof ThinkTagParser, `Expected ThinkTagParser, got: ${parser}`);
@@ -24,7 +24,7 @@ suite('providers/minimax — model.createContentParser()', () => {
   });
 });
 
-suite('providers/minimax — model list', () => {
+suite('providers/minimax model list', () => {
   test('has 8 models', () => {
     assert.equal(MM_MODELS.length, 8);
   });
