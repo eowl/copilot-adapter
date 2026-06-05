@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { suite, test, afterEach } from 'mocha';
 import * as vscode from 'vscode';
-import { composeProvider, composeEndpoint, getEndpoint, resolveEndpoint, resolveTrait } from '../../../src/providers/utils';
+import { composeModelProvider, composeModelEndpoint, getEndpoint, resolveEndpoint, resolveTrait } from '../../../src/providers/utils';
 import { DEFAULT_ENDPOINT_URLS } from '../../../src/providers/endpoints';
 import { MINIMAX } from '../../../src/providers/minimax';
 import { BIGMODEL } from '../../../src/providers/bigmodel';
@@ -9,7 +9,7 @@ import { MOONSHOT } from '../../../src/providers/moonshot';
 import { QWEN } from '../../../src/providers/qwen';
 import { DEEPSEEK } from '../../../src/providers/deepseek';
 import { stub } from '../../helpers/stubs';
-import type { Model, Provider } from '../../../src/providers/types';
+import type { ModelItem, ModelProvider } from '../../../src/providers/types';
 
 function stubProviderEndpoint(value: string | undefined, providerId: string): () => void {
   const mockConfig = {
@@ -36,7 +36,7 @@ function stubNoGlobalOverride(): () => void {
 
 interface EndpointCase {
   label: string;
-  provider: Provider;
+  provider: ModelProvider;
   apiEndpoint?: string;
   globalOverride?: string;
   expected: string;
@@ -182,7 +182,7 @@ suite('getEndpoint priority resolution', () => {
 });
 
 suite('resolveEndpoint', () => {
-  test('returns Endpoint by exact key match (BigModel)', () => {
+  test('returns ModelEndpoint by exact key match (BigModel)', () => {
     const ep = resolveEndpoint(BIGMODEL, 'z.ai-coding');
     assert.equal(ep?.key, 'z.ai-coding');
     assert.equal(ep?.url, 'https://api.z.ai/api/coding/paas/v4');
@@ -214,16 +214,16 @@ suite('resolveEndpoint', () => {
   });
 
   test('returns undefined when provider has no endpoints', () => {
-    const fake = { id: 'x', endpoints: undefined } as unknown as Provider;
+    const fake = { id: 'x', endpoints: undefined } as unknown as ModelProvider;
     assert.equal(resolveEndpoint(fake, 'whatever'), undefined);
   });
 });
 
-suite('composeProvider / composeEndpoint', () => {
-  test('composeEndpoint returns Endpoint with model back-refs', () => {
-    const m1 = { id: 'm1' } as unknown as Model;
-    const m2 = { id: 'm2' } as unknown as Model;
-    const ep = composeEndpoint(
+suite('composeModelProvider / composeModelEndpoint', () => {
+  test('composeModelEndpoint returns ModelEndpoint with model back-refs', () => {
+    const m1 = { id: 'm1' } as unknown as ModelItem;
+    const m2 = { id: 'm2' } as unknown as ModelItem;
+    const ep = composeModelEndpoint(
       { key: 'a', label: 'A', url: 'https://a.example.com' },
       [m1, m2],
     );
@@ -232,15 +232,15 @@ suite('composeProvider / composeEndpoint', () => {
     assert.equal(m2.endpoint?.key, 'a');
   });
 
-  test('composeProvider wires endpoints with provider back-refs', () => {
-    const provider = { id: 'fake' } as unknown as Provider;
-    const m = { id: 'm1' } as unknown as Model;
-    const ep = composeEndpoint({ key: 'a', label: 'A', url: 'https://a.example.com' }, [m]);
+  test('composeModelProvider wires endpoints with provider back-refs', () => {
+    const modelProvider = { id: 'fake' } as unknown as ModelProvider;
+    const m = { id: 'm1' } as unknown as ModelItem;
+    const ep = composeModelEndpoint({ key: 'a', label: 'A', url: 'https://a.example.com' }, [m]);
 
-    composeProvider(provider, [ep]);
+    composeModelProvider(modelProvider, [ep]);
 
-    assert.equal(provider.endpoints?.length, 1);
-    assert.equal(provider.endpoints?.[0].provider, provider);
+    assert.equal(modelProvider.endpoints?.length, 1);
+    assert.equal(modelProvider.endpoints?.[0].provider, modelProvider);
   });
 });
 
@@ -269,64 +269,64 @@ suite('Endpoint.models visibility', () => {
 
 suite('resolveTrait model > endpoint > provider chain', () => {
   test('returns model value when defined on model', () => {
-    const provider = { tokenRatio: 1.0 } as unknown as Provider;
-    const endpoint = { tokenRatio: 2.0 } as unknown as Model['endpoint'];
-    const model = { tokenRatio: 3.0, provider, endpoint } as unknown as Model;
-    assert.equal(resolveTrait(model, 'tokenRatio'), 3.0);
+    const modelProvider = { tokenRatio: 1.0 } as unknown as ModelProvider;
+    const modelEndpoint = { tokenRatio: 2.0 } as unknown as ModelItem['endpoint'];
+    const modelItem = { tokenRatio: 3.0, provider: modelProvider, endpoint: modelEndpoint } as unknown as ModelItem;
+    assert.equal(resolveTrait(modelItem, 'tokenRatio'), 3.0);
   });
 
   test('falls back to endpoint when model lacks the trait', () => {
-    const provider = { tokenRatio: 1.0 } as unknown as Provider;
-    const endpoint = { tokenRatio: 2.0 } as unknown as Model['endpoint'];
-    const model = { provider, endpoint } as unknown as Model;
-    assert.equal(resolveTrait(model, 'tokenRatio'), 2.0);
+    const modelProvider = { tokenRatio: 1.0 } as unknown as ModelProvider;
+    const modelEndpoint = { tokenRatio: 2.0 } as unknown as ModelItem['endpoint'];
+    const modelItem = { provider: modelProvider, endpoint: modelEndpoint } as unknown as ModelItem;
+    assert.equal(resolveTrait(modelItem, 'tokenRatio'), 2.0);
   });
 
   test('falls back to provider when neither model nor endpoint defines the trait', () => {
-    const provider = { tokenRatio: 1.0 } as unknown as Provider;
-    const endpoint = {} as unknown as Model['endpoint'];
-    const model = { provider, endpoint } as unknown as Model;
-    assert.equal(resolveTrait(model, 'tokenRatio'), 1.0);
+    const modelProvider = { tokenRatio: 1.0 } as unknown as ModelProvider;
+    const modelEndpoint = {} as unknown as ModelItem['endpoint'];
+    const modelItem = { provider: modelProvider, endpoint: modelEndpoint } as unknown as ModelItem;
+    assert.equal(resolveTrait(modelItem, 'tokenRatio'), 1.0);
   });
 
   test('returns undefined when no level defines the trait', () => {
-    const provider = {} as unknown as Provider;
-    const endpoint = {} as unknown as Model['endpoint'];
-    const model = { provider, endpoint } as unknown as Model;
-    assert.equal(resolveTrait(model, 'tokenRatio'), undefined);
+    const modelProvider = {} as unknown as ModelProvider;
+    const modelEndpoint = {} as unknown as ModelItem['endpoint'];
+    const modelItem = { provider: modelProvider, endpoint: modelEndpoint } as unknown as ModelItem;
+    assert.equal(resolveTrait(modelItem, 'tokenRatio'), undefined);
   });
 });
 
-suite('Provider/Endpoint composition invariants', () => {
+suite('ModelProvider/ModelEndpoint composition invariants', () => {
   test('every model has an endpoint back-reference', () => {
-    for (const p of [MINIMAX, MOONSHOT, BIGMODEL, QWEN, DEEPSEEK]) {
-      for (const ep of p.endpoints ?? []) {
-        for (const m of ep.models!) {
-          assert.ok(m.endpoint, `${m.id} must have an endpoint back-reference`);
+    for (const mp of [MINIMAX, MOONSHOT, BIGMODEL, QWEN, DEEPSEEK]) {
+      for (const me of mp.endpoints ?? []) {
+        for (const mi of me.models!) {
+          assert.ok(mi.endpoint, `${mi.id} must have an endpoint back-reference`);
         }
       }
     }
   });
 
   test('MiniMax endpoints share identical models', () => {
-    const ids0 = MINIMAX.endpoints?.[0].models!.map((m: Model) => m.id);
-    const ids1 = MINIMAX.endpoints?.[1].models!.map((m: Model) => m.id);
+    const ids0 = MINIMAX.endpoints?.[0].models!.map((mi: ModelItem) => mi.id);
+    const ids1 = MINIMAX.endpoints?.[1].models!.map((mi: ModelItem) => mi.id);
     assert.deepEqual(ids0, ids1);
   });
 
   test('every endpoint has provider back-reference', () => {
-    for (const p of [MINIMAX, MOONSHOT, BIGMODEL, QWEN, DEEPSEEK]) {
-      for (const ep of p.endpoints ?? []) {
-        assert.equal(ep.provider, p, `endpoint ${ep.key}.provider must point at owner`);
+    for (const mp of [MINIMAX, MOONSHOT, BIGMODEL, QWEN, DEEPSEEK]) {
+      for (const me of mp.endpoints ?? []) {
+        assert.equal(me.provider, mp, `endpoint ${me.key}.provider must point at owner`);
       }
     }
   });
 
-  test('every model has provider set by composeProvider', () => {
-    for (const p of [MINIMAX, MOONSHOT, BIGMODEL, QWEN, DEEPSEEK]) {
-      for (const ep of p.endpoints ?? []) {
-        for (const m of ep.models!) {
-          assert.equal(m.provider, p, `${m.id}.provider must equal its owning provider`);
+  test('every model has provider set by composeModelProvider', () => {
+    for (const mp of [MINIMAX, MOONSHOT, BIGMODEL, QWEN, DEEPSEEK]) {
+      for (const me of mp.endpoints ?? []) {
+        for (const mi of me.models!) {
+          assert.equal(mi.provider, mp, `${mi.id}.provider must equal its owning provider`);
         }
       }
     }

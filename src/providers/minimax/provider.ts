@@ -1,7 +1,7 @@
 import { DEFAULT_ENDPOINT_URLS } from '../endpoints';
-import type { Provider } from '../types';
+import type { ModelProvider } from '../types';
 
-export const MINIMAX: Provider = {
+export const MINIMAX: ModelProvider = {
   id: 'minimax',
   label: 'MiniMax',
   detailKey: 'provider.minimax.detail',

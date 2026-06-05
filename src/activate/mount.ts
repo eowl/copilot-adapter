@@ -6,9 +6,9 @@ export async function mountProviders(context: vscode.ExtensionContext): Promise<
   const adapters: Adapter[] = [];
   const notifyAll = () => adapters.forEach((a) => a.notifyChange());
 
-  for (const provider of ALL_PROVIDERS) {
-    const adapter = new Adapter(context, provider.id, notifyAll);
-    const vendor = `copilot-adapter-${provider.id}`;
+  for (const modelProvider of ALL_PROVIDERS) {
+    const adapter = new Adapter(context, modelProvider.id, notifyAll);
+    const vendor = `copilot-adapter-${modelProvider.id}`;
     const registration = vscode.lm.registerLanguageModelChatProvider(vendor, adapter);
     context.subscriptions.push(registration);
     adapters.push(adapter);

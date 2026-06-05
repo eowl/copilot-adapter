@@ -1,5 +1,5 @@
 import { t } from '../../nls';
-import type { Model, ReasoningAbility } from '../types';
+import type { ModelItem, ReasoningAbility } from '../types';
 import { imagePart } from '../utils';
 import { MOONSHOT } from './provider';
 
@@ -75,7 +75,7 @@ const MS_BASE = {
   formatImagePart: imagePart(),
 };
 
-export const MS_MODELS: readonly Model[] = [
+export const MS_MODELS: readonly ModelItem[] = [
   {
     ...MS_BASE,
     id: 'kimi-k2.6',

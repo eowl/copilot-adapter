@@ -1,7 +1,7 @@
-import type { Endpoint } from '../types';
-import { composeEndpoint } from '../utils';
+import type { ModelEndpoint } from '../types';
+import { composeModelEndpoint } from '../utils';
 import { DS_MODELS } from './models';
 
-export const DEEPSEEK_ENDPOINTS: readonly Endpoint[] = [
-  composeEndpoint({ key: 'deepseek', label: 'DeepSeek', url: 'https://api.deepseek.com' }, DS_MODELS),
+export const DEEPSEEK_ENDPOINTS: readonly ModelEndpoint[] = [
+  composeModelEndpoint({ key: 'deepseek', label: 'DeepSeek', url: 'https://api.deepseek.com' }, DS_MODELS),
 ];

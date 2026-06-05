@@ -1,5 +1,5 @@
 import { t } from '../../nls';
-import type { Model, ReasoningAbility } from '../types';
+import type { ModelItem, ReasoningAbility } from '../types';
 import { QWEN } from './provider';
 
 function qwenRequestExtras(
@@ -43,7 +43,7 @@ const QWEN_BASE = {
   configSchema: qwenConfigSchema,
 };
 
-export const QWEN_BASE_MODELS: readonly Model[] = [
+export const QWEN_BASE_MODELS: readonly ModelItem[] = [
   { ...QWEN_BASE, id: 'qwen3.7-max', label: 'Qwen3.7 Max', apiId: 'qwen3.7-max', version: '3.7', maxInputTokens: 991_000, maxOutputTokens: 65_536, detailKey: 'model.qwen3.7-max.detail' },
   { ...QWEN_BASE, id: 'qwen3.7-plus', label: 'Qwen3.7 Plus', apiId: 'qwen3.7-plus', version: '3.7', maxInputTokens: 991_000, maxOutputTokens: 65_536, detailKey: 'model.qwen3.7-plus.detail' },
   { ...QWEN_BASE, id: 'qwen3.6-max', label: 'Qwen3.6 Max', apiId: 'qwen3.6-max', version: '3.6', maxInputTokens: 240_000, maxOutputTokens: 65_536, detailKey: 'model.qwen3.6-max.detail' },
@@ -56,7 +56,7 @@ export const QWEN_BASE_MODELS: readonly Model[] = [
   { ...QWEN_BASE, id: 'qwen3-coder-flash', label: 'Qwen3 Coder Flash', apiId: 'qwen3-coder-flash', version: '3', maxInputTokens: 991_000, maxOutputTokens: 65_536, detailKey: 'model.qwen3-coder-flash.detail' },
 ];
 
-export const QWEN_US_MODELS: readonly Model[] = [
+export const QWEN_US_MODELS: readonly ModelItem[] = [
   { ...QWEN_BASE, id: 'qwen-plus-us', label: 'Qwen Plus (US only)', apiId: 'qwen-plus-us', version: '3', maxInputTokens: 991_000, maxOutputTokens: 65_536, detailKey: 'model.qwen-plus-us.detail' },
   { ...QWEN_BASE, id: 'qwen-flash-us', label: 'Qwen Flash (US only)', apiId: 'qwen-flash-us', version: '3', maxInputTokens: 991_000, maxOutputTokens: 65_536, detailKey: 'model.qwen-flash-us.detail' },
 ];

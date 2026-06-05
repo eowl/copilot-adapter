@@ -3,19 +3,19 @@ import { MINIMAX, MINIMAX_ENDPOINTS } from './minimax';
 import { MOONSHOT, MOONSHOT_ENDPOINTS } from './moonshot';
 import { QWEN, QWEN_ENDPOINTS } from './qwen';
 import { BIGMODEL, BIGMODEL_ENDPOINTS } from './bigmodel';
-import { composeProvider } from './utils';
-import type { Model, Provider, Endpoint } from './types';
+import { composeModelProvider } from './utils';
+import type { ModelItem, ModelProvider, ModelEndpoint } from './types';
 
 export { DEEPSEEK, MINIMAX, MOONSHOT, QWEN, BIGMODEL };
-export type { Provider, Endpoint, Model };
+export type { ModelProvider, ModelEndpoint, ModelItem };
 
-composeProvider(DEEPSEEK, DEEPSEEK_ENDPOINTS);
-composeProvider(MINIMAX, MINIMAX_ENDPOINTS);
-composeProvider(MOONSHOT, MOONSHOT_ENDPOINTS);
-composeProvider(QWEN, QWEN_ENDPOINTS);
-composeProvider(BIGMODEL, BIGMODEL_ENDPOINTS);
+composeModelProvider(DEEPSEEK, DEEPSEEK_ENDPOINTS);
+composeModelProvider(MINIMAX, MINIMAX_ENDPOINTS);
+composeModelProvider(MOONSHOT, MOONSHOT_ENDPOINTS);
+composeModelProvider(QWEN, QWEN_ENDPOINTS);
+composeModelProvider(BIGMODEL, BIGMODEL_ENDPOINTS);
 
-export const ALL_PROVIDERS: readonly Provider[] = [
+export const ALL_PROVIDERS: readonly ModelProvider[] = [
   DEEPSEEK,
   MINIMAX,
   MOONSHOT,
@@ -23,15 +23,15 @@ export const ALL_PROVIDERS: readonly Provider[] = [
   BIGMODEL,
 ];
 
-export const ALL_MODELS: readonly Model[] = (() => {
+export const ALL_MODELS: readonly ModelItem[] = (() => {
   const seen = new Set<string>();
-  const result: Model[] = [];
-  for (const p of ALL_PROVIDERS) {
-    for (const ep of p.endpoints ?? []) {
-      for (const m of ep.models ?? []) {
-        if (!seen.has(m.id)) {
-          seen.add(m.id);
-          result.push(m);
+  const result: ModelItem[] = [];
+  for (const mp of ALL_PROVIDERS) {
+    for (const me of mp.endpoints ?? []) {
+      for (const mi of me.models ?? []) {
+        if (!seen.has(mi.id)) {
+          seen.add(mi.id);
+          result.push(mi);
         }
       }
     }
@@ -39,10 +39,10 @@ export const ALL_MODELS: readonly Model[] = (() => {
   return result;
 })();
 
-export const modelById = new Map<string, Model>(ALL_MODELS.map((m) => [m.id, m]));
+export const modelById = new Map<string, ModelItem>(ALL_MODELS.map((mi) => [mi.id, mi]));
 
-export const providerById = new Map<string, Provider>(ALL_PROVIDERS.map((p) => [p.id, p]));
+export const providerById = new Map<string, ModelProvider>(ALL_PROVIDERS.map((mp) => [mp.id, mp]));
 
-export const endpointById = new Map<string, Endpoint>(
-  ALL_PROVIDERS.flatMap((p) => p.endpoints ?? []).map((s) => [s.key, s]),
+export const endpointById = new Map<string, ModelEndpoint>(
+  ALL_PROVIDERS.flatMap((mp) => mp.endpoints ?? []).map((me) => [me.key, me]),
 );

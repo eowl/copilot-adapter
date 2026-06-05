@@ -1,7 +1,7 @@
 import { DEFAULT_ENDPOINT_URLS } from '../endpoints';
-import type { Provider } from '../types';
+import type { ModelProvider } from '../types';
 
-export const DEEPSEEK: Provider = {
+export const DEEPSEEK: ModelProvider = {
   id: 'deepseek',
   label: 'DeepSeek',
   detailKey: 'provider.deepseek.detail',

@@ -2,10 +2,10 @@ import assert from 'node:assert/strict';
 import { suite, test } from 'mocha';
 import { MINIMAX, MM_MODELS } from '../../../src/providers/minimax';
 import { ThinkTagParser } from '../../../src/providers/parsers/tag';
-import type { Model } from '../../../src/providers/types';
+import type { ModelItem } from '../../../src/providers/types';
 
-function reasoningModel(): Model {
-  return MM_MODELS.find((m) => m.ability.reasoning)! as Model;
+function reasoningModel(): ModelItem {
+  return MM_MODELS.find((m) => m.ability.reasoning)! as ModelItem;
 }
 
 suite('providers/minimax model.createContentParser()', () => {

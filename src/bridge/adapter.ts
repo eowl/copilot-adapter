@@ -131,18 +131,18 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     if (!model) {
       throw new Error(t('err.unknownModel', modelInfo.id));
     }
-    const { provider } = model;
+    const { provider: modelProvider } = model;
 
     const apiKey = this.groupApiKey;
     if (!apiKey) {
-      throw new Error(t('auth.noKey', provider.label));
+      throw new Error(t('auth.noKey', modelProvider.label));
     }
 
-    const apiUrl = getEndpoint(provider, this.groupApiEndpoint);
+    const apiUrl = getEndpoint(modelProvider, this.groupApiEndpoint);
     const session = Session.fromMessages(messages);
 
     channel.info(
-      `Sending: ${provider.label} / ${model.label} (session: ${session.id} [${session.source}])`,
+      `Sending: ${modelProvider.label} / ${model.label} (session: ${session.id} [${session.source}])`,
     );
     if (Settings.metaEnabled()) {
       channel.info(`Model: id=${model.id} | apiId=${model.apiId}`);
@@ -198,9 +198,9 @@ export class Adapter implements vscode.LanguageModelChatProvider {
   }
 
   async configureApiKey(providerId?: string): Promise<void> {
-    let provider = providerId ? ALL_PROVIDERS.find((p) => p.id === providerId) : undefined;
+    let modelProvider = providerId ? ALL_PROVIDERS.find((p) => p.id === providerId) : undefined;
 
-    if (!provider) {
+    if (!modelProvider) {
       const items = ALL_PROVIDERS.map((p) => ({
         label: p.label,
         description: p.id,
@@ -213,14 +213,14 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       });
 
       if (!picked) return;
-      provider = ALL_PROVIDERS.find((p) => p.id === picked.description);
+      modelProvider = ALL_PROVIDERS.find((p) => p.id === picked.description);
     }
-    if (!provider) return;
+    if (!modelProvider) return;
 
-    const hint = provider.apiKeyHint;
+    const hint = modelProvider.apiKeyHint;
     const title = hint
-      ? t('auth.keyInputHinted', provider.label, hint)
-      : t('auth.keyInput', provider.label);
+      ? t('auth.keyInputHinted', modelProvider.label, hint)
+      : t('auth.keyInput', modelProvider.label);
     const placeHolder = hint ?? t('auth.keyHint');
     const input = await vscode.window.showInputBox({
       title,
@@ -232,10 +232,10 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     const apiKey = input?.trim();
     if (!apiKey) return;
 
-    const ok = await seedManagedGroup(provider, apiKey);
+    const ok = await seedManagedGroup(modelProvider, apiKey);
     if (ok) {
-      channel.info(`${provider.label} API Key saved.`);
-      void vscode.window.showInformationMessage(t('auth.keyStored', provider.label));
+      channel.info(`${modelProvider.label} API Key saved.`);
+      void vscode.window.showInformationMessage(t('auth.keyStored', modelProvider.label));
       this.changeEmitter.fire();
       this.onKeyChange?.();
 
@@ -243,7 +243,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     }
 
     const open = t('action.openManageUI');
-    const choice = await vscode.window.showErrorMessage(t('auth.seedFailed', provider.label), open);
+    const choice = await vscode.window.showErrorMessage(t('auth.seedFailed', modelProvider.label), open);
 
     if (choice === open) {
       void vscode.commands.executeCommand('workbench.action.chat.manage');

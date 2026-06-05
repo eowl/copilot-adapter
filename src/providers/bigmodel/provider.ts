@@ -1,7 +1,7 @@
 import { DEFAULT_ENDPOINT_URLS } from '../endpoints';
-import type { Provider } from '../types';
+import type { ModelProvider } from '../types';
 
-export const BIGMODEL: Provider = {
+export const BIGMODEL: ModelProvider = {
   id: 'bigmodel',
   label: 'BigModel',
   detailKey: 'provider.bigmodel.detail',

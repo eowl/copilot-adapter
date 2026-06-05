@@ -1,12 +1,12 @@
 import { Settings } from '../settings';
-import type { ApiTraits, Model, Provider, Endpoint } from './types';
+import type { ApiTraits, ModelItem, ModelProvider, ModelEndpoint } from './types';
 
-export function resolveTrait<K extends keyof ApiTraits>(model: Model, key: K): ApiTraits[K] {
-  return (model as any)[key] ?? (model.endpoint as any)?.[key] ?? (model.provider as any)[key];
+export function resolveTrait<K extends keyof ApiTraits>(modelItem: ModelItem, key: K): ApiTraits[K] {
+  return (modelItem as ApiTraits)[key] ?? (modelItem.endpoint as ApiTraits)?.[key] ?? (modelItem.provider as ApiTraits)[key];
 }
 
-export function getEndpoint(provider: Provider, apiEndpoint?: string): string {
-  const globalOverride = Settings.providerEndpoint(provider.id);
+export function getEndpoint(modelProvider: ModelProvider, apiEndpoint?: string): string {
+  const globalOverride = Settings.providerEndpoint(modelProvider.id);
   if (globalOverride) return globalOverride;
 
   if (apiEndpoint) {
@@ -14,41 +14,41 @@ export function getEndpoint(provider: Provider, apiEndpoint?: string): string {
     if (apiEndpoint.includes('://')) return apiEndpoint;
 
     // Dropdown mode: match by endpoint key
-    if (provider.endpoints) {
-      const ep = provider.endpoints.find((s) => s.key === apiEndpoint);
+    if (modelProvider.endpoints) {
+      const ep = modelProvider.endpoints.find((s) => s.key === apiEndpoint);
       if (ep) return ep.url!;
     }
   }
 
-  return provider.endpoints?.[0]?.url ?? provider.url;
+  return modelProvider.endpoints?.[0]?.url ?? modelProvider.url;
 }
 
-export function resolveEndpoint(provider: Provider, apiEndpoint: string): Endpoint | undefined {
-  if (!provider.endpoints) return undefined;
+export function resolveEndpoint(modelProvider: ModelProvider, apiEndpoint: string): ModelEndpoint | undefined {
+  if (!modelProvider.endpoints) return undefined;
 
-  const exact = provider.endpoints.find((s) => s.key === apiEndpoint);
+  const exact = modelProvider.endpoints.find((s) => s.key === apiEndpoint);
   if (exact) return exact;
 
-  return provider.endpoints.find((s) => s.matchStr && apiEndpoint.includes(s.matchStr));
+  return modelProvider.endpoints.find((s) => s.matchStr && apiEndpoint.includes(s.matchStr));
 }
 
-export function composeProvider(provider: Provider, endpoints: readonly Endpoint[]): void {
-  provider.endpoints = endpoints as Endpoint[];
-  for (const ep of provider.endpoints) {
-    ep.provider = provider;
-    for (const m of ep.models ?? []) {
-      m.provider = provider;
+export function composeModelProvider(modelProvider: ModelProvider, modelEndpoints: readonly ModelEndpoint[]): void {
+  modelProvider.endpoints = modelEndpoints as ModelEndpoint[];
+  for (const me of modelProvider.endpoints) {
+    me.provider = modelProvider;
+    for (const mi of me.models ?? []) {
+      mi.provider = modelProvider;
     }
   }
 }
 
-export function composeEndpoint(endpoint: Endpoint, models: readonly Model[]): Endpoint {
-  endpoint.models = models as Model[];
-  for (const m of models) {
-    m.endpoint = endpoint;
+export function composeModelEndpoint(modelEndpoint: ModelEndpoint, modelItems: readonly ModelItem[]): ModelEndpoint {
+  modelEndpoint.models = modelItems as ModelItem[];
+  for (const mi of modelItems) {
+    mi.endpoint = modelEndpoint;
   }
 
-  return endpoint;
+  return modelEndpoint;
 }
 
 export function imagePart(

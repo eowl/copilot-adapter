@@ -1,7 +1,7 @@
 import { DEFAULT_ENDPOINT_URLS } from '../endpoints';
-import type { Provider } from '../types';
+import type { ModelProvider } from '../types';
 
-export const MOONSHOT: Provider = {
+export const MOONSHOT: ModelProvider = {
   id: 'moonshot',
   label: 'Moonshot',
   detailKey: 'provider.moonshot.detail',

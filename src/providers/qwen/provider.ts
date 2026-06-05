@@ -1,7 +1,7 @@
 import { DEFAULT_ENDPOINT_URLS } from '../endpoints';
-import type { Provider } from '../types';
+import type { ModelProvider } from '../types';
 
-export const QWEN: Provider = {
+export const QWEN: ModelProvider = {
   id: 'qwen',
   label: 'Qwen',
   detailKey: 'provider.qwen.detail',

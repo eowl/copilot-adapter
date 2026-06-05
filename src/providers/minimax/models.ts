@@ -1,5 +1,5 @@
 import { t } from '../../nls';
-import type { ContentParser, Model, ReasoningAbility } from '../types';
+import type { ContentParser, ModelItem, ReasoningAbility } from '../types';
 import { ThinkTagParser } from '../parsers/tag';
 import { imagePart } from '../utils';
 import { MINIMAX } from './provider';
@@ -57,7 +57,7 @@ const MM_M2 = {
   createContentParser: mmCreateContentParser,
 };
 
-export const MM_MODELS: readonly Model[] = [
+export const MM_MODELS: readonly ModelItem[] = [
   {
     ...MM_M2,
     id: 'minimax-m2',

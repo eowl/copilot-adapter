@@ -1,7 +1,7 @@
 import vscode from 'vscode';
 
 import type { Tool } from '../../client/types';
-import type { Provider, Model } from '../../providers/types';
+import type { ModelProvider, ModelItem } from '../../providers/types';
 import { buildToolList } from './build';
 import { needsWarmup, scanWarmupState, stripWarmupMessages, makeWarmupCallId } from './preflight';
 import { cleanDriftNotices } from './drift';
@@ -25,8 +25,8 @@ export type GateAction =
 export function routeToolFlow(
   vsTools: readonly vscode.LanguageModelChatTool[] | undefined,
   messages: readonly vscode.LanguageModelChatRequestMessage[],
-  model: Model,
-  _provider: Provider,
+  modelItem: ModelItem,
+  _modelProvider: ModelProvider,
 ): GateAction {
   const stabilize = false;
 
@@ -36,7 +36,7 @@ export function routeToolFlow(
     liveMessages = stripWarmupMessages(liveMessages);
   }
 
-  const tools = buildToolList(vsTools, model.ability.maxTools);
+  const tools = buildToolList(vsTools, modelItem.ability.maxTools);
 
   if (stabilize && vsTools && vsTools.length > 0) {
     const toolNames = vsTools.map((t) => t.name);

@@ -16,7 +16,7 @@ export async function forwardStream(
   segmentId: string,
 ): Promise<{ newReasoningText: string; promptTokens: number }> {
   const { url, apiKey, body, model } = ready;
-  const provider = model.provider;
+  const modelProvider = model.provider;
 
   let reasoningText = '';
   let promptTokens = 0;
@@ -47,7 +47,7 @@ export async function forwardStream(
           resolveTrait(ready.model, 'thinkingField'),
           ready.model.createContentParser?.(),
           effectiveSignal,
-          provider.links,
+          modelProvider.links,
         );
 
         for await (const event of gen) {

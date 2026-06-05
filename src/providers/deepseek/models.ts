@@ -1,5 +1,5 @@
 import { t } from '../../nls';
-import type { Model, ReasoningAbility } from '../types'
+import type { ModelItem, ReasoningAbility } from '../types'
 import { DEEPSEEK } from './provider';
 
 type ThinkingEffort = 'none' | 'high' | 'max';
@@ -47,7 +47,7 @@ const DS_ABILITY: ReasoningAbility = {
   reasoning: true,
 };
 
-export const DS_MODELS: readonly Model[] = [
+export const DS_MODELS: readonly ModelItem[] = [
   {
     id: 'deepseek-v4-flash',
     label: 'DeepSeek V4 Flash',

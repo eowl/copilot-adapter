@@ -1,6 +1,6 @@
 import vscode from 'vscode';
 import { t } from '../nls';
-import type { Model } from '../providers/types';
+import type { ModelItem } from '../providers/types';
 
 /** Extended chat model information returned to VS Code. */
 export interface ChatInfo extends vscode.LanguageModelChatInformation {
@@ -15,24 +15,24 @@ export interface ReqOptions extends vscode.ProvideLanguageModelChatResponseOptio
   configuration?: Record<string, unknown>;
 }
 
-export function buildChatInfo(model: Model, hasKey: boolean, hasVisionProxy = false): ChatInfo {
-  const provider = model.provider;
-  const schema = model.configSchema?.();
+export function buildChatInfo(modelItem: ModelItem, hasKey: boolean, hasVisionProxy = false): ChatInfo {
+  const modelProvider = modelItem.provider;
+  const schema = modelItem.configSchema?.();
   const notConfigured = !hasKey;
-  const detail = t(model.detailKey);
+  const detail = t(modelItem.detailKey);
 
   return {
-    id: model.id,
-    name: model.label,
-    family: model.family,
-    version: model.version,
-    maxInputTokens: model.maxInputTokens,
-    maxOutputTokens: model.maxOutputTokens,
+    id: modelItem.id,
+    name: modelItem.label,
+    family: modelItem.family,
+    version: modelItem.version,
+    maxInputTokens: modelItem.maxInputTokens,
+    maxOutputTokens: modelItem.maxOutputTokens,
     capabilities: {
-      imageInput: model.ability.acceptsImages || hasVisionProxy,
-      toolCalling: model.ability.maxTools ?? (model.ability.maxTools === undefined ? true : false),
+      imageInput: modelItem.ability.acceptsImages || hasVisionProxy,
+      toolCalling: modelItem.ability.maxTools ?? (modelItem.ability.maxTools === undefined ? true : false),
     },
-    tooltip: notConfigured ? t('auth.noKeyTooltip', provider.label) : detail,
+    tooltip: notConfigured ? t('auth.noKeyTooltip', modelProvider.label) : detail,
     detail: detail,
     statusIcon: notConfigured ? new vscode.ThemeIcon('warning') : undefined,
     configurationSchema: schema,

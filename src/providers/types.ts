@@ -32,7 +32,7 @@ export interface ApiTraits {
   url?: string;
 }
 
-export interface Provider extends ApiTraits {
+export interface ModelProvider extends ApiTraits {
   readonly id: string;
   readonly label: string;
   readonly detailKey: string;
@@ -41,19 +41,19 @@ export interface Provider extends ApiTraits {
   readonly links?: ProviderLinks;
   readonly apiKeyHint?: string;
 
-  endpoints?: Endpoint[];
+  endpoints?: ModelEndpoint[];
 }
 
-export interface Endpoint extends ApiTraits {
+export interface ModelEndpoint extends ApiTraits {
   readonly key: string;
   readonly label: string;
   readonly matchStr?: string;
 
-  provider?: Provider;
-  models?: readonly Model[];
+  provider?: ModelProvider;
+  models?: readonly ModelItem[];
 }
 
-export interface Model extends ApiTraits {
+export interface ModelItem extends ApiTraits {
   readonly id: string;
   readonly label: string;
   readonly apiId: string;
@@ -64,8 +64,8 @@ export interface Model extends ApiTraits {
   readonly ability: ModelAbility;
   readonly detailKey: string;
 
-  provider: Provider;
-  endpoint?: Endpoint;
+  provider: ModelProvider;
+  endpoint?: ModelEndpoint;
   maxTokensField?: string;
 
   requestExtras?(modelConfig: Record<string, unknown> | undefined): Record<string, unknown>;

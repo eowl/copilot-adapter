@@ -1,5 +1,5 @@
 import { t } from '../../nls';
-import type { Model, NonReasoningAbility, ReasoningAbility } from '../types';
+import type { ModelItem, NonReasoningAbility, ReasoningAbility } from '../types';
 import { imagePart } from '../utils';
 import { BIGMODEL } from './provider';
 
@@ -83,7 +83,7 @@ const BM_VISION_PLAIN_BASE = {
   formatImagePart: imagePart(),
 };
 
-export const BM_MODELS: readonly Model[] = [
+export const BM_MODELS: readonly ModelItem[] = [
   { ...BM_THINK_BASE, id: 'glm-5.1', label: 'GLM-5.1', apiId: 'glm-5.1', version: '5.1', maxInputTokens: 200_000, maxOutputTokens: 128_000, detailKey: 'model.glm-5.1.detail' },
   { ...BM_THINK_BASE, id: 'glm-5', label: 'GLM-5', apiId: 'glm-5', version: '5', maxInputTokens: 200_000, maxOutputTokens: 128_000, detailKey: 'model.glm-5.detail' },
   { ...BM_THINK_BASE, id: 'glm-5-turbo', label: 'GLM-5-Turbo', apiId: 'glm-5-turbo', version: '5', maxInputTokens: 200_000, maxOutputTokens: 128_000, detailKey: 'model.glm-5-turbo.detail' },
