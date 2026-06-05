@@ -1,3 +1,3 @@
 export { DEEPSEEK } from './provider';
 export { DS_MODELS } from './models';
-export { DEEPSEEK_SERVICE_DEFS } from './services';
+export { DEEPSEEK_ENDPOINTS } from './endpoints';

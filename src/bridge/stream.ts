@@ -15,7 +15,7 @@ export async function forwardStream(
   token: vscode.CancellationToken,
   segmentId: string,
 ): Promise<{ newReasoningText: string; promptTokens: number }> {
-  const { endpoint, apiKey, body, model } = ready;
+  const { url, apiKey, body, model } = ready;
   const provider = model.provider;
 
   let reasoningText = '';
@@ -41,7 +41,7 @@ export async function forwardStream(
 
       try {
         const gen = streamHttp(
-          endpoint,
+          url,
           apiKey,
           body,
           resolveTrait(ready.model, 'thinkingField'),

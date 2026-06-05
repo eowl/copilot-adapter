@@ -10,7 +10,7 @@ import type { ApiReq } from '../client/types';
 import { Settings } from '../settings';
 
 export interface ReadyReq {
-  endpoint: string;
+  url: string;
   apiKey: string;
   body: ApiReq;
   model: Model;
@@ -25,7 +25,7 @@ export interface PrepContext {
   apiKey: string;
   token: vscode.CancellationToken;
   picker: VisionModelPicker;
-  endpoint: string;
+  url: string;
 }
 
 /**
@@ -83,7 +83,7 @@ export async function assembleChatReq(ctx: PrepContext): Promise<ReadyReq> {
   };
 
   return {
-    endpoint: ctx.endpoint,
+    url: ctx.url,
     apiKey: ctx.apiKey,
     body,
     model,

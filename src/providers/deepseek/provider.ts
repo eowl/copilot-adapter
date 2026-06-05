@@ -1,11 +1,11 @@
-import { DEFAULT_ENDPOINTS } from '../endpoints';
+import { DEFAULT_ENDPOINT_URLS } from '../endpoints';
 import type { Provider } from '../types';
 
 export const DEEPSEEK: Provider = {
   id: 'deepseek',
   label: 'DeepSeek',
   detailKey: 'provider.deepseek.detail',
-  endpoint: DEFAULT_ENDPOINTS.deepseek,
+  url: DEFAULT_ENDPOINT_URLS.deepseek,
   tokenRatio: 4.0,
   thinkingField: 'reasoning_content',
   apiKeyHint: 'sk-...',

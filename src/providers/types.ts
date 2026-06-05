@@ -29,22 +29,22 @@ export type ModelAbility = ReasoningAbility | NonReasoningAbility;
 export interface ApiTraits {
   tokenRatio?: number;
   thinkingField?: string;
-  endpoint?: string;
+  url?: string;
 }
 
 export interface Provider extends ApiTraits {
   readonly id: string;
   readonly label: string;
   readonly detailKey: string;
-  readonly endpoint: string;
+  readonly url: string;
   readonly supportsStreamUsage?: boolean;
   readonly links?: ProviderLinks;
   readonly apiKeyHint?: string;
 
-  services?: Service[];
+  endpoints?: Endpoint[];
 }
 
-export interface Service extends ApiTraits {
+export interface Endpoint extends ApiTraits {
   readonly key: string;
   readonly label: string;
   readonly matchStr?: string;
@@ -65,7 +65,7 @@ export interface Model extends ApiTraits {
   readonly detailKey: string;
 
   provider: Provider;
-  service?: Service;
+  endpoint?: Endpoint;
   maxTokensField?: string;
 
   requestExtras?(modelConfig: Record<string, unknown> | undefined): Record<string, unknown>;

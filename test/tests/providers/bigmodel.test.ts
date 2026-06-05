@@ -6,7 +6,7 @@ suite('providers/bigmodel', () => {
   const thinkingModel = BM_MODELS.find((m) => m.id === 'glm-5.1')!;
   const plainModel = BM_MODELS.find((m) => m.id === 'glm-4.5-air')!;
 
-  suite('thinking-capable models — requestExtras()', () => {
+  suite('thinking-capable models requestExtras()', () => {
     const requestExtras = thinkingModel.requestExtras!;
 
     test('thinkingMode "disabled": thinking type disabled', () => {
@@ -48,8 +48,8 @@ suite('providers/bigmodel', () => {
       assert.equal(BIGMODEL.id, 'bigmodel');
     });
 
-    test('endpoint points to BigModel paas v4', () => {
-      assert.equal(BIGMODEL.endpoint, 'https://open.bigmodel.cn/api/paas/v4');
+    test('url points to BigModel paas v4', () => {
+      assert.equal(BIGMODEL.url, 'https://open.bigmodel.cn/api/paas/v4');
     });
 
     test('thinkingField is reasoning_content', () => {

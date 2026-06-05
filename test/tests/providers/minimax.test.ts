@@ -8,7 +8,7 @@ function reasoningModel(): Model {
   return MM_MODELS.find((m) => m.ability.reasoning)! as Model;
 }
 
-suite('providers/minimax — model.createContentParser()', () => {
+suite('providers/minimax model.createContentParser()', () => {
   test('returns a ThinkTagParser for reasoning models', () => {
     const parser = reasoningModel().createContentParser!();
     assert.ok(parser instanceof ThinkTagParser, `Expected ThinkTagParser, got: ${parser}`);
@@ -24,7 +24,7 @@ suite('providers/minimax — model.createContentParser()', () => {
   });
 });
 
-suite('providers/minimax — model list', () => {
+suite('providers/minimax model list', () => {
   test('has 8 models', () => {
     assert.equal(MM_MODELS.length, 8);
   });

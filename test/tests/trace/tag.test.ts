@@ -11,7 +11,7 @@ function makeTool(name: string): vscode.LanguageModelChatTool {
   return { name, description: name, inputSchema: {} as Record<string, unknown> };
 }
 
-suite('trace/tag — tagRequest()', () => {
+suite('trace/tag tagRequest()', () => {
   test('returns "unknown" when there are no messages', () => {
     assert.equal(tagRequest([], undefined), 'unknown');
   });

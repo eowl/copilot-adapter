@@ -6,7 +6,7 @@ import { ALL_MODELS, ALL_PROVIDERS, modelById } from '../providers';
 import {
   resolveTrait,
   getEndpoint,
-  resolveService,
+  resolveEndpoint,
 } from '../providers/utils';
 import { Settings } from '../settings';
 import { buildChatInfo, type ChatInfo, type ReqOptions } from './information';
@@ -110,10 +110,10 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     const hasKey = this.groupApiKey !== undefined;
 
     const modelProvider = providerModels[0]?.provider;
-    const activeService = this.groupApiEndpoint
-      ? resolveService(modelProvider, this.groupApiEndpoint)
+    const activeEndpoint = this.groupApiEndpoint
+      ? resolveEndpoint(modelProvider, this.groupApiEndpoint)
       : undefined;
-    const visibleModels = activeService?.models!.filter((m) => m.provider.id === this.filteredProviderId) ?? providerModels;
+    const visibleModels = activeEndpoint?.models!.filter((m) => m.provider.id === this.filteredProviderId) ?? providerModels;
 
     return visibleModels.map(
       (model) => buildChatInfo(model, hasKey, this.visionProxyAvailable) as ChatInfo,
@@ -138,7 +138,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       throw new Error(t('auth.noKey', provider.label));
     }
 
-    const endpoint = getEndpoint(provider, this.groupApiEndpoint);
+    const apiUrl = getEndpoint(provider, this.groupApiEndpoint);
     const session = Session.fromMessages(messages);
 
     channel.info(
@@ -147,7 +147,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     if (Settings.metaEnabled()) {
       channel.info(`Model: id=${model.id} | apiId=${model.apiId}`);
       channel.info(
-        `Endpoint: ${endpoint} | Key: ${apiKey.slice(0, 6)}... (${apiKey.length} chars)`,
+        `Endpoint: ${apiUrl} | Key: ${apiKey.slice(0, 6)}... (${apiKey.length} chars)`,
       );
     }
 
@@ -159,7 +159,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
         apiKey,
         token,
         picker: this.picker,
-        endpoint,
+        url: apiUrl,
       });
 
       if (ready.gate.kind === 'reject') {

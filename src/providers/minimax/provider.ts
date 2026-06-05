@@ -1,11 +1,11 @@
-import { DEFAULT_ENDPOINTS } from '../endpoints';
+import { DEFAULT_ENDPOINT_URLS } from '../endpoints';
 import type { Provider } from '../types';
 
 export const MINIMAX: Provider = {
   id: 'minimax',
   label: 'MiniMax',
   detailKey: 'provider.minimax.detail',
-  endpoint: DEFAULT_ENDPOINTS.minimax,
+  url: DEFAULT_ENDPOINT_URLS.minimax,
   tokenRatio: 4.0,
   thinkingField: 'thinking_content',
   supportsStreamUsage: false,

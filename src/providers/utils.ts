@@ -1,8 +1,8 @@
 import { Settings } from '../settings';
-import type { ApiTraits, Model, Provider, Service } from './types';
+import type { ApiTraits, Model, Provider, Endpoint } from './types';
 
 export function resolveTrait<K extends keyof ApiTraits>(model: Model, key: K): ApiTraits[K] {
-  return (model as any)[key] ?? (model.service as any)?.[key] ?? (model.provider as any)[key];
+  return (model as any)[key] ?? (model.endpoint as any)?.[key] ?? (model.provider as any)[key];
 }
 
 export function getEndpoint(provider: Provider, apiEndpoint?: string): string {
@@ -13,42 +13,42 @@ export function getEndpoint(provider: Provider, apiEndpoint?: string): string {
     // Text-input mode (Qwen): user typed a full URL then use it directly
     if (apiEndpoint.includes('://')) return apiEndpoint;
 
-    // Dropdown mode: match by service key
-    if (provider.services) {
-      const svc = provider.services.find((s) => s.key === apiEndpoint);
-      if (svc) return svc.endpoint!;
+    // Dropdown mode: match by endpoint key
+    if (provider.endpoints) {
+      const ep = provider.endpoints.find((s) => s.key === apiEndpoint);
+      if (ep) return ep.url!;
     }
   }
 
-  return provider.services?.[0]?.endpoint ?? provider.endpoint;
+  return provider.endpoints?.[0]?.url ?? provider.url;
 }
 
-export function resolveService(provider: Provider, apiEndpoint: string): Service | undefined {
-  if (!provider.services) return undefined;
+export function resolveEndpoint(provider: Provider, apiEndpoint: string): Endpoint | undefined {
+  if (!provider.endpoints) return undefined;
 
-  const exact = provider.services.find((s) => s.key === apiEndpoint);
+  const exact = provider.endpoints.find((s) => s.key === apiEndpoint);
   if (exact) return exact;
 
-  return provider.services.find((s) => s.matchStr && apiEndpoint.includes(s.matchStr));
+  return provider.endpoints.find((s) => s.matchStr && apiEndpoint.includes(s.matchStr));
 }
 
-export function composeProvider(provider: Provider, services: readonly Service[]): void {
-  provider.services = services as Service[];
-  for (const svc of provider.services) {
-    svc.provider = provider;
-    for (const m of svc.models ?? []) {
+export function composeProvider(provider: Provider, endpoints: readonly Endpoint[]): void {
+  provider.endpoints = endpoints as Endpoint[];
+  for (const ep of provider.endpoints) {
+    ep.provider = provider;
+    for (const m of ep.models ?? []) {
       m.provider = provider;
     }
   }
 }
 
-export function composeService(service: Service, models: readonly Model[]): Service {
-  service.models = models as Model[];
+export function composeEndpoint(endpoint: Endpoint, models: readonly Model[]): Endpoint {
+  endpoint.models = models as Model[];
   for (const m of models) {
-    m.service = service;
+    m.endpoint = endpoint;
   }
 
-  return service;
+  return endpoint;
 }
 
 export function imagePart(

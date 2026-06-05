@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { suite, test } from 'mocha';
 import { QWEN, QWEN_BASE_MODELS, QWEN_US_MODELS } from '../../../src/providers/qwen';
 
-suite('providers/qwen — model.requestExtras()', () => {
+suite('providers/qwen model.requestExtras()', () => {
   const requestExtras = QWEN_BASE_MODELS[0].requestExtras!;
 
   test('thinkingMode "disabled": enable_thinking false', () => {
@@ -29,8 +29,8 @@ suite('providers/qwen — model.requestExtras()', () => {
     assert.equal(QWEN.id, 'qwen');
   });
 
-  test('QWEN endpoint points to DashScope compatible-mode', () => {
-    assert.equal(QWEN.endpoint, 'https://dashscope.aliyuncs.com/compatible-mode/v1');
+  test('QWEN url points to DashScope compatible-mode', () => {
+    assert.equal(QWEN.url, 'https://dashscope.aliyuncs.com/compatible-mode/v1');
   });
 
   test('QWEN thinkingField is reasoning_content', () => {

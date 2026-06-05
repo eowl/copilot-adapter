@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { suite, test } from 'mocha';
 import { t } from '../../src/nls';
 
-suite('nls — t()', () => {
+suite('nls t()', () => {
   test('returns the key verbatim when the key is unknown', () => {
     const key = 'no.such.key.xyz';
     assert.equal(t(key), key);

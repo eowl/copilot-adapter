@@ -26,10 +26,6 @@ export class ApiError extends Error {
   }
 }
 
-// ---------------------------------------------------------------------------
-// HTTP error construction
-// ---------------------------------------------------------------------------
-
 export async function buildHttpError(response: Response, links?: ProviderLinks): Promise<ApiError> {
   const status = response.status;
   let body = '';
@@ -63,11 +59,7 @@ function mapHttpStatus(status: number, links?: ProviderLinks): string {
   }
 }
 
-// ---------------------------------------------------------------------------
-// Network / fetch error normalization
-// ---------------------------------------------------------------------------
-
-export function wrapFetchError(err: unknown, endpoint: string, links?: ProviderLinks): ApiError {
+export function wrapFetchError(err: unknown, apiUrl: string, links?: ProviderLinks): ApiError {
   if (err instanceof ApiError) return err;
 
   const message = err instanceof Error ? err.message : String(err);
@@ -92,10 +84,10 @@ export function wrapFetchError(err: unknown, endpoint: string, links?: ProviderL
     lower.includes('socket')
   ) {
     try {
-      const host = new URL(endpoint).hostname;
+      const host = new URL(apiUrl).hostname;
       return new ApiError('network', t('err.network.dns', host), message, links);
     } catch {
-      return new ApiError('network', t('err.network.dns', endpoint), message, links);
+      return new ApiError('network', t('err.network.dns', apiUrl), message, links);
     }
   }
 
@@ -103,7 +95,8 @@ export function wrapFetchError(err: unknown, endpoint: string, links?: ProviderL
 }
 
 /** Wraps any error into an ApiError suitable for throwing to VS Code. */
-export function toApiError(err: unknown, endpoint: string, links?: ProviderLinks): ApiError {
+export function toApiError(err: unknown, apiUrl: string, links?: ProviderLinks): ApiError {
   if (err instanceof ApiError) return err;
-  return wrapFetchError(err, endpoint, links);
+  
+  return wrapFetchError(err, apiUrl, links);
 }
