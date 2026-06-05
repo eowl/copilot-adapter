@@ -97,9 +97,9 @@ Disable at any time by setting the value to `off`.
 | Level | Output channel | Model `id` / `apiId` / endpoint | Request dump to disk |
 |---|---|---|---|
 | `off` | — | — | — |
-| `info` | ✔ request metadata | — | — |
-| `meta` | ✔ request metadata | ✔ | — |
-| `verbose` | ✔ request metadata | ✔ | ✔ |
+| `info` | Yes (request metadata) | — | — |
+| `meta` | Yes (request metadata) | Yes | — |
+| `verbose` | Yes (request metadata) | Yes | Yes |
 
 ---
 
