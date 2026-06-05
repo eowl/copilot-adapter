@@ -11,5 +11,5 @@ export const DEFAULT_ENDPOINT_URLS = {
   minimax: 'https://api.minimaxi.com/v1',
   moonshot: 'https://api.moonshot.cn/v1',
   qwen: 'https://dashscope.aliyuncs.com/compatible-mode/v1',
-  bigmodel: 'https://open.bigmodel.cn/api/paas/v4',
+  zhipu: 'https://open.bigmodel.cn/api/paas/v4',
 } as const;

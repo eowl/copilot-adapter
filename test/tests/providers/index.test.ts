@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { suite, test } from 'mocha';
-import { ALL_MODELS, ALL_PROVIDERS, providerById, modelById, DEEPSEEK, MINIMAX, MOONSHOT, QWEN, BIGMODEL } from '../../../src/providers/index';
+import { ALL_MODELS, ALL_PROVIDERS, providerById, modelById, DEEPSEEK, MINIMAX, MOONSHOT, QWEN, ZHIPU } from '../../../src/providers/index';
 
 suite('providers/index', () => {
   suite('ALL_PROVIDERS', () => {
@@ -24,8 +24,8 @@ suite('providers/index', () => {
       assert.strictEqual(ALL_PROVIDERS[3], QWEN);
     });
 
-    test('fifth provider is BIGMODEL', () => {
-      assert.strictEqual(ALL_PROVIDERS[4], BIGMODEL);
+    test('fifth provider is ZHIPU', () => {
+      assert.strictEqual(ALL_PROVIDERS[4], ZHIPU);
     });
   });
 
@@ -46,8 +46,8 @@ suite('providers/index', () => {
       assert.strictEqual(providerById.get('qwen'), QWEN);
     });
 
-    test('maps "bigmodel": BIGMODEL', () => {
-      assert.strictEqual(providerById.get('bigmodel'), BIGMODEL);
+    test('maps "zhipu": ZHIPU', () => {
+      assert.strictEqual(providerById.get('zhipu'), ZHIPU);
     });
 
     test('returns undefined for unknown provider id', () => {

@@ -1,11 +1,11 @@
 import { DEFAULT_ENDPOINT_URLS } from '../endpoints';
 import type { ModelProvider } from '../types';
 
-export const BIGMODEL: ModelProvider = {
-  id: 'bigmodel',
-  label: 'BigModel',
-  detailKey: 'provider.bigmodel.detail',
-  url: DEFAULT_ENDPOINT_URLS.bigmodel,
+export const ZHIPU: ModelProvider = {
+  id: 'zhipu',
+  label: 'Zhipu',
+  detailKey: 'provider.zhipu.detail',
+  url: DEFAULT_ENDPOINT_URLS.zhipu,
   tokenRatio: 4.0,
   thinkingField: 'reasoning_content',
   apiKeyHint: '...',

@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
 import { composeModelProvider, composeModelEndpoint, getEndpoint, resolveEndpoint, resolveTrait } from '../../../src/providers/utils';
 import { DEFAULT_ENDPOINT_URLS } from '../../../src/providers/endpoints';
 import { MINIMAX } from '../../../src/providers/minimax';
-import { BIGMODEL } from '../../../src/providers/bigmodel';
+import { ZHIPU } from '../../../src/providers/bigmodel';
 import { MOONSHOT } from '../../../src/providers/moonshot';
 import { QWEN } from '../../../src/providers/qwen';
 import { DEEPSEEK } from '../../../src/providers/deepseek';
@@ -50,8 +50,8 @@ const cases: EndpointCase[] = [
   },
   {
     label: 'BigModel: no overrides returns first endpoint url',
-    provider: BIGMODEL,
-    expected: DEFAULT_ENDPOINT_URLS.bigmodel,
+    provider: ZHIPU,
+    expected: DEFAULT_ENDPOINT_URLS.zhipu,
   },
   {
     label: 'Moonshot: no overrides returns first endpoint url',
@@ -83,25 +83,25 @@ const cases: EndpointCase[] = [
   },
   {
     label: 'BigModel: apiEndpoint bigmodel resolves via endpoint key',
-    provider: BIGMODEL,
+    provider: ZHIPU,
     apiEndpoint: 'bigmodel',
     expected: 'https://open.bigmodel.cn/api/paas/v4',
   },
   {
     label: 'BigModel: apiEndpoint bigmodel-coding resolves via endpoint key',
-    provider: BIGMODEL,
+    provider: ZHIPU,
     apiEndpoint: 'bigmodel-coding',
     expected: 'https://open.bigmodel.cn/api/coding/paas/v4',
   },
   {
     label: 'BigModel: apiEndpoint z.ai resolves via endpoint key',
-    provider: BIGMODEL,
+    provider: ZHIPU,
     apiEndpoint: 'z.ai',
     expected: 'https://api.z.ai/api/paas/v4',
   },
   {
     label: 'BigModel: apiEndpoint z.ai-coding resolves via endpoint key',
-    provider: BIGMODEL,
+    provider: ZHIPU,
     apiEndpoint: 'z.ai-coding',
     expected: 'https://api.z.ai/api/coding/paas/v4',
   },
@@ -183,7 +183,7 @@ suite('getEndpoint priority resolution', () => {
 
 suite('resolveEndpoint', () => {
   test('returns ModelEndpoint by exact key match (BigModel)', () => {
-    const ep = resolveEndpoint(BIGMODEL, 'z.ai-coding');
+    const ep = resolveEndpoint(ZHIPU, 'z.ai-coding');
     assert.equal(ep?.key, 'z.ai-coding');
     assert.equal(ep?.url, 'https://api.z.ai/api/coding/paas/v4');
   });
@@ -299,7 +299,7 @@ suite('resolveTrait model > endpoint > provider chain', () => {
 
 suite('ModelProvider/ModelEndpoint composition invariants', () => {
   test('every model has an endpoint back-reference', () => {
-    for (const mp of [MINIMAX, MOONSHOT, BIGMODEL, QWEN, DEEPSEEK]) {
+    for (const mp of [MINIMAX, MOONSHOT, ZHIPU, QWEN, DEEPSEEK]) {
       for (const me of mp.endpoints ?? []) {
         for (const mi of me.models!) {
           assert.ok(mi.endpoint, `${mi.id} must have an endpoint back-reference`);
@@ -315,7 +315,7 @@ suite('ModelProvider/ModelEndpoint composition invariants', () => {
   });
 
   test('every endpoint has provider back-reference', () => {
-    for (const mp of [MINIMAX, MOONSHOT, BIGMODEL, QWEN, DEEPSEEK]) {
+    for (const mp of [MINIMAX, MOONSHOT, ZHIPU, QWEN, DEEPSEEK]) {
       for (const me of mp.endpoints ?? []) {
         assert.equal(me.provider, mp, `endpoint ${me.key}.provider must point at owner`);
       }
@@ -323,7 +323,7 @@ suite('ModelProvider/ModelEndpoint composition invariants', () => {
   });
 
   test('every model has provider set by composeModelProvider', () => {
-    for (const mp of [MINIMAX, MOONSHOT, BIGMODEL, QWEN, DEEPSEEK]) {
+    for (const mp of [MINIMAX, MOONSHOT, ZHIPU, QWEN, DEEPSEEK]) {
       for (const me of mp.endpoints ?? []) {
         for (const mi of me.models!) {
           assert.equal(mi.provider, mp, `${mi.id}.provider must equal its owning provider`);

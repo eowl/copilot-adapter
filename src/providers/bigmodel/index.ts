@@ -1,3 +1,3 @@
-export { BIGMODEL } from './provider';
-export { BM_MODELS } from './models';
-export { BIGMODEL_ENDPOINTS } from './endpoints';
+export { ZHIPU } from './provider';
+export { ZP_MODELS } from './models';
+export { ZHIPU_ENDPOINTS } from './endpoints';

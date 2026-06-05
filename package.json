@@ -90,7 +90,6 @@
         "configuration": {
           "type": "object",
           "required": [
-            "apiEndpoint",
             "apiKey"
           ],
           "properties": {
@@ -109,8 +108,8 @@
         }
       },
       {
-        "vendor": "copilot-adapter-bigmodel",
-        "displayName": "BigModel",
+        "vendor": "copilot-adapter-zhipu",
+        "displayName": "Zhipu",
         "configuration": {
           "type": "object",
           "required": [
@@ -120,20 +119,20 @@
           "properties": {
             "apiEndpoint": {
               "type": "string",
-              "title": "%copilot-adapter.provider.bigmodel.apiEndpoint.title%",
+              "title": "%copilot-adapter.provider.zhipu.apiEndpoint.title%",
               "enum": ["bigmodel", "bigmodel-coding", "z.ai", "z.ai-coding"],
               "enumDescriptions": [
-                "%copilot-adapter.provider.bigmodel.apiEndpoint.option.bigmodel%",
-                "%copilot-adapter.provider.bigmodel.apiEndpoint.option.bigmodel-coding%",
-                "%copilot-adapter.provider.bigmodel.apiEndpoint.option.z.ai%",
-                "%copilot-adapter.provider.bigmodel.apiEndpoint.option.z.ai-coding%"
+                "%copilot-adapter.provider.zhipu.apiEndpoint.option.bigmodel%",
+                "%copilot-adapter.provider.zhipu.apiEndpoint.option.bigmodel-coding%",
+                "%copilot-adapter.provider.zhipu.apiEndpoint.option.z.ai%",
+                "%copilot-adapter.provider.zhipu.apiEndpoint.option.z.ai-coding%"
               ],
-              "description": "%copilot-adapter.provider.bigmodel.apiEndpoint.description%"
+              "description": "%copilot-adapter.provider.zhipu.apiEndpoint.description%"
             },
             "apiKey": {
               "type": "string",
-              "title": "%copilot-adapter.provider.bigmodel.apiKey.title%",
-              "description": "%copilot-adapter.provider.bigmodel.apiKey.description%",
+              "title": "%copilot-adapter.provider.zhipu.apiKey.title%",
+              "description": "%copilot-adapter.provider.zhipu.apiKey.description%",
               "secret": true
             }
           }
