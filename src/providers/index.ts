@@ -36,6 +36,7 @@ export const ALL_MODELS: readonly ModelItem[] = (() => {
       }
     }
   }
+
   return result;
 })();
 

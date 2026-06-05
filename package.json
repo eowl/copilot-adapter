@@ -61,6 +61,7 @@
         "configuration": {
           "type": "object",
           "required": [
+            "apiEndpoint",
             "apiKey"
           ],
           "properties": {
@@ -89,6 +90,7 @@
         "configuration": {
           "type": "object",
           "required": [
+            "apiEndpoint",
             "apiKey"
           ],
           "properties": {
@@ -112,6 +114,7 @@
         "configuration": {
           "type": "object",
           "required": [
+            "apiEndpoint",
             "apiKey"
           ],
           "properties": {
@@ -142,6 +145,7 @@
         "configuration": {
           "type": "object",
           "required": [
+            "apiEndpoint",
             "apiKey"
           ],
           "properties": {

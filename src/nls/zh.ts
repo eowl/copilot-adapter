@@ -67,6 +67,8 @@ export const zh: Translation = {
   'auth.removeViaUI':
     'API Key 由 VS Code 统一管理。请打开语言模型面板，点击对应提供商分组旁的齿轮菜单进行删除。',
   'auth.seedFailed': '无法自动保存 {0} 的 API Key，可以通过语言模型面板手动添加。',
+  'auth.alreadyConfigured': '{0} 已配置。如需更新 API Key 或端点，请通过语言模型面板操作。',
+  'auth.chooseEndpoint': '选择 {0} API 端点',
   'action.openManageUI': '打开语言模型面板',
 
   'think.label': '思考模式',

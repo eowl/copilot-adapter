@@ -19,14 +19,16 @@ export function buildChatInfo(
   modelItem: ModelItem,
   hasKey: boolean,
   hasVisionProxy = false,
+  idPrefix = '',
 ): ChatInfo {
   const modelProvider = modelItem.provider;
   const schema = modelItem.configSchema?.();
   const notConfigured = !hasKey;
   const detail = t(modelItem.detailKey);
 
-  return {
-    id: modelItem.id,
+  const infoId = idPrefix ? `${idPrefix}::${modelItem.id}` : modelItem.id;
+  const info = {
+    id: infoId,
     name: modelItem.label,
     family: modelItem.family,
     version: modelItem.version,
@@ -42,6 +44,8 @@ export function buildChatInfo(
     statusIcon: notConfigured ? new vscode.ThemeIcon('warning') : undefined,
     configurationSchema: schema,
   } as unknown as ChatInfo;
+
+  return info;
 }
 
 export function resolveModelConfig(options: ReqOptions): Record<string, unknown> {

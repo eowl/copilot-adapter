@@ -19,13 +19,19 @@ const LEGACY_MIGRATION_FLAG = `${EXT_ID}.legacyKeysMigrated.v1`;
 export async function seedManagedGroup(
   modelProvider: ModelProvider,
   apiKey: string,
+  apiEndpoint?: string,
+  groupName?: string,
 ): Promise<boolean> {
   try {
-    await vscode.commands.executeCommand(MIGRATE_COMMAND, {
+    const args: Record<string, unknown> = {
       vendor: vendorOf(modelProvider.id),
-      name: modelProvider.label,
+      name: groupName ?? modelProvider.label,
       apiKey,
-    });
+    };
+    if (apiEndpoint) {
+      args.apiEndpoint = apiEndpoint;
+    }
+    await vscode.commands.executeCommand(MIGRATE_COMMAND, args);
 
     return true;
   } catch (err) {
