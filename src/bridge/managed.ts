@@ -16,7 +16,10 @@ function legacySecretKey(modelProviderId: string): string {
 
 const LEGACY_MIGRATION_FLAG = `${EXT_ID}.legacyKeysMigrated.v1`;
 
-export async function seedManagedGroup(modelProvider: ModelProvider, apiKey: string): Promise<boolean> {
+export async function seedManagedGroup(
+  modelProvider: ModelProvider,
+  apiKey: string,
+): Promise<boolean> {
   try {
     await vscode.commands.executeCommand(MIGRATE_COMMAND, {
       vendor: vendorOf(modelProvider.id),

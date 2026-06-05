@@ -51,7 +51,11 @@ function msK26ConfigSchema(): Record<string, unknown> {
         title: t('think.label'),
         enum: ['enabled', 'enabled_keep', 'disabled'],
         enumItemLabels: [t('think.enabled'), t('think.enabledKeep'), t('think.disabled')],
-        enumDescriptions: [t('think.enabled.hint'), t('think.enabledKeep.hint'), t('think.disabled.hint')],
+        enumDescriptions: [
+          t('think.enabled.hint'),
+          t('think.enabledKeep.hint'),
+          t('think.disabled.hint'),
+        ],
         default: 'enabled',
         group: 'navigation',
       },

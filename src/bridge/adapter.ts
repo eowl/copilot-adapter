@@ -3,11 +3,7 @@ import { EXT_ID } from '../defines';
 import { channel } from '../logger';
 import { t } from '../nls';
 import { ALL_MODELS, ALL_PROVIDERS, modelById } from '../providers';
-import {
-  resolveTrait,
-  getEndpoint,
-  resolveEndpoint,
-} from '../providers/utils';
+import { resolveTrait, getEndpoint, resolveEndpoint } from '../providers/utils';
 import { Settings } from '../settings';
 import { buildChatInfo, type ChatInfo, type ReqOptions } from './information';
 import { Session } from './session';
@@ -113,7 +109,9 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     const activeEndpoint = this.groupApiEndpoint
       ? resolveEndpoint(modelProvider, this.groupApiEndpoint)
       : undefined;
-    const visibleModels = activeEndpoint?.models!.filter((m) => m.provider.id === this.filteredProviderId) ?? providerModels;
+    const visibleModels =
+      activeEndpoint?.models!.filter((m) => m.provider.id === this.filteredProviderId) ??
+      providerModels;
 
     return visibleModels.map(
       (model) => buildChatInfo(model, hasKey, this.visionProxyAvailable) as ChatInfo,
@@ -146,9 +144,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     );
     if (Settings.metaEnabled()) {
       channel.info(`Model: id=${model.id} | apiId=${model.apiId}`);
-      channel.info(
-        `Endpoint: ${apiUrl} | Key: ${apiKey.slice(0, 6)}... (${apiKey.length} chars)`,
-      );
+      channel.info(`Endpoint: ${apiUrl} | Key: ${apiKey.slice(0, 6)}... (${apiKey.length} chars)`);
     }
 
     try {
@@ -243,7 +239,10 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     }
 
     const open = t('action.openManageUI');
-    const choice = await vscode.window.showErrorMessage(t('auth.seedFailed', modelProvider.label), open);
+    const choice = await vscode.window.showErrorMessage(
+      t('auth.seedFailed', modelProvider.label),
+      open,
+    );
 
     if (choice === open) {
       void vscode.commands.executeCommand('workbench.action.chat.manage');

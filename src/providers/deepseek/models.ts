@@ -1,5 +1,5 @@
 import { t } from '../../nls';
-import type { ModelItem, ReasoningAbility } from '../types'
+import type { ModelItem, ReasoningAbility } from '../types';
 import { DEEPSEEK } from './provider';
 
 type ThinkingEffort = 'none' | 'high' | 'max';

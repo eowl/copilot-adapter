@@ -97,6 +97,6 @@ export function wrapFetchError(err: unknown, apiUrl: string, links?: ProviderLin
 /** Wraps any error into an ApiError suitable for throwing to VS Code. */
 export function toApiError(err: unknown, apiUrl: string, links?: ProviderLinks): ApiError {
   if (err instanceof ApiError) return err;
-  
+
   return wrapFetchError(err, apiUrl, links);
 }

@@ -47,7 +47,7 @@
   "copilot-adapter.walkthrough.visionProxy.media": "assets/walkthroughs/zh-cn/vision-proxy.md",
   "copilot-adapter.config.title": "AI 模型适配器",
   "copilot-adapter.config.maxTokens.description": "每次请求的输出 Token 上限，填 0 表示不限制（使用提供商默认值），调低此值可控制成本。",
-  "copilot-adapter.config.debug.description": "控制诊断输出级别。token 用量始终上报给 Copilot。\n\n- `off` — 无输出\n- `info` — 仅元数据，可安全分享\n- `meta` — 在 info 基础上增加模型 id、apiId 及端点详情\n- `verbose` — 完整请求 dump + 掩码后的 API Key 写入磁盘",
+  "copilot-adapter.config.debug.description": "控制诊断输出级别。token 用量始终上报给 Copilot。\n\n- `off` - 无输出\n- `info` - 仅元数据，可安全分享\n- `meta` - 在 info 基础上增加模型 id、apiId 及端点详情\n- `verbose` - 完整请求 dump + 掩码后的 API Key 写入磁盘",
   "copilot-adapter.config.debug.off.label": "关闭",
   "copilot-adapter.config.debug.off.description": "不记录任何输出。token 用量始终上报给 Copilot。",
   "copilot-adapter.config.debug.info.label": "信息",

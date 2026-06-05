@@ -1,8 +1,15 @@
 import { Settings } from '../settings';
 import type { ApiTraits, ModelItem, ModelProvider, ModelEndpoint } from './types';
 
-export function resolveTrait<K extends keyof ApiTraits>(modelItem: ModelItem, key: K): ApiTraits[K] {
-  return (modelItem as ApiTraits)[key] ?? (modelItem.endpoint as ApiTraits)?.[key] ?? (modelItem.provider as ApiTraits)[key];
+export function resolveTrait<K extends keyof ApiTraits>(
+  modelItem: ModelItem,
+  key: K,
+): ApiTraits[K] {
+  return (
+    (modelItem as ApiTraits)[key] ??
+    (modelItem.endpoint as ApiTraits)?.[key] ??
+    (modelItem.provider as ApiTraits)[key]
+  );
 }
 
 export function getEndpoint(modelProvider: ModelProvider, apiEndpoint?: string): string {
@@ -23,7 +30,10 @@ export function getEndpoint(modelProvider: ModelProvider, apiEndpoint?: string):
   return modelProvider.endpoints?.[0]?.url ?? modelProvider.url;
 }
 
-export function resolveEndpoint(modelProvider: ModelProvider, apiEndpoint: string): ModelEndpoint | undefined {
+export function resolveEndpoint(
+  modelProvider: ModelProvider,
+  apiEndpoint: string,
+): ModelEndpoint | undefined {
   if (!modelProvider.endpoints) return undefined;
 
   const exact = modelProvider.endpoints.find((s) => s.key === apiEndpoint);
@@ -32,7 +42,10 @@ export function resolveEndpoint(modelProvider: ModelProvider, apiEndpoint: strin
   return modelProvider.endpoints.find((s) => s.matchStr && apiEndpoint.includes(s.matchStr));
 }
 
-export function composeModelProvider(modelProvider: ModelProvider, modelEndpoints: readonly ModelEndpoint[]): void {
+export function composeModelProvider(
+  modelProvider: ModelProvider,
+  modelEndpoints: readonly ModelEndpoint[],
+): void {
   modelProvider.endpoints = modelEndpoints as ModelEndpoint[];
   for (const me of modelProvider.endpoints) {
     me.provider = modelProvider;
@@ -42,7 +55,10 @@ export function composeModelProvider(modelProvider: ModelProvider, modelEndpoint
   }
 }
 
-export function composeModelEndpoint(modelEndpoint: ModelEndpoint, modelItems: readonly ModelItem[]): ModelEndpoint {
+export function composeModelEndpoint(
+  modelEndpoint: ModelEndpoint,
+  modelItems: readonly ModelItem[],
+): ModelEndpoint {
   modelEndpoint.models = modelItems as ModelItem[];
   for (const mi of modelItems) {
     mi.endpoint = modelEndpoint;

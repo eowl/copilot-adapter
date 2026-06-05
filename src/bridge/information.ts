@@ -15,7 +15,11 @@ export interface ReqOptions extends vscode.ProvideLanguageModelChatResponseOptio
   configuration?: Record<string, unknown>;
 }
 
-export function buildChatInfo(modelItem: ModelItem, hasKey: boolean, hasVisionProxy = false): ChatInfo {
+export function buildChatInfo(
+  modelItem: ModelItem,
+  hasKey: boolean,
+  hasVisionProxy = false,
+): ChatInfo {
   const modelProvider = modelItem.provider;
   const schema = modelItem.configSchema?.();
   const notConfigured = !hasKey;
@@ -30,7 +34,8 @@ export function buildChatInfo(modelItem: ModelItem, hasKey: boolean, hasVisionPr
     maxOutputTokens: modelItem.maxOutputTokens,
     capabilities: {
       imageInput: modelItem.ability.acceptsImages || hasVisionProxy,
-      toolCalling: modelItem.ability.maxTools ?? (modelItem.ability.maxTools === undefined ? true : false),
+      toolCalling:
+        modelItem.ability.maxTools ?? (modelItem.ability.maxTools === undefined ? true : false),
     },
     tooltip: notConfigured ? t('auth.noKeyTooltip', modelProvider.label) : detail,
     detail: detail,
