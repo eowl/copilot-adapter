@@ -28,13 +28,8 @@ export interface Tool {
   };
 }
 
-export interface Usage {
-  prompt_tokens: number;
-  completion_tokens: number;
-  total_tokens: number;
-  prompt_cache_hit_tokens?: number;
-  prompt_cache_miss_tokens?: number;
-}
+/** Provider-specific usage object. Shape varies across providers — accessed via dot-paths in UsageSchema. */
+export type Usage = Record<string, unknown>;
 
 /** Full request body sent to the chat completions endpoint. */
 export interface ApiReq {

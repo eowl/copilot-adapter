@@ -8,6 +8,11 @@ export const MOONSHOT: ModelProvider = {
   url: DEFAULT_ENDPOINT_URLS.moonshot,
   tokenRatio: 4.0,
   thinkingField: 'reasoning_content',
+  usageSchema: {
+    prompt_tokens: 'prompt_tokens',
+    completion_tokens: 'completion_tokens',
+    total_tokens: 'total_tokens',
+  },
   apiKeyHint: 'sk-...',
   links: {
     apiHost: 'api.moonshot.cn',

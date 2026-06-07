@@ -1,4 +1,5 @@
 import type { ProviderLinks } from '../client/error';
+import type { UsagePayload } from '../bridge/types';
 
 /**
  * Stateful per-request parser for the content stream.
@@ -26,10 +27,17 @@ export interface NonReasoningAbility extends BaseAbility {
 
 export type ModelAbility = ReasoningAbility | NonReasoningAbility;
 
+export type UsageSchema = Partial<{
+  [K in keyof UsagePayload]: UsagePayload[K] extends object | undefined
+    ? Partial<{ [SubK in keyof NonNullable<UsagePayload[K]>]: string }>
+    : string;
+}>;
+
 export interface ApiTraits {
   tokenRatio?: number;
   thinkingField?: string;
   url?: string;
+  usageSchema?: UsageSchema;
 }
 
 export interface ModelProvider extends ApiTraits {

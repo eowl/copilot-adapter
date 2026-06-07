@@ -5,6 +5,9 @@ import { streamHttp } from '../client/http';
 import { ApiError } from '../client/error';
 import { Settings } from '../settings';
 import { resolveTrait } from '../providers/utils';
+import type { UsagePayload } from './types';
+import { applyUsageSchema, buildUsageLog } from './usage';
+import { channel } from '../logger';
 import type { ReadyReq } from './prepare';
 
 type Progress = vscode.Progress<vscode.LanguageModelResponsePart>;
@@ -59,6 +62,7 @@ export async function forwardStream(
                 yieldedContent = true;
                 progress.report(new vscode.LanguageModelTextPart(event.text));
               }
+              
               break;
 
             case 'thinking':
@@ -73,6 +77,7 @@ export async function forwardStream(
                   );
                 }
               }
+
               break;
 
             case 'tool-call':
@@ -84,35 +89,17 @@ export async function forwardStream(
                   tryParseJson(event.call.function.arguments) as object,
                 ),
               );
+
               break;
 
             case 'usage':
-              promptTokens = event.data.prompt_tokens ?? 0;
-              // Report usage back to Copilot Chat so it can populate the
-              // Context Window panel (token counter / breakdown). The host
-              // listens for a DataPart with mime "usage" containing an
-              // OpenAI-shaped JSON payload.
-              {
-                const usagePayload = {
-                  prompt_tokens: event.data.prompt_tokens ?? 0,
-                  completion_tokens: event.data.completion_tokens ?? 0,
-                  total_tokens: event.data.total_tokens ?? 0,
-                  prompt_tokens_details: {
-                    cached_tokens: event.data.prompt_cache_hit_tokens ?? 0,
-                  },
-                };
-                progress.report(
-                  new vscode.LanguageModelDataPart(
-                    new TextEncoder().encode(JSON.stringify(usagePayload)),
-                    'usage',
-                  ),
-                );
-              }
+              promptTokens = reportUsage(ready, event.data, model.apiId, progress);
+
               break;
           }
         }
 
-        break; // success — exit retry loop
+        break;
       } catch (err) {
         if (!yieldedContent && attempt < maxRetries && isRetryableError(err)) {
           attempt++;
@@ -138,6 +125,43 @@ export async function forwardStream(
   progress.report(new vscode.LanguageModelDataPart(marker.data, marker.mimeType));
 
   return { newReasoningText: reasoningText, promptTokens };
+}
+
+function reportUsage(
+  ready: ReadyReq,
+  rawUsage: Record<string, unknown>,
+  modelApiId: string,
+  progress: Progress,
+): number {
+  const usageSchema = resolveTrait(ready.model, 'usageSchema');
+  const usage: UsagePayload = {
+    prompt_tokens: 0,
+    completion_tokens: 0,
+    total_tokens: 0,
+  };
+
+  if (usageSchema) {
+    applyUsageSchema(usageSchema, rawUsage, usage as unknown as Record<string, unknown>);
+  }
+
+  try {
+    progress.report(
+      new vscode.LanguageModelDataPart(
+        new TextEncoder().encode(JSON.stringify(usage)),
+        'usage',
+      ),
+    );
+  } catch (err) {
+    channel.error(`Failed to report usage:`, err);
+  }
+
+  try {
+    channel.info(buildUsageLog(modelApiId, usage));
+  } catch (err) {
+    channel.error(`Failed to build usage log:`, err);
+  }
+
+  return usage.prompt_tokens;
 }
 
 function isRetryableError(err: unknown): boolean {
