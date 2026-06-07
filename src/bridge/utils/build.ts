@@ -1,5 +1,6 @@
 import vscode from 'vscode';
 import { channel } from '../../logger';
+import { sortKeys } from '../../serialize';
 import type { Tool } from '../../client/types';
 
 /**
@@ -26,7 +27,7 @@ export function buildToolList(
     const schema = tool.inputSchema as Record<string, unknown> | undefined;
     const parameters =
       schema && typeof schema === 'object' && Object.keys(schema).length > 0
-        ? schema
+        ? sortKeys(schema)
         : { type: 'object', properties: {} };
     return [
       {

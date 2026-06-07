@@ -1,7 +1,11 @@
 import vscode from 'vscode';
-import { pack } from '../serialize';
+import { pack, sortKeys } from '../serialize';
 import { readMarkerFromMessage } from '../marker/codec';
 import type { Msg, Tool, ToolCall } from '../client/types';
+
+function normalizeText(s: string): string {
+  return s.trim().replace(/\r\n/g, '\n');
+}
 
 export interface TranslateOptions {
   thinkingField?: string;
@@ -46,7 +50,7 @@ export function translateMessages(
         for (const item of part.content) {
           if (item instanceof vscode.LanguageModelTextPart) text += item.value;
         }
-        toolResults.push({ callId: part.callId, text: text || pack(part.content) });
+        toolResults.push({ callId: part.callId, text: normalizeText(text) || pack(part.content) });
       } else if (
         formatImagePart &&
         part instanceof vscode.LanguageModelDataPart &&
@@ -57,6 +61,8 @@ export function translateMessages(
       // Non-image DataParts (markers, etc.) are intentionally skipped here —
       // vision text is injected at the pre-processing stage in describe.ts
     }
+
+    textContent = normalizeText(textContent);
 
     if (role === 'assistant') {
       if (textContent || toolCalls.length > 0) {
@@ -93,6 +99,7 @@ function resolveThinking(
 ): string {
   const mark = readMarkerFromMessage(msg);
   if (mark?.valid && mark.reasoningText) return mark.reasoningText;
+  
   return liveThinking;
 }
 
@@ -105,7 +112,7 @@ export function translateTools(
     const schema = t.inputSchema as Record<string, unknown> | undefined;
     const parameters =
       schema && typeof schema === 'object' && Object.keys(schema).length > 0
-        ? schema
+        ? sortKeys(schema)
         : { type: 'object', properties: {} };
 
     return [

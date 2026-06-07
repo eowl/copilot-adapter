@@ -49,6 +49,22 @@ suite('bridge/utils/build', () => {
       const result = buildToolList(tools, undefined);
       assert.equal(result!.length, 10);
     });
+
+    test('produces stable output regardless of inputSchema key order', () => {
+      const toolA: vscode.LanguageModelChatTool = {
+        name: 'search',
+        description: 'Search',
+        inputSchema: { type: 'object', properties: { z: { type: 'string' }, a: { type: 'number' } } } as Record<string, unknown>,
+      };
+      const toolB: vscode.LanguageModelChatTool = {
+        name: 'search',
+        description: 'Search',
+        inputSchema: { type: 'object', properties: { a: { type: 'number' }, z: { type: 'string' } } } as Record<string, unknown>,
+      };
+      const resultA = buildToolList([toolA], undefined);
+      const resultB = buildToolList([toolB], undefined);
+      assert.equal(JSON.stringify(resultA), JSON.stringify(resultB));
+    });
   });
 
   suite('gatherTrailingResultIds()', () => {
