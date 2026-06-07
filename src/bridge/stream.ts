@@ -130,7 +130,7 @@ export async function forwardStream(
   if (promptTokens === 0 && (contentText || reasoningText)) {
     channel.info(
       `Using fallback usage estimation (API returned no usage data) — ` +
-      `prompt chars: ${ready.promptChars}, response chars: ${(contentText + reasoningText).length}`,
+        `prompt chars: ${ready.promptChars}, response chars: ${(contentText + reasoningText).length}`,
     );
 
     const charsPerToken = resolveTrait(ready.model, 'tokenRatio') ?? DEFAULT_CHARS_PER_TOKEN;
@@ -143,10 +143,7 @@ export async function forwardStream(
 
     try {
       progress.report(
-        new vscode.LanguageModelDataPart(
-          new TextEncoder().encode(JSON.stringify(usage)),
-          'usage',
-        ),
+        new vscode.LanguageModelDataPart(new TextEncoder().encode(JSON.stringify(usage)), 'usage'),
       );
     } catch (err) {
       channel.error('Failed to report fallback usage:', err);
@@ -185,10 +182,7 @@ function reportUsage(
 
   try {
     progress.report(
-      new vscode.LanguageModelDataPart(
-        new TextEncoder().encode(JSON.stringify(usage)),
-        'usage',
-      ),
+      new vscode.LanguageModelDataPart(new TextEncoder().encode(JSON.stringify(usage)), 'usage'),
     );
   } catch (err) {
     channel.error(`Failed to report usage:`, err);

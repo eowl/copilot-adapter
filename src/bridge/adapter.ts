@@ -10,7 +10,12 @@ import { Session } from './session';
 import { VisionModelPicker } from '../vision/model';
 import { assembleChatReq } from './prepare';
 import { forwardStream } from './stream';
-import { estimateTokens, getCalibratedRatio, calibrateRatio, DEFAULT_CHARS_PER_TOKEN } from './tally';
+import {
+  estimateTokens,
+  getCalibratedRatio,
+  calibrateRatio,
+  DEFAULT_CHARS_PER_TOKEN,
+} from './tally';
 import { ApiError } from '../client/error';
 import { seedManagedGroup } from './managed';
 import { dumpRequest } from '../trace/dump';
@@ -212,18 +217,13 @@ export class Adapter implements vscode.LanguageModelChatProvider {
           const defaultRatio = resolveTrait(model, 'tokenRatio') ?? DEFAULT_CHARS_PER_TOKEN;
           const bodyChars = JSON.stringify(ready.body).length;
           const prevRatio = getCalibratedRatio(modelProvider.id, defaultRatio);
-          const result = calibrateRatio(
-            modelProvider.id,
-            bodyChars,
-            promptTokens,
-            defaultRatio,
-          );
+          const result = calibrateRatio(modelProvider.id, bodyChars, promptTokens, defaultRatio);
 
           if (result.changed) {
             channel.info(
               `Chars-per-token ratio calibrated for ${modelProvider.id}: ` +
-              `${prevRatio.toFixed(2)} ${String.fromCharCode(8594)} ${result.newRatio.toFixed(2)} ` +
-              `(based on API usage: ${bodyChars} chars / ${promptTokens} tokens)`,
+                `${prevRatio.toFixed(2)} ${String.fromCharCode(8594)} ${result.newRatio.toFixed(2)} ` +
+                `(based on API usage: ${bodyChars} chars / ${promptTokens} tokens)`,
             );
           }
         } catch (err) {
@@ -248,7 +248,9 @@ export class Adapter implements vscode.LanguageModelChatProvider {
   ): Promise<number> {
     const { modelId } = this.resolveModelIdentity(modelInfo.id);
     const entry = modelById.get(modelId);
-    const defaultRatio = entry ? (resolveTrait(entry, 'tokenRatio') ?? DEFAULT_CHARS_PER_TOKEN) : DEFAULT_CHARS_PER_TOKEN;
+    const defaultRatio = entry
+      ? (resolveTrait(entry, 'tokenRatio') ?? DEFAULT_CHARS_PER_TOKEN)
+      : DEFAULT_CHARS_PER_TOKEN;
     const charsPerToken = getCalibratedRatio(entry?.provider.id ?? '', defaultRatio);
 
     return estimateTokens(content, charsPerToken);

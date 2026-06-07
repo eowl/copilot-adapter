@@ -99,7 +99,7 @@ function resolveThinking(
 ): string {
   const mark = readMarkerFromMessage(msg);
   if (mark?.valid && mark.reasoningText) return mark.reasoningText;
-  
+
   return liveThinking;
 }
 

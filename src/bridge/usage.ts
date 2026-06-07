@@ -42,7 +42,11 @@ export function applyUsageSchema(
 }
 
 /** Build a concise one-line usage summary for logging. */
-export function buildUsageLog(modelApiId: string, usage: UsagePayload, promptChars?: number): string {
+export function buildUsageLog(
+  modelApiId: string,
+  usage: UsagePayload,
+  promptChars?: number,
+): string {
   const segments: string[] = [`model: ${modelApiId}`];
 
   const tokenSegments: string[] = [];
@@ -55,15 +59,16 @@ export function buildUsageLog(modelApiId: string, usage: UsagePayload, promptCha
 
   const cacheSegments: string[] = [];
   if (usage.prompt_tokens_details) {
-    let { cached_tokens: hit = 0, cache_miss: miss = 0 } = usage.prompt_tokens_details;
+    const { cached_tokens: hit = 0, cache_miss: miss = 0 } = usage.prompt_tokens_details;
+    let derivedMiss = miss;
     // Derive cache_miss from prompt_tokens - hit when provider doesn't report it
     if (miss === 0 && hit >= 0 && usage.prompt_tokens > hit) {
-      miss = usage.prompt_tokens - hit;
+      derivedMiss = usage.prompt_tokens - hit;
     }
     cacheSegments.push(`hit=${hit}`);
-    if (miss > 0 || hit > 0) cacheSegments.push(`miss=${miss}`);
-    if (hit + miss > 0) {
-      const rate = Math.round((hit / (hit + miss)) * 100);
+    if (derivedMiss > 0 || hit > 0) cacheSegments.push(`miss=${derivedMiss}`);
+    if (hit + derivedMiss > 0) {
+      const rate = Math.round((hit / (hit + derivedMiss)) * 100);
       cacheSegments.push(`rate=${rate}%`);
     }
   }

@@ -3,7 +3,6 @@ import { Settings } from '../settings';
 
 export const DEFAULT_CHARS_PER_TOKEN = 4.0;
 
-/** Minimum relative change required to update a calibrated ratio (10%). */
 export const CALIBRATION_THRESHOLD = 0.1;
 
 const MARKER_MIME = 'stateful_marker';
@@ -79,7 +78,6 @@ export function estimatePartChars(part: unknown): number {
   return 0;
 }
 
-
 /**
  * Estimate the token count for a VS Code chat message or plain string.
  * Uses a chars-per-token ratio that is calibrated over time from actual API usage.
@@ -113,7 +111,6 @@ export function estimateTokens(
 
   return Math.ceil(chars / charsPerToken) + bonusTokens;
 }
-
 
 export function refineRatio(
   totalRequestChars: number,
@@ -187,4 +184,3 @@ function isThinkingPart(part: unknown): boolean {
     part instanceof vscode.LanguageModelThinkingPart
   );
 }
-
