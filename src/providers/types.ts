@@ -98,7 +98,7 @@ export interface ThinkingConfig {
   readonly options: readonly ThinkingOption[];
 }
 
-export interface ModelItemJson extends Partial<
+export interface ModelItemConfig extends Partial<
   Omit<
     ModelItem,
     | 'requestExtras'
