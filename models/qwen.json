@@ -19,8 +19,8 @@
       "apiId": "deepseek-v4-pro",
       "family": "deepseek",
       "version": "4",
-      "maxInputTokens": 800000,
-      "maxOutputTokens": 400000,
+      "maxInputTokens": 616000,
+      "maxOutputTokens": 384000,
       "detailKey": "model.deepseek-v4-pro.detail",
       "ability": { "maxTools": 128, "imageInput": false, "reasoning": true }
     }
