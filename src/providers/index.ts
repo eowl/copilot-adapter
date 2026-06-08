@@ -3,7 +3,7 @@ import { MINIMAX, MINIMAX_ENDPOINTS } from './minimax';
 import { MOONSHOT, MOONSHOT_ENDPOINTS } from './moonshot';
 import { QWEN, QWEN_ENDPOINTS } from './qwen';
 import { ZHIPU, ZHIPU_ENDPOINTS } from './bigmodel';
-import { composeModelProvider } from './utils';
+import { composeModelProvider, modelKey } from './utils';
 import type { ModelItem, ModelProvider, ModelEndpoint } from './types';
 
 export { DEEPSEEK, MINIMAX, MOONSHOT, QWEN, ZHIPU };
@@ -22,11 +22,6 @@ export const providerById = new Map<string, ModelProvider>(ALL_PROVIDERS.map((mp
 export const endpointById = new Map<string, ModelEndpoint>(
   ALL_PROVIDERS.flatMap((mp) => mp.endpoints ?? []).map((me) => [me.key, me]),
 );
-
-/** Build the provider-qualified unique key for a model. */
-function modelKey(mi: ModelItem): string {
-  return `${mi.id}-${mi.provider.id}`;
-}
 
 export const ALL_MODELS: readonly ModelItem[] = (() => {
   const seen = new Set<string>();

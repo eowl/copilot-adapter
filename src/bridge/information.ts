@@ -1,5 +1,6 @@
 import vscode from 'vscode';
 import { t } from '../nls';
+import { modelKey } from '../providers/utils';
 import type { ModelItem } from '../providers/types';
 
 /** Extended chat model information returned to VS Code. */
@@ -26,13 +27,12 @@ export function buildChatInfo(
   const notConfigured = !hasKey;
   const detail = t(modelItem.detailKey);
 
-  const qualifiedId = `${modelItem.id}-${modelProvider.id}`;
+  const qualifiedId = modelKey(modelItem);
   const infoId = idPrefix ? `${idPrefix}::${qualifiedId}` : qualifiedId;
-  const suffix = idPrefix ? '\u200B'.repeat(Number(idPrefix) || 1) : '';
   const info = {
     id: infoId,
-    name: `${modelItem.label}${suffix}`,
-    family: `${modelItem.family}${suffix}`,
+    name: modelItem.label,
+    family: modelItem.family,
     version: modelItem.version,
     maxInputTokens: modelItem.maxInputTokens,
     maxOutputTokens: modelItem.maxOutputTokens,

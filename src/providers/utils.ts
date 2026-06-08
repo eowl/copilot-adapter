@@ -1,6 +1,13 @@
 import { Settings } from '../settings';
 import type { ApiTraits, ModelItem, ModelProvider, ModelEndpoint } from './types';
 
+/** Build the provider- and endpoint-qualified unique key for a model. */
+export function modelKey(mi: ModelItem): string {
+  const ep = mi.endpoint?.key ?? '';
+  
+  return `${mi.id}-${mi.provider.id}${ep ? `-${ep}` : ''}`;
+}
+
 export function resolveTrait<K extends keyof ApiTraits>(
   modelItem: ModelItem,
   key: K,
