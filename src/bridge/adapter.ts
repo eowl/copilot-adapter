@@ -177,9 +177,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     );
     if (Settings.metaEnabled()) {
       channel.info(`Model: id=${model.id} | apiId=${model.apiId}`);
-      channel.info(
-        `Endpoint: ${getEndpoint(modelProvider, secrets.apiEndpoint)} | Key: ${resolvedKey.slice(0, 6)}...`,
-      );
+      channel.info(`Endpoint: ${getEndpoint(modelProvider, secrets.apiEndpoint)}`);
     }
 
     const apiUrl = getEndpoint(modelProvider, secrets.apiEndpoint);
