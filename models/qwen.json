@@ -22,7 +22,7 @@
       "maxInputTokens": 800000,
       "maxOutputTokens": 400000,
       "detailKey": "model.deepseek-v4-pro.detail",
-      "ability": { "maxTools": 128, "acceptsImages": false, "reasoning": true }
+      "ability": { "maxTools": 128, "imageInput": false, "reasoning": true }
     }
   ]
 }

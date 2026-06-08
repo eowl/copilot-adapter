@@ -13,7 +13,8 @@ export interface ContentParser {
 
 interface BaseAbility {
   maxTools?: number;
-  acceptsImages: boolean;
+  imageInput: boolean;
+  imageField?: string;
 }
 
 export interface ReasoningAbility extends BaseAbility {
@@ -75,8 +76,6 @@ export interface ModelItem extends ApiTraits {
   provider: ModelProvider;
   endpoint?: ModelEndpoint;
   maxTokensField?: string;
-
-  imageField?: string;
 
   thinking?: ThinkingConfig;
   contentTag?: string;

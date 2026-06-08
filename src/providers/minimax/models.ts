@@ -21,14 +21,14 @@ const MM_THINKING: ThinkingConfig = {
 
 const MM_ABILITY: ReasoningAbility = {
   maxTools: 64,
-  acceptsImages: false,
+  imageInput: false,
   reasoning: true,
   thinkTag: 'think',
 };
 
 const MM_M3_ABILITY: ReasoningAbility = {
   maxTools: 64,
-  acceptsImages: true,
+  imageInput: true,
   reasoning: true,
   thinkTag: 'think',
 };

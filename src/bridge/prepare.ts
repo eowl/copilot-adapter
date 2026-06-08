@@ -43,7 +43,7 @@ export async function assembleChatReq(ctx: PrepContext): Promise<ReadyReq> {
 
   let processedMessages = ctx.messages;
   let visionText = '';
-  if (!model.ability.acceptsImages) {
+  if (!model.ability.imageInput) {
     const visionResult = await resolveImages(ctx.messages, token, ctx.picker);
     processedMessages = visionResult.messages;
     visionText = visionResult.newVisionText;
@@ -58,8 +58,8 @@ export async function assembleChatReq(ctx: PrepContext): Promise<ReadyReq> {
     thinkingField: modelProvider.thinkingField,
     formatImagePart:
       model.formatImagePart ??
-      (model.ability.acceptsImages
-        ? imagePart(model.imageField ?? DEFAULT_IMAGE_FIELD)
+      (model.ability.imageInput
+        ? imagePart(model.ability.imageField ?? DEFAULT_IMAGE_FIELD)
         : undefined),
   };
 

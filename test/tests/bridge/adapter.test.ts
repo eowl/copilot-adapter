@@ -27,7 +27,7 @@ suite('bridge/adapter multi-group', () => {
         version: '4',
         maxInputTokens: 1000,
         maxOutputTokens: 500,
-        ability: { reasoning: true as const, acceptsImages: false },
+        ability: { reasoning: true as const, imageInput: false },
         detailKey: 'model.deepseek-v4-flash.detail',
         provider: DEEPSEEK,
       };
@@ -47,7 +47,7 @@ suite('bridge/adapter multi-group', () => {
         version: '4',
         maxInputTokens: 1000,
         maxOutputTokens: 500,
-        ability: { reasoning: true as const, acceptsImages: false },
+        ability: { reasoning: true as const, imageInput: false },
         detailKey: 'model.deepseek-v4-flash.detail',
         provider: DEEPSEEK,
       };
@@ -73,7 +73,7 @@ suite('bridge/adapter multi-group', () => {
         version: '4',
         maxInputTokens: 1000,
         maxOutputTokens: 500,
-        ability: { reasoning: true as const, acceptsImages: false },
+        ability: { reasoning: true as const, imageInput: false },
         detailKey: 'model.deepseek-v4-flash.detail',
         provider: DEEPSEEK,
       };
@@ -124,7 +124,7 @@ suite('bridge/adapter multi-group', () => {
         version: '2.6',
         maxInputTokens: 1000,
         maxOutputTokens: 500,
-        ability: { reasoning: true as const, acceptsImages: true },
+        ability: { reasoning: true as const, imageInput: true },
         detailKey: 'model.kimi-k2.6.detail',
         provider: DEEPSEEK,
       };

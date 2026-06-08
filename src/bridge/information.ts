@@ -37,7 +37,7 @@ export function buildChatInfo(
     maxInputTokens: modelItem.maxInputTokens,
     maxOutputTokens: modelItem.maxOutputTokens,
     capabilities: {
-      imageInput: modelItem.ability.acceptsImages || hasVisionProxy,
+      imageInput: modelItem.ability.imageInput || hasVisionProxy,
       toolCalling:
         modelItem.ability.maxTools ?? (modelItem.ability.maxTools === undefined ? true : false),
     },

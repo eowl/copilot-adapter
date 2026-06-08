@@ -21,13 +21,13 @@ const QWEN_THINKING: ThinkingConfig = {
 
 const QWEN_ABILITY: ReasoningAbility = {
   maxTools: 128,
-  acceptsImages: false,
+  imageInput: false,
   reasoning: true,
 };
 
 const QWEN_VISION_ABILITY: ReasoningAbility = {
   maxTools: 128,
-  acceptsImages: true,
+  imageInput: true,
   reasoning: true,
 };
 

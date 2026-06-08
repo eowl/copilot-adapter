@@ -27,7 +27,7 @@ const DS_THINKING: ThinkingConfig = {
 
 const DS_ABILITY: ReasoningAbility = {
   maxTools: 128,
-  acceptsImages: false,
+  imageInput: false,
   reasoning: true,
 };
 

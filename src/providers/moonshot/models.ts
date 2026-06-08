@@ -45,7 +45,7 @@ const MS_K26_THINKING: ThinkingConfig = {
 
 const MS_ABILITY: ReasoningAbility = {
   maxTools: 128,
-  acceptsImages: true,
+  imageInput: true,
   reasoning: true,
 };
 
