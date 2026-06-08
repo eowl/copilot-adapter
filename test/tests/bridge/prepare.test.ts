@@ -9,7 +9,7 @@ import type { ModelProvider } from '../../../src/providers/types';
  *
  *   formatImagePart:
  *     model.formatImagePart ??
- *     (model.ability.acceptsImages ? imagePart(model.imageField ?? 'image_url') : undefined)
+ *     (model.ability.imageInput ? imagePart(model.ability.imageField ?? 'image_url') : undefined)
  *
  * This suite validates the expression behavior without needing the full
  * assembleChatReq dependency tree.
@@ -20,7 +20,7 @@ function resolveFormatImagePart(model: ModelItem):
   | undefined {
   return (
     model.formatImagePart ??
-    (model.ability.acceptsImages ? imagePart(model.imageField ?? 'image_url') : undefined)
+    (model.ability.imageInput ? imagePart(model.ability.imageField ?? 'image_url') : undefined)
   );
 }
 
@@ -33,24 +33,24 @@ const fakeProvider: ModelProvider = {
 
 const VISION_ABILITY: ReasoningAbility = {
   reasoning: true,
-  acceptsImages: true,
+  imageInput: true,
 };
 
 const TEXT_ABILITY: ReasoningAbility = {
   reasoning: true,
-  acceptsImages: false,
+  imageInput: false,
 };
 
 const NON_REASONING_VISION: NonReasoningAbility = {
   reasoning: false,
-  acceptsImages: true,
+  imageInput: true,
 };
 
 const fakeData = new Uint8Array([0x89, 0x50, 0x4e, 0x47]);
 const fakeMime = 'image/png';
 
 suite('bridge/prepare formatImagePart fallback', () => {
-  suite('acceptsImages: true, no explicit formatImagePart', () => {
+  suite('imageInput: true, no explicit formatImagePart', () => {
     test('default imageField → imagePart("image_url")', () => {
       const model: ModelItem = {
         id: 'm1',
@@ -81,10 +81,9 @@ suite('bridge/prepare formatImagePart fallback', () => {
         version: '1',
         maxInputTokens: 1000,
         maxOutputTokens: 500,
-        ability: VISION_ABILITY,
+        ability: { ...VISION_ABILITY, imageField: 'image' },
         detailKey: 'm2.detail',
         provider: fakeProvider,
-        imageField: 'image',
       };
 
       const fn = resolveFormatImagePart(model);
@@ -103,10 +102,9 @@ suite('bridge/prepare formatImagePart fallback', () => {
         version: '1',
         maxInputTokens: 1000,
         maxOutputTokens: 500,
-        ability: VISION_ABILITY,
+        ability: { ...VISION_ABILITY, imageField: 'image_file' },
         detailKey: 'm3.detail',
         provider: fakeProvider,
-        imageField: 'image_file',
       };
 
       const fn = resolveFormatImagePart(model);
@@ -137,7 +135,7 @@ suite('bridge/prepare formatImagePart fallback', () => {
     });
   });
 
-  suite('acceptsImages: false', () => {
+  suite('imageInput: false', () => {
     test('no formatImagePart → undefined', () => {
       const model: ModelItem = {
         id: 'tx1',
@@ -180,7 +178,7 @@ suite('bridge/prepare formatImagePart fallback', () => {
     });
   });
 
-  suite('acceptsImages: true with explicit formatImagePart', () => {
+  suite('imageInput: true with explicit formatImagePart', () => {
     test('explicit function wins over fallback', () => {
       const customFn = (_data: Uint8Array, _mimeType: string) => ({ type: 'explicit' });
       const model: ModelItem = {
@@ -195,7 +193,6 @@ suite('bridge/prepare formatImagePart fallback', () => {
         detailKey: 'ov1.detail',
         provider: fakeProvider,
         formatImagePart: customFn,
-        imageField: 'should_be_ignored',
       };
 
       const fn = resolveFormatImagePart(model);
@@ -215,10 +212,9 @@ suite('bridge/prepare formatImagePart fallback', () => {
         version: '1',
         maxInputTokens: 1000,
         maxOutputTokens: 500,
-        ability: VISION_ABILITY,
+        ability: { ...VISION_ABILITY, imageField: '' },
         detailKey: 'ec1.detail',
         provider: fakeProvider,
-        imageField: '',
       };
 
       const fn = resolveFormatImagePart(model);

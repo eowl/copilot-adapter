@@ -13,7 +13,8 @@ export interface ContentParser {
 
 interface BaseAbility {
   maxTools?: number;
-  acceptsImages: boolean;
+  imageInput: boolean;
+  imageField?: string;
 }
 
 export interface ReasoningAbility extends BaseAbility {
@@ -76,8 +77,6 @@ export interface ModelItem extends ApiTraits {
   endpoint?: ModelEndpoint;
   maxTokensField?: string;
 
-  imageField?: string;
-
   thinking?: ThinkingConfig;
   contentTag?: string;
 
@@ -99,7 +98,7 @@ export interface ThinkingConfig {
   readonly options: readonly ThinkingOption[];
 }
 
-export interface ModelItemJson extends Partial<
+export interface ModelItemConfig extends Partial<
   Omit<
     ModelItem,
     | 'requestExtras'

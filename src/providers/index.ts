@@ -3,7 +3,7 @@ import { DEEPSEEK, DEEPSEEK_ENDPOINTS } from './deepseek';
 import { MINIMAX, MINIMAX_ENDPOINTS } from './minimax';
 import { MOONSHOT, MOONSHOT_ENDPOINTS } from './moonshot';
 import { QWEN, QWEN_ENDPOINTS } from './qwen';
-import { ZHIPU, ZHIPU_ENDPOINTS } from './bigmodel';
+import { ZHIPU, ZHIPU_ENDPOINTS } from './zhipu';
 import { composeModelProvider, modelKey } from './utils';
 import { loadAllJsonModels } from './loader';
 import type { ModelItem, ModelProvider, ModelEndpoint } from './types';

@@ -12,7 +12,7 @@ function makeModel(overrides?: Partial<ModelItem>): ModelItem {
     version: '1',
     maxInputTokens: 1000,
     maxOutputTokens: 1000,
-    ability: { maxTools: 8, acceptsImages: false, reasoning: true },
+    ability: { maxTools: 8, imageInput: false, reasoning: true },
     detailKey: 'model.test.detail',
     provider: { id: 'test', label: 'Test', detailKey: 'p.detail', url: 'https://example.com' },
     ...overrides,

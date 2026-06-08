@@ -18,7 +18,7 @@ function makeModel(maxTools?: number): ModelItem {
     ability: {
       reasoning: false,
       maxTools,
-      acceptsImages: false,
+      imageInput: false,
     },
     detailKey: 'model.test.detail',
     provider: stubProvider,

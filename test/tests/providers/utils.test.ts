@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
 import { composeModelProvider, composeModelEndpoint, getEndpoint, resolveEndpoint, resolveTrait, imagePart } from '../../../src/providers/utils';
 import { DEFAULT_ENDPOINT_URLS } from '../../../src/providers/endpoints';
 import { MINIMAX } from '../../../src/providers/minimax';
-import { ZHIPU } from '../../../src/providers/bigmodel';
+import { ZHIPU } from '../../../src/providers/zhipu';
 import { MOONSHOT } from '../../../src/providers/moonshot';
 import { QWEN } from '../../../src/providers/qwen';
 import { DEEPSEEK } from '../../../src/providers/deepseek';

@@ -21,25 +21,25 @@ const BM_THINKING: ThinkingConfig = {
 
 const BM_REASONING_ABILITY: ReasoningAbility = {
   maxTools: 128,
-  acceptsImages: false,
+  imageInput: false,
   reasoning: true,
 };
 
 const BM_PLAIN_ABILITY: NonReasoningAbility = {
   maxTools: 128,
-  acceptsImages: false,
+  imageInput: false,
   reasoning: false,
 };
 
 const BM_VISION_REASONING_ABILITY: ReasoningAbility = {
   maxTools: 128,
-  acceptsImages: true,
+  imageInput: true,
   reasoning: true,
 };
 
 const BM_VISION_PLAIN_ABILITY: NonReasoningAbility = {
   maxTools: 128,
-  acceptsImages: true,
+  imageInput: true,
   reasoning: false,
 };
 

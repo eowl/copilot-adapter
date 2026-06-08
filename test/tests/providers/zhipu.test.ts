@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import { suite, test } from 'mocha';
-import { ZHIPU, ZP_MODELS } from '../../../src/providers/bigmodel';
+import { ZHIPU, ZP_MODELS } from '../../../src/providers/zhipu';
 
-suite('providers/bigmodel', () => {
+suite('providers/zhipu', () => {
   const thinkingModel = ZP_MODELS.find((m) => m.label === 'GLM-5.1')!;
   const plainModel = ZP_MODELS.find((m) => m.label === 'GLM-4.5-Air')!;
 
@@ -122,7 +122,7 @@ suite('providers/bigmodel', () => {
       ];
       for (const id of visionIds) {
         const m = ZP_MODELS.find((x) => x.id === id)!;
-        assert.equal(m.ability.acceptsImages, true, `${id} acceptsImages`);
+        assert.equal(m.ability.imageInput, true, `${id} imageInput`);
       }
     });
 
@@ -159,7 +159,7 @@ suite('providers/bigmodel', () => {
     });
 
     test('text-only models do not accept images', () => {
-      const textIds = ZP_MODELS.filter((m) => !m.ability.acceptsImages).map((m) => m.id);
+      const textIds = ZP_MODELS.filter((m) => !m.ability.imageInput).map((m) => m.id);
       assert.deepEqual(textIds, [
         'glm-5.1',
         'glm-5',

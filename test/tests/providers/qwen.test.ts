@@ -85,7 +85,7 @@ suite('providers/qwen model.requestExtras()', () => {
 
   test('US-only models do not accept images', () => {
     for (const m of QWEN_US_MODELS) {
-      assert.equal(m.ability.acceptsImages, false, `${m.id} acceptsImages`);
+      assert.equal(m.ability.imageInput, false, `${m.id} imageInput`);
     }
   });
 
@@ -101,7 +101,7 @@ suite('providers/qwen model.requestExtras()', () => {
     test('accept images', () => {
       for (const id of visionIds) {
         const m = QWEN_BASE_MODELS.find((x) => x.id === id)!;
-        assert.equal(m.ability.acceptsImages, true, `${id} acceptsImages`);
+        assert.equal(m.ability.imageInput, true, `${id} imageInput`);
       }
     });
 
@@ -132,7 +132,7 @@ suite('providers/qwen model.requestExtras()', () => {
     test('do NOT accept images', () => {
       for (const id of nonVisionIds) {
         const m = QWEN_BASE_MODELS.find((x) => x.id === id)!;
-        assert.equal(m.ability.acceptsImages, false, `${id} acceptsImages`);
+        assert.equal(m.ability.imageInput, false, `${id} imageInput`);
       }
     });
   });

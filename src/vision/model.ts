@@ -18,7 +18,7 @@ function isVisionCandidate(m: vscode.LanguageModelChat): boolean {
   if (m.vendor.startsWith(OWN_VENDOR_PREFIX)) {
     const own = ALL_MODELS.find((x) => x.id === m.id);
 
-    return own?.ability.acceptsImages === true;
+    return own?.ability.imageInput === true;
   }
 
   const cap = (m as ModelWithCapabilities).capabilities;

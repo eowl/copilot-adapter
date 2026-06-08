@@ -6,7 +6,7 @@ import { ThinkTagParser } from './parsers/tag';
 import type {
   ContentParser,
   ModelItem,
-  ModelItemJson,
+  ModelItemConfig,
   ModelProvider,
   ModelEndpoint,
   ThinkingConfig,
@@ -55,7 +55,7 @@ function buildContentParser(contentTag: string): () => ContentParser {
 }
 
 export function backfillModel(item: ModelItem): void {
-  const jsonLike = item as ModelItemJson;
+  const jsonLike = item as ModelItemConfig;
 
   if (!item.requestExtras && jsonLike.thinking) {
     item.requestExtras = buildRequestExtras(jsonLike.thinking);
@@ -72,7 +72,7 @@ export interface ModelJsonModule {
   readonly providerId: string;
   readonly endpointId: string;
   readonly thinking?: ThinkingConfig;
-  readonly models: readonly ModelItemJson[];
+  readonly models: readonly ModelItemConfig[];
 }
 
 interface Registries {
