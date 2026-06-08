@@ -14,6 +14,7 @@ import {
   estimateTokens,
   getCalibratedRatio,
   calibrateRatio,
+  countMessageChars,
   DEFAULT_CHARS_PER_TOKEN,
 } from './tally';
 import { ApiError } from '../client/error';
@@ -208,19 +209,22 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       const { promptTokens } = await forwardStream(ready, progress, token, session.id);
 
       // Calibrate chars-per-token ratio when API returns real usage.
-      // Use the serialized API body length as ground-truth char count,
-      // since the API tokenizer sees the actual JSON, not the original messages.
+      // Use message character count (same path as estimateTokens) so the calibrated
+      // ratio reflects the actual message-text-to-token relationship. Using the
+      // serialized JSON body would include structural overhead (model, stream, tools,
+      // JSON keys) that inflates the character count and anchors the ratio near 4.0,
+      // preventing calibration from ever triggering.
       if (promptTokens > 0) {
         try {
           const defaultRatio = resolveTrait(model, 'tokenRatio') ?? DEFAULT_CHARS_PER_TOKEN;
-          const bodyChars = JSON.stringify(ready.body).length;
+          const bodyChars = countMessageChars(messages);
           const prevRatio = getCalibratedRatio(modelProvider.id, defaultRatio);
           const result = calibrateRatio(modelProvider.id, bodyChars, promptTokens, defaultRatio);
 
           if (result.changed) {
             channel.info(
               `Chars-per-token ratio calibrated for ${modelProvider.id}: ` +
-                `${prevRatio.toFixed(2)} ${String.fromCharCode(8594)} ${result.newRatio.toFixed(2)} ` +
+                `${prevRatio.toFixed(2)} to ${result.newRatio.toFixed(2)} ` +
                 `(based on API usage: ${bodyChars} chars / ${promptTokens} tokens)`,
             );
           }

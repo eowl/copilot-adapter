@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { suite, test } from 'mocha';
 import { applyUsageSchema, readPath, buildUsageLog } from '../../../src/bridge/usage';
+import { calibrateRatio, getCalibratedRatio, refineRatio, countMessageChars, DEFAULT_CHARS_PER_TOKEN, CALIBRATION_THRESHOLD } from '../../../src/bridge/tally';
 import type { UsagePayload } from '../../../src/bridge/types';
 import type { UsageSchema } from '../../../src/providers/types';
 
