@@ -3,8 +3,8 @@ import { suite, test } from 'mocha';
 import { ZHIPU, ZP_MODELS } from '../../../src/providers/bigmodel';
 
 suite('providers/bigmodel', () => {
-  const thinkingModel = ZP_MODELS.find((m) => m.id === 'glm-5.1')!;
-  const plainModel = ZP_MODELS.find((m) => m.id === 'glm-4.5-air')!;
+  const thinkingModel = ZP_MODELS.find((m) => m.label === 'GLM-5.1')!;
+  const plainModel = ZP_MODELS.find((m) => m.label === 'GLM-4.5-Air')!;
 
   suite('thinking-capable models requestExtras()', () => {
     test('thinking model has thinking config', () => {

@@ -13,14 +13,14 @@ suite('providers/moonshot', () => {
   });
 
   test('K2.5 has 2-value thinking (adaptive / disabled)', () => {
-    const k25 = MS_MODELS.find((m) => m.id === 'kimi-k2.5')!;
+    const k25 = MS_MODELS.find((m) => m.label === 'Kimi K2.5')!;
     assert.ok(k25.thinking !== undefined);
     assert.equal(k25.thinking!.default, 'adaptive');
     assert.equal(k25.thinking!.options.length, 2);
   });
 
   test('K2.6 has 3-value thinking (enabled / enabled_keep / disabled)', () => {
-    const k26 = MS_MODELS.find((m) => m.id === 'kimi-k2.6')! as ModelItem;
+    const k26 = MS_MODELS.find((m) => m.label === 'Kimi K2.6')! as ModelItem;
     assert.ok(k26.thinking !== undefined);
     assert.equal(k26.thinking!.default, 'enabled');
     assert.equal(k26.thinking!.options.length, 3);

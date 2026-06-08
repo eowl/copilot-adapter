@@ -18,7 +18,7 @@ suite('bridge/adapter multi-group', () => {
   });
 
   suite('resolveModelIdentity (private return tested via buildChatInfo round-trip)', () => {
-    test('id without separator returns original id with empty prefix', () => {
+    test('id without separator returns qualified id with empty prefix', () => {
       const model = {
         id: 'deepseek-v4-flash',
         label: 'DeepSeek V4 Flash',
@@ -32,13 +32,13 @@ suite('bridge/adapter multi-group', () => {
         provider: DEEPSEEK,
       };
 
-      // No prefix return id should be unchanged
+      // No prefix → id is qualified with provider suffix
       const info = buildChatInfo(model, true);
-      assert.equal(info.id, 'deepseek-v4-flash');
+      assert.equal(info.id, 'deepseek-v4-flash-deepseek');
       assert.ok(!info.id.includes('::'));
     });
 
-    test('id with prefix "2" encodes as "2::modelId"', () => {
+    test('id with prefix "2" encodes as "2::qualifiedId"', () => {
       const model = {
         id: 'deepseek-v4-flash',
         label: 'DeepSeek V4 Flash',
@@ -53,7 +53,7 @@ suite('bridge/adapter multi-group', () => {
       };
 
       const info = buildChatInfo(model, true, false, '2');
-      assert.equal(info.id, '2::deepseek-v4-flash');
+      assert.equal(info.id, '2::deepseek-v4-flash-deepseek');
 
       // Simulate resolveModelIdentity by splitting manually (same logic)
       const sepIdx = info.id.indexOf('::');
@@ -61,7 +61,7 @@ suite('bridge/adapter multi-group', () => {
       const modelId = info.id.slice(sepIdx + 2);
 
       assert.equal(prefix, '2');
-      assert.equal(modelId, 'deepseek-v4-flash');
+      assert.equal(modelId, 'deepseek-v4-flash-deepseek');
     });
 
     test('multiple groups get distinct prefixes', () => {
@@ -82,9 +82,9 @@ suite('bridge/adapter multi-group', () => {
       const infoGroup2 = buildChatInfo(model, true, false, '2');
       const infoGroup3 = buildChatInfo(model, true, false, '3');
 
-      assert.equal(infoDefault.id, 'deepseek-v4-flash');
-      assert.equal(infoGroup2.id, '2::deepseek-v4-flash');
-      assert.equal(infoGroup3.id, '3::deepseek-v4-flash');
+      assert.equal(infoDefault.id, 'deepseek-v4-flash-deepseek');
+      assert.equal(infoGroup2.id, '2::deepseek-v4-flash-deepseek');
+      assert.equal(infoGroup3.id, '3::deepseek-v4-flash-deepseek');
 
       // All IDs are distinct
       const ids = [infoDefault.id, infoGroup2.id, infoGroup3.id];
@@ -93,26 +93,26 @@ suite('bridge/adapter multi-group', () => {
   });
 
   suite('prefix encoding round-trip for model lookup', () => {
-    test('model with empty prefix can be looked up by original id', () => {
-      const modelId = 'deepseek-v4-flash';
+    test('model with empty prefix can be looked up by qualified id', () => {
+      const modelId = 'deepseek-v4-flash-deepseek';
 
       // Simulate the resolveModelIdentity logic from adapter.ts
       const sepIdx = modelId.indexOf('::');
-      assert.equal(sepIdx, -1); // No separator return default group
+      assert.equal(sepIdx, -1); // No separator → default group
 
       const resolvedModelId = sepIdx === -1 ? modelId : modelId.slice(sepIdx + 2);
-      assert.equal(resolvedModelId, 'deepseek-v4-flash');
+      assert.equal(resolvedModelId, 'deepseek-v4-flash-deepseek');
     });
 
-    test('model with prefix "2" decodes to prefix=2, modelId unchanged', () => {
-      const encodedId = '2::deepseek-v4-flash';
+    test('model with prefix "2" decodes to prefix=2, qualified modelId', () => {
+      const encodedId = '2::deepseek-v4-flash-deepseek';
 
       const sepIdx = encodedId.indexOf('::');
       const prefix = encodedId.slice(0, sepIdx);
       const modelId = encodedId.slice(sepIdx + 2);
 
       assert.equal(prefix, '2');
-      assert.equal(modelId, 'deepseek-v4-flash');
+      assert.equal(modelId, 'deepseek-v4-flash-deepseek');
     });
 
     test('prefix with special group name "Moonshot 2" encodes and decodes correctly', () => {
@@ -131,14 +131,14 @@ suite('bridge/adapter multi-group', () => {
 
       // Build with a group-name-like prefix
       const info = buildChatInfo(model, true, false, '2');
-      const encodedId = info.id; // "2::kimi-k2.6"
+      const encodedId = info.id; // "2::kimi-k2.6-deepseek"
 
       const sepIdx = encodedId.indexOf('::');
       const decodedPrefix = encodedId.slice(0, sepIdx);
       const decodedModelId = encodedId.slice(sepIdx + 2);
 
       assert.equal(decodedPrefix, '2');
-      assert.equal(decodedModelId, 'kimi-k2.6');
+      assert.equal(decodedModelId, 'kimi-k2.6-deepseek');
     });
   });
 });

@@ -43,27 +43,27 @@ suite('bridge/information buildChatInfo', () => {
     restoreNls();
   });
 
-  test('returns model id unchanged when idPrefix is empty', () => {
+  test('returns model id with provider suffix when idPrefix is empty', () => {
     const model = makeTestModel();
     const info = buildChatInfo(model, true);
 
-    assert.equal(info.id, 'test-model');
+    assert.equal(info.id, 'test-model-deepseek');
     assert.equal(info.name, 'Test Model');
     assert.equal(info.family, 'test-family');
   });
 
-  test('prefixes model id with "PREFIX::" when idPrefix is non-empty', () => {
+  test('prefixes qualified model id with "PREFIX::" when idPrefix is non-empty', () => {
     const model = makeTestModel();
     const info = buildChatInfo(model, true, false, '2');
 
-    assert.equal(info.id, '2::test-model');
+    assert.equal(info.id, '2::test-model-deepseek');
   });
 
-  test('prefixes model id with group alias as prefix', () => {
+  test('prefixes qualified model id with group alias as prefix', () => {
     const model = makeTestModel();
     const info = buildChatInfo(model, true, false, 'MyGroup');
 
-    assert.equal(info.id, 'MyGroup::test-model');
+    assert.equal(info.id, 'MyGroup::test-model-deepseek');
   });
 
   test('returns hasKey=true return no warning icon', () => {
@@ -110,23 +110,23 @@ suite('bridge/information buildChatInfo', () => {
     assert.equal(info.capabilities!.toolCalling, 5);
   });
 
-  test('multiple calls with same idPrefix produce distinct ids for different models', () => {
+  test('multiple calls with same idPrefix produce distinct qualified ids for different models', () => {
     const modelA = makeTestModel({ id: 'model-a', label: 'Model A', family: 'family-a' });
     const modelB = makeTestModel({ id: 'model-b', label: 'Model B', family: 'family-b' });
 
     const infoA = buildChatInfo(modelA, true, false, '2');
     const infoB = buildChatInfo(modelB, true, false, '2');
 
-    assert.equal(infoA.id, '2::model-a');
-    assert.equal(infoB.id, '2::model-b');
+    assert.equal(infoA.id, '2::model-a-deepseek');
+    assert.equal(infoB.id, '2::model-b-deepseek');
     assert.notEqual(infoA.id, infoB.id);
   });
 
-  test('idPrefix=empty string preserves original id without separator', () => {
+  test('idPrefix=empty string preserves qualified id without separator', () => {
     const model = makeTestModel({ id: 'some-model' });
     const info = buildChatInfo(model, true, false, '');
 
-    assert.equal(info.id, 'some-model');
+    assert.equal(info.id, 'some-model-deepseek');
     assert.ok(!info.id.includes('::'));
   });
 });

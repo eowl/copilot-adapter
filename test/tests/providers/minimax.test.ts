@@ -30,7 +30,7 @@ suite('providers/minimax model list', () => {
   });
 
   test('first model is minimax-m2', () => {
-    assert.equal(MM_MODELS[0].id, 'minimax-m2');
+    assert.equal(MM_MODELS[0].label, 'MiniMax M2');
   });
 
   test('MINIMAX provider id is "minimax"', () => {
@@ -38,13 +38,13 @@ suite('providers/minimax model list', () => {
   });
 
   test('M2 models have contentTag "think"', () => {
-    const m2 = MM_MODELS.find((m) => m.id === 'minimax-m2')!;
+    const m2 = MM_MODELS.find((m) => m.label === 'MiniMax M2')!;
     assert.equal(m2.contentTag, 'think');
     assert.ok(m2.createContentParser !== undefined);
   });
 
   test('M3 model has thinking config', () => {
-    const m3 = MM_MODELS.find((m) => m.id === 'minimax-m3')!;
+    const m3 = MM_MODELS.find((m) => m.label === 'MiniMax M3')!;
     assert.ok(m3.thinking !== undefined);
     assert.equal(m3.thinking!.default, 'adaptive');
     assert.ok(m3.requestExtras !== undefined);
@@ -52,7 +52,7 @@ suite('providers/minimax model list', () => {
   });
 
   test('M3 model has contentTag "think"', () => {
-    const m3 = MM_MODELS.find((m) => m.id === 'minimax-m3')!;
+    const m3 = MM_MODELS.find((m) => m.label === 'MiniMax M3')!;
     assert.equal(m3.contentTag, 'think');
   });
 });

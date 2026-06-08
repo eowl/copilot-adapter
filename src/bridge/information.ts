@@ -26,7 +26,8 @@ export function buildChatInfo(
   const notConfigured = !hasKey;
   const detail = t(modelItem.detailKey);
 
-  const infoId = idPrefix ? `${idPrefix}::${modelItem.id}` : modelItem.id;
+  const qualifiedId = `${modelItem.id}-${modelProvider.id}`;
+  const infoId = idPrefix ? `${idPrefix}::${qualifiedId}` : qualifiedId;
   const suffix = idPrefix ? '\u200B'.repeat(Number(idPrefix) || 1) : '';
   const info = {
     id: infoId,

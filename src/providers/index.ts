@@ -23,6 +23,11 @@ export const endpointById = new Map<string, ModelEndpoint>(
   ALL_PROVIDERS.flatMap((mp) => mp.endpoints ?? []).map((me) => [me.key, me]),
 );
 
+/** Build the provider-qualified unique key for a model. */
+function modelKey(mi: ModelItem): string {
+  return `${mi.id}-${mi.provider.id}`;
+}
+
 export const ALL_MODELS: readonly ModelItem[] = (() => {
   const seen = new Set<string>();
   const result: ModelItem[] = [];
@@ -33,8 +38,9 @@ export const ALL_MODELS: readonly ModelItem[] = (() => {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const modelsDir = require('node:path').join(__dirname, '..', '..', 'models');
   for (const mi of loadAllJsonModels(modelsDir, { providerById, endpointById })) {
-    if (!seen.has(mi.id)) {
-      seen.add(mi.id);
+    const key = modelKey(mi);
+    if (!seen.has(key)) {
+      seen.add(key);
       result.push(mi);
     }
   }
@@ -42,8 +48,9 @@ export const ALL_MODELS: readonly ModelItem[] = (() => {
   for (const mp of ALL_PROVIDERS) {
     for (const me of mp.endpoints ?? []) {
       for (const mi of me.models ?? []) {
-        if (!seen.has(mi.id)) {
-          seen.add(mi.id);
+        const key = modelKey(mi);
+        if (!seen.has(key)) {
+          seen.add(key);
           result.push(mi);
         }
       }
@@ -53,4 +60,4 @@ export const ALL_MODELS: readonly ModelItem[] = (() => {
   return result;
 })();
 
-export const modelById = new Map<string, ModelItem>(ALL_MODELS.map((mi) => [mi.id, mi]));
+export const modelById = new Map<string, ModelItem>(ALL_MODELS.map((mi) => [modelKey(mi), mi]));
