@@ -7,6 +7,15 @@ suite('providers/bigmodel', () => {
   const plainModel = ZP_MODELS.find((m) => m.id === 'glm-4.5-air')!;
 
   suite('thinking-capable models requestExtras()', () => {
+    test('thinking model has thinking config', () => {
+      assert.ok(thinkingModel.thinking !== undefined);
+      assert.equal(thinkingModel.thinking!.default, 'adaptive');
+    });
+
+    test('plain model has no thinking config', () => {
+      assert.equal(plainModel.thinking, undefined);
+    });
+
     const requestExtras = thinkingModel.requestExtras!;
 
     test('thinkingMode "disabled": thinking type disabled', () => {

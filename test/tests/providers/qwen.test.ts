@@ -1,9 +1,17 @@
 import assert from 'node:assert/strict';
 import { suite, test } from 'mocha';
 import { QWEN, QWEN_BASE_MODELS, QWEN_US_MODELS } from '../../../src/providers/qwen';
+import type { ModelItem } from '../../../src/providers/types';
 
 suite('providers/qwen model.requestExtras()', () => {
-  const requestExtras = QWEN_BASE_MODELS[0].requestExtras!;
+  const model = QWEN_BASE_MODELS[0] as ModelItem;
+  const requestExtras = model.requestExtras!;
+
+  test('model has thinking config', () => {
+    assert.ok(model.thinking !== undefined);
+    assert.equal(model.thinking!.default, 'adaptive');
+    assert.equal(model.thinking!.options.length, 2);
+  });
 
   test('thinkingMode "disabled": enable_thinking false', () => {
     const result = requestExtras({ thinkingMode: 'disabled' });

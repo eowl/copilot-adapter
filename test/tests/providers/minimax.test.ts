@@ -36,4 +36,23 @@ suite('providers/minimax model list', () => {
   test('MINIMAX provider id is "minimax"', () => {
     assert.equal(MINIMAX.id, 'minimax');
   });
+
+  test('M2 models have contentTag "think"', () => {
+    const m2 = MM_MODELS.find((m) => m.id === 'minimax-m2')!;
+    assert.equal(m2.contentTag, 'think');
+    assert.ok(m2.createContentParser !== undefined);
+  });
+
+  test('M3 model has thinking config', () => {
+    const m3 = MM_MODELS.find((m) => m.id === 'minimax-m3')!;
+    assert.ok(m3.thinking !== undefined);
+    assert.equal(m3.thinking!.default, 'adaptive');
+    assert.ok(m3.requestExtras !== undefined);
+    assert.ok(m3.configSchema !== undefined);
+  });
+
+  test('M3 model has contentTag "think"', () => {
+    const m3 = MM_MODELS.find((m) => m.id === 'minimax-m3')!;
+    assert.equal(m3.contentTag, 'think');
+  });
 });

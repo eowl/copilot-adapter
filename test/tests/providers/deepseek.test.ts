@@ -1,9 +1,23 @@
 import assert from 'node:assert/strict';
 import { suite, test } from 'mocha';
 import { DEEPSEEK, DS_MODELS } from '../../../src/providers/deepseek';
+import type { ModelItem } from '../../../src/providers/types';
 
 suite('providers/deepseek model.requestExtras()', () => {
-  const requestExtras = DS_MODELS[0].requestExtras!;
+  const model = DS_MODELS[0] as ModelItem;
+  const requestExtras = model.requestExtras!;
+
+  test('model has thinking config with 3 options', () => {
+    assert.ok(model.thinking !== undefined);
+    assert.equal(model.thinking!.default, 'high');
+    assert.equal(model.thinking!.options.length, 3);
+  });
+
+  test('each thinking option has requestFields', () => {
+    for (const opt of model.thinking!.options) {
+      assert.ok(opt.requestFields !== undefined, `option ${opt.value} missing requestFields`);
+    }
+  });
 
   test('effort "none": thinking disabled', () => {
     const result = requestExtras({ thinkingMode: 'none' });

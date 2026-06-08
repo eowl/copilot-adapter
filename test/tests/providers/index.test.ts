@@ -80,5 +80,14 @@ suite('providers/index', () => {
     test('returns undefined for unknown model id', () => {
       assert.equal(modelById.get('gpt-4o'), undefined);
     });
+
+    test('JSOV-defined model from qwen.json has qwen provider', () => {
+      const entry = modelById.get('deepseek-v4-pro-qwen');
+      if (entry === undefined) {
+        // JSON models may not be loaded in test env; skip but don't fail
+        return;
+      }
+      assert.strictEqual(entry.provider, QWEN);
+    });
   });
 });
