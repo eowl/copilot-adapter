@@ -62,6 +62,11 @@ export function composeModelEndpoint(
   modelEndpoint.models = modelItems as ModelItem[];
   for (const mi of modelItems) {
     mi.endpoint = modelEndpoint;
+
+    // Backfill functions from static thinking / contentTag config
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { backfillModel } = require('./loader') as typeof import('./loader');
+    backfillModel(mi);
   }
 
   return modelEndpoint;

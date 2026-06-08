@@ -16,7 +16,7 @@ function buildRequestExtras(
   const defaultFields = defaultOpt?.requestFields ?? {};
 
   return (modelConfig) => {
-    const selectedValue = modelConfig?.[thinking.field];
+    const selectedValue = modelConfig?.thinkingMode;
     if (typeof selectedValue !== 'string') return { ...defaultFields };
     const opt = thinking.options.find((o) => o.value === selectedValue);
     return { ...(opt?.requestFields ?? defaultFields) };
@@ -27,12 +27,12 @@ function buildConfigSchema(thinking: ThinkingConfig): () => Record<string, unkno
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const { t } = require('../nls') as typeof import('../nls');
   const enums = thinking.options.map((o) => o.value);
-  const labels = thinking.options.map((o) => t(o.labelKey));
-  const hints = thinking.options.map((o) => t(o.hintKey));
+  const labels = thinking.options.map((o) => t(o.label) || o.label);
+  const hints = thinking.options.map((o) => t(o.hint) || o.hint);
 
   const schema = {
     properties: {
-      [thinking.field]: {
+      thinkingMode: {
         type: 'string',
         title: t('think.label'),
         enum: enums,
@@ -52,6 +52,20 @@ function buildContentParser(contentTag: string): () => ContentParser {
   const { ThinkTagParser } = require('./parsers/tag') as typeof import('./parsers/tag');
   const parser = new ThinkTagParser(contentTag);
   return () => parser;
+}
+
+export function backfillModel(item: ModelItem): void {
+  const jsonLike = item as ModelItemJson;
+
+  if (!item.requestExtras && jsonLike.thinking) {
+    item.requestExtras = buildRequestExtras(jsonLike.thinking);
+  }
+  if (!item.configSchema && jsonLike.thinking) {
+    item.configSchema = buildConfigSchema(jsonLike.thinking);
+  }
+  if (!item.createContentParser && jsonLike.contentTag) {
+    item.createContentParser = buildContentParser(jsonLike.contentTag);
+  }
 }
 
 export interface ModelJsonModule {
@@ -96,13 +110,7 @@ export function loadModelsFromJson(module: ModelJsonModule, reg: Registries): Mo
       endpoint: targetEndpoint,
     } as ModelItem;
 
-    if (effectiveThinking) {
-      item.requestExtras = buildRequestExtras(effectiveThinking);
-      item.configSchema = buildConfigSchema(effectiveThinking);
-    }
-    if (raw.contentTag) {
-      item.createContentParser = buildContentParser(raw.contentTag);
-    }
+    backfillModel(item);
 
     return item;
   });

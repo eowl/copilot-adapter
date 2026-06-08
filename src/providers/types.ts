@@ -78,6 +78,9 @@ export interface ModelItem extends ApiTraits {
 
   imageField?: string;
 
+  thinking?: ThinkingConfig;
+  contentTag?: string;
+
   requestExtras?(modelConfig: Record<string, unknown> | undefined): Record<string, unknown>;
   configSchema?(): Record<string, unknown> | undefined;
   createContentParser?(): ContentParser | undefined;
@@ -86,13 +89,12 @@ export interface ModelItem extends ApiTraits {
 
 export interface ThinkingOption {
   readonly value: string;
-  readonly labelKey: string;
-  readonly hintKey: string;
+  readonly label: string;
+  readonly hint: string;
   readonly requestFields?: Record<string, unknown>;
 }
 
 export interface ThinkingConfig {
-  readonly field: string;
   readonly default: string;
   readonly options: readonly ThinkingOption[];
 }

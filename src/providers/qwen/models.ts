@@ -1,32 +1,15 @@
-import { t } from '../../nls';
-import type { ModelItem, ReasoningAbility } from '../types';
+import type { ModelItem, ReasoningAbility, ThinkingConfig } from '../types';
 import { QWEN } from './provider';
 
-function qwenRequestExtras(
-  modelConfig: Record<string, unknown> | undefined,
-): Record<string, unknown> {
-  if (modelConfig?.thinkingMode === 'disabled') {
-    return { enable_thinking: false };
-  }
-
-  return { enable_thinking: true };
-}
-
-function qwenConfigSchema(): Record<string, unknown> {
-  return {
-    properties: {
-      thinkingMode: {
-        type: 'string',
-        title: t('think.label'),
-        enum: ['adaptive', 'disabled'],
-        enumItemLabels: [t('think.adaptive'), t('think.none')],
-        enumDescriptions: [t('think.adaptive.hint'), t('think.none.hint')],
-        default: 'adaptive',
-        group: 'navigation',
-      },
-    },
-  } as const;
-}
+const QWEN_THINKING: ThinkingConfig = {
+  default: 'adaptive',
+  options: [
+    { value: 'adaptive', label: 'think.adaptive', hint: 'think.adaptive.hint',
+      requestFields: { enable_thinking: true } },
+    { value: 'disabled', label: 'think.none', hint: 'think.none.hint',
+      requestFields: { enable_thinking: false } },
+  ],
+};
 
 const QWEN_ABILITY: ReasoningAbility = {
   maxTools: 128,
@@ -45,8 +28,7 @@ const QWEN_BASE = {
   maxTokensField: 'max_completion_tokens',
   ability: QWEN_ABILITY,
   provider: QWEN,
-  requestExtras: qwenRequestExtras,
-  configSchema: qwenConfigSchema
+  thinking: QWEN_THINKING,
 };
 
 const QWEN_VISION_BASE = {
@@ -54,8 +36,7 @@ const QWEN_VISION_BASE = {
   maxTokensField: 'max_completion_tokens',
   ability: QWEN_VISION_ABILITY,
   provider: QWEN,
-  requestExtras: qwenRequestExtras,
-  configSchema: qwenConfigSchema,
+  thinking: QWEN_THINKING,
 };
 
 export const QWEN_BASE_MODELS: readonly ModelItem[] = [

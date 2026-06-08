@@ -2,14 +2,13 @@
   "providerId": "qwen",
   "endpointKey": "cn",
   "thinking": {
-    "field": "reasoningEffort",
     "default": "high",
     "options": [
-      { "value": "high", "labelKey": "think.high", "hintKey": "think.high.hint",
+      { "value": "high", "label": "think.high", "hint": "think.high.hint",
         "requestFields": { "thinking": { "type": "enabled" }, "reasoning_effort": "high" } },
-      { "value": "max",  "labelKey": "think.max",  "hintKey": "think.max.hint",
+      { "value": "max",  "label": "think.max",  "hint": "think.max.hint",
         "requestFields": { "thinking": { "type": "enabled" }, "reasoning_effort": "max" } },
-      { "value": "none", "labelKey": "think.none", "hintKey": "think.none.hint",
+      { "value": "none", "label": "think.none", "hint": "think.none.hint",
         "requestFields": { "thinking": { "type": "disabled" } } }
     ]
   },

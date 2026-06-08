@@ -6,12 +6,12 @@ suite('providers/deepseek model.requestExtras()', () => {
   const requestExtras = DS_MODELS[0].requestExtras!;
 
   test('effort "none": thinking disabled', () => {
-    const result = requestExtras({ reasoningEffort: 'none' });
+    const result = requestExtras({ thinkingMode: 'none' });
     assert.deepEqual(result, { thinking: { type: 'disabled' } });
   });
 
   test('effort "high": thinking enabled with high', () => {
-    const result = requestExtras({ reasoningEffort: 'high' });
+    const result = requestExtras({ thinkingMode: 'high' });
     assert.deepEqual(result, {
       thinking: { type: 'enabled' },
       reasoning_effort: 'high',
@@ -19,7 +19,7 @@ suite('providers/deepseek model.requestExtras()', () => {
   });
 
   test('effort "max": thinking enabled with max', () => {
-    const result = requestExtras({ reasoningEffort: 'max' });
+    const result = requestExtras({ thinkingMode: 'max' });
     assert.deepEqual(result, {
       thinking: { type: 'enabled' },
       reasoning_effort: 'max',
@@ -27,7 +27,7 @@ suite('providers/deepseek model.requestExtras()', () => {
   });
 
   test('unknown effort value defaults to "high"', () => {
-    const result = requestExtras({ reasoningEffort: 'medium' });
+    const result = requestExtras({ thinkingMode: 'medium' });
     assert.deepEqual(result, {
       thinking: { type: 'enabled' },
       reasoning_effort: 'high',

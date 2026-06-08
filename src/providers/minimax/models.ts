@@ -1,37 +1,15 @@
-import { t } from '../../nls';
-import type { ContentParser, ModelItem, ReasoningAbility } from '../types';
-import { ThinkTagParser } from '../parsers/tag';
+import type { ModelItem, ReasoningAbility, ThinkingConfig } from '../types';
 import { MINIMAX } from './provider';
 
-function mmCreateContentParser(): ContentParser {
-  return new ThinkTagParser('think');
-}
-
-function m3RequestExtras(
-  modelConfig: Record<string, unknown> | undefined,
-): Record<string, unknown> {
-  if (modelConfig?.thinkingMode === 'disabled') {
-    return { thinking: { type: 'disabled' } };
-  }
-
-  return {};
-}
-
-function m3ConfigSchema(): Record<string, unknown> {
-  return {
-    properties: {
-      thinkingMode: {
-        type: 'string',
-        title: t('think.label'),
-        enum: ['adaptive', 'disabled'],
-        enumItemLabels: [t('think.adaptive'), t('think.none')],
-        enumDescriptions: [t('think.adaptive.hint'), t('think.none.hint')],
-        default: 'adaptive',
-        group: 'navigation',
-      },
-    },
-  } as const;
-}
+const MM_THINKING: ThinkingConfig = {
+  default: 'adaptive',
+  options: [
+    { value: 'adaptive', label: 'think.adaptive', hint: 'think.adaptive.hint',
+      requestFields: { thinking: { type: 'enabled' } } },
+    { value: 'disabled', label: 'think.none', hint: 'think.none.hint',
+      requestFields: { thinking: { type: 'disabled' } } },
+  ],
+};
 
 const MM_ABILITY: ReasoningAbility = {
   maxTools: 64,
@@ -53,7 +31,7 @@ const MM_M2 = {
   maxOutputTokens: 196_608,
   ability: MM_ABILITY,
   provider: MINIMAX,
-  createContentParser: mmCreateContentParser,
+  contentTag: 'think',
 };
 
 export const MM_MODELS: readonly ModelItem[] = [
@@ -114,19 +92,18 @@ export const MM_MODELS: readonly ModelItem[] = [
     detailKey: 'model.minimax-m2.7-highspeed.detail',
   },
   {
+    family: 'minimax' as const,
     id: 'minimax-m3',
     label: 'MiniMax M3',
     maxTokensField: 'max_completion_tokens',
     apiId: 'MiniMax-M3',
-    family: 'minimax',
     version: '3',
     maxInputTokens: 1_000_000,
     maxOutputTokens: 40960,
     ability: MM_M3_ABILITY,
     detailKey: 'model.minimax-m3.detail',
     provider: MINIMAX,
-    requestExtras: m3RequestExtras,
-    configSchema: m3ConfigSchema,
-    createContentParser: mmCreateContentParser,
+    thinking: MM_THINKING,
+    contentTag: 'think',
   },
 ];
