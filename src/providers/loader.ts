@@ -1,5 +1,8 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
+import { channel } from '../logger';
+import { t } from '../nls';
+import { ThinkTagParser } from './parsers/tag';
 import type {
   ContentParser,
   ModelItem,
@@ -19,13 +22,12 @@ function buildRequestExtras(
     const selectedValue = modelConfig?.thinkingMode;
     if (typeof selectedValue !== 'string') return { ...defaultFields };
     const opt = thinking.options.find((o) => o.value === selectedValue);
+
     return { ...(opt?.requestFields ?? defaultFields) };
   };
 }
 
 function buildConfigSchema(thinking: ThinkingConfig): () => Record<string, unknown> {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { t } = require('../nls') as typeof import('../nls');
   const enums = thinking.options.map((o) => o.value);
   const labels = thinking.options.map((o) => t(o.label) || o.label);
   const hints = thinking.options.map((o) => t(o.hint) || o.hint);
@@ -48,8 +50,6 @@ function buildConfigSchema(thinking: ThinkingConfig): () => Record<string, unkno
 }
 
 function buildContentParser(contentTag: string): () => ContentParser {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { ThinkTagParser } = require('./parsers/tag') as typeof import('./parsers/tag');
   const parser = new ThinkTagParser(contentTag);
   return () => parser;
 }
@@ -140,8 +140,6 @@ export function loadAllJsonModels(modelsDir: string, reg: Registries): ModelItem
       // eslint-disable-next-line @typescript-eslint/no-require-imports
       module = require(filePath) as ModelJsonModule;
     } catch (err) {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      const { channel } = require('../logger') as typeof import('../logger');
       channel.warn(`Failed to load JSON model file ${filePath}:`, err);
       continue;
     }
@@ -149,8 +147,6 @@ export function loadAllJsonModels(modelsDir: string, reg: Registries): ModelItem
     try {
       result.push(...loadModelsFromJson(module, reg));
     } catch (err) {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      const { channel } = require('../logger') as typeof import('../logger');
       channel.warn(`Failed to parse JSON model file ${filePath}:`, err);
     }
   }

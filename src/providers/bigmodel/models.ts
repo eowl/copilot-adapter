@@ -4,10 +4,18 @@ import { ZHIPU } from './provider';
 const BM_THINKING: ThinkingConfig = {
   default: 'adaptive',
   options: [
-    { value: 'adaptive', label: 'think.adaptive', hint: 'think.adaptive.hint',
-      requestFields: { thinking: { type: 'enabled' } } },
-    { value: 'disabled', label: 'think.none', hint: 'think.none.hint',
-      requestFields: { thinking: { type: 'disabled' } } },
+    {
+      value: 'adaptive',
+      label: 'think.adaptive',
+      hint: 'think.adaptive.hint',
+      requestFields: { thinking: { type: 'enabled' } },
+    },
+    {
+      value: 'disabled',
+      label: 'think.none',
+      hint: 'think.none.hint',
+      requestFields: { thinking: { type: 'disabled' } },
+    },
   ],
 };
 

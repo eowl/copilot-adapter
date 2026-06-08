@@ -4,12 +4,24 @@ import { DEEPSEEK } from './provider';
 const DS_THINKING: ThinkingConfig = {
   default: 'high',
   options: [
-    { value: 'high', label: 'think.high', hint: 'think.high.hint',
-      requestFields: { thinking: { type: 'enabled' }, reasoning_effort: 'high' } },
-    { value: 'max',  label: 'think.max',  hint: 'think.max.hint',
-      requestFields: { thinking: { type: 'enabled' }, reasoning_effort: 'max' } },
-    { value: 'none', label: 'think.none', hint: 'think.none.hint',
-      requestFields: { thinking: { type: 'disabled' } } },
+    {
+      value: 'high',
+      label: 'think.high',
+      hint: 'think.high.hint',
+      requestFields: { thinking: { type: 'enabled' }, reasoning_effort: 'high' },
+    },
+    {
+      value: 'max',
+      label: 'think.max',
+      hint: 'think.max.hint',
+      requestFields: { thinking: { type: 'enabled' }, reasoning_effort: 'max' },
+    },
+    {
+      value: 'none',
+      label: 'think.none',
+      hint: 'think.none.hint',
+      requestFields: { thinking: { type: 'disabled' } },
+    },
   ],
 };
 

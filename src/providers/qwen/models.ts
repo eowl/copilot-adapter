@@ -4,10 +4,18 @@ import { QWEN } from './provider';
 const QWEN_THINKING: ThinkingConfig = {
   default: 'adaptive',
   options: [
-    { value: 'adaptive', label: 'think.adaptive', hint: 'think.adaptive.hint',
-      requestFields: { enable_thinking: true } },
-    { value: 'disabled', label: 'think.none', hint: 'think.none.hint',
-      requestFields: { enable_thinking: false } },
+    {
+      value: 'adaptive',
+      label: 'think.adaptive',
+      hint: 'think.adaptive.hint',
+      requestFields: { enable_thinking: true },
+    },
+    {
+      value: 'disabled',
+      label: 'think.none',
+      hint: 'think.none.hint',
+      requestFields: { enable_thinking: false },
+    },
   ],
 };
 

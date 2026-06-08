@@ -1,9 +1,11 @@
+import path from 'node:path';
 import { DEEPSEEK, DEEPSEEK_ENDPOINTS } from './deepseek';
 import { MINIMAX, MINIMAX_ENDPOINTS } from './minimax';
 import { MOONSHOT, MOONSHOT_ENDPOINTS } from './moonshot';
 import { QWEN, QWEN_ENDPOINTS } from './qwen';
 import { ZHIPU, ZHIPU_ENDPOINTS } from './bigmodel';
 import { composeModelProvider, modelKey } from './utils';
+import { loadAllJsonModels } from './loader';
 import type { ModelItem, ModelProvider, ModelEndpoint } from './types';
 
 export { DEEPSEEK, MINIMAX, MOONSHOT, QWEN, ZHIPU };
@@ -27,11 +29,8 @@ export const ALL_MODELS: readonly ModelItem[] = (() => {
   const seen = new Set<string>();
   const result: ModelItem[] = [];
 
-  // JSON models first (lazy-loaded to avoid module-init issues)
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { loadAllJsonModels } = require('./loader') as typeof import('./loader');
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const modelsDir = require('node:path').join(__dirname, '..', '..', 'models');
+  // JSON models first
+  const modelsDir = path.join(__dirname, '..', '..', 'models');
   for (const mi of loadAllJsonModels(modelsDir, { providerById, endpointById })) {
     const key = modelKey(mi);
     if (!seen.has(key)) {

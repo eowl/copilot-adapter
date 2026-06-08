@@ -99,7 +99,17 @@ export interface ThinkingConfig {
   readonly options: readonly ThinkingOption[];
 }
 
-export interface ModelItemJson extends Partial<Omit<ModelItem, 'requestExtras' | 'configSchema' | 'createContentParser' | 'formatImagePart' | 'provider' | 'endpoint'>> {
+export interface ModelItemJson extends Partial<
+  Omit<
+    ModelItem,
+    | 'requestExtras'
+    | 'configSchema'
+    | 'createContentParser'
+    | 'formatImagePart'
+    | 'provider'
+    | 'endpoint'
+  >
+> {
   readonly providerId?: string;
   readonly endpointId?: string;
   readonly thinking?: ThinkingConfig;

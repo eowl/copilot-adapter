@@ -4,22 +4,42 @@ import { MOONSHOT } from './provider';
 const MS_THINKING: ThinkingConfig = {
   default: 'adaptive',
   options: [
-    { value: 'adaptive', label: 'think.adaptive', hint: 'think.adaptive.hint',
-      requestFields: { thinking: { type: 'enabled' } } },
-    { value: 'disabled', label: 'think.none', hint: 'think.none.hint',
-      requestFields: { thinking: { type: 'disabled' } } },
+    {
+      value: 'adaptive',
+      label: 'think.adaptive',
+      hint: 'think.adaptive.hint',
+      requestFields: { thinking: { type: 'enabled' } },
+    },
+    {
+      value: 'disabled',
+      label: 'think.none',
+      hint: 'think.none.hint',
+      requestFields: { thinking: { type: 'disabled' } },
+    },
   ],
 };
 
 const MS_K26_THINKING: ThinkingConfig = {
   default: 'enabled',
   options: [
-    { value: 'enabled', label: 'think.enabled', hint: 'think.enabled.hint',
-      requestFields: { thinking: { type: 'enabled' } } },
-    { value: 'enabled_keep', label: 'think.enabledKeep', hint: 'think.enabledKeep.hint',
-      requestFields: { thinking: { type: 'enabled', keep: 'all' } } },
-    { value: 'disabled', label: 'think.disabled', hint: 'think.disabled.hint',
-      requestFields: { thinking: { type: 'disabled' } } },
+    {
+      value: 'enabled',
+      label: 'think.enabled',
+      hint: 'think.enabled.hint',
+      requestFields: { thinking: { type: 'enabled' } },
+    },
+    {
+      value: 'enabled_keep',
+      label: 'think.enabledKeep',
+      hint: 'think.enabledKeep.hint',
+      requestFields: { thinking: { type: 'enabled', keep: 'all' } },
+    },
+    {
+      value: 'disabled',
+      label: 'think.disabled',
+      hint: 'think.disabled.hint',
+      requestFields: { thinking: { type: 'disabled' } },
+    },
   ],
 };
 
