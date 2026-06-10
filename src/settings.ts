@@ -68,6 +68,22 @@ export class Settings {
     return this.section().get<number>('maxWarmupRounds', 3);
   }
 
+  static tokenRatio(): number {
+    return this.section().get<number>('tokenRatio', 4);
+  }
+
+  static tokenRatioGlobal(): boolean {
+    return this.section().get<boolean>('tokenRatioGlobal', false);
+  }
+
+  static tokenRatioAutoCalibrate(): boolean {
+    return this.section().get<boolean>('tokenRatioAutoCalibrate', true);
+  }
+
+  static tokenRatioCalibrationThreshold(): number {
+    return this.section().get<number>('tokenRatioCalibrationThreshold', 0.1);
+  }
+
   static providerEndpoint(providerId: string): string | undefined {
     const map = this.section().get<Record<string, unknown>>('providerEndpoints', {});
     const raw = map?.[providerId];

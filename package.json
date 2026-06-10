@@ -249,7 +249,110 @@
     "configuration": {
       "title": "%copilot-adapter.config.title%",
       "properties": {
+        "copilot-adapter.maxTokens": {
+          "order": 1,
+          "type": "number",
+          "default": 0,
+          "minimum": 0,
+          "description": "%copilot-adapter.config.maxTokens.description%"
+        },
+        "copilot-adapter.requestTimeout": {
+          "order": 2,
+          "type": "number",
+          "default": 60,
+          "minimum": 0,
+          "description": "%copilot-adapter.config.requestTimeout.description%"
+        },
+        "copilot-adapter.requestRetries": {
+          "order": 3,
+          "type": "number",
+          "default": 2,
+          "minimum": 0,
+          "maximum": 5,
+          "description": "%copilot-adapter.config.requestRetries.description%"
+        },
+        "copilot-adapter.maxWarmupRounds": {
+          "order": 4,
+          "type": "number",
+          "default": 3,
+          "minimum": 1,
+          "description": "%copilot-adapter.config.maxWarmupRounds.description%"
+        },
+        "copilot-adapter.visionProxyModel": {
+          "order": 5,
+          "type": "string",
+          "default": "off",
+          "markdownDescription": "%copilot-adapter.config.visionProxyModel.description%"
+        },
+        "copilot-adapter.visionProxyPrompt": {
+          "order": 6,
+          "type": "string",
+          "editPresentation": "multilineText",
+          "default": "Task: produce an accurate, structured description of each image provided, for injection into a text-only language model conversation.\n\nCapture all visually significant content: text and code, UI layouts and controls, diagrams, charts, data tables, photographs, and spatial relationships.\n\nSingle image: write one cohesive description.\nMultiple images: label each \"Image 1:\", \"Image 2:\", etc., then add a \"Summary:\" section covering shared context and how the images relate.\n\nReport only what is clearly visible. Do not infer, guess, or embellish. Use concise neutral prose without addressing the user or narrating the process.",
+          "description": "%copilot-adapter.config.visionProxyPrompt.description%"
+        },
+        "copilot-adapter.imageTokenEstimate": {
+          "order": 7,
+          "type": "number",
+          "default": 1020,
+          "minimum": 0,
+          "description": "%copilot-adapter.config.imageTokenEstimate.description%"
+        },
+        "copilot-adapter.tokenRatio": {
+          "order": 8,
+          "type": "number",
+          "default": 4,
+          "minimum": 0.5,
+          "maximum": 20,
+          "markdownDescription": "%copilot-adapter.config.tokenRatio.description%"
+        },
+        "copilot-adapter.tokenRatioGlobal": {
+          "order": 9,
+          "type": "boolean",
+          "default": false,
+          "description": "%copilot-adapter.config.tokenRatioGlobal.description%"
+        },
+        "copilot-adapter.tokenRatioAutoCalibrate": {
+          "order": 10,
+          "type": "boolean",
+          "default": true,
+          "description": "%copilot-adapter.config.tokenRatioAutoCalibrate.description%"
+        },
+        "copilot-adapter.tokenRatioCalibrationThreshold": {
+          "order": 11,
+          "type": "number",
+          "default": 0.1,
+          "minimum": 0.01,
+          "maximum": 1,
+          "markdownDescription": "%copilot-adapter.config.tokenRatioCalibrationThreshold.description%",
+          "enablement": "config.copilot-adapter.tokenRatioAutoCalibrate == true"
+        },
+        "copilot-adapter.debugMode": {
+          "order": 12,
+          "type": "string",
+          "default": "off",
+          "enum": [
+            "off",
+            "info",
+            "meta",
+            "verbose"
+          ],
+          "enumItemLabels": [
+            "%copilot-adapter.config.debug.off.label%",
+            "%copilot-adapter.config.debug.info.label%",
+            "%copilot-adapter.config.debug.meta.label%",
+            "%copilot-adapter.config.debug.verbose.label%"
+          ],
+          "markdownEnumDescriptions": [
+            "%copilot-adapter.config.debug.off.description%",
+            "%copilot-adapter.config.debug.info.description%",
+            "%copilot-adapter.config.debug.meta.description%",
+            "%copilot-adapter.config.debug.verbose.description%"
+          ],
+          "markdownDescription": "%copilot-adapter.config.debug.description%"
+        },
         "copilot-adapter.providerEndpoints": {
+          "order": 13,
           "type": "object",
           "additionalProperties": false,
           "markdownDescription": "%copilot-adapter.config.providerEndpoints.description%",
@@ -287,71 +390,6 @@
             "bigmodel": "",
             "moonshot": ""
           }
-        },
-        "copilot-adapter.maxTokens": {
-          "type": "number",
-          "default": 0,
-          "minimum": 0,
-          "description": "%copilot-adapter.config.maxTokens.description%"
-        },
-        "copilot-adapter.visionProxyModel": {
-          "type": "string",
-          "default": "off",
-          "markdownDescription": "%copilot-adapter.config.visionProxyModel.description%"
-        },
-        "copilot-adapter.visionProxyPrompt": {
-          "type": "string",
-          "editPresentation": "multilineText",
-          "default": "Task: produce an accurate, structured description of each image provided, for injection into a text-only language model conversation.\n\nCapture all visually significant content: text and code, UI layouts and controls, diagrams, charts, data tables, photographs, and spatial relationships.\n\nSingle image: write one cohesive description.\nMultiple images: label each \"Image 1:\", \"Image 2:\", etc., then add a \"Summary:\" section covering shared context and how the images relate.\n\nReport only what is clearly visible. Do not infer, guess, or embellish. Use concise neutral prose without addressing the user or narrating the process.",
-          "description": "%copilot-adapter.config.visionProxyPrompt.description%"
-        },
-        "copilot-adapter.requestTimeout": {
-          "type": "number",
-          "default": 60,
-          "minimum": 0,
-          "description": "%copilot-adapter.config.requestTimeout.description%"
-        },
-        "copilot-adapter.requestRetries": {
-          "type": "number",
-          "default": 2,
-          "minimum": 0,
-          "maximum": 5,
-          "description": "%copilot-adapter.config.requestRetries.description%"
-        },
-        "copilot-adapter.imageTokenEstimate": {
-          "type": "number",
-          "default": 1020,
-          "minimum": 0,
-          "description": "%copilot-adapter.config.imageTokenEstimate.description%"
-        },
-        "copilot-adapter.maxWarmupRounds": {
-          "type": "number",
-          "default": 3,
-          "minimum": 1,
-          "description": "%copilot-adapter.config.maxWarmupRounds.description%"
-        },
-        "copilot-adapter.debugMode": {
-          "type": "string",
-          "default": "off",
-          "enum": [
-            "off",
-            "info",
-            "meta",
-            "verbose"
-          ],
-          "enumItemLabels": [
-            "%copilot-adapter.config.debug.off.label%",
-            "%copilot-adapter.config.debug.info.label%",
-            "%copilot-adapter.config.debug.meta.label%",
-            "%copilot-adapter.config.debug.verbose.label%"
-          ],
-          "markdownEnumDescriptions": [
-            "%copilot-adapter.config.debug.off.description%",
-            "%copilot-adapter.config.debug.info.description%",
-            "%copilot-adapter.config.debug.meta.description%",
-            "%copilot-adapter.config.debug.verbose.description%"
-          ],
-          "markdownDescription": "%copilot-adapter.config.debug.description%"
         }
       }
     }

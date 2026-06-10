@@ -1,9 +1,12 @@
 import vscode from 'vscode';
 import { Settings } from '../settings';
 
+/**
+ * Hard-coded fallback default for chars-per-token ratio.
+ * Used only when the user has NOT set a custom tokenRatio in settings
+ * AND the model/provider has no tokenRatio trait.
+ */
 export const DEFAULT_CHARS_PER_TOKEN = 4.0;
-
-export const CALIBRATION_THRESHOLD = 0.1;
 
 const MARKER_MIME = 'stateful_marker';
 
@@ -126,16 +129,29 @@ export function refineRatio(
 const calibratedRatios = new Map<string, number>();
 
 /**
- * Returns the calibrated chars-per-token ratio for a provider,
- * falling back to the static default when no calibration data exists.
+ * Returns the calibrated chars-per-token ratio for a provider.
+ *
+ * Priority:
+ * If tokenRatioGlobal is enabled, always use the user-configured tokenRatio.
+ * Otherwise use the calibrated value if available, falling back to the
+ *    given defaultRatio (which may itself come from the user setting, a model
+ *    trait, or the hard-coded DEFAULT_CHARS_PER_TOKEN).
  */
 export function getCalibratedRatio(providerId: string, defaultRatio: number): number {
+  if (Settings.tokenRatioGlobal()) {
+    return Settings.tokenRatio();
+  }
+
   return calibratedRatios.get(providerId) ?? defaultRatio;
 }
 
 /**
  * Update the calibrated ratio for a provider using actual API usage data.
  * Uses EMA smoothing (80% old, 20% new) so a single outlier doesn't skew the estimate.
+ *
+ * Skips calibration entirely when:
+ * - tokenRatioGlobal is enabled (global override forces a fixed ratio)
+ * - tokenRatioAutoCalibrate is disabled (user opted out of auto-tuning)
  */
 export function calibrateRatio(
   providerId: string,
@@ -143,12 +159,17 @@ export function calibrateRatio(
   promptTokens: number,
   defaultRatio: number,
 ): { newRatio: number; changed: boolean } {
+  if (Settings.tokenRatioGlobal() || !Settings.tokenRatioAutoCalibrate()) {
+    return { newRatio: getCalibratedRatio(providerId, defaultRatio), changed: false };
+  }
+
   const current = calibratedRatios.get(providerId) ?? defaultRatio;
   const next = refineRatio(promptChars, promptTokens, current);
 
   // Only update if the change exceeds the threshold to avoid noise
+  const threshold = Settings.tokenRatioCalibrationThreshold();
   const relativeChange = Math.abs(next - current) / current;
-  if (relativeChange >= CALIBRATION_THRESHOLD) {
+  if (relativeChange >= threshold) {
     calibratedRatios.set(providerId, next);
 
     return { newRatio: next, changed: true };

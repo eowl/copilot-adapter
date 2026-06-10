@@ -216,7 +216,9 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       // preventing calibration from ever triggering.
       if (promptTokens > 0) {
         try {
-          const defaultRatio = resolveTrait(model, 'tokenRatio') ?? DEFAULT_CHARS_PER_TOKEN;
+          // defaultRatio cascade: model trait → user setting → hard-coded default
+          const defaultRatio =
+            resolveTrait(model, 'tokenRatio') ?? Settings.tokenRatio() ?? DEFAULT_CHARS_PER_TOKEN;
           const bodyChars = countMessageChars(messages);
           const prevRatio = getCalibratedRatio(modelProvider.id, defaultRatio);
           const result = calibrateRatio(modelProvider.id, bodyChars, promptTokens, defaultRatio);
@@ -251,8 +253,8 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     const { modelId } = this.resolveModelIdentity(modelInfo.id);
     const entry = modelById.get(modelId);
     const defaultRatio = entry
-      ? (resolveTrait(entry, 'tokenRatio') ?? DEFAULT_CHARS_PER_TOKEN)
-      : DEFAULT_CHARS_PER_TOKEN;
+      ? (resolveTrait(entry, 'tokenRatio') ?? Settings.tokenRatio() ?? DEFAULT_CHARS_PER_TOKEN)
+      : (Settings.tokenRatio() ?? DEFAULT_CHARS_PER_TOKEN);
     const charsPerToken = getCalibratedRatio(entry?.provider.id ?? '', defaultRatio);
 
     return estimateTokens(content, charsPerToken);

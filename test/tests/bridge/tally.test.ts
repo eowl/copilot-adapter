@@ -1,7 +1,15 @@
 import assert from 'node:assert/strict';
-import { suite, test } from 'mocha';
+import { suite, test, afterEach } from 'mocha';
 import * as vscode from 'vscode';
-import { estimateTokens, refineRatio } from '../../../src/bridge/tally';
+import {
+  estimateTokens,
+  refineRatio,
+  getCalibratedRatio,
+  calibrateRatio,
+  DEFAULT_CHARS_PER_TOKEN,
+} from '../../../src/bridge/tally';
+import { Settings } from '../../../src/settings';
+import { stubConfig } from '../../helpers/stubs';
 
 suite('bridge/tally', () => {
   suite('estimateTokens() string input', () => {
@@ -89,5 +97,120 @@ suite('bridge/tally', () => {
       const result = refineRatio(1000, 100, 4.0);
       assert.ok(Math.abs(result - 5.2) < 1e-9, `Expected 5.2, got ${result}`);
     });
+  });
+});
+
+suite('tokenRatio settings & calibration', () => {
+  let restore: () => void;
+
+  afterEach(() => restore?.());
+
+  test('Settings.tokenRatio() default is 4', () => {
+    restore = stubConfig({});
+    assert.equal(Settings.tokenRatio(), 4);
+  });
+
+  test('Settings.tokenRatio() custom', () => {
+    restore = stubConfig({ tokenRatio: 3.5 });
+    assert.equal(Settings.tokenRatio(), 3.5);
+  });
+
+  test('Settings.tokenRatioGlobal() default is false', () => {
+    restore = stubConfig({});
+    assert.equal(Settings.tokenRatioGlobal(), false);
+  });
+
+  test('Settings.tokenRatioGlobal() custom', () => {
+    restore = stubConfig({ tokenRatioGlobal: true });
+    assert.equal(Settings.tokenRatioGlobal(), true);
+  });
+
+  test('Settings.tokenRatioAutoCalibrate() default is true', () => {
+    restore = stubConfig({});
+    assert.equal(Settings.tokenRatioAutoCalibrate(), true);
+  });
+
+  test('Settings.tokenRatioAutoCalibrate() custom', () => {
+    restore = stubConfig({ tokenRatioAutoCalibrate: false });
+    assert.equal(Settings.tokenRatioAutoCalibrate(), false);
+  });
+
+  test('Settings.tokenRatioCalibrationThreshold() default is 0.1', () => {
+    restore = stubConfig({});
+    assert.equal(Settings.tokenRatioCalibrationThreshold(), 0.1);
+  });
+
+  test('Settings.tokenRatioCalibrationThreshold() custom', () => {
+    restore = stubConfig({ tokenRatioCalibrationThreshold: 0.25 });
+    assert.equal(Settings.tokenRatioCalibrationThreshold(), 0.25);
+  });
+
+  test('getCalibratedRatio returns default when no calibration data exists', () => {
+    restore = stubConfig({});
+    assert.equal(getCalibratedRatio('unknown-provider', 4.0), 4.0);
+    assert.equal(getCalibratedRatio('unknown-provider', 2.5), 2.5);
+  });
+
+  test('getCalibratedRatio returns Settings.tokenRatio() when tokenRatioGlobal is true', () => {
+    restore = stubConfig({ tokenRatioGlobal: true, tokenRatio: 3.0 });
+    assert.equal(getCalibratedRatio('unknown-provider', 4.0), 3.0);
+  });
+
+  test('calibrateRatio returns changed=false when tokenRatioGlobal is true', () => {
+    restore = stubConfig({ tokenRatioGlobal: true, tokenRatio: 3.0 });
+    const result = calibrateRatio('test-provider', 100, 10, 3.0);
+    assert.equal(result.changed, false);
+    assert.equal(result.newRatio, 3.0);
+  });
+
+  test('calibrateRatio returns changed=false when tokenRatioAutoCalibrate is false', () => {
+    restore = stubConfig({ tokenRatioAutoCalibrate: false });
+    const result = calibrateRatio('test-provider', 100, 10, DEFAULT_CHARS_PER_TOKEN);
+    assert.equal(result.changed, false);
+    assert.equal(result.newRatio, DEFAULT_CHARS_PER_TOKEN);
+  });
+
+  test('calibrates when change exceeds threshold', () => {
+    // observed=100/10=10, EMA: 4*0.8+10*0.2=5.2, change=|5.2-4|/4=30% > 5%
+    restore = stubConfig({
+      tokenRatioAutoCalibrate: true,
+      tokenRatioCalibrationThreshold: 0.05,
+    });
+    const result = calibrateRatio('test-provider', 100, 10, DEFAULT_CHARS_PER_TOKEN);
+    assert.equal(result.changed, true);
+    assert.ok(Math.abs(result.newRatio - 5.2) < 1e-10);
+  });
+
+  test('does not calibrate when change is below threshold', () => {
+    // observed=100/10=10, EMA=4*0.8+10*0.2=5.2, change=30% < 50%
+    restore = stubConfig({
+      tokenRatioAutoCalibrate: true,
+      tokenRatioCalibrationThreshold: 0.5,
+    });
+    // Use unique provider to avoid pollution from previous tests
+    const result = calibrateRatio('below-threshold-provider', 100, 10, DEFAULT_CHARS_PER_TOKEN);
+    assert.equal(result.changed, false);
+    assert.ok(Math.abs(result.newRatio - 5.2) < 1e-10);
+  });
+
+  test('returns safe result when promptChars is 0', () => {
+    restore = stubConfig({
+      tokenRatioAutoCalibrate: true,
+      tokenRatioCalibrationThreshold: 0.1,
+    });
+    // Unique provider id to ensure clean calibration state
+    const result = calibrateRatio('zero-chars-provider', 0, 10, DEFAULT_CHARS_PER_TOKEN);
+    assert.equal(result.changed, false);
+    assert.equal(result.newRatio, DEFAULT_CHARS_PER_TOKEN);
+  });
+
+  test('returns safe result when promptTokens is 0', () => {
+    restore = stubConfig({
+      tokenRatioAutoCalibrate: true,
+      tokenRatioCalibrationThreshold: 0.1,
+    });
+    const result = calibrateRatio('zero-tokens-provider', 100, 0, DEFAULT_CHARS_PER_TOKEN);
+    assert.equal(result.changed, false);
+    assert.equal(result.newRatio, DEFAULT_CHARS_PER_TOKEN);
   });
 });
