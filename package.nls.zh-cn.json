@@ -65,11 +65,5 @@
   "copilot-adapter.config.tokenRatio.description": "用于估算 token 数的默认字符/token 比率。除非启用了「全局覆盖」，否则模型和提供商可通过自身的 `tokenRatio` 属性覆盖此值。中文较多时可设低（1.0-2.0），英文较多时可设高（4.0 左右）。",
   "copilot-adapter.config.tokenRatioGlobal.description": "强制所有模型使用上方设置的默认字符/token 比率，忽略模型属性及自动校准结果。",
   "copilot-adapter.config.tokenRatioAutoCalibrate.description": "根据 API 实际用量数据，随着使用自动调整字符/token 比率。",
-  "copilot-adapter.config.tokenRatioCalibrationThreshold.description": "触发自动校准所需的最小相对变化（0.01–1.0）。例如 0.1 表示比率变化至少 10% 才会更新。值越低调整越灵敏。",
-  "copilot-adapter.config.providerEndpoints.description": "按 provider 覆盖端点 URL。设置后**会强制覆盖添加模型时所选或配置的 API 端点**。留空则使用各 provider 的 API Endpoint 设置或代码内置默认值。",
-  "copilot-adapter.config.providerEndpoints.deepseek.description": "DeepSeek 的自定义端点，会覆盖 provider 级的 API Endpoint 设置。留空则使用代码内置默认 `https://api.deepseek.com`。",
-  "copilot-adapter.config.providerEndpoints.minimax.description": "MiniMax 的自定义端点，会覆盖 provider 级的 API Endpoint 设置。留空则使用 provider 级下拉选择或代码内置默认值。",
-  "copilot-adapter.config.providerEndpoints.qwen.description": "通义千问（阿里云 DashScope）的自定义端点，会覆盖 provider 级的 API Endpoint 设置。留空则使用 provider 级设置或代码内置默认 cn-beijing 端点。",
-  "copilot-adapter.config.providerEndpoints.bigmodel.description": "智谱 BigModel（GLM）的自定义端点，会覆盖 provider 级的 API Endpoint 设置。留空则使用 provider 级下拉选择或代码内置默认值。",
-  "copilot-adapter.config.providerEndpoints.moonshot.description": "月之暗面 Moonshot（Kimi）的自定义端点，会覆盖 provider 级的 API Endpoint 设置。留空则使用 provider 级下拉选择或代码内置默认值。"
+  "copilot-adapter.config.tokenRatioCalibrationThreshold.description": "触发自动校准所需的最小相对变化（0.01–1.0）。例如 0.1 表示比率变化至少 10% 才会更新。值越低调整越灵敏。"
 }

@@ -1,10 +1,5 @@
 /**
  * Default API base URLs for each built-in provider.
- *
- * NOTE: These values must stay in sync with the `default` fields under
- * `contributes.configuration.properties.copilot-adapter.providerEndpoints`
- * in package.json — JSON cannot import from TS, so the manifest mirrors
- * these constants manually.
  */
 export const DEFAULT_ENDPOINT_URLS = {
   deepseek: 'https://api.deepseek.com',

@@ -350,46 +350,6 @@
             "%copilot-adapter.config.debug.verbose.description%"
           ],
           "markdownDescription": "%copilot-adapter.config.debug.description%"
-        },
-        "copilot-adapter.providerEndpoints": {
-          "order": 13,
-          "type": "object",
-          "additionalProperties": false,
-          "markdownDescription": "%copilot-adapter.config.providerEndpoints.description%",
-          "properties": {
-            "deepseek": {
-              "type": "string",
-              "default": "",
-              "description": "%copilot-adapter.config.providerEndpoints.deepseek.description%"
-            },
-            "minimax": {
-              "type": "string",
-              "default": "",
-              "description": "%copilot-adapter.config.providerEndpoints.minimax.description%"
-            },
-            "qwen": {
-              "type": "string",
-              "default": "",
-              "description": "%copilot-adapter.config.providerEndpoints.qwen.description%"
-            },
-            "bigmodel": {
-              "type": "string",
-              "default": "",
-              "description": "%copilot-adapter.config.providerEndpoints.bigmodel.description%"
-            },
-            "moonshot": {
-              "type": "string",
-              "default": "",
-              "description": "%copilot-adapter.config.providerEndpoints.moonshot.description%"
-            }
-          },
-          "default": {
-            "deepseek": "",
-            "minimax": "",
-            "qwen": "",
-            "bigmodel": "",
-            "moonshot": ""
-          }
         }
       }
     }

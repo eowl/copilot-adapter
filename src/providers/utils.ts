@@ -1,4 +1,3 @@
-import { Settings } from '../settings';
 import type { ApiTraits, ModelItem, ModelProvider, ModelEndpoint } from './types';
 
 /** Build the provider- and endpoint-qualified unique key for a model. */
@@ -19,9 +18,6 @@ export function resolveTrait<K extends keyof ApiTraits>(
 }
 
 export function getEndpoint(modelProvider: ModelProvider, apiEndpoint?: string): string {
-  const globalOverride = Settings.providerEndpoint(modelProvider.id);
-  if (globalOverride) return globalOverride;
-
   if (apiEndpoint) {
     // Text-input mode (Qwen): user typed a full URL then use it directly
     if (apiEndpoint.includes('://')) return apiEndpoint;

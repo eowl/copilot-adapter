@@ -1,6 +1,5 @@
 import assert from 'node:assert/strict';
-import { suite, test, afterEach } from 'mocha';
-import * as vscode from 'vscode';
+import { suite, test } from 'mocha';
 import { composeModelProvider, composeModelEndpoint, getEndpoint, resolveEndpoint, resolveTrait, imagePart } from '../../../src/providers/utils';
 import { DEFAULT_ENDPOINT_URLS } from '../../../src/providers/endpoints';
 import { MINIMAX } from '../../../src/providers/minimax';
@@ -8,37 +7,12 @@ import { ZHIPU } from '../../../src/providers/zhipu';
 import { MOONSHOT } from '../../../src/providers/moonshot';
 import { QWEN } from '../../../src/providers/qwen';
 import { DEEPSEEK } from '../../../src/providers/deepseek';
-import { stub } from '../../helpers/stubs';
 import type { ModelItem, ModelProvider } from '../../../src/providers/types';
-
-function stubProviderEndpoint(value: string | undefined, providerId: string): () => void {
-  const mockConfig = {
-    get<T>(section: string, defaultValue?: T): T {
-      if (section === 'providerEndpoints') {
-        const map: Record<string, string> = {};
-        if (value !== undefined) map[providerId] = value;
-        return map as T;
-      }
-
-      return defaultValue as T;
-    },
-    has: () => false,
-    inspect: () => undefined,
-    update: () => Promise.resolve(),
-  } as unknown as vscode.WorkspaceConfiguration;
-
-  return stub(vscode.workspace, 'getConfiguration', () => mockConfig);
-}
-
-function stubNoGlobalOverride(): () => void {
-  return stubProviderEndpoint('', 'any');
-}
 
 interface EndpointCase {
   label: string;
   provider: ModelProvider;
   apiEndpoint?: string;
-  globalOverride?: string;
   expected: string;
 }
 
@@ -139,43 +113,11 @@ const cases: EndpointCase[] = [
     apiEndpoint: '',
     expected: DEFAULT_ENDPOINT_URLS.minimax,
   },
-
-  // Global providerEndpoints override beats everything
-  {
-    label: 'MiniMax: global override wins over apiEndpoint',
-    provider: MINIMAX,
-    apiEndpoint: 'minimax.io',
-    globalOverride: 'https://custom-proxy.example.com/v1',
-    expected: 'https://custom-proxy.example.com/v1',
-  },
-  {
-    label: 'DeepSeek: global override wins over default',
-    provider: DEEPSEEK,
-    globalOverride: 'https://ds-proxy.internal/v1',
-    expected: 'https://ds-proxy.internal/v1',
-  },
-  {
-    label: 'Qwen: global override wins over apiEndpoint URL',
-    provider: QWEN,
-    apiEndpoint: 'https://dashscope-us.aliyuncs.com/compatible-mode/v1',
-    globalOverride: 'https://qwen-gateway.example.com/v1',
-    expected: 'https://qwen-gateway.example.com/v1',
-  },
 ];
 
 suite('getEndpoint priority resolution', () => {
-  let restore: () => void;
-
-  afterEach(() => restore?.());
-
   for (const t of cases) {
     test(t.label, () => {
-      if (t.globalOverride !== undefined) {
-        restore = stubProviderEndpoint(t.globalOverride, t.provider.id);
-      } else {
-        restore = stubNoGlobalOverride();
-      }
-
       assert.equal(getEndpoint(t.provider, t.apiEndpoint), t.expected);
     });
   }
