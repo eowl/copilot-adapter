@@ -3,7 +3,6 @@ import { suite, test } from 'mocha';
 import {
   ACTIVATE_PREFIX,
   WARMUP_CALL_ID_PREFIX,
-  MAX_WARMUP_ROUNDS,
   DRIFT_NOTICE_START,
   DRIFT_NOTICE_END,
 } from '../../../../src/bridge/utils/defines';
@@ -18,10 +17,6 @@ suite('bridge/utils/defines constants', () => {
       WARMUP_CALL_ID_PREFIX.startsWith('copilot-adapter_preflight_activate_'),
       `Got: ${WARMUP_CALL_ID_PREFIX}`,
     );
-  });
-
-  test('MAX_WARMUP_ROUNDS is 3', () => {
-    assert.equal(MAX_WARMUP_ROUNDS, 3);
   });
 
   test('DRIFT_NOTICE_START contains "copilot-adapter-tool-drift-notice-start"', () => {
