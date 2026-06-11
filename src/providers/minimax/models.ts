@@ -1,7 +1,7 @@
-import type { ModelItem, ReasoningAbility, ThinkingConfig } from '../types';
+import type { ModelItem, ThinkingConfig } from '../types';
 import { MINIMAX } from './provider';
 
-const MM_THINKING: ThinkingConfig = {
+const MM_THINKING_CONFIG: ThinkingConfig = {
   default: 'adaptive',
   options: [
     {
@@ -19,32 +19,35 @@ const MM_THINKING: ThinkingConfig = {
   ],
 };
 
-const MM_ABILITY: ReasoningAbility = {
-  maxTools: 64,
-  imageInput: false,
-  reasoning: true,
-  thinkTag: 'think',
-};
-
-const MM_M3_ABILITY: ReasoningAbility = {
-  maxTools: 64,
-  imageInput: true,
-  reasoning: true,
-  thinkTag: 'think',
-};
-
-const MM_M2 = {
-  family: 'minimax' as const,
+const MM_BASE = {
+  family: 'minimax',
   maxInputTokens: 204_800,
   maxOutputTokens: 196_608,
-  ability: MM_ABILITY,
   provider: MINIMAX,
+  thinking: true,
+  imageInput: false,
+  maxTools: 64,
+  thinkingTag: 'think',
+  thinkingConfig: MM_THINKING_CONFIG,
+  contentTag: 'think',
+};
+
+const MM_M3_BASE = {
+  family: 'minimax',
+  maxInputTokens: 204_800,
+  maxOutputTokens: 196_608,
+  provider: MINIMAX,
+  thinking: true,
+  imageInput: true,
+  maxTools: 64,
+  thinkingTag: 'think',
+  thinkingConfig: MM_THINKING_CONFIG,
   contentTag: 'think',
 };
 
 export const MM_MODELS: readonly ModelItem[] = [
   {
-    ...MM_M2,
+    ...MM_BASE,
     id: 'minimax-m2',
     label: 'MiniMax M2',
     apiId: 'MiniMax-M2',
@@ -52,7 +55,7 @@ export const MM_MODELS: readonly ModelItem[] = [
     detailKey: 'model.minimax-m2.detail',
   },
   {
-    ...MM_M2,
+    ...MM_BASE,
     id: 'minimax-m2.1',
     label: 'MiniMax M2.1',
     apiId: 'MiniMax-M2.1',
@@ -60,7 +63,7 @@ export const MM_MODELS: readonly ModelItem[] = [
     detailKey: 'model.minimax-m2.1.detail',
   },
   {
-    ...MM_M2,
+    ...MM_BASE,
     id: 'minimax-m2.1-highspeed',
     label: 'MiniMax M2.1 Highspeed',
     apiId: 'MiniMax-M2.1-highspeed',
@@ -68,7 +71,7 @@ export const MM_MODELS: readonly ModelItem[] = [
     detailKey: 'model.minimax-m2.1-highspeed.detail',
   },
   {
-    ...MM_M2,
+    ...MM_BASE,
     id: 'minimax-m2.5',
     label: 'MiniMax M2.5',
     apiId: 'MiniMax-M2.5',
@@ -76,7 +79,7 @@ export const MM_MODELS: readonly ModelItem[] = [
     detailKey: 'model.minimax-m2.5.detail',
   },
   {
-    ...MM_M2,
+    ...MM_BASE,
     id: 'minimax-m2.5-highspeed',
     label: 'MiniMax M2.5 Highspeed',
     apiId: 'MiniMax-M2.5-highspeed',
@@ -84,7 +87,7 @@ export const MM_MODELS: readonly ModelItem[] = [
     detailKey: 'model.minimax-m2.5-highspeed.detail',
   },
   {
-    ...MM_M2,
+    ...MM_BASE,
     id: 'minimax-m2.7',
     label: 'MiniMax M2.7',
     apiId: 'MiniMax-M2.7',
@@ -92,7 +95,7 @@ export const MM_MODELS: readonly ModelItem[] = [
     detailKey: 'model.minimax-m2.7.detail',
   },
   {
-    ...MM_M2,
+    ...MM_BASE,
     id: 'minimax-m2.7-highspeed',
     label: 'MiniMax M2.7 Highspeed',
     apiId: 'MiniMax-M2.7-highspeed',
@@ -100,7 +103,7 @@ export const MM_MODELS: readonly ModelItem[] = [
     detailKey: 'model.minimax-m2.7-highspeed.detail',
   },
   {
-    family: 'minimax' as const,
+    ...MM_M3_BASE,
     id: 'minimax-m3',
     label: 'MiniMax M3',
     maxTokensField: 'max_completion_tokens',
@@ -108,10 +111,6 @@ export const MM_MODELS: readonly ModelItem[] = [
     version: '3',
     maxInputTokens: 1_000_000,
     maxOutputTokens: 40960,
-    ability: MM_M3_ABILITY,
     detailKey: 'model.minimax-m3.detail',
-    provider: MINIMAX,
-    thinking: MM_THINKING,
-    contentTag: 'think',
   },
-];
+] as ModelItem[];

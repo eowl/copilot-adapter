@@ -135,10 +135,13 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       secrets.apiEndpoint = apiEndpoint.length > 0 ? apiEndpoint : undefined;
     }
 
-    const activeEndpoint = apiEndpoint ? resolveEndpoint(modelProvider, apiEndpoint) : undefined;
-    const visibleModels =
-      activeEndpoint?.models!.filter((m) => m.provider.id === this.filteredProviderId) ??
-      providerModels;
+    const resolvedEndpoint = apiEndpoint
+      ? resolveEndpoint(modelProvider, apiEndpoint)
+      : undefined;
+    const activeEndpointId = resolvedEndpoint?.id ?? modelProvider.endpoints?.[0]?.id;
+    const visibleModels = activeEndpointId
+      ? providerModels.filter((m) => m.endpoint?.id === activeEndpointId)
+      : providerModels;
 
     const idPrefix = secrets.prefix;
 

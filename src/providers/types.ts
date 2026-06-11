@@ -11,23 +11,6 @@ export interface ContentParser {
   flush(): Array<{ kind: 'content' | 'thinking'; text: string }>;
 }
 
-interface BaseAbility {
-  maxTools?: number;
-  imageInput: boolean;
-  imageField?: string;
-}
-
-export interface ReasoningAbility extends BaseAbility {
-  reasoning: true;
-  thinkTag?: string;
-}
-
-export interface NonReasoningAbility extends BaseAbility {
-  reasoning: false;
-}
-
-export type ModelAbility = ReasoningAbility | NonReasoningAbility;
-
 export type UsageSchema = Partial<{
   [K in keyof UsagePayload]: UsagePayload[K] extends object | undefined
     ? Partial<{ [SubK in keyof NonNullable<UsagePayload[K]>]: string }>
@@ -62,30 +45,6 @@ export interface ModelEndpoint extends ApiTraits {
   models?: readonly ModelItem[];
 }
 
-export interface ModelItem extends ApiTraits {
-  readonly id: string;
-  readonly label: string;
-  readonly apiId: string;
-  readonly family: string;
-  readonly version: string;
-  readonly maxInputTokens: number;
-  readonly maxOutputTokens: number;
-  readonly ability: ModelAbility;
-  readonly detailKey: string;
-
-  provider: ModelProvider;
-  endpoint?: ModelEndpoint;
-  maxTokensField?: string;
-
-  thinking?: ThinkingConfig;
-  contentTag?: string;
-
-  requestExtras?(modelConfig: Record<string, unknown> | undefined): Record<string, unknown>;
-  configSchema?(): Record<string, unknown> | undefined;
-  createContentParser?(): ContentParser | undefined;
-  formatImagePart?(data: Uint8Array, mimeType: string): Record<string, unknown>;
-}
-
 export interface ThinkingOption {
   readonly value: string;
   readonly label: string;
@@ -96,6 +55,39 @@ export interface ThinkingOption {
 export interface ThinkingConfig {
   readonly default: string;
   readonly options: readonly ThinkingOption[];
+}
+
+export interface ModelItem extends ApiTraits {
+  readonly id: string;
+  readonly label: string;
+  readonly apiId: string;
+  readonly family: string;
+  readonly version: string;
+  readonly maxInputTokens: number;
+  readonly maxOutputTokens: number;
+  readonly detailKey: string;
+
+  source: 'builtin' | 'custom';
+
+  provider: ModelProvider;
+  endpoint?: ModelEndpoint;
+  maxTokensField?: string;
+
+  readonly thinking: boolean;
+  readonly thinkingTag?: string;
+  readonly thinkingConfig?: ThinkingConfig;
+
+  readonly imageInput: boolean;
+  readonly imageField?: string;
+
+  readonly maxTools?: number;
+
+  readonly contentTag?: string;
+
+  requestExtras?(modelConfig: Record<string, unknown> | undefined): Record<string, unknown>;
+  configSchema?(): Record<string, unknown> | undefined;
+  createContentParser?(): ContentParser | undefined;
+  formatImagePart?(data: Uint8Array, mimeType: string): Record<string, unknown>;
 }
 
 export interface ModelItemConfig extends Partial<
@@ -111,6 +103,7 @@ export interface ModelItemConfig extends Partial<
 > {
   readonly providerId?: string;
   readonly endpointId?: string;
-  readonly thinking?: ThinkingConfig;
+  readonly thinking?: boolean;
+  readonly thinkingConfig?: ThinkingConfig;
   readonly contentTag?: string;
 }

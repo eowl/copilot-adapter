@@ -14,7 +14,7 @@ function makeEntry(overrides?: Partial<CustomModelEntry>): CustomModelEntry {
   };
 }
 
-function makeThinking(): ThinkingConfig {
+function makeThinkingConfig(): ThinkingConfig {
   return {
     default: 'high',
     options: [
@@ -25,7 +25,6 @@ function makeThinking(): ThinkingConfig {
 }
 
 suite('custom/loader validateCustomModelArray()', () => {
-  // --- Valid cases ---
 
   test('valid single entry passes', () => {
     assert.deepEqual(validateCustomModelArray([makeEntry()]), []);
@@ -51,10 +50,8 @@ suite('custom/loader validateCustomModelArray()', () => {
   });
 
   test('thinking is optional', () => {
-    assert.deepEqual(validateCustomModelArray([makeEntry({ thinking: makeThinking() })]), []);
+    assert.deepEqual(validateCustomModelArray([makeEntry({ thinkingConfig: makeThinkingConfig() })]), []);
   });
-
-  // --- Top-level format ---
 
   test('non-array fails', () => {
     assert.ok(validateCustomModelArray({}).length > 0);
@@ -63,8 +60,6 @@ suite('custom/loader validateCustomModelArray()', () => {
   test('object instead of array fails', () => {
     assert.ok(validateCustomModelArray({ a: 1 }).length > 0);
   });
-
-  // --- Required fields ---
 
   test('missing id fails', () => {
     const m = makeEntry();
@@ -136,11 +131,9 @@ suite('custom/loader validateCustomModelArray()', () => {
     assert.ok(errs.length > 0 && errs[0].includes('maxTools'));
   });
 
-  // --- Flat ability fields ---
-
-  test('non-boolean reasoning fails', () => {
-    const errs = validateCustomModelArray([makeEntry({ reasoning: 'yes' as unknown as boolean })]);
-    assert.ok(errs.length > 0 && errs[0].includes('.reasoning'));
+  test('non-boolean thinking fails', () => {
+    const errs = validateCustomModelArray([makeEntry({ thinking: 'yes' as unknown as boolean })]);
+    assert.ok(errs.length > 0 && errs[0].includes('.thinking'));
   });
 
   test('non-boolean imageInput fails', () => {
@@ -148,23 +141,21 @@ suite('custom/loader validateCustomModelArray()', () => {
     assert.ok(errs.length > 0 && errs[0].includes('.imageInput'));
   });
 
-  // --- Thinking validation ---
-
   test('thinking with missing default fails', () => {
     const errs = validateCustomModelArray([
       makeEntry({
-        thinking: {
+        thinkingConfig: {
           options: [{ value: 'high', label: 'Think', hint: '', requestFields: {} }],
         } as unknown as ThinkingConfig,
       }),
     ]);
-    assert.ok(errs.some((e) => e.includes('thinking.default')));
+    assert.ok(errs.some((e) => e.includes('thinkingConfig.default')));
   });
 
   test('thinking default not in options fails', () => {
     const errs = validateCustomModelArray([
       makeEntry({
-        thinking: {
+        thinkingConfig: {
           default: 'not-there',
           options: [{ value: 'high', label: 'Think', hint: '', requestFields: {} }],
         } as unknown as ThinkingConfig,
@@ -176,7 +167,7 @@ suite('custom/loader validateCustomModelArray()', () => {
   test('thinking options must be array', () => {
     const errs = validateCustomModelArray([
       makeEntry({
-        thinking: { default: 'high', options: 'not-array' } as unknown as ThinkingConfig,
+        thinkingConfig: { default: 'high', options: 'not-array' } as unknown as ThinkingConfig,
       }),
     ]);
     assert.ok(errs.some((e) => e.includes('options')));
@@ -185,7 +176,7 @@ suite('custom/loader validateCustomModelArray()', () => {
   test('thinking option missing value fails', () => {
     const errs = validateCustomModelArray([
       makeEntry({
-        thinking: {
+        thinkingConfig: {
           default: 'high',
           options: [
             { value: 'high', label: 'Think', hint: '', requestFields: {} },
@@ -200,7 +191,7 @@ suite('custom/loader validateCustomModelArray()', () => {
   test('thinking option missing label fails', () => {
     const errs = validateCustomModelArray([
       makeEntry({
-        thinking: {
+        thinkingConfig: {
           default: 'high',
           options: [
             { value: 'high', label: 'Think', hint: '', requestFields: {} },
@@ -212,14 +203,10 @@ suite('custom/loader validateCustomModelArray()', () => {
     assert.ok(errs.some((e) => e.includes('.label')));
   });
 
-  // --- Non-object entry ---
-
   test('non-object entry fails', () => {
     const errs = validateCustomModelArray(['not-an-object' as unknown as CustomModelEntry]);
     assert.ok(errs.length > 0 && errs[0].includes('[0]'));
   });
-
-  // --- Multiple entries ---
 
   test('multiple entries report errors for each', () => {
     const errs = validateCustomModelArray([makeEntry({ id: '' }), makeEntry({ label: '' })]);

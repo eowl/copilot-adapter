@@ -27,16 +27,8 @@ const _endpointById = new Map<string, ModelEndpoint>(
   ALL_PROVIDERS.flatMap((mp) => mp.endpoints ?? []).map((me) => [me.id, me]),
 );
 
-/**
- * Registry needed by the custom-models loader.  Custom models can only
- * reference providers and endpoints that already exist in this map.
- */
 export const providerById: ReadonlyMap<string, ModelProvider> = _providerById;
 export const endpointById: ReadonlyMap<string, ModelEndpoint> = _endpointById;
-
-// ---------------------------------------------------------------------------
-// ALL_MODELS — built-in + bundled JSON + custom (external) JSON
-// ---------------------------------------------------------------------------
 
 interface CustomModelsState {
   registries: {
@@ -57,7 +49,6 @@ function buildAllModels(customPath: string): ModelItem[] {
   const seen = new Set<string>();
   const result: ModelItem[] = [];
 
-  // 1. Bundled JSON models (models/*.json)
   const modelsDir = path.join(__dirname, '..', '..', 'models');
   for (const mi of loadAllJsonModels(modelsDir, { providerById: _providerById, endpointById: _endpointById })) {
     const key = modelKey(mi);
@@ -67,7 +58,6 @@ function buildAllModels(customPath: string): ModelItem[] {
     }
   }
 
-  // 2. Custom external models (user configured)
   if (customPath) {
     const { models: customModels } = loadCustomModels(customPath, {
       providerById: _providerById,
@@ -82,14 +72,15 @@ function buildAllModels(customPath: string): ModelItem[] {
     }
   }
 
-  // 3. Built-in models (per provider/endpoint)
   for (const mp of ALL_PROVIDERS) {
     for (const me of mp.endpoints ?? []) {
       for (const mi of me.models ?? []) {
-        const key = modelKey(mi);
+        const fixed = { ...mi, endpoint: me, source: mi.source };
+        const key = modelKey(fixed);
+
         if (!seen.has(key)) {
           seen.add(key);
-          result.push(mi);
+          result.push(fixed as ModelItem);
         }
       }
     }
@@ -99,22 +90,21 @@ function buildAllModels(customPath: string): ModelItem[] {
 }
 
 let _allModels: readonly ModelItem[] = buildAllModels(Settings.customModelsPath());
-let _modelById = new Map<string, ModelItem>(_allModels.map((mi) => [modelKey(mi), mi]));
+let _modelById = new Map<string, ModelItem>(
+  _allModels.map((mi) => [mi.source === 'custom' ? customModelKey(mi) : modelKey(mi), mi]),
+);
 
-/**
- * Refresh the model list when the custom models file changes on disk.
- */
 export function refreshCustomModels(): void {
   const newAll = buildAllModels(Settings.customModelsPath());
-  const newById = new Map<string, ModelItem>(newAll.map((mi) => [modelKey(mi), mi]));
+  const newById = new Map<string, ModelItem>(
+    newAll.map((mi) => [mi.source === 'custom' ? customModelKey(mi) : modelKey(mi), mi]),
+  );
   _allModels = newAll;
   _modelById = newById;
   _exports.ALL_MODELS = newAll;
   _exports.modelById = newById;
 }
 
-// ALL_MODELS and modelById must be dynamic because refreshCustomModels()
-// can swap the backing arrays when the custom models file changes.
 const _exports = { ALL_MODELS: _allModels, modelById: _modelById } as {
   ALL_MODELS: readonly ModelItem[];
   modelById: ReadonlyMap<string, ModelItem>;

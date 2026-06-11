@@ -26,12 +26,9 @@ export function buildChatInfo(
   const modelProvider = modelItem.provider;
   const schema = modelItem.configSchema?.();
   const notConfigured = !hasKey;
-  const isCustom = modelItem.detailKey === '_custom';
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const customDetail = isCustom ? ((modelItem as any)._detail as string | undefined) ?? '' : '';
-  const detail = isCustom && customDetail ? customDetail : t(modelItem.detailKey);
+  const detail = t(modelItem.detailKey) || modelItem.detailKey;
 
-  const qualifiedId = isCustom
+  const qualifiedId = modelItem.source === 'custom'
     ? customModelKey(modelItem)
     : modelKey(modelItem);
   const infoId = idPrefix ? `${idPrefix}::${qualifiedId}` : qualifiedId;
@@ -43,9 +40,9 @@ export function buildChatInfo(
     maxInputTokens: modelItem.maxInputTokens,
     maxOutputTokens: modelItem.maxOutputTokens,
     capabilities: {
-      imageInput: modelItem.ability.imageInput || hasVisionProxy,
+      imageInput: modelItem.imageInput || hasVisionProxy,
       toolCalling:
-        modelItem.ability.maxTools ?? (modelItem.ability.maxTools === undefined ? true : false),
+        modelItem.maxTools ?? (modelItem.maxTools === undefined ? true : false),
     },
     tooltip: notConfigured ? t('auth.noKeyTooltip', modelProvider.label) : detail,
     detail: detail,

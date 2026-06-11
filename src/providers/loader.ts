@@ -13,24 +13,24 @@ import type {
 } from './types';
 
 function buildRequestExtras(
-  thinking: ThinkingConfig,
+  thinkingConfig: ThinkingConfig,
 ): (modelConfig: Record<string, unknown> | undefined) => Record<string, unknown> {
-  const defaultOpt = thinking.options.find((o) => o.value === thinking.default);
+  const defaultOpt = thinkingConfig.options.find((o) => o.value === thinkingConfig.default);
   const defaultFields = defaultOpt?.requestFields ?? {};
 
   return (modelConfig) => {
     const selectedValue = modelConfig?.thinkingMode;
     if (typeof selectedValue !== 'string') return { ...defaultFields };
-    const opt = thinking.options.find((o) => o.value === selectedValue);
+    const opt = thinkingConfig.options.find((o) => o.value === selectedValue);
 
     return { ...(opt?.requestFields ?? defaultFields) };
   };
 }
 
-function buildConfigSchema(thinking: ThinkingConfig): () => Record<string, unknown> {
-  const enums = thinking.options.map((o) => o.value);
-  const labels = thinking.options.map((o) => t(o.label) || o.label);
-  const hints = thinking.options.map((o) => t(o.hint) || o.hint);
+function buildConfigSchema(thinkingConfig: ThinkingConfig): () => Record<string, unknown> {
+  const enums = thinkingConfig.options.map((o) => o.value);
+  const labels = thinkingConfig.options.map((o) => t(o.label) || o.label);
+  const hints = thinkingConfig.options.map((o) => t(o.hint) || o.hint);
 
   const schema = {
     properties: {
@@ -40,7 +40,7 @@ function buildConfigSchema(thinking: ThinkingConfig): () => Record<string, unkno
         enum: enums,
         enumItemLabels: labels,
         enumDescriptions: hints,
-        default: thinking.default,
+        default: thinkingConfig.default,
         group: 'navigation',
       },
     },
@@ -57,11 +57,11 @@ function buildContentParser(contentTag: string): () => ContentParser {
 export function backfillModel(item: ModelItem): void {
   const jsonLike = item as ModelItemConfig;
 
-  if (!item.requestExtras && jsonLike.thinking) {
-    item.requestExtras = buildRequestExtras(jsonLike.thinking);
+  if (!item.requestExtras && jsonLike.thinkingConfig) {
+    item.requestExtras = buildRequestExtras(jsonLike.thinkingConfig);
   }
-  if (!item.configSchema && jsonLike.thinking) {
-    item.configSchema = buildConfigSchema(jsonLike.thinking);
+  if (!item.configSchema && jsonLike.thinkingConfig) {
+    item.configSchema = buildConfigSchema(jsonLike.thinkingConfig);
   }
   if (!item.createContentParser && jsonLike.contentTag) {
     item.createContentParser = buildContentParser(jsonLike.contentTag);
@@ -71,7 +71,7 @@ export function backfillModel(item: ModelItem): void {
 export interface ModelJsonModule {
   readonly providerId: string;
   readonly endpointId: string;
-  readonly thinking?: ThinkingConfig;
+  readonly thinkingConfig?: ThinkingConfig;
   readonly models: readonly ModelItemConfig[];
 }
 
@@ -80,7 +80,11 @@ interface Registries {
   readonly endpointById: ReadonlyMap<string, ModelEndpoint>;
 }
 
-export function loadModelsFromJson(module: ModelJsonModule, reg: Registries): ModelItem[] {
+export function loadModelsFromJson(
+  module: ModelJsonModule,
+  reg: Registries,
+  source: 'builtin' | 'custom' = 'builtin',
+): ModelItem[] {
   const provider = reg.providerById.get(module.providerId);
   if (!provider) {
     throw new Error(`Unknown providerId "${module.providerId}"`);
@@ -94,21 +98,34 @@ export function loadModelsFromJson(module: ModelJsonModule, reg: Registries): Mo
     throw new Error(`Endpoint "${module.endpointId}" not under provider "${module.providerId}"`);
   }
 
-  const topThinking = module.thinking;
+  const topThinkingConfig = module.thinkingConfig;
 
   return module.models.map((raw) => {
-    const effectiveThinking = raw.thinking ?? topThinking;
-    if (effectiveThinking && !raw.thinking) {
-      (raw as { thinking?: ThinkingConfig }).thinking = effectiveThinking;
+    const effectiveThinkingConfig = raw.thinkingConfig ?? topThinkingConfig;
+    if (effectiveThinkingConfig && !raw.thinkingConfig) {
+      (raw as { thinkingConfig?: ThinkingConfig }).thinkingConfig = effectiveThinkingConfig;
     }
 
-    const item = {
-      ...raw,
-      id: raw.id,
+    const item: ModelItem = {
+      id: raw.id ?? '',
+      label: raw.label ?? '',
+      apiId: raw.apiId ?? '',
+      family: raw.family ?? 'custom',
+      version: raw.version ?? '',
+      maxInputTokens: raw.maxInputTokens ?? 128_000,
+      maxOutputTokens: raw.maxOutputTokens ?? 32_000,
       detailKey: raw.detailKey ?? '',
+      thinking: raw.thinking ?? false,
+      imageInput: raw.imageInput ?? false,
+      maxTools: raw.maxTools,
+      imageField: raw.imageField,
+      thinkingTag: raw.thinkingTag,
+      thinkingConfig: raw.thinkingConfig,
+      contentTag: raw.contentTag,
+      source,
       provider,
       endpoint: targetEndpoint,
-    } as ModelItem;
+    };
 
     backfillModel(item);
 
@@ -127,7 +144,6 @@ export function loadAllJsonModels(modelsDir: string, reg: Registries): ModelItem
   try {
     files = fs.readdirSync(modelsDir);
   } catch {
-    // models/ directory doesn't exist or is inaccessible — that's fine.
     return result;
   }
 
@@ -137,7 +153,6 @@ export function loadAllJsonModels(modelsDir: string, reg: Registries): ModelItem
     const filePath = path.join(modelsDir, name);
     let module: ModelJsonModule;
     try {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
       module = require(filePath) as ModelJsonModule;
     } catch (err) {
       channel.warn(`Failed to load JSON model file ${filePath}:`, err);

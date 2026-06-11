@@ -8,13 +8,13 @@ suite('providers/deepseek model.requestExtras()', () => {
   const requestExtras = model.requestExtras!;
 
   test('model has thinking config with 3 options', () => {
-    assert.ok(model.thinking !== undefined);
-    assert.equal(model.thinking!.default, 'high');
-    assert.equal(model.thinking!.options.length, 3);
+    assert.ok(model.thinkingConfig !== undefined);
+    assert.equal(model.thinkingConfig!.default, 'high');
+    assert.equal(model.thinkingConfig!.options.length, 3);
   });
 
   test('each thinking option has requestFields', () => {
-    for (const opt of model.thinking!.options) {
+    for (const opt of model.thinkingConfig!.options) {
       assert.ok(opt.requestFields !== undefined, `option ${opt.value} missing requestFields`);
     }
   });

@@ -3,24 +3,15 @@ import { channel } from '../logger';
 import { t } from '../nls';
 import { loadModelsFromJson } from '../providers/loader';
 import { modelKey } from '../providers/utils';
-import type { ModelItem, ThinkingConfig, ModelAbility } from '../providers/types';
+import type { ModelItem, ThinkingConfig } from '../providers/types';
 import type { ModelJsonModule } from '../providers/loader';
 import type { ModelProvider, ModelEndpoint } from '../providers/types';
 
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
-
 export interface ValidationError {
-  /** Human-readable error message (already localized). */
   message: string;
-  /** 1-based line number where the error occurred, or 0 if unknown. */
   line: number;
 }
 
-/**
- * A single custom model entry — flat, self-contained, one entry per model.
- */
 export interface CustomModelEntry {
   id: string;
   label: string;
@@ -31,26 +22,18 @@ export interface CustomModelEntry {
   maxInputTokens?: number;
   maxOutputTokens?: number;
   detail?: string;
-  reasoning?: boolean;
+  thinking?: boolean;
+  thinkingConfig?: ThinkingConfig;
   imageInput?: boolean;
-  maxTools?: number;
   imageField?: string;
-  thinking?: ThinkingConfig;
+  maxTools?: number;
   contentTag?: string;
-
-  /** Internal: validated form of ability + detail merged in during loading. */
-  _ability?: ModelAbility;
-  _detailKey?: string;
 }
 
 interface Registries {
   readonly providerById: ReadonlyMap<string, ModelProvider>;
   readonly endpointById: ReadonlyMap<string, ModelEndpoint>;
 }
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
 
 function isRecord(v: unknown): v is Record<string, unknown> {
   return typeof v === 'object' && v !== null && !Array.isArray(v);
@@ -64,18 +47,10 @@ function isPositiveInt(v: unknown): v is number {
   return typeof v === 'number' && Number.isInteger(v) && v > 0;
 }
 
-// ---------------------------------------------------------------------------
-// Per-model validation
-// ---------------------------------------------------------------------------
-
 function isArrayOfStrings(v: unknown): v is string[] {
   return Array.isArray(v) && v.length > 0 && v.every((x) => typeof x === 'string' && x.length > 0);
 }
 
-/**
- * Validate a single CustomModelEntry.
- * Returns an array of error messages (empty = valid).
- */
 export function validateCustomModelEntry(raw: unknown, idx: number): string[] {
   const errors: string[] = [];
   const prefix = `[${idx}]`;
@@ -87,7 +62,6 @@ export function validateCustomModelEntry(raw: unknown, idx: number): string[] {
 
   const m = raw as Record<string, unknown>;
 
-  // Required string fields
   if (!isNonEmptyString(m.id)) {
     errors.push(`${prefix}.id: ${t('customModels.validation.requiredString')}`);
   }
@@ -98,51 +72,47 @@ export function validateCustomModelEntry(raw: unknown, idx: number): string[] {
     errors.push(`${prefix}.provider: ${t('customModels.validation.requiredString')}`);
   }
 
-  // endpoints: required, must be a non-empty array of strings
   if (!isArrayOfStrings(m.endpoints)) {
     if (Array.isArray(m.endpoints)) {
-      // An empty string inside the array can't be distinguished well — just say "non-empty string array"
       errors.push(`${prefix}.endpoints: ${t('customModels.validation.nonEmptyStringArray')}`);
     } else {
       errors.push(`${prefix}.endpoints: ${t('customModels.validation.requiredStringArray')}`);
     }
   }
 
-  // maxInputTokens (optional, positive int)
   if (m.maxInputTokens !== undefined && !isPositiveInt(m.maxInputTokens)) {
     errors.push(`${prefix}.maxInputTokens: ${t('customModels.validation.positiveInt')}`);
   }
-  // maxOutputTokens (optional, positive int)
+
   if (m.maxOutputTokens !== undefined && !isPositiveInt(m.maxOutputTokens)) {
     errors.push(`${prefix}.maxOutputTokens: ${t('customModels.validation.positiveInt')}`);
   }
 
-  // reasoning (optional, boolean)
-  if (m.reasoning !== undefined && typeof m.reasoning !== 'boolean') {
-    errors.push(`${prefix}.reasoning: ${t('customModels.validation.boolean')}`);
+  if (m.thinking !== undefined && typeof m.thinking !== 'boolean') {
+    errors.push(`${prefix}.thinking: ${t('customModels.validation.boolean')}`);
   }
-  // imageInput (optional, boolean)
+
   if (m.imageInput !== undefined && typeof m.imageInput !== 'boolean') {
     errors.push(`${prefix}.imageInput: ${t('customModels.validation.boolean')}`);
   }
-  // maxTools (optional, positive int)
+
   if (m.maxTools !== undefined && !isPositiveInt(m.maxTools)) {
     errors.push(`${prefix}.maxTools: ${t('customModels.validation.positiveInt')}`);
   }
 
-  // thinking (optional)
-  if (m.thinking !== undefined) {
-    errors.push(...validateThinking(m.thinking, `${prefix}.thinking`));
+  if (m.thinkingConfig !== undefined) {
+    errors.push(...validateThinkingConfig(m.thinkingConfig, `${prefix}.thinkingConfig`));
   }
 
   return errors;
 }
 
-function validateThinking(raw: unknown, prefix: string): string[] {
+function validateThinkingConfig(raw: unknown, prefix: string): string[] {
   const errs: string[] = [];
 
   if (!isRecord(raw)) {
     errs.push(`${prefix}: ${t('customModels.validation.notAnObject')}`);
+
     return errs;
   }
 
@@ -153,6 +123,7 @@ function validateThinking(raw: unknown, prefix: string): string[] {
   }
   if (!Array.isArray(th.options)) {
     errs.push(`${prefix}.options: ${t('customModels.validation.array')}`);
+
     return errs;
   }
 
@@ -186,14 +157,6 @@ function validateThinking(raw: unknown, prefix: string): string[] {
   return errs;
 }
 
-// ---------------------------------------------------------------------------
-// Top-level array validation
-// ---------------------------------------------------------------------------
-
-/**
- * Validate an array of custom model entries.
- * Returns all validation errors (empty = all valid).
- */
 export function validateCustomModelArray(raw: unknown): string[] {
   if (!Array.isArray(raw)) {
     return [t('customModels.validation.topLevelArray')];
@@ -206,10 +169,6 @@ export function validateCustomModelArray(raw: unknown): string[] {
 
   return errors;
 }
-
-// ---------------------------------------------------------------------------
-// File loading
-// ---------------------------------------------------------------------------
 
 export interface CustomModelsResult {
   models: ModelItem[];
@@ -244,19 +203,11 @@ function parseJsonArray(text: string): { data: unknown[]; parseErrors: Validatio
   return { data: raw, parseErrors: [] };
 }
 
-/**
- * Label prefix added to every custom model so users can distinguish them
- * from built-in models in the model picker.
- */
 const CUSTOM_LABEL_PREFIX = t('customModels.labelPrefix');
 
 /** Suffix appended to modelKey for custom models to avoid collisions. */
 const CUSTOM_KEY_SUFFIX = '-custom';
 
-/**
- * Group flat entries by (provider, endpoint), building ModelJsonModule
- * structures.  An entry with N endpoints produces N copies (one per endpoint).
- */
 function groupEntries(reg: Registries, entries: CustomModelEntry[]): ModelJsonModule[] {
   const groups = new Map<string, { providerId: string; endpointId: string; models: Record<string, unknown>[] }>();
 
@@ -272,13 +223,6 @@ function groupEntries(reg: Registries, entries: CustomModelEntry[]): ModelJsonMo
         groups.set(key, group);
       }
 
-      const ability: ModelAbility = {
-        reasoning: entry.reasoning ?? true,
-        imageInput: entry.imageInput ?? false,
-        ...(entry.maxTools !== undefined ? { maxTools: entry.maxTools } : {}),
-        ...(entry.imageField !== undefined ? { imageField: entry.imageField } : {}),
-      };
-
       group.models.push({
         id: entry.id,
         label: `${CUSTOM_LABEL_PREFIX} ${entry.label}`,
@@ -287,10 +231,12 @@ function groupEntries(reg: Registries, entries: CustomModelEntry[]): ModelJsonMo
         version: entry.version ?? '',
         maxInputTokens: entry.maxInputTokens ?? 128_000,
         maxOutputTokens: entry.maxOutputTokens ?? 32_000,
-        detailKey: '_custom',
-        ability,
-        _detail: entry.detail ?? '',
-        ...(entry.thinking ? { thinking: entry.thinking } : {}),
+        detailKey: entry.detail || '',
+        thinking: entry.thinking ?? false,
+        imageInput: entry.imageInput ?? false,
+        ...(entry.maxTools !== undefined ? { maxTools: entry.maxTools } : {}),
+        ...(entry.imageField !== undefined ? { imageField: entry.imageField } : {}),
+        ...(entry.thinkingConfig ? { thinkingConfig: entry.thinkingConfig } : {}),
         ...(entry.contentTag ? { contentTag: entry.contentTag } : {}),
       });
     }
@@ -386,7 +332,7 @@ export function loadCustomModels(filePath: string, reg: Registries): CustomModel
   const models: ModelItem[] = [];
   for (const mod of modules) {
     try {
-      models.push(...loadModelsFromJson(mod, reg));
+      models.push(...loadModelsFromJson(mod, reg, 'custom'));
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
       channel.warn(`Failed to load custom models from ${filePath}:`, err);
@@ -397,14 +343,6 @@ export function loadCustomModels(filePath: string, reg: Registries): CustomModel
   return { models, errors: [] };
 }
 
-// ---------------------------------------------------------------------------
-// Custom modelKey
-// ---------------------------------------------------------------------------
-
-/**
- * Custom model keys get a `-custom` suffix so they never collide with
- * built-in models.
- */
 export function customModelKey(mi: ModelItem): string {
   return modelKey(mi) + CUSTOM_KEY_SUFFIX;
 }

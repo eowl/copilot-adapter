@@ -1,7 +1,7 @@
-import type { ModelItem, ReasoningAbility, ThinkingConfig } from '../types';
+import type { ModelItem, ThinkingConfig } from '../types';
 import { QWEN } from './provider';
 
-const QWEN_THINKING: ThinkingConfig = {
+const QWEN_THINKING_CONFIG: ThinkingConfig = {
   default: 'adaptive',
   options: [
     {
@@ -19,32 +19,24 @@ const QWEN_THINKING: ThinkingConfig = {
   ],
 };
 
-const QWEN_ABILITY: ReasoningAbility = {
-  maxTools: 128,
-  imageInput: false,
-  reasoning: true,
-};
-
-const QWEN_VISION_ABILITY: ReasoningAbility = {
-  maxTools: 128,
-  imageInput: true,
-  reasoning: true,
-};
-
 const QWEN_BASE = {
-  family: 'qwen' as const,
+  family: 'qwen',
   maxTokensField: 'max_completion_tokens',
-  ability: QWEN_ABILITY,
   provider: QWEN,
-  thinking: QWEN_THINKING,
+  thinking: true,
+  imageInput: false,
+  maxTools: 128,
+  thinkingConfig: QWEN_THINKING_CONFIG,
 };
 
 const QWEN_VISION_BASE = {
-  family: 'qwen' as const,
+  family: 'qwen',
   maxTokensField: 'max_completion_tokens',
-  ability: QWEN_VISION_ABILITY,
   provider: QWEN,
-  thinking: QWEN_THINKING,
+  thinking: true,
+  imageInput: true,
+  maxTools: 128,
+  thinkingConfig: QWEN_THINKING_CONFIG,
 };
 
 export const QWEN_BASE_MODELS: readonly ModelItem[] = [
@@ -148,7 +140,7 @@ export const QWEN_BASE_MODELS: readonly ModelItem[] = [
     maxOutputTokens: 65_536,
     detailKey: 'model.qwen3-coder-flash.detail',
   },
-];
+] as ModelItem[];
 
 export const QWEN_US_MODELS: readonly ModelItem[] = [
   {
@@ -171,4 +163,4 @@ export const QWEN_US_MODELS: readonly ModelItem[] = [
     maxOutputTokens: 65_536,
     detailKey: 'model.qwen-flash-us.detail',
   },
-];
+] as ModelItem[];
