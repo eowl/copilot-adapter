@@ -58,9 +58,7 @@ export async function assembleChatReq(ctx: PrepContext): Promise<ReadyReq> {
     thinkingField: modelProvider.thinkingField,
     formatImagePart:
       model.formatImagePart ??
-      (model.imageInput
-        ? imagePart(model.imageField ?? DEFAULT_IMAGE_FIELD)
-        : undefined),
+      (model.imageInput ? imagePart(model.imageField ?? DEFAULT_IMAGE_FIELD) : undefined),
   };
 
   if (gate.kind === 'proceed') {

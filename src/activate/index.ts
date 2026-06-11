@@ -22,9 +22,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   }
 
   // Watch custom models file for changes
-  context.subscriptions.push(
-    ...startCustomModelsWatcher(context, adapters),
-  );
+  context.subscriptions.push(...startCustomModelsWatcher(context, adapters));
 
   await maybeShowWelcome(context, migratedCount > 0);
 

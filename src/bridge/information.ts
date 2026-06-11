@@ -28,9 +28,8 @@ export function buildChatInfo(
   const notConfigured = !hasKey;
   const detail = t(modelItem.detailKey) || modelItem.detailKey;
 
-  const qualifiedId = modelItem.source === 'custom'
-    ? customModelKey(modelItem)
-    : modelKey(modelItem);
+  const qualifiedId =
+    modelItem.source === 'custom' ? customModelKey(modelItem) : modelKey(modelItem);
   const infoId = idPrefix ? `${idPrefix}::${qualifiedId}` : qualifiedId;
   const info = {
     id: infoId,
@@ -41,8 +40,7 @@ export function buildChatInfo(
     maxOutputTokens: modelItem.maxOutputTokens,
     capabilities: {
       imageInput: modelItem.imageInput || hasVisionProxy,
-      toolCalling:
-        modelItem.maxTools ?? (modelItem.maxTools === undefined ? true : false),
+      toolCalling: modelItem.maxTools ?? (modelItem.maxTools === undefined ? true : false),
     },
     tooltip: notConfigured ? t('auth.noKeyTooltip', modelProvider.label) : detail,
     detail: detail,

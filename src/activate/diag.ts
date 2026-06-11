@@ -5,10 +5,7 @@ import { channel } from '../logger';
 import { Settings } from '../settings';
 import { loadCustomModels } from '../custom/loader';
 import { updateDiagnostics, clearAllDiagnostics } from '../custom/diag';
-import {
-  getCustomModels,
-  refreshCustomModels,
-} from '../providers/index';
+import { getCustomModels, refreshCustomModels } from '../providers/index';
 import type { Adapter } from '../bridge/adapter';
 
 export function logStartupDiagnostics(context: vscode.ExtensionContext): void {
@@ -23,7 +20,6 @@ export function logStartupDiagnostics(context: vscode.ExtensionContext): void {
     channel.debug(`globalStorageUri: ${context.globalStorageUri.fsPath}`);
   }
 }
-
 
 function loadAndDiagnose(filePath: string, adapters: Adapter[]): void {
   const { errors } = loadCustomModels(filePath, {
@@ -54,9 +50,7 @@ function createWatcher(filePath: string, adapters: Adapter[]): vscode.Disposable
   const disposables: vscode.Disposable[] = [];
 
   try {
-    const watcher = vscode.workspace.createFileSystemWatcher(
-      new vscode.RelativePattern(dir, base),
-    );
+    const watcher = vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(dir, base));
     const onChange = (): void => loadAndDiagnose(filePath, adapters);
     const onDelete = (): void => {
       updateDiagnostics(vscode.Uri.file(filePath), []);

@@ -153,7 +153,8 @@ export function loadAllJsonModels(modelsDir: string, reg: Registries): ModelItem
     const filePath = path.join(modelsDir, name);
     let module: ModelJsonModule;
     try {
-      module = require(filePath) as ModelJsonModule;
+      const raw = fs.readFileSync(filePath, 'utf-8');
+      module = JSON.parse(raw) as ModelJsonModule;
     } catch (err) {
       channel.warn(`Failed to load JSON model file ${filePath}:`, err);
       continue;

@@ -50,7 +50,10 @@ function buildAllModels(customPath: string): ModelItem[] {
   const result: ModelItem[] = [];
 
   const modelsDir = path.join(__dirname, '..', '..', 'models');
-  for (const mi of loadAllJsonModels(modelsDir, { providerById: _providerById, endpointById: _endpointById })) {
+  for (const mi of loadAllJsonModels(modelsDir, {
+    providerById: _providerById,
+    endpointById: _endpointById,
+  })) {
     const key = modelKey(mi);
     if (!seen.has(key)) {
       seen.add(key);

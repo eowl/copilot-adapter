@@ -209,7 +209,10 @@ const CUSTOM_LABEL_PREFIX = t('customModels.labelPrefix');
 const CUSTOM_KEY_SUFFIX = '-custom';
 
 function groupEntries(reg: Registries, entries: CustomModelEntry[]): ModelJsonModule[] {
-  const groups = new Map<string, { providerId: string; endpointId: string; models: Record<string, unknown>[] }>();
+  const groups = new Map<
+    string,
+    { providerId: string; endpointId: string; models: Record<string, unknown>[] }
+  >();
 
   for (const entry of entries) {
     const provider = reg.providerById.get(entry.provider);
