@@ -9,6 +9,7 @@ import {
   needsWarmup,
 } from '../../../../src/bridge/utils/preflight';
 import { WARMUP_CALL_ID_PREFIX } from '../../../../src/bridge/utils/defines';
+import { stubConfig } from '../../../helpers/stubs';
 
 const ACTIVATE_TOOL = 'activate_coding';
 const OTHER_TOOL = 'regular_tool';
@@ -149,6 +150,81 @@ suite('bridge/utils/preflight', () => {
 
     test('returns false for empty tool list', () => {
       assert.equal(needsWarmup([], [], true), false);
+    });
+
+    test('returns true when warmup has not started and maxWarmupRounds > 0', () => {
+      const restore = stubConfig({ maxWarmupRounds: 3 });
+      try {
+        assert.equal(needsWarmup([], [ACTIVATE_TOOL], true), true);
+      } finally {
+        restore();
+      }
+    });
+
+    test('returns true when warmup is partial (1/3 completed)', () => {
+      const callId1 = makeWarmupCallId(1, ACTIVATE_TOOL);
+      const messages = [
+        vscode.LanguageModelChatMessage.Assistant([
+          new vscode.LanguageModelToolCallPart(callId1, ACTIVATE_TOOL, {}),
+        ]),
+        vscode.LanguageModelChatMessage.User([
+          new vscode.LanguageModelToolResultPart(callId1, []),
+        ]),
+      ];
+      const restore = stubConfig({ maxWarmupRounds: 3 });
+      try {
+        assert.equal(needsWarmup(messages, [ACTIVATE_TOOL], true), true);
+      } finally {
+        restore();
+      }
+    });
+
+    test('returns false when warmup reached maxWarmupRounds', () => {
+      const restore = stubConfig({ maxWarmupRounds: 3 });
+      try {
+        const callId1 = makeWarmupCallId(1, ACTIVATE_TOOL);
+        const callId2 = makeWarmupCallId(2, ACTIVATE_TOOL);
+        const callId3 = makeWarmupCallId(3, ACTIVATE_TOOL);
+        const messages = [
+          vscode.LanguageModelChatMessage.Assistant([
+            new vscode.LanguageModelToolCallPart(callId1, ACTIVATE_TOOL, {}),
+          ]),
+          vscode.LanguageModelChatMessage.User([
+            new vscode.LanguageModelToolResultPart(callId1, []),
+          ]),
+          vscode.LanguageModelChatMessage.Assistant([
+            new vscode.LanguageModelToolCallPart(callId2, ACTIVATE_TOOL, {}),
+          ]),
+          vscode.LanguageModelChatMessage.User([
+            new vscode.LanguageModelToolResultPart(callId2, []),
+          ]),
+          vscode.LanguageModelChatMessage.Assistant([
+            new vscode.LanguageModelToolCallPart(callId3, ACTIVATE_TOOL, {}),
+          ]),
+          vscode.LanguageModelChatMessage.User([
+            new vscode.LanguageModelToolResultPart(callId3, []),
+          ]),
+        ];
+        assert.equal(needsWarmup(messages, [ACTIVATE_TOOL], true), false);
+      } finally {
+        restore();
+      }
+    });
+
+    test('returns false when warmup is in-progress (call without result)', () => {
+      const callId = makeWarmupCallId(1, ACTIVATE_TOOL);
+      const messages = [
+        vscode.LanguageModelChatMessage.Assistant([
+          new vscode.LanguageModelToolCallPart(callId, ACTIVATE_TOOL, {}),
+        ]),
+      ];
+      const restore = stubConfig({ maxWarmupRounds: 3 });
+      try {
+        // inProgress=true → needsWarmup returns false (don't start a new round)
+        assert.equal(needsWarmup(messages, [ACTIVATE_TOOL], true), false);
+      } finally {
+        restore();
+      }
     });
   });
 });

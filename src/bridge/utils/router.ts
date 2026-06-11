@@ -5,6 +5,8 @@ import type { ModelProvider, ModelItem } from '../../providers/types';
 import { buildToolList } from './build';
 import { needsWarmup, scanWarmupState, stripWarmupMessages, makeWarmupCallId } from './preflight';
 import { cleanDriftNotices } from './drift';
+import { Settings } from '../../settings';
+import { channel } from '../../logger';
 
 export type GateAction =
   | {
@@ -12,7 +14,13 @@ export type GateAction =
       tools: Tool[] | undefined;
       messages: readonly vscode.LanguageModelChatRequestMessage[];
     }
-  | { kind: 'warmup'; toolName: string; callId: string }
+  | {
+      kind: 'warmup';
+      toolName: string;
+      callId: string;
+      round: number;
+      totalRounds: number;
+    }
   | { kind: 'reject'; reason: string };
 
 /**
@@ -28,7 +36,7 @@ export function routeToolFlow(
   modelItem: ModelItem,
   _modelProvider: ModelProvider,
 ): GateAction {
-  const stabilize = false;
+  const stabilize = Settings.toolWarmup();
 
   let liveMessages = messages;
   if (stabilize) {
@@ -43,13 +51,21 @@ export function routeToolFlow(
     if (needsWarmup(messages, toolNames, true)) {
       const state = scanWarmupState(messages, toolNames);
       const round = state.completedRounds + 1;
+      const totalRounds = Settings.maxWarmupRounds();
       const activateName = toolNames.find((n) => n.startsWith('activate_'));
 
       if (activateName) {
+        channel.info(
+          `[Warmup] ${modelItem.provider.label} / ${modelItem.label}: ` +
+            `injecting round ${round}/${totalRounds} (${activateName})`,
+        );
+
         return {
           kind: 'warmup',
           toolName: activateName,
           callId: makeWarmupCallId(round, activateName),
+          round,
+          totalRounds,
         };
       }
     }

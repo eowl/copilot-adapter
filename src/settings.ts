@@ -68,6 +68,10 @@ export class Settings {
     return this.section().get<number>('maxWarmupRounds', 3);
   }
 
+  static toolWarmup(): boolean {
+    return this.section().get<boolean>('toolWarmup', false);
+  }
+
   static tokenRatio(): number {
     return this.section().get<number>('tokenRatio', 4);
   }
