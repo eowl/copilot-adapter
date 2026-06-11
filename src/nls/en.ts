@@ -116,6 +116,13 @@ export const en: Translation = {
   'err.unknownModel': 'Unknown model: {0}.',
 
   'tools.drift': 'The following tools were removed to keep the conversation on track: {0}.',
-};
 
-/* register() intentionally removed — not needed for tests */
+  'customModels.validation.jsonParse': 'Invalid JSON',
+  'customModels.validation.topLevelObject': 'File must contain a JSON object',
+  'customModels.validation.requiredString': 'Required non-empty string',
+  'customModels.validation.positiveInt': 'Expected a positive integer',
+  'customModels.validation.notAnObject': 'Expected an object',
+  'customModels.validation.array': 'Expected an array',
+  'customModels.validation.boolean': 'Expected a boolean (true/false)',
+  'customModels.validation.thinkingDefaultMismatch': 'Default must match one of the options values',
+};

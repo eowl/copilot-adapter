@@ -3,7 +3,7 @@ import { channel } from '../logger';
 import { migrateLegacySecrets } from '../bridge/managed';
 import { registerCommands } from './commands';
 import { registerUriHandler } from './links';
-import { logStartupDiagnostics } from './diag';
+import { logStartupDiagnostics, startCustomModelsWatcher } from './diag';
 import { maybeShowWelcome } from './onboard';
 import { mountProviders } from './mount';
 
@@ -20,6 +20,11 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   if (migratedCount > 0) {
     adapters.forEach((a) => a.notifyChange());
   }
+
+  // Watch custom models file for changes
+  context.subscriptions.push(
+    ...startCustomModelsWatcher(context, adapters),
+  );
 
   await maybeShowWelcome(context, migratedCount > 0);
 

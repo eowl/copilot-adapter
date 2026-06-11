@@ -111,4 +111,13 @@ export const zh: Translation = {
   'err.unknownModel': '未知模型：{0}。',
 
   'tools.drift': '以下工具已从对话中移除以保持上下文连贯：{0}。',
+
+  'customModels.validation.jsonParse': 'JSON 解析错误',
+  'customModels.validation.topLevelObject': '文件内容必须是一个 JSON 对象',
+  'customModels.validation.requiredString': '必填，非空字符串',
+  'customModels.validation.positiveInt': '应为正整数',
+  'customModels.validation.notAnObject': '应为对象',
+  'customModels.validation.array': '应为数组',
+  'customModels.validation.boolean': '应为布尔值 (true/false)',
+  'customModels.validation.thinkingDefaultMismatch': '默认值必须在 options 的 value 中存在',
 };

@@ -87,4 +87,8 @@ export class Settings {
   static tokenRatioCalibrationThreshold(): number {
     return this.section().get<number>('tokenRatioCalibrationThreshold', 0.1);
   }
+
+  static customModelsPath(): string {
+    return this.section().get<string>('customModelsPath', '').trim();
+  }
 }
