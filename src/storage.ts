@@ -48,6 +48,6 @@ export function getDumpsPath(context: vscode.ExtensionContext): string {
   const storagePath = getStorageUri(context).fsPath;
   const dumpsPath = path.join(storagePath, 'requests');
   ensureDir(dumpsPath);
-  
+
   return dumpsPath;
 }

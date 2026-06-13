@@ -208,10 +208,7 @@ function parseJsonArray(text: string): { data: unknown[]; parseErrors: Validatio
 
 const CUSTOM_LABEL_PREFIX = t('customModels.labelPrefix');
 
-function resolveEndpointId(
-  input: string,
-  provider: ModelProvider,
-): ModelEndpoint | undefined {
+function resolveEndpointId(input: string, provider: ModelProvider): ModelEndpoint | undefined {
   if (!provider.endpoints) return undefined;
 
   // Exact id match
@@ -352,4 +349,3 @@ export function loadCustomModels(filePath: string, reg: Registries): CustomModel
 
   return { models, errors: [] };
 }
-

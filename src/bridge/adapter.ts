@@ -98,7 +98,9 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     _token: vscode.CancellationToken,
   ): Promise<ChatInfo[]> {
     const opts = _options as GroupOptions;
-    const providerModels = registry.ALL_MODELS.filter((m) => m.provider.id === this.filteredProviderId);
+    const providerModels = registry.ALL_MODELS.filter(
+      (m) => m.provider.id === this.filteredProviderId,
+    );
     if (providerModels.length === 0) return [];
 
     const groupCfg = opts.configuration;
@@ -288,13 +290,18 @@ export class Adapter implements vscode.LanguageModelChatProvider {
   }
 
   async configureApiKey(providerId?: string): Promise<void> {
-    let modelProvider = providerId ? registry.ALL_PROVIDERS.find((p) => p.id === providerId) : undefined;
+    let modelProvider = providerId
+      ? registry.ALL_PROVIDERS.find((p) => p.id === providerId)
+      : undefined;
 
     if (!modelProvider) {
       const items = registry.ALL_PROVIDERS.map((p) => ({
         label: p.label,
         description: p.id,
-        detail: t(p.detailKey, String(registry.ALL_MODELS.filter((m) => m.provider.id === p.id).length)),
+        detail: t(
+          p.detailKey,
+          String(registry.ALL_MODELS.filter((m) => m.provider.id === p.id).length),
+        ),
       }));
 
       const picked = await vscode.window.showQuickPick(items, {

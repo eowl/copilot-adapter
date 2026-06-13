@@ -4,6 +4,6 @@ import type { Registries, ModelItem } from './types';
 
 export function loadBuiltinJSONModels(reg: Registries): ModelItem[] {
   const modelsDir = path.join(__dirname, '..', '..', 'models');
-  
+
   return loadAllJsonModels(modelsDir, reg);
 }

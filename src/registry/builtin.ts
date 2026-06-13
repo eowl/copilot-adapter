@@ -35,6 +35,6 @@ export function loadBuiltinModels(): ModelItem[] {
       }
     }
   }
-  
+
   return result;
 }

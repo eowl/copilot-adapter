@@ -21,4 +21,3 @@ export {
   modelById,
   refreshModels as refreshCustomModels,
 } from '../registry';
-
