@@ -140,9 +140,6 @@ function validateThinkingConfig(raw: unknown, prefix: string): string[] {
     if (!isNonEmptyString(opt.value)) {
       errs.push(`${prefix}.options[${i}].value: ${t('customModels.validation.requiredString')}`);
     }
-    if (!isNonEmptyString(opt.label)) {
-      errs.push(`${prefix}.options[${i}].label: ${t('customModels.validation.requiredString')}`);
-    }
     if (defaultVal !== undefined && opt.value === defaultVal) {
       foundDefault = true;
     }

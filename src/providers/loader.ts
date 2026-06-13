@@ -29,8 +29,8 @@ function buildRequestExtras(
 
 function buildConfigSchema(thinkingConfig: ThinkingConfig): () => Record<string, unknown> {
   const enums = thinkingConfig.options.map((o) => o.value);
-  const labels = thinkingConfig.options.map((o) => t(o.label) || o.label);
-  const hints = thinkingConfig.options.map((o) => t(o.hint) || o.hint);
+  const labels = thinkingConfig.options.map((o) => t(o.label) || o.label || o.value);
+  const hints = thinkingConfig.options.map((o) => t(o.hint) || o.hint || '');
 
   const schema = {
     properties: {
