@@ -2,12 +2,11 @@ import * as path from 'node:path';
 import vscode from 'vscode';
 import { channel } from '../logger';
 import { openDumpsFolder } from '../trace/dump';
+import { getCustomModelsPath } from '../storage';
 import type { Adapter } from '../bridge/adapter';
 
-const CUSTOM_MODELS_FILE = 'custom-models.json';
-
 function openCustomModelsFile(context: vscode.ExtensionContext): void {
-  const filePath = path.join(context.globalStorageUri.fsPath, CUSTOM_MODELS_FILE);
+  const filePath = getCustomModelsPath(context);
   vscode.commands.executeCommand('vscode.open', vscode.Uri.file(filePath));
 }
 

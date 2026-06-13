@@ -5,12 +5,11 @@ import { Settings } from '../settings';
 import { loadCustomModels } from '../custom/loader';
 import { updateDiagnostics, clearAllDiagnostics } from '../custom/diag';
 import { providerById, endpointById, refreshCustomModels } from '../providers/index';
+import { getCustomModelsPath } from '../storage';
 import type { Adapter } from '../bridge/adapter';
 
-const CUSTOM_MODELS_FILE = 'custom-models.json';
-
 function customModelsPath(context: vscode.ExtensionContext): string {
-  return path.join(context.globalStorageUri.fsPath, CUSTOM_MODELS_FILE);
+  return getCustomModelsPath(context);
 }
 
 export function logStartupDiagnostics(context: vscode.ExtensionContext): void {

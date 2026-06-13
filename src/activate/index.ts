@@ -1,5 +1,4 @@
 import * as fs from 'node:fs';
-import * as path from 'node:path';
 import vscode from 'vscode';
 import { channel } from '../logger';
 import { migrateLegacySecrets } from '../bridge/managed';
@@ -9,22 +8,14 @@ import { logStartupDiagnostics, startCustomModelsWatcher } from './diag';
 import { maybeShowWelcome } from './onboard';
 import { mountProviders } from './mount';
 import { refreshModels } from '../registry';
-
-const CUSTOM_MODELS_FILE = 'custom-models.json';
+import { getCustomModelsPath } from '../storage';
 
 /**
- * Ensure custom-models.json exists in globalStorage.
+ * Ensure custom-models.json exists in our storage.
  * Creates a template if the file doesn't already exist.
  */
 function ensureCustomModelsFile(context: vscode.ExtensionContext): string {
-  const dir = context.globalStorageUri.fsPath;
-  try {
-    fs.mkdirSync(dir, { recursive: true });
-  } catch {
-    // Directory may already exist
-  }
-
-  const filePath = path.join(dir, CUSTOM_MODELS_FILE);
+  const filePath = getCustomModelsPath(context);
   if (!fs.existsSync(filePath)) {
     fs.writeFileSync(filePath, '[]\n', 'utf-8');
   }
@@ -35,7 +26,7 @@ function ensureCustomModelsFile(context: vscode.ExtensionContext): string {
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
   logStartupDiagnostics(context);
 
-  // Create + load custom models from globalStorage
+  // Create + load custom models from our storage
   const customPath = ensureCustomModelsFile(context);
   refreshModels(customPath);
 

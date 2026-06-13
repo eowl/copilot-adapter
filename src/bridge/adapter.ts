@@ -21,6 +21,7 @@ import { ApiError } from '../client/error';
 import { seedManagedGroup } from './managed';
 import { dumpRequest } from '../trace/dump';
 import { tagRequest } from '../trace/tag';
+import { getStorageUri } from '../storage';
 
 type PrepareOptions = vscode.PrepareLanguageModelChatModelOptions;
 
@@ -62,7 +63,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     private readonly onKeyChange?: () => void,
   ) {
     this.picker = new VisionModelPicker();
-    this.storageUri = context.globalStorageUri;
+    this.storageUri = getStorageUri(context);
     this.onDidChangeLanguageModelChatInformation = this.changeEmitter.event;
 
     context.subscriptions.push(

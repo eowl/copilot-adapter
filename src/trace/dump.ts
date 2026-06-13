@@ -4,6 +4,7 @@ import vscode from 'vscode';
 import { channel } from '../logger';
 import { packPretty } from '../serialize';
 import { Settings } from '../settings';
+import { getDumpsPath } from '../storage';
 import type { ApiReq } from '../client/types';
 
 /**
@@ -51,11 +52,7 @@ export async function dumpRequest(
 }
 
 export async function openDumpsFolder(context: vscode.ExtensionContext): Promise<void> {
-  const dir = vscode.Uri.joinPath(context.globalStorageUri, 'requests');
-  try {
-    await fs.mkdir(dir.fsPath, { recursive: true });
-  } catch {
-    // ignore if already exists
-  }
+  const dumpsPath = getDumpsPath(context);
+  const dir = vscode.Uri.file(dumpsPath);
   await vscode.commands.executeCommand('revealFileInOS', dir);
 }
