@@ -1,6 +1,7 @@
 import vscode from 'vscode';
 import { t } from '../nls';
 import { modelKey } from '../providers/utils';
+import { customModelKey } from '../registry';
 import type { ModelItem } from '../providers/types';
 
 /** Extended chat model information returned to VS Code. */
@@ -25,9 +26,10 @@ export function buildChatInfo(
   const modelProvider = modelItem.provider;
   const schema = modelItem.configSchema?.();
   const notConfigured = !hasKey;
-  const detail = t(modelItem.detailKey);
+  const detail = t(modelItem.detailKey) || modelItem.detailKey;
 
-  const qualifiedId = modelKey(modelItem);
+  const qualifiedId =
+    modelItem.source === 'custom' ? customModelKey(modelItem) : modelKey(modelItem);
   const infoId = idPrefix ? `${idPrefix}::${qualifiedId}` : qualifiedId;
   const info = {
     id: infoId,
@@ -37,9 +39,8 @@ export function buildChatInfo(
     maxInputTokens: modelItem.maxInputTokens,
     maxOutputTokens: modelItem.maxOutputTokens,
     capabilities: {
-      imageInput: modelItem.ability.imageInput || hasVisionProxy,
-      toolCalling:
-        modelItem.ability.maxTools ?? (modelItem.ability.maxTools === undefined ? true : false),
+      imageInput: modelItem.imageInput || hasVisionProxy,
+      toolCalling: modelItem.maxTools ?? (modelItem.maxTools === undefined ? true : false),
     },
     tooltip: notConfigured ? t('auth.noKeyTooltip', modelProvider.label) : detail,
     detail: detail,

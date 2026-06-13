@@ -16,8 +16,9 @@
 - [功能特性](#功能特性)
   - [思考模式](#思考模式)
   - [视觉代理](#视觉代理)
-  - [前缀缓存](#前缀缓存)
-  - [Token 用量上报](#token-用量上报)
+  - [前缀缓存命中率](#前缀缓存命中率)
+  - [上下文窗口计算](#上下文窗口计算)
+  - [自定义模型](#自定义模型)
 - [配置参考](#配置参考)
 - [命令](#命令)
 
@@ -40,7 +41,7 @@
 ## 快速开始
 
 1. 安装扩展。
-2. 打开 **Language Models** 面板（`Ctrl/Cmd+Shift+P` *Language Models*），选择提供商并输入 API Key——这是 VS Code 原生方式，也是推荐做法。
+2. 打开 **Language Models** 面板，选择提供商并输入 API Key——这是 VS Code 原生方式，也是推荐做法。
 3. 打开 Copilot Chat，点击模型选择器，选择一个模型即可使用。
 
 > **备用方式：** 执行命令 **Copilot Adapter: Add API Key**（`Ctrl/Cmd+Shift+P`）可在不打开 Language Models 面板的情况下存储 Key。
@@ -82,7 +83,7 @@ API Key 仅存储于 [VS Code Secret Storage](https://code.visualstudio.com/api/
 通过命令 **Copilot Adapter: Set Vision Proxy Model** 或设置项 `copilot-adapter.visionProxyModel` 进行配置。  
 将值设为 `off` 即可随时禁用。
 
-### 前缀缓存
+### 前缀缓存命中率
 
 扩展会调整连续对话中消息的顺序，优先将可以被缓存的内容放在前面，以提升支持前缀缓存和主动缓存的模型（DeepSeek、Qwen、Zhipu）的缓存命中率。在日志级别为 `info` 或更高时，输出频道中会记录每次请求的缓存命中详情：
 
@@ -90,7 +91,7 @@ API Key 仅存储于 [VS Code Secret Storage](https://code.visualstudio.com/api/
 model: deepseek-v4-pro, tokens: prompt=18576 reasoning=40 completion=57, cache: hit=12160 miss=6516 rate=65%
 ```
 
-### Token 用量上报
+### 上下文窗口计算
 
 扩展会为每次请求向 VS Code 上报 Token 用量，具体策略分为两种：
 
@@ -112,17 +113,39 @@ Chars-per-token ratio calibrated for deepseek: 4.00 to 3.38 (based on API usage:
 
 无法获取精确用量的提供商（如 MiniMax）保持静态默认比例。
 
+### 自定义模型
+
+通过 [JSON 配置文件](docs/add-custom-model.zh-cn.md) 自定义模型 — 可以添加内置列表之外的模型，或覆盖任意模型参数。
+
+- 文件自动创建于 `<globalStorage>/custom-models.json`，首次启动时生成模板。
+- 每个条目指定提供商和 endpoint；endpoint 支持 `string | string[]`（ID、label 或 URL 均可）。
+- 所有校验错误以诊断波浪线的形式显示在文件中。
+- 修改后保存即生效，无需重载。
+- 通过 [Settings Sync](https://code.visualstudio.com/docs/editor/settings-sync) 跨设备云同步（VS Code 1.87+）。
+
+使用命令 **Copilot Adapter: 打开自定义模型文件** 或扩展设置中的 *Custom Models File* 链接，随时打开该文件。
+
+详见 [自定义模型文档](docs/add-custom-model.zh-cn.md) 获取字段详解和示例。
+
 ---
 
 ## 配置参考
 
 | 设置项 | 默认值 | 说明 |
 |---|---|---|
-| `copilot-adapter.maxTokens` | `0` | 最大输出 Token 数；`0` 表示使用模型内置默认值 |
-| `copilot-adapter.visionProxyModel` | `"off"` | 视觉代理使用的模型 ID，`"off"` 表示禁用，详见[视觉代理](#视觉代理) |
-| `copilot-adapter.requestTimeout` | `60` | 请求超时时间（秒） |
-| `copilot-adapter.requestRetries` | `2` | 瞬时错误重试次数（最多 5 次） |
-| `copilot-adapter.debugMode` | `"off"` | 日志详细程度：`off` / `info` / `meta` / `verbose` |
+| `copilot-adapter.maxTokens` | `0` | 每次请求最大输出 Token 数；`0` 使用模型内置默认值 |
+| `copilot-adapter.visionProxyModel` | `"off"` | 视觉代理模型 ID，`"off"` 禁用，详见[视觉代理](#视觉代理) |
+| `copilot-adapter.visionProxyPrompt` | *(系统提示词)* | 视觉代理使用的自定义系统提示词 |
+| `copilot-adapter.requestTimeout` | `60` | HTTP 请求超时时间（秒）；`0` = 无超时 |
+| `copilot-adapter.requestRetries` | `2` | 速率限制(429)或服务端错误(503)时的自动重试次数，最多 5 次 |
+| `copilot-adapter.imageTokenEstimate` | `1020` | 上下文窗口追踪中每张图片的估算 token 消耗 |
+| `copilot-adapter.tokenRatio` | `4.0` | 默认字符/token 比率，用于 token 估算 |
+| `copilot-adapter.tokenRatioGlobal` | `false` | 强制所有模型使用全局比率，忽略各模型校准结果 |
+| `copilot-adapter.tokenRatioAutoCalibrate` | `true` | 根据 API 实际用量数据自动校准比率 |
+| `copilot-adapter.tokenRatioCalibrationThreshold` | `0.1` | 自动校准触发的最小相对变化（1%–100%） |
+| `copilot-adapter.toolWarmup` | `false` | 正式请求前发送模拟 `activate_*` 工具调用（改善部分模型的工具稳定性） |
+| `copilot-adapter.maxWarmupRounds` | `3` | 每次请求最大预热轮数（需启用 `toolWarmup`） |
+| `copilot-adapter.debugMode` | `"off"` | 日志级别：`off` / `info` / `meta` / `verbose` |
 
 ### 日志级别说明
 
@@ -143,6 +166,7 @@ Chars-per-token ratio calibrated for deepseek: 4.00 to 3.38 (based on API usage:
 | *Copilot Adapter: Remove API Key* | 清除已存储的 API Key |
 | *Copilot Adapter: Set Vision Proxy Model* | 选择视觉代理使用的模型 |
 | *Copilot Adapter: Open Settings* | 跳转至扩展设置页 |
+| *Copilot Adapter: Open Custom Models File* | 打开自定义模型 JSON 文件 (`globalStorage/custom-models.json`) |
 | *Copilot Adapter: Show Logs* | 打开输出频道 |
 | *Copilot Adapter: View Request Records* | 打开请求 dump 文件所在的文件夹 |
 

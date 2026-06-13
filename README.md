@@ -16,8 +16,9 @@ Extend VS Code's native Copilot Chat with third-party AI models. Switch between 
 - [Features](#features)
   - [Thinking Modes](#thinking-modes)
   - [Vision Proxy](#vision-proxy)
-  - [Prefix Cache](#prefix-cache)
-  - [Token Usage Reporting](#token-usage-reporting)
+  - [Prefix Cache Hit Rate](#prefix-cache-hit-rate)
+  - [Context Window](#context-window)
+  - [Custom Models](#custom-models)
 - [Configuration Reference](#configuration-reference)
 - [Commands](#commands)
 
@@ -40,7 +41,7 @@ Extend VS Code's native Copilot Chat with third-party AI models. Switch between 
 ## Quick Start
 
 1. Install the extension.
-2. Open the **Language Models** panel (`Ctrl/Cmd+Shift+P` *Language Models*), select a provider, and enter your API key — this is the native VS Code approach and the recommended way.
+2. Open the **Language Models** panel, select a provider, and enter your API key — this is the native VS Code approach and the recommended way.
 3. Open Copilot Chat, click the model selector, and choose a model.
 
 > **Alternative:** Use the command **Copilot Adapter: Add API Key** (`Ctrl/Cmd+Shift+P`) to store a key without opening the Language Models panel.
@@ -82,7 +83,7 @@ Text-only models cannot accept image attachments directly. When a vision proxy i
 Set up via **Copilot Adapter: Set Vision Proxy Model** or the `copilot-adapter.visionProxyModel` setting.  
 Disable at any time by setting the value to `off`.
 
-### Prefix Cache
+### Prefix Cache Hit Rate
 
 The extension reorders messages in a conversation so that cacheable content appears first, boosting the cache-hit rate for models with prefix caching or automatic caching (DeepSeek, Qwen, Zhipu).  When debug mode is `info` or above, the output channel logs per-request cache details:
 
@@ -90,7 +91,7 @@ The extension reorders messages in a conversation so that cacheable content appe
 model: deepseek-v4-pro, tokens: prompt=18576 reasoning=40 completion=57, cache: hit=12160 miss=6516 rate=65%
 ```
 
-### Token Usage Reporting
+### Context Window
 
 The extension reports token usage to VS Code for every request, using one of two strategies:
 
@@ -112,16 +113,38 @@ Chars-per-token ratio calibrated for deepseek: 4.00 to 3.38 (based on API usage:
 
 Providers without exact usage data (e.g. MiniMax) keep the static default ratio.
 
+### Custom Models
+
+Define your own models through a [JSON configuration file](docs/add-custom-model.md) — add models not included in the built-in lists or override any model parameter.
+
+- The file is automatically created at `<globalStorage>/custom-models.json` on first launch.
+- Each entry targets a provider and endpoint; supports `string | string[]` for endpoints (ID, label, or URL).
+- All validation errors appear as inline diagnostics in the file.
+- Changes take effect on save — no reload needed.
+- Supports [Settings Sync](https://code.visualstudio.com/docs/editor/settings-sync) across devices (VS Code 1.87+).
+
+Use the command **Copilot Adapter: Open Custom Models File** or the *Custom Models File* link in extension settings to open the file at any time.
+
+See [Custom Models Documentation](docs/add-custom-model.md) for the full field reference and examples.
+
 ---
 
 ## Configuration Reference
 
 | Setting | Default | Description |
 |---|---|---|
-| `copilot-adapter.maxTokens` | `0` | Max output tokens; `0` uses the model's built-in default |
-| `copilot-adapter.visionProxyModel` | `"off"` | Model ID to use as vision proxy, or `"off"` to disable — see [Vision Proxy](#vision-proxy) |
-| `copilot-adapter.requestTimeout` | `60` | Request timeout in seconds |
-| `copilot-adapter.requestRetries` | `2` | Retry attempts on transient errors (max 5) |
+| `copilot-adapter.maxTokens` | `0` | Max output tokens per request; `0` uses the model's built-in default |
+| `copilot-adapter.visionProxyModel` | `"off"` | Model to use as vision proxy, or `"off"` to disable — see [Vision Proxy](#vision-proxy) |
+| `copilot-adapter.visionProxyPrompt` | *(system prompt)* | Custom system prompt for the vision proxy model |
+| `copilot-adapter.requestTimeout` | `60` | HTTP request timeout in seconds; `0` = no timeout |
+| `copilot-adapter.requestRetries` | `2` | Auto-retry count on rate-limit (429) or server errors (503), max 5 |
+| `copilot-adapter.imageTokenEstimate` | `1020` | Estimated tokens per image for context-window tracking |
+| `copilot-adapter.tokenRatio` | `4.0` | Default chars-per-token ratio for token estimation |
+| `copilot-adapter.tokenRatioGlobal` | `false` | Force all models to use the global ratio, ignoring per-model calibration |
+| `copilot-adapter.tokenRatioAutoCalibrate` | `true` | Auto-tune ratio from actual API usage data over time |
+| `copilot-adapter.tokenRatioCalibrationThreshold` | `0.1` | Minimum relative change (1–100%) to persist auto-calibrated ratio |
+| `copilot-adapter.toolWarmup` | `false` | Send fake `activate_*` tool calls before real requests (improves tool stability on some models) |
+| `copilot-adapter.maxWarmupRounds` | `3` | Max warmup rounds per request (requires `toolWarmup` on) |
 | `copilot-adapter.debugMode` | `"off"` | Log verbosity: `off` / `info` / `meta` / `verbose` |
 
 ### Debug Mode Levels
@@ -143,6 +166,7 @@ Providers without exact usage data (e.g. MiniMax) keep the static default ratio.
 | *Copilot Adapter: Remove API Key* | Clear a stored API key |
 | *Copilot Adapter: Set Vision Proxy Model* | Choose the model to use as vision proxy |
 | *Copilot Adapter: Open Settings* | Jump to extension settings |
+| *Copilot Adapter: Open Custom Models File* | Open the custom models JSON file (`globalStorage/custom-models.json`) |
 | *Copilot Adapter: Show Logs* | Open the output channel |
 | *Copilot Adapter: View Request Records* | Open the folder where request dumps are stored |
 

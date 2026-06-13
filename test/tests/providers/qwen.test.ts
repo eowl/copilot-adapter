@@ -8,9 +8,9 @@ suite('providers/qwen model.requestExtras()', () => {
   const requestExtras = model.requestExtras!;
 
   test('model has thinking config', () => {
-    assert.ok(model.thinking !== undefined);
-    assert.equal(model.thinking!.default, 'adaptive');
-    assert.equal(model.thinking!.options.length, 2);
+    assert.ok(model.thinkingConfig !== undefined);
+    assert.equal(model.thinkingConfig!.default, 'adaptive');
+    assert.equal(model.thinkingConfig!.options.length, 2);
   });
 
   test('thinkingMode "disabled": enable_thinking false', () => {
@@ -85,7 +85,7 @@ suite('providers/qwen model.requestExtras()', () => {
 
   test('US-only models do not accept images', () => {
     for (const m of QWEN_US_MODELS) {
-      assert.equal(m.ability.imageInput, false, `${m.id} imageInput`);
+      assert.equal(m.imageInput, false, `${m.id} imageInput`);
     }
   });
 
@@ -101,7 +101,7 @@ suite('providers/qwen model.requestExtras()', () => {
     test('accept images', () => {
       for (const id of visionIds) {
         const m = QWEN_BASE_MODELS.find((x) => x.id === id)!;
-        assert.equal(m.ability.imageInput, true, `${id} imageInput`);
+        assert.equal(m.imageInput, true, `${id} imageInput`);
       }
     });
 
@@ -132,7 +132,7 @@ suite('providers/qwen model.requestExtras()', () => {
     test('do NOT accept images', () => {
       for (const id of nonVisionIds) {
         const m = QWEN_BASE_MODELS.find((x) => x.id === id)!;
-        assert.equal(m.ability.imageInput, false, `${id} imageInput`);
+        assert.equal(m.imageInput, false, `${id} imageInput`);
       }
     });
   });

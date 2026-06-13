@@ -116,6 +116,19 @@ export const en: Translation = {
   'err.unknownModel': 'Unknown model: {0}.',
 
   'tools.drift': 'The following tools were removed to keep the conversation on track: {0}.',
-};
 
-/* register() intentionally removed — not needed for tests */
+  'customModels.labelPrefix': 'Custom',
+  'customModels.validation.jsonParse': 'Invalid JSON',
+  'customModels.validation.topLevelArray': 'File must contain a JSON array',
+  'customModels.validation.requiredString': 'Required non-empty string',
+  'customModels.validation.positiveInt': 'Expected a positive integer',
+  'customModels.validation.notAnObject': 'Expected an object',
+  'customModels.validation.array': 'Expected an array',
+  'customModels.validation.boolean': 'Expected a boolean (true/false)',
+  'customModels.validation.thinkingDefaultMismatch': 'Default must match one of the options values',
+  'customModels.validation.nonEmptyStringArray': 'All items must be non-empty strings',
+  'customModels.validation.requiredStringArray': 'Must be an array of non-empty strings',
+  'customModels.validation.unknownProvider': 'Unknown provider',
+  'customModels.validation.unknownEndpoint': 'Unknown endpoint',
+  'customModels.validation.endpointNotUnderProvider': 'Endpoint does not belong to provider',
+};

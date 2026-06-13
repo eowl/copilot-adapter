@@ -111,4 +111,19 @@ export const zh: Translation = {
   'err.unknownModel': '未知模型：{0}。',
 
   'tools.drift': '以下工具已从对话中移除以保持上下文连贯：{0}。',
+
+  'customModels.labelPrefix': '自定义',
+  'customModels.validation.jsonParse': 'JSON 解析错误',
+  'customModels.validation.topLevelArray': '文件内容必须是一个 JSON 数组',
+  'customModels.validation.requiredString': '必填，非空字符串',
+  'customModels.validation.positiveInt': '应为正整数',
+  'customModels.validation.notAnObject': '应为对象',
+  'customModels.validation.array': '应为数组',
+  'customModels.validation.boolean': '应为布尔值 (true/false)',
+  'customModels.validation.thinkingDefaultMismatch': '默认值必须在 options 的 value 中存在',
+  'customModels.validation.nonEmptyStringArray': '所有元素必须是非空字符串',
+  'customModels.validation.requiredStringArray': '必须是非空字符串数组',
+  'customModels.validation.unknownProvider': '未知的 provider',
+  'customModels.validation.unknownEndpoint': '未知的 endpoint',
+  'customModels.validation.endpointNotUnderProvider': 'endpoint 不属于该 provider',
 };

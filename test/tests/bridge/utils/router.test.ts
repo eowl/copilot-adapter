@@ -15,11 +15,10 @@ function makeModel(maxTools?: number): ModelItem {
     version: '1',
     maxInputTokens: 100_000,
     maxOutputTokens: 4096,
-    ability: {
-      reasoning: false,
-      maxTools,
-      imageInput: false,
-    },
+    thinking: false,
+    maxTools,
+    imageInput: false,
+    source: 'builtin' as const,
     detailKey: 'model.test.detail',
     provider: stubProvider,
   };
