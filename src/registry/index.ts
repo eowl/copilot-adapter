@@ -1,4 +1,3 @@
-import { Settings } from '../settings';
 import { modelKey as _modelKey } from '../providers/utils';
 import {
   loadBuiltinModels,
@@ -44,7 +43,7 @@ function buildAllModels(customPath: string): ModelItem[] {
     }
   }
 
-  // Custom JSON (user-supplied)
+  // Custom JSON (user-supplied file)
   if (customPath) {
     const { models: customModels } = loadCustomJSONModels(customPath, _reg);
     for (const mi of customModels) {
@@ -68,25 +67,21 @@ function buildAllModels(customPath: string): ModelItem[] {
   return result;
 }
 
-let _allModels: readonly ModelItem[] = buildAllModels(Settings.customModelsPath());
+let _allModels: readonly ModelItem[] = buildAllModels('');
 let _modelById = new Map<string, ModelItem>(
   _allModels.map((mi) => [mi.source === 'custom' ? customModelKey(mi) : modelKey(mi), mi]),
 );
 
-export function refreshModels(): void {
-  const newAll = buildAllModels(Settings.customModelsPath());
+export let ALL_MODELS: readonly ModelItem[] = _allModels;
+export let modelById: ReadonlyMap<string, ModelItem> = _modelById;
+
+export function refreshModels(customPath: string): void {
+  const newAll = buildAllModels(customPath);
   const newById = new Map<string, ModelItem>(
     newAll.map((mi) => [mi.source === 'custom' ? customModelKey(mi) : modelKey(mi), mi]),
   );
   _allModels = newAll;
   _modelById = newById;
-  _exports.ALL_MODELS = newAll;
-  _exports.modelById = newById;
+  ALL_MODELS = newAll;
+  modelById = newById;
 }
-
-const _exports = { ALL_MODELS: _allModels, modelById: _modelById } as {
-  ALL_MODELS: readonly ModelItem[];
-  modelById: ReadonlyMap<string, ModelItem>;
-};
-
-export const { ALL_MODELS, modelById } = _exports;

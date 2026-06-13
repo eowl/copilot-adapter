@@ -2,7 +2,7 @@ import vscode from 'vscode';
 import { t } from '../nls';
 import { EXT_ID } from '../defines';
 import { Settings } from '../settings';
-import { ALL_MODELS } from '../registry';
+import * as registry from '../registry';
 import { modelKey } from '../providers/utils';
 
 const VISION_OFF = 'off';
@@ -17,7 +17,7 @@ const OWN_VENDOR_PREFIX = `${EXT_ID}-`;
 
 function isVisionCandidate(m: vscode.LanguageModelChat): boolean {
   if (m.vendor.startsWith(OWN_VENDOR_PREFIX)) {
-    const own = ALL_MODELS.find((x) => modelKey(x) === m.id);
+    const own = registry.ALL_MODELS.find((x) => modelKey(x) === m.id);
 
     return own?.imageInput === true;
   }

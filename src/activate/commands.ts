@@ -1,7 +1,15 @@
+import * as path from 'node:path';
 import vscode from 'vscode';
 import { channel } from '../logger';
 import { openDumpsFolder } from '../trace/dump';
 import type { Adapter } from '../bridge/adapter';
+
+const CUSTOM_MODELS_FILE = 'custom-models.json';
+
+function openCustomModelsFile(context: vscode.ExtensionContext): void {
+  const filePath = path.join(context.globalStorageUri.fsPath, CUSTOM_MODELS_FILE);
+  vscode.commands.executeCommand('vscode.open', vscode.Uri.file(filePath));
+}
 
 export function registerCommands(context: vscode.ExtensionContext, adapter: Adapter): void {
   const cmds: Array<[string, (...args: unknown[]) => unknown]> = [
@@ -22,6 +30,10 @@ export function registerCommands(context: vscode.ExtensionContext, adapter: Adap
     ],
     ['copilot-adapter.showLogs', () => channel.show()],
     ['copilot-adapter.openRequestRecordsFolder', () => openDumpsFolder(context)],
+    [
+      'copilot-adapter.openCustomModels',
+      () => openCustomModelsFile(context),
+    ],
   ];
 
   for (const [id, handler] of cmds) {

@@ -2,7 +2,7 @@ import vscode from 'vscode';
 import { EXT_ID } from '../defines';
 import { channel } from '../logger';
 import { t } from '../nls';
-import { ALL_MODELS, ALL_PROVIDERS, modelById } from '../registry';
+import * as registry from '../registry';
 import { resolveTrait, getEndpoint, resolveEndpoint } from '../providers/utils';
 import { Settings } from '../settings';
 import { buildChatInfo, type ChatInfo, type ReqOptions } from './information';
@@ -96,10 +96,10 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     _options: PrepareOptions,
     _token: vscode.CancellationToken,
   ): Promise<ChatInfo[]> {
-    const providerModels = ALL_MODELS.filter((m) => m.provider.id === this.filteredProviderId);
+    const opts = _options as GroupOptions;
+    const providerModels = registry.ALL_MODELS.filter((m) => m.provider.id === this.filteredProviderId);
     if (providerModels.length === 0) return [];
 
-    const opts = _options as GroupOptions;
     const groupCfg = opts.configuration;
     const modelProvider = providerModels[0]?.provider;
 
@@ -146,9 +146,6 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     const result = visibleModels.map(
       (model) => buildChatInfo(model, hasKey, this.visionProxyAvailable, idPrefix) as ChatInfo,
     );
-    channel.debug(
-      `provideLanguageModelChatInformation: apiKey=${apiKey.slice(0, 6)}... prefix="${idPrefix}" models=[${result.map((m) => m.id).join(', ')}]`,
-    );
 
     return result;
   }
@@ -161,7 +158,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     token: vscode.CancellationToken,
   ): Promise<void> {
     const { modelId, prefix } = this.resolveModelIdentity(modelInfo.id);
-    const model = modelById.get(modelId);
+    const model = registry.modelById.get(modelId);
     if (!model) {
       throw new Error(t('err.unknownModel', modelInfo.id));
     }
@@ -260,7 +257,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     _token: vscode.CancellationToken,
   ): Promise<number> {
     const { modelId } = this.resolveModelIdentity(modelInfo.id);
-    const entry = modelById.get(modelId);
+    const entry = registry.modelById.get(modelId);
     const defaultRatio = entry
       ? (resolveTrait(entry, 'tokenRatio') ?? Settings.tokenRatio() ?? DEFAULT_CHARS_PER_TOKEN)
       : (Settings.tokenRatio() ?? DEFAULT_CHARS_PER_TOKEN);
@@ -290,13 +287,13 @@ export class Adapter implements vscode.LanguageModelChatProvider {
   }
 
   async configureApiKey(providerId?: string): Promise<void> {
-    let modelProvider = providerId ? ALL_PROVIDERS.find((p) => p.id === providerId) : undefined;
+    let modelProvider = providerId ? registry.ALL_PROVIDERS.find((p) => p.id === providerId) : undefined;
 
     if (!modelProvider) {
-      const items = ALL_PROVIDERS.map((p) => ({
+      const items = registry.ALL_PROVIDERS.map((p) => ({
         label: p.label,
         description: p.id,
-        detail: t(p.detailKey, String(ALL_MODELS.filter((m) => m.provider.id === p.id).length)),
+        detail: t(p.detailKey, String(registry.ALL_MODELS.filter((m) => m.provider.id === p.id).length)),
       }));
 
       const picked = await vscode.window.showQuickPick(items, {
@@ -305,7 +302,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       });
 
       if (!picked) return;
-      modelProvider = ALL_PROVIDERS.find((p) => p.id === picked.description);
+      modelProvider = registry.ALL_PROVIDERS.find((p) => p.id === picked.description);
     }
     if (!modelProvider) return;
 

@@ -189,7 +189,7 @@ function parseJsonArray(text: string): { data: unknown[]; parseErrors: Validatio
     const message = err instanceof SyntaxError ? err.message : String(err);
     const lineMatch = message.match(/line\s+(\d+)/i);
     const line = lineMatch ? Number(lineMatch[1]) : 0;
-    
+
     return {
       data: [],
       parseErrors: [{ message: `${t('customModels.validation.jsonParse')}: ${message}`, line }],

@@ -1,12 +1,17 @@
 import * as path from 'node:path';
 import vscode from 'vscode';
-import { EXT_ID } from '../defines';
 import { channel } from '../logger';
 import { Settings } from '../settings';
 import { loadCustomModels } from '../custom/loader';
 import { updateDiagnostics, clearAllDiagnostics } from '../custom/diag';
 import { providerById, endpointById, refreshCustomModels } from '../providers/index';
 import type { Adapter } from '../bridge/adapter';
+
+const CUSTOM_MODELS_FILE = 'custom-models.json';
+
+function customModelsPath(context: vscode.ExtensionContext): string {
+  return path.join(context.globalStorageUri.fsPath, CUSTOM_MODELS_FILE);
+}
 
 export function logStartupDiagnostics(context: vscode.ExtensionContext): void {
   const ext = vscode.extensions.getExtension('copilot-adapter.copilot-adapter');
@@ -22,22 +27,23 @@ export function logStartupDiagnostics(context: vscode.ExtensionContext): void {
 }
 
 function loadAndDiagnose(filePath: string, adapters: Adapter[]): void {
-  const { errors } = loadCustomModels(filePath, {
+  const { errors, models } = loadCustomModels(filePath, {
     providerById,
     endpointById,
   });
 
+  // File doesn't exist is not an error — loadCustomModels returns empty
   const fileUri = vscode.Uri.file(filePath);
   updateDiagnostics(fileUri, errors);
 
   if (errors.length > 0) {
     channel.warn(`Custom models: ${errors.length} validation error(s) in ${filePath}`);
-  } else if (filePath) {
-    channel.info(`Custom models loaded from ${filePath}`);
+  } else if (models.length > 0) {
+    channel.info(`Custom models loaded: ${models.length} model instance(s) from ${filePath}`);
   }
 
   // Refresh model list so the UI picks up changes (or removes models on error)
-  refreshCustomModels();
+  refreshCustomModels(filePath);
   for (const a of adapters) {
     a.notifyChange();
   }
@@ -54,7 +60,7 @@ function createWatcher(filePath: string, adapters: Adapter[]): vscode.Disposable
     const onChange = (): void => loadAndDiagnose(filePath, adapters);
     const onDelete = (): void => {
       updateDiagnostics(vscode.Uri.file(filePath), []);
-      refreshCustomModels();
+      refreshCustomModels(filePath);
       for (const a of adapters) {
         a.notifyChange();
       }
@@ -81,29 +87,13 @@ export function startCustomModelsWatcher(
     for (const d of currentWatchers) d.dispose();
     currentWatchers = [];
 
-    const filePath = Settings.customModelsPath();
-    if (!filePath) {
-      clearAllDiagnostics();
-      refreshCustomModels();
-
-      for (const a of adapters) a.notifyChange();
-
-      return;
-    }
+    const filePath = customModelsPath(context);
     loadAndDiagnose(filePath, adapters);
 
     currentWatchers = createWatcher(filePath, adapters);
   };
 
   startOrRestart();
-
-  disposables.push(
-    vscode.workspace.onDidChangeConfiguration((e) => {
-      if (e.affectsConfiguration(`${EXT_ID}.customModelsPath`)) {
-        startOrRestart();
-      }
-    }),
-  );
 
   disposables.push(
     new vscode.Disposable(() => {
