@@ -31,6 +31,7 @@
   "copilot-adapter.command.settings": "Copilot Adapter: 扩展设置",
   "copilot-adapter.command.logs": "Copilot Adapter: 查看日志",
   "copilot-adapter.command.requestRecords": "Copilot Adapter: 查看请求记录",
+  "copilot-adapter.command.openCustomModels": "Copilot Adapter: 打开自定义模型文件",
   "copilot-adapter.walkthrough.title": "AI Models Adapter for Copilot Chat",
   "copilot-adapter.walkthrough.description": "在 Copilot Chat 中配置 AI 模型。",
   "copilot-adapter.walkthrough.apiKey.title": "添加模型提供商",
@@ -67,6 +68,5 @@
   "copilot-adapter.config.tokenRatioGlobal.description": "强制所有模型使用上方设置的默认字符/token 比率，忽略模型属性及自动校准结果。",
   "copilot-adapter.config.tokenRatioAutoCalibrate.description": "根据 API 实际用量数据，随着使用自动调整字符/token 比率。",
   "copilot-adapter.config.tokenRatioCalibrationThreshold.description": "触发自动校准所需的最小相对变化（0.01–1.0）。例如 0.1 表示比率变化至少 10% 才会更新。值越低调整越灵敏。",
-  "copilot-adapter.config.customModelsPath.description": "指定自定义模型 JSON 文件路径。自定义模型将与内置模型合并显示。请参阅扩展文档了解 JSON 格式要求。",
   "copilot-adapter.customModels.diag.source": "Copilot Adapter: 自定义模型"
 }

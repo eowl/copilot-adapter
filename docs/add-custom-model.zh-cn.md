@@ -6,7 +6,7 @@
 
 ## 快速开始
 
-1. 创建一个 JSON 文件（如 `my-models.json`），结构如下：
+1. 通过命令面板打开自定义模型文件：`Ctrl/Cmd+Shift+P` → *Copilot Adapter: 打开自定义模型文件*。插件会自动在存储目录中创建 `custom-models.json`。按以下结构编辑文件，或参考[模板文件](https://github.com/eowl/copilot-adapter/blob/main/docs/custom-models-template.jsonc)中的现成示例。
 
 ```jsonc
 [
@@ -53,9 +53,7 @@
 ]
 ```
 
-2. (`Ctrl/Cmd+Shift+P` *Copilot Adapter: 扩展设置*) 或者打开 VS Code 设置 (`Ctrl/Cmd+,`)，搜索并设置 **Copilot Adapter › Custom Models Path** 为你的 JSON 文件的绝对路径。
-
-3. 刷新**语言模型**面板——你的自定义模型将出现在内置模型旁边。
+2. 刷新**语言模型**面板——你的自定义模型将出现在内置模型旁边。
 
 ---
 
@@ -251,12 +249,15 @@ API 请求体中用于图片数据的字段名。仅在 `imageInput` 为 `true` 
 
 ## 高级配置
 
-### 设置自定义模型路径
+### 文件位置
 
-可通过以下方式配置：
+自定义模型文件固定存储在插件的全局存储目录中：
 
-- **设置 UI：** 在 VS Code 设置中搜索 `copilot-adapter.customModelsPath`
-- **settings.json：** 添加 `"copilot-adapter.customModelsPath": "/path/to/my-models.json"`
+- **路径：** `<VS Code 全局存储目录>/copilot-adapter/custom-models.json`
+- **打开方式：** 命令面板 `Ctrl/Cmd+Shift+P` → *Copilot Adapter: 打开自定义模型文件*
+- **模板参照：** [custom-models-template.jsonc](https://github.com/eowl/copilot-adapter/blob/main/docs/custom-models-template.jsonc) — 包含各提供商的完整配置模板
+
+文件在插件首次激活时自动创建（初始内容为空数组 `[]`）。编辑文件后保存，插件会自动重新加载模型。
 
 ### 校验
 

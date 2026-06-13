@@ -31,6 +31,7 @@
   "copilot-adapter.command.settings": "Copilot Adapter: Extension Settings",
   "copilot-adapter.command.logs": "Copilot Adapter: View Logs",
   "copilot-adapter.command.requestRecords": "Copilot Adapter: View Request Records",
+  "copilot-adapter.command.openCustomModels": "Copilot Adapter: Open Custom Models File",
   "copilot-adapter.walkthrough.title": "AI Models Adapter for Copilot Chat",
   "copilot-adapter.walkthrough.description": "Set up AI models in Copilot Chat.",
   "copilot-adapter.walkthrough.apiKey.title": "Add a model provider",
@@ -67,6 +68,5 @@
   "copilot-adapter.config.tokenRatioGlobal.description": "Force all models to use the default chars-per-token ratio set above, ignoring model traits and auto-calibration results.",
   "copilot-adapter.config.tokenRatioAutoCalibrate.description": "Automatically tune the chars-per-token ratio over time based on actual API usage data.",
   "copilot-adapter.config.tokenRatioCalibrationThreshold.description": "Minimum relative change (0.01–1.0) required before the auto-calibrated ratio is updated. For example, 0.1 means the ratio must change by at least 10% to trigger a calibration update. Lower values allow finer adjustments.",
-  "copilot-adapter.config.customModelsPath.description": "Path to a JSON file defining custom models. Models defined here are merged with built-in models. See the extension documentation for the expected JSON format.",
   "copilot-adapter.customModels.diag.source": "Copilot Adapter: Custom Models"
 }

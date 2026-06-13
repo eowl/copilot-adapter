@@ -6,7 +6,7 @@ You can define custom models by writing a JSON configuration file. This is usefu
 
 ## Quick Start
 
-1. Create a JSON file (e.g. `my-models.json`) with the following structure:
+1. Open the custom models file via the Command Palette: `Ctrl/Cmd+Shift+P` → *Copilot Adapter: Open Custom Models File*. The extension automatically creates `custom-models.json` in its storage directory. Edit it with the following structure, or refer to the [template file](https://github.com/eowl/copilot-adapter/blob/main/docs/custom-models-template.jsonc) for ready-to-use examples.
 
 ```jsonc
 [
@@ -53,9 +53,7 @@ You can define custom models by writing a JSON configuration file. This is usefu
 ]
 ```
 
-2. (`Ctrl/Cmd+Shift+P` *Copilot Adapter: Extension Settings*) Or Open VS Code Settings (`Ctrl/Cmd+,`) and set **Copilot Adapter › Custom Models Path** to the absolute path of your JSON file.
-
-3. Reload the **Language Models** panel — your custom models will appear alongside built-in models.
+2. Reload the **Language Models** panel — your custom models will appear alongside built-in models.
 
 ---
 
@@ -251,12 +249,15 @@ Tag name used to identify thinking/reasoning content embedded in the streaming r
 
 ## Advanced Configuration
 
-### Setting the custom models path
+### File Location
 
-You can configure the path via:
+The custom models file is stored at a fixed location in the extension's global storage:
 
-- **Settings UI:** Search for `copilot-adapter.customModelsPath` in VS Code Settings
-- **settings.json:** Add `"copilot-adapter.customModelsPath": "/path/to/my-models.json"`
+- **Path:** `<VS Code global storage>/copilot-adapter/custom-models.json`
+- **Open:** Command Palette `Ctrl/Cmd+Shift+P` → *Copilot Adapter: Open Custom Models File*
+- **Template Reference:** [custom-models-template.jsonc](https://github.com/eowl/copilot-adapter/blob/main/docs/custom-models-template.jsonc) — complete configuration templates for each provider
+
+The file is created automatically on first activation (initially an empty array `[]`). After editing and saving, the extension reloads models automatically.
 
 ### Validation
 

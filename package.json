@@ -203,6 +203,10 @@
       {
         "command": "copilot-adapter.openRequestRecordsFolder",
         "title": "%copilot-adapter.command.requestRecords%"
+      },
+      {
+        "command": "copilot-adapter.openCustomModels",
+        "title": "%copilot-adapter.command.openCustomModels%"
       }
     ],
     "walkthroughs": [
@@ -357,12 +361,6 @@
           "minimum": 1,
           "description": "%copilot-adapter.config.maxWarmupRounds.description%",
           "enablement": "config.copilot-adapter.toolWarmup == true"
-        },
-        "copilot-adapter.customModelsPath": {
-          "order": 14,
-          "type": "string",
-          "default": "",
-          "description": "%copilot-adapter.config.customModelsPath.description%"
         }
       }
     }
