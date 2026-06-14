@@ -33,15 +33,6 @@ export function getStorageUri(context: vscode.ExtensionContext): vscode.Uri {
 }
 
 /**
- * Returns the full path to custom-models.json in our custom storage.
- */
-export function getCustomModelsPath(context: vscode.ExtensionContext): string {
-  const storagePath = getStorageUri(context).fsPath;
-
-  return path.join(storagePath, 'custom-models.json');
-}
-
-/**
  * Returns the full path to the requests dump directory in our custom storage.
  */
 export function getDumpsPath(context: vscode.ExtensionContext): string {

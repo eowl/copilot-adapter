@@ -203,10 +203,6 @@
       {
         "command": "copilot-adapter.openRequestRecordsFolder",
         "title": "%copilot-adapter.command.requestRecords%"
-      },
-      {
-        "command": "copilot-adapter.openCustomModels",
-        "title": "%copilot-adapter.command.openCustomModels%"
       }
     ],
     "walkthroughs": [

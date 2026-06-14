@@ -19,5 +19,4 @@ export {
   endpointById,
   ALL_MODELS,
   modelById,
-  refreshModels as refreshCustomModels,
 } from '../registry';

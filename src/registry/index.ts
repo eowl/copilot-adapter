@@ -11,7 +11,6 @@ import {
   ZHIPU,
 } from './builtin';
 import { loadBuiltinJSONModels } from './builtin-json';
-import { loadCustomJSONModels } from './custom-json';
 import type { ModelItem, Registries } from './types';
 
 export { ALL_PROVIDERS, providerById, endpointById };
@@ -22,15 +21,9 @@ export function modelKey(mi: ModelItem): string {
   return _modelKey(mi);
 }
 
-const CUSTOM_KEY_SUFFIX = '-custom';
-
-export function customModelKey(mi: ModelItem): string {
-  return _modelKey(mi) + CUSTOM_KEY_SUFFIX;
-}
-
 const _reg: Registries = { providerById, endpointById };
 
-function buildAllModels(customPath: string): ModelItem[] {
+function buildAllModels(): ModelItem[] {
   const seen = new Set<string>();
   const result: ModelItem[] = [];
 
@@ -40,18 +33,6 @@ function buildAllModels(customPath: string): ModelItem[] {
     if (!seen.has(key)) {
       seen.add(key);
       result.push(mi);
-    }
-  }
-
-  // Custom JSON (user-supplied file)
-  if (customPath) {
-    const { models: customModels } = loadCustomJSONModels(customPath, _reg);
-    for (const mi of customModels) {
-      const key = customModelKey(mi);
-      if (!seen.has(key)) {
-        seen.add(key);
-        result.push(mi);
-      }
     }
   }
 
@@ -67,21 +48,10 @@ function buildAllModels(customPath: string): ModelItem[] {
   return result;
 }
 
-let _allModels: readonly ModelItem[] = buildAllModels('');
-let _modelById = new Map<string, ModelItem>(
-  _allModels.map((mi) => [mi.source === 'custom' ? customModelKey(mi) : modelKey(mi), mi]),
+const _allModels: readonly ModelItem[] = buildAllModels();
+const _modelById = new Map<string, ModelItem>(
+  _allModels.map((mi) => [modelKey(mi), mi]),
 );
 
-export let ALL_MODELS: readonly ModelItem[] = _allModels;
-export let modelById: ReadonlyMap<string, ModelItem> = _modelById;
-
-export function refreshModels(customPath: string): void {
-  const newAll = buildAllModels(customPath);
-  const newById = new Map<string, ModelItem>(
-    newAll.map((mi) => [mi.source === 'custom' ? customModelKey(mi) : modelKey(mi), mi]),
-  );
-  _allModels = newAll;
-  _modelById = newById;
-  ALL_MODELS = newAll;
-  modelById = newById;
-}
+export const ALL_MODELS: readonly ModelItem[] = _allModels;
+export const modelById: ReadonlyMap<string, ModelItem> = _modelById;
