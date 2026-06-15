@@ -49,9 +49,7 @@ function buildAllModels(): ModelItem[] {
 }
 
 const _allModels: readonly ModelItem[] = buildAllModels();
-const _modelById = new Map<string, ModelItem>(
-  _allModels.map((mi) => [modelKey(mi), mi]),
-);
+const _modelById = new Map<string, ModelItem>(_allModels.map((mi) => [modelKey(mi), mi]));
 
 export const ALL_MODELS: readonly ModelItem[] = _allModels;
 export const modelById: ReadonlyMap<string, ModelItem> = _modelById;

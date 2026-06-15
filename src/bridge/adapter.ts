@@ -46,9 +46,7 @@ function logVerboseMessages(
     const msgSummary = messages
       .map((m) => {
         const role =
-          roleLabel[m.role] ??
-          vscode.LanguageModelChatMessageRole[m.role] ??
-          `role${m.role}`;
+          roleLabel[m.role] ?? vscode.LanguageModelChatMessageRole[m.role] ?? `role${m.role}`;
         const parts = Array.isArray(m.content) ? m.content : [m.content];
         const kinds = [
           ...new Set(

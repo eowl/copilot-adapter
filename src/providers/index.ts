@@ -13,10 +13,4 @@ export { QWEN } from './qwen';
 export { ZHIPU } from './zhipu';
 export type { ModelProvider, ModelEndpoint, ModelItem } from './types';
 
-export {
-  ALL_PROVIDERS,
-  providerById,
-  endpointById,
-  ALL_MODELS,
-  modelById,
-} from '../registry';
+export { ALL_PROVIDERS, providerById, endpointById, ALL_MODELS, modelById } from '../registry';
