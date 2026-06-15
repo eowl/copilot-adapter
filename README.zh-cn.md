@@ -18,7 +18,6 @@
   - [视觉代理](#视觉代理)
   - [前缀缓存命中率](#前缀缓存命中率)
   - [上下文窗口计算](#上下文窗口计算)
-  - [自定义模型](#自定义模型)
 - [配置参考](#配置参考)
 - [命令](#命令)
 
@@ -113,20 +112,6 @@ Chars-per-token ratio calibrated for deepseek: 4.00 to 3.38 (based on API usage:
 
 无法获取精确用量的提供商（如 MiniMax）保持静态默认比例。
 
-### 自定义模型
-
-通过 [JSON 配置文件](docs/add-custom-model.zh-cn.md) 自定义模型 — 可以添加内置列表之外的模型，或覆盖任意模型参数。
-
-- 文件自动创建于 `<globalStorage>/custom-models.json`，首次启动时生成模板。
-- 每个条目指定提供商和 endpoint；endpoint 支持 `string | string[]`（ID、label 或 URL 均可）。
-- 所有校验错误以诊断波浪线的形式显示在文件中。
-- 修改后保存即生效，无需重载。
-- 通过 [Settings Sync](https://code.visualstudio.com/docs/editor/settings-sync) 跨设备云同步（VS Code 1.87+）。
-
-使用命令 **Copilot Adapter: 打开自定义模型文件** 或扩展设置中的 *Custom Models File* 链接，随时打开该文件。
-
-详见 [自定义模型文档](docs/add-custom-model.zh-cn.md) 获取字段详解和示例。
-
 ---
 
 ## 配置参考
@@ -166,7 +151,6 @@ Chars-per-token ratio calibrated for deepseek: 4.00 to 3.38 (based on API usage:
 | *Copilot Adapter: Remove API Key* | 清除已存储的 API Key |
 | *Copilot Adapter: Set Vision Proxy Model* | 选择视觉代理使用的模型 |
 | *Copilot Adapter: Open Settings* | 跳转至扩展设置页 |
-| *Copilot Adapter: Open Custom Models File* | 打开自定义模型 JSON 文件 (`globalStorage/custom-models.json`) |
 | *Copilot Adapter: Show Logs* | 打开输出频道 |
 | *Copilot Adapter: View Request Records* | 打开请求 dump 文件所在的文件夹 |
 

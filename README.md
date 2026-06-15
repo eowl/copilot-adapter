@@ -18,7 +18,7 @@ Extend VS Code's native Copilot Chat with third-party AI models. Switch between 
   - [Vision Proxy](#vision-proxy)
   - [Prefix Cache Hit Rate](#prefix-cache-hit-rate)
   - [Context Window](#context-window)
-  - [Custom Models](#custom-models)
+
 - [Configuration Reference](#configuration-reference)
 - [Commands](#commands)
 
@@ -113,20 +113,6 @@ Chars-per-token ratio calibrated for deepseek: 4.00 to 3.38 (based on API usage:
 
 Providers without exact usage data (e.g. MiniMax) keep the static default ratio.
 
-### Custom Models
-
-Define your own models through a [JSON configuration file](docs/add-custom-model.md) — add models not included in the built-in lists or override any model parameter.
-
-- The file is automatically created at `<globalStorage>/custom-models.json` on first launch.
-- Each entry targets a provider and endpoint; supports `string | string[]` for endpoints (ID, label, or URL).
-- All validation errors appear as inline diagnostics in the file.
-- Changes take effect on save — no reload needed.
-- Supports [Settings Sync](https://code.visualstudio.com/docs/editor/settings-sync) across devices (VS Code 1.87+).
-
-Use the command **Copilot Adapter: Open Custom Models File** or the *Custom Models File* link in extension settings to open the file at any time.
-
-See [Custom Models Documentation](docs/add-custom-model.md) for the full field reference and examples.
-
 ---
 
 ## Configuration Reference
@@ -166,7 +152,6 @@ See [Custom Models Documentation](docs/add-custom-model.md) for the full field r
 | *Copilot Adapter: Remove API Key* | Clear a stored API key |
 | *Copilot Adapter: Set Vision Proxy Model* | Choose the model to use as vision proxy |
 | *Copilot Adapter: Open Settings* | Jump to extension settings |
-| *Copilot Adapter: Open Custom Models File* | Open the custom models JSON file (`globalStorage/custom-models.json`) |
 | *Copilot Adapter: Show Logs* | Open the output channel |
 | *Copilot Adapter: View Request Records* | Open the folder where request dumps are stored |
 
