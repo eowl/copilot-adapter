@@ -328,7 +328,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       const items = registry.ALL_PROVIDERS.map((p) => ({
         label: p.label,
         description: p.id,
-        detail: t(p.detailKey)
+        detail: t(p.detailKey),
       }));
 
       const picked = await vscode.window.showQuickPick(items, {
