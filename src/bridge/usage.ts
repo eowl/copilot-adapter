@@ -68,7 +68,7 @@ export function buildUsageLog(
     cacheSegments.push(`hit=${hit}`);
     if (derivedMiss > 0 || hit > 0) cacheSegments.push(`miss=${derivedMiss}`);
     if (hit + derivedMiss > 0) {
-      const rate = Math.round((hit / (hit + derivedMiss)) * 100);
+      const rate = ((hit / (hit + derivedMiss)) * 100).toFixed(1);
       cacheSegments.push(`rate=${rate}%`);
     }
   }

@@ -246,7 +246,7 @@ suite('bridge/stream usage', () => {
       const log = buildUsageLog('deepseek-v4-pro', usage, 65016);
       assert.match(log, /model: deepseek-v4-pro/);
       assert.match(log, /tokens: prompt=18576 reasoning=40 completion=57/);
-      assert.match(log, /cache: hit=12160 miss=6416 rate=65%/);
+      assert.match(log, /cache: hit=12160 miss=6416 rate=65\.5%/);
       assert.match(log, /chars\/token=3\.5/);   // 65016 / 18576 = 3.50
     });
 
@@ -262,7 +262,7 @@ suite('bridge/stream usage', () => {
       const log = buildUsageLog('qwen-max', usage);
       assert.match(log, /model: qwen-max/);
       assert.match(log, /tokens: prompt=19127 reasoning=95 completion=178/);
-      assert.match(log, /cache: hit=0 miss=19127 rate=0%/);
+      assert.match(log, /cache: hit=0 miss=19127 rate=0\.0%/);
     });
 
     test('usage with no details (Moonshot)', () => {
@@ -317,7 +317,7 @@ suite('bridge/stream usage', () => {
       };
 
       const log = buildUsageLog('qwen-max', usage);
-      assert.match(log, /cache: hit=0 miss=19127 rate=0%/);
+      assert.match(log, /cache: hit=0 miss=19127 rate=0\.0%/);
       // miss should NOT be the default 0 — derived from prompt_tokens - hit
       assert.ok(!log.includes('miss=0'));
     });
@@ -331,7 +331,7 @@ suite('bridge/stream usage', () => {
       };
 
       const log = buildUsageLog('test-model', usage);
-      assert.match(log, /cache: hit=500 miss=500 rate=50%/);
+      assert.match(log, /cache: hit=500 miss=500 rate=50\.0%/);
     });
 
     test('includes chars/token when promptChars provided', () => {
