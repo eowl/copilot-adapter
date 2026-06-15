@@ -1,11 +1,11 @@
 import type { Translation } from './types';
 
 export const zh: Translation = {
-  'provider.deepseek.detail': '通用对话与深度推理，{0} 个模型',
-  'provider.minimax.detail': '深度推理，支持超长上下文，{0} 个模型',
-  'provider.moonshot.detail': '月之暗面 Kimi 系列，{0} 个模型',
-  'provider.qwen.detail': '阿里云通义千问系列，{0} 个模型',
-  'provider.bigmodel.detail': '智谱 BigModel GLM 系列，{0} 个模型',
+  'provider.deepseek.detail': '通用对话与深度推理',
+  'provider.minimax.detail': '深度推理，支持超长上下文',
+  'provider.moonshot.detail': '月之暗面 Kimi 系列',
+  'provider.qwen.detail': '阿里云通义千问系列',
+  'provider.zhipu.detail': '智谱 BigModel GLM 系列',
 
   'model.deepseek-v4-flash.detail': '快速通用模型',
   'model.deepseek-v4-pro.detail': '深度推理模型',
@@ -35,7 +35,7 @@ export const zh: Translation = {
   'model.qwen-plus-us.detail': '均衡型模型——仅在 US 区域端点可用',
   'model.qwen-flash-us.detail': '快速低成本模型——仅在 US 区域端点可用',
 
-  'model.glm-5.1.detail': '最新旗舰——编码能力对齐 Claude Opus 4.6',
+  'model.glm-5.1.detail': '最新旗舰',
   'model.glm-5.detail': '高智能基座——擅长 Agentic 长程规划与执行',
   'model.glm-5-turbo.detail': '龙虾增强基座——长程任务执行连续性好',
   'model.glm-4.7.detail': '高智能模型——通用对话、推理与智能体能力全面升级',

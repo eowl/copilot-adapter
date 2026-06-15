@@ -1,11 +1,11 @@
 import type { Translation } from './types';
 
 export const en: Translation = {
-  'provider.deepseek.detail': 'General-purpose & deep reasoning — {0} models',
-  'provider.minimax.detail': 'Deep reasoning with long context support — {0} models',
-  'provider.moonshot.detail': 'Moonshot Kimi series — {0} models',
-  'provider.qwen.detail': 'Alibaba Qwen series — {0} models',
-  'provider.bigmodel.detail': 'Zhipu BigModel GLM series — {0} models',
+  'provider.deepseek.detail': 'General-purpose & deep reasoning',
+  'provider.minimax.detail': 'Deep reasoning with long context support',
+  'provider.moonshot.detail': 'Moonshot Kimi series',
+  'provider.qwen.detail': 'Alibaba Qwen series',
+  'provider.zhipu.detail': 'Zhipu BigModel GLM series',
 
   'model.deepseek-v4-flash.detail': 'Fast, general-purpose model',
   'model.deepseek-v4-pro.detail': 'Deep reasoning model',
@@ -35,7 +35,7 @@ export const en: Translation = {
   'model.qwen-plus-us.detail': 'Balanced model — only available on the US region endpoint',
   'model.qwen-flash-us.detail': 'Fast, low-cost model — only available on the US region endpoint',
 
-  'model.glm-5.1.detail': 'Latest flagship — coding parity with Claude Opus 4.6',
+  'model.glm-5.1.detail': 'Latest flagship',
   'model.glm-5.detail': 'High-intelligence base model — agentic long-horizon planning',
   'model.glm-5-turbo.detail': 'Lobster-tuned base model — optimized for long-task execution',
   'model.glm-4.7.detail': 'High-intelligence model — upgraded chat, reasoning and agentic skills',
