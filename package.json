@@ -2,7 +2,7 @@
   "name": "copilot-adapter",
   "displayName": "Copilot Adapter",
   "description": "AI Models Adapter for Copilot Chat",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "publisher": "Eowl",
   "license": "MIT",
   "icon": "assets/icon.png",
@@ -340,7 +340,7 @@
           ],
           "markdownDescription": "%copilot-adapter.config.debug.description%"
         },
-         "copilot-adapter.toolWarmup": {
+        "copilot-adapter.toolWarmup": {
           "order": 12,
           "type": "boolean",
           "default": false,

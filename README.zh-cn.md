@@ -27,9 +27,9 @@
 
 | 提供商 | 端点平台 | 模型 |
 |---|---|---|
-| **DeepSeek** | [`platform.deepseek.com`](https://platform.deepseek.com) | `V4 Flash` `V4 Pro` |
-| **MiniMax** | [`minimaxi.com`](https://www.minimaxi.com/) [`minimax.io`](https://www.minimax.io/) | `M2` `M2.1` `M2.1 Highspeed` `M2.5` `M2.5 Highspeed` `M2.7` `M2.7 Highspeed` `M3` |
-| **Moonshot (Kimi)** | [`platform.moonshot.cn`](https://platform.moonshot.cn/) [`platform.moonshot.ai`](https://platform.moonshot.ai/) | `Kimi K2.6` `Kimi K2.5` |
+| **DeepSeek** | [`platform.deepseek.com`](https://platform.deepseek.com) |  `V4 Pro` `V4 Flash` |
+| **MiniMax** | [`minimaxi.com`](https://www.minimaxi.com/) [`minimax.io`](https://www.minimax.io/) |  `M3` `M2.7` `M2.7 Highspeed` `M2.5` `M2.5 Highspeed` `M2.1` `M2.1 Highspeed` `M2` |
+| **Moonshot (Kimi)** | [`platform.moonshot.cn`](https://platform.moonshot.cn/) [`platform.moonshot.ai`](https://platform.moonshot.ai/) | `Kimi K2.7 Code` `Kimi K2.7 Code High-Speed` `Kimi K2.6` `Kimi K2.5` |
 | **Qwen** | [`bailian.console.aliyun.com`](https://bailian.console.aliyun.com/) | `Qwen3.7 Max` `Qwen3.7 Plus` `Qwen3.6 Max` `Qwen3.6 Plus` `Qwen3.6 Flash` `Qwen3.5 Plus` `Qwen3.5 Flash` `Qwen3 Max` `Qwen3 Coder Plus` `Qwen3 Coder Flash` `Qwen Plus (US)` `Qwen Flash (US)` |
 | **智谱 (GLM)** | [`open.bigmodel.cn`](https://open.bigmodel.cn/) [`api.z.ai`](https://api.z.ai/) | `GLM-5.1` `GLM-5` `GLM-5-Turbo` `GLM-4.7` `GLM-4.7-FlashX` `GLM-4.6` `GLM-4.5-Air` `GLM-4.5-AirX` `GLM-4-Long` `GLM-4-FlashX-250414` `GLM-4.7-Flash` `GLM-4.5-Flash` `GLM-4-Flash-250414` `GLM-5V-Turbo` `GLM-4.6V` `GLM-OCR` `GLM-4.1V-Thinking-FlashX` `GLM-4.6V-Flash` `GLM-4.1V-Thinking-Flash` `GLM-4V-Flash` |
 
