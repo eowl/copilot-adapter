@@ -25,6 +25,9 @@ export async function forwardStream(
   let reasoningText = '';
   let contentText = '';
   let promptTokens = 0;
+  let toolCallCount = 0;
+  let contentEventCount = 0;
+  let thinkingEventCount = 0;
 
   const abortCtrl = new AbortController();
   const cancelDispose = token.onCancellationRequested(() => abortCtrl.abort());
@@ -43,6 +46,9 @@ export async function forwardStream(
       let yieldedContent = false;
       reasoningText = '';
       promptTokens = 0;
+      toolCallCount = 0;
+      contentEventCount = 0;
+      thinkingEventCount = 0;
 
       try {
         const gen = streamHttp(
@@ -61,6 +67,7 @@ export async function forwardStream(
             case 'content':
               if (event.text) {
                 contentText += event.text;
+                contentEventCount++;
                 yieldedContent = true;
                 progress.report(new vscode.LanguageModelTextPart(event.text));
               }
@@ -70,6 +77,7 @@ export async function forwardStream(
             case 'thinking':
               if (event.text) {
                 yieldedContent = true;
+                thinkingEventCount++;
                 reasoningText += event.text;
                 if (typeof vscode.LanguageModelThinkingPart === 'function') {
                   progress.report(
@@ -84,6 +92,12 @@ export async function forwardStream(
 
             case 'tool-call':
               yieldedContent = true;
+              toolCallCount++;
+              if (Settings.verboseEnabled()) {
+                channel.info(
+                  `Tool call: ${event.call.function.name}(${event.call.id}) args=${event.call.function.arguments}`,
+                );
+              }
               progress.report(
                 new vscode.LanguageModelToolCallPart(
                   event.call.id,
@@ -125,6 +139,14 @@ export async function forwardStream(
 
   const marker = encodeMarker(payload, segmentId);
   progress.report(new vscode.LanguageModelDataPart(marker.data, marker.mimeType));
+
+  if (Settings.verboseEnabled()) {
+    channel.info(
+      `Stream: content=${contentText.length}c/${contentEventCount}e ` +
+        `reasoning=${reasoningText.length}c/${thinkingEventCount}e ` +
+        `tools=${toolCallCount}`,
+    );
+  }
 
   // Fallback usage estimation when the API does not return usage data (e.g. MiniMax).
   if (promptTokens === 0 && (contentText || reasoningText)) {

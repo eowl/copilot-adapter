@@ -199,10 +199,6 @@
       {
         "command": "copilot-adapter.showLogs",
         "title": "%copilot-adapter.command.logs%"
-      },
-      {
-        "command": "copilot-adapter.openRequestRecordsFolder",
-        "title": "%copilot-adapter.command.requestRecords%"
       }
     ],
     "walkthroughs": [

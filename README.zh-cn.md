@@ -134,12 +134,12 @@ Chars-per-token ratio calibrated for deepseek: 4.00 to 3.38 (based on API usage:
 
 ### 日志级别说明
 
-| 级别 | 输出频道 | 模型 `id` / `apiId` / 端点 | 请求 dump 写入磁盘 |
-|---|---|---|---|
-| `off` | — | — | — |
-| `info` | 是（请求元数据） | — | — |
-| `meta` | 是（请求元数据） | 是 | — |
-| `verbose` | 是（请求元数据） | 是 | 是 |
+| 级别 | 输出频道 | 模型 `id` / `apiId` / 端点 |
+|---|---|---|
+| `off` | — | — |
+| `info` | 是（请求元数据） | — |
+| `meta` | 是（请求元数据） | 是 |
+| `verbose` | 是（请求元数据） | 是 |
 
 ---
 

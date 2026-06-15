@@ -135,12 +135,12 @@ Providers without exact usage data (e.g. MiniMax) keep the static default ratio.
 
 ### Debug Mode Levels
 
-| Level | Output channel | Model `id` / `apiId` / endpoint | Request dump to disk |
-|---|---|---|---|
-| `off` | — | — | — |
-| `info` | Yes (request metadata) | — | — |
-| `meta` | Yes (request metadata) | Yes | — |
-| `verbose` | Yes (request metadata) | Yes | Yes |
+| Level | Output channel | Model `id` / `apiId` / endpoint |
+|---|---|---|
+| `off` | — | — |
+| `info` | Yes (request metadata) | — |
+| `meta` | Yes (request metadata) | Yes |
+| `verbose` | Yes (request metadata) | Yes |
 
 ---
 
