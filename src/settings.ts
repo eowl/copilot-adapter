@@ -40,7 +40,7 @@ export class Settings {
     return level === LEVEL_META || level === LEVEL_VERBOSE;
   }
 
-  static dumpEnabled(): boolean {
+  static verboseEnabled(): boolean {
     return this.activeLevel() === LEVEL_VERBOSE;
   }
 

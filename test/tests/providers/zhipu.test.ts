@@ -8,12 +8,12 @@ suite('providers/zhipu', () => {
 
   suite('thinking-capable models requestExtras()', () => {
     test('thinking model has thinking config', () => {
-      assert.ok(thinkingModel.thinking !== undefined);
-      assert.equal(thinkingModel.thinking!.default, 'adaptive');
+      assert.ok(thinkingModel.thinkingConfig !== undefined);
+      assert.equal(thinkingModel.thinkingConfig!.default, 'adaptive');
     });
 
     test('plain model has no thinking config', () => {
-      assert.equal(plainModel.thinking, undefined);
+      assert.equal(plainModel.thinkingConfig, undefined);
     });
 
     const requestExtras = thinkingModel.requestExtras!;
@@ -48,7 +48,7 @@ suite('providers/zhipu', () => {
     });
 
     test('declare ability.reasoning === false', () => {
-      assert.equal(plainModel.ability.reasoning, false);
+      assert.equal(plainModel.thinking, false);
     });
   });
 
@@ -96,7 +96,7 @@ suite('providers/zhipu', () => {
     });
 
     test('thinking-capable models match the documented set', () => {
-      const reasoning = ZP_MODELS.filter((m) => m.ability.reasoning).map((m) => m.id);
+      const reasoning = ZP_MODELS.filter((m) => m.thinking).map((m) => m.id);
       assert.deepEqual(reasoning, [
         'glm-5.1',
         'glm-5',
@@ -122,7 +122,7 @@ suite('providers/zhipu', () => {
       ];
       for (const id of visionIds) {
         const m = ZP_MODELS.find((x) => x.id === id)!;
-        assert.equal(m.ability.imageInput, true, `${id} imageInput`);
+        assert.equal(m.imageInput, true, `${id} imageInput`);
       }
     });
 
@@ -159,7 +159,7 @@ suite('providers/zhipu', () => {
     });
 
     test('text-only models do not accept images', () => {
-      const textIds = ZP_MODELS.filter((m) => !m.ability.imageInput).map((m) => m.id);
+      const textIds = ZP_MODELS.filter((m) => !m.imageInput).map((m) => m.id);
       assert.deepEqual(textIds, [
         'glm-5.1',
         'glm-5',

@@ -68,25 +68,25 @@ suite('Settings debug level', () => {
     });
   });
 
-  suite('dumpEnabled()', () => {
+  suite('verboseEnabled()', () => {
     test('returns false when level is "off"', () => {
       restore = stubDebugMode('off');
-      assert.equal(Settings.dumpEnabled(), false);
+      assert.equal(Settings.verboseEnabled(), false);
     });
 
     test('returns false when level is "info"', () => {
       restore = stubDebugMode('info');
-      assert.equal(Settings.dumpEnabled(), false);
+      assert.equal(Settings.verboseEnabled(), false);
     });
 
     test('returns false when level is "meta"', () => {
       restore = stubDebugMode('meta');
-      assert.equal(Settings.dumpEnabled(), false);
+      assert.equal(Settings.verboseEnabled(), false);
     });
 
     test('returns true when level is "verbose"', () => {
       restore = stubDebugMode('verbose');
-      assert.equal(Settings.dumpEnabled(), true);
+      assert.equal(Settings.verboseEnabled(), true);
     });
   });
 });

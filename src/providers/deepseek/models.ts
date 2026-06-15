@@ -1,7 +1,7 @@
-import type { ModelItem, ReasoningAbility, ThinkingConfig } from '../types';
+import type { ModelItem, ThinkingConfig } from '../types';
 import { DEEPSEEK } from './provider';
 
-const DS_THINKING: ThinkingConfig = {
+const DS_THINKING_CONFIG: ThinkingConfig = {
   default: 'high',
   options: [
     {
@@ -25,17 +25,13 @@ const DS_THINKING: ThinkingConfig = {
   ],
 };
 
-const DS_ABILITY: ReasoningAbility = {
-  maxTools: 128,
-  imageInput: false,
-  reasoning: true,
-};
-
 const DS_BASE = {
-  family: 'deepseek' as const,
-  ability: DS_ABILITY,
-  provider: DEEPSEEK as ModelItem['provider'],
-  thinking: DS_THINKING,
+  family: 'deepseek',
+  provider: DEEPSEEK,
+  thinking: true,
+  imageInput: false,
+  maxTools: 128,
+  thinkingConfig: DS_THINKING_CONFIG,
 };
 
 export const DS_MODELS: readonly ModelItem[] = [
@@ -59,4 +55,4 @@ export const DS_MODELS: readonly ModelItem[] = [
     maxOutputTokens: 384_000,
     detailKey: 'model.deepseek-v4-pro.detail',
   },
-];
+] as ModelItem[];

@@ -2,7 +2,7 @@ import vscode from 'vscode';
 import { EXT_ID } from '../defines';
 import { channel } from '../logger';
 import { t } from '../nls';
-import { ALL_MODELS, ALL_PROVIDERS, modelById } from '../providers';
+import * as registry from '../registry';
 import { resolveTrait, getEndpoint, resolveEndpoint } from '../providers/utils';
 import { Settings } from '../settings';
 import { buildChatInfo, type ChatInfo, type ReqOptions } from './information';
@@ -19,8 +19,6 @@ import {
 } from './tally';
 import { ApiError } from '../client/error';
 import { seedManagedGroup } from './managed';
-import { dumpRequest } from '../trace/dump';
-import { tagRequest } from '../trace/tag';
 
 type PrepareOptions = vscode.PrepareLanguageModelChatModelOptions;
 
@@ -36,13 +34,52 @@ type GroupSecrets = { apiKey: string; apiEndpoint?: string; prefix: string; labe
 
 const GROUP_SEP = '::';
 
+function logVerboseMessages(
+  messages: vscode.LanguageModelChatRequestMessage[],
+  tools: readonly vscode.LanguageModelChatTool[] | undefined,
+): void {
+  try {
+    const roleLabel: Record<number, string> = {
+      [vscode.LanguageModelChatMessageRole.User]: 'user',
+      [vscode.LanguageModelChatMessageRole.Assistant]: 'assistant',
+    };
+    const msgSummary = messages
+      .map((m) => {
+        const role =
+          roleLabel[m.role] ?? vscode.LanguageModelChatMessageRole[m.role] ?? `role${m.role}`;
+        const parts = Array.isArray(m.content) ? m.content : [m.content];
+        const kinds = [
+          ...new Set(
+            parts.map((p: unknown) =>
+              p !== null && typeof p === 'object' && 'kind' in p
+                ? (p as { kind: string }).kind
+                : 'text',
+            ),
+          ),
+        ];
+        const label = kinds.length > 0 ? `${role}:${kinds.join('+')}` : role;
+        const contentLen = JSON.stringify(m.content).length;
+
+        return `${label}(${contentLen})`;
+      })
+      .join(' ');
+    channel.info(`Messages (${messages.length}): ${msgSummary}`);
+
+    if (tools && tools.length > 0) {
+      const toolNames = tools.map((t) => t.name).join(', ');
+      channel.info(`Tools (${tools.length}): ${toolNames}`);
+    }
+  } catch {
+    // verbose logging must never throw into caller
+  }
+}
+
 /**
  * Central provider that implements vscode.LanguageModelChatProvider.
  * Registered with vscode.lm.registerChatModelProvider.
  */
 export class Adapter implements vscode.LanguageModelChatProvider {
   private readonly picker: VisionModelPicker;
-  private readonly storageUri: vscode.Uri;
   private readonly groupSecrets = new Map<string, GroupSecrets>();
   private readonly prefixToKey = new Map<string, string>();
 
@@ -62,7 +99,6 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     private readonly onKeyChange?: () => void,
   ) {
     this.picker = new VisionModelPicker();
-    this.storageUri = context.globalStorageUri;
     this.onDidChangeLanguageModelChatInformation = this.changeEmitter.event;
 
     context.subscriptions.push(
@@ -96,10 +132,12 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     _options: PrepareOptions,
     _token: vscode.CancellationToken,
   ): Promise<ChatInfo[]> {
-    const providerModels = ALL_MODELS.filter((m) => m.provider.id === this.filteredProviderId);
+    const opts = _options as GroupOptions;
+    const providerModels = registry.ALL_MODELS.filter(
+      (m) => m.provider.id === this.filteredProviderId,
+    );
     if (providerModels.length === 0) return [];
 
-    const opts = _options as GroupOptions;
     const groupCfg = opts.configuration;
     const modelProvider = providerModels[0]?.provider;
 
@@ -135,18 +173,16 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       secrets.apiEndpoint = apiEndpoint.length > 0 ? apiEndpoint : undefined;
     }
 
-    const activeEndpoint = apiEndpoint ? resolveEndpoint(modelProvider, apiEndpoint) : undefined;
-    const visibleModels =
-      activeEndpoint?.models!.filter((m) => m.provider.id === this.filteredProviderId) ??
-      providerModels;
+    const resolvedEndpoint = apiEndpoint ? resolveEndpoint(modelProvider, apiEndpoint) : undefined;
+    const activeEndpointId = resolvedEndpoint?.id ?? modelProvider.endpoints?.[0]?.id;
+    const visibleModels = activeEndpointId
+      ? providerModels.filter((m) => m.endpoint?.id === activeEndpointId)
+      : providerModels;
 
     const idPrefix = secrets.prefix;
 
     const result = visibleModels.map(
       (model) => buildChatInfo(model, hasKey, this.visionProxyAvailable, idPrefix) as ChatInfo,
-    );
-    channel.debug(
-      `provideLanguageModelChatInformation: apiKey=${apiKey.slice(0, 6)}... prefix="${idPrefix}" models=[${result.map((m) => m.id).join(', ')}]`,
     );
 
     return result;
@@ -160,7 +196,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     token: vscode.CancellationToken,
   ): Promise<void> {
     const { modelId, prefix } = this.resolveModelIdentity(modelInfo.id);
-    const model = modelById.get(modelId);
+    const model = registry.modelById.get(modelId);
     if (!model) {
       throw new Error(t('err.unknownModel', modelInfo.id));
     }
@@ -179,6 +215,9 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     if (Settings.metaEnabled()) {
       channel.info(`Model: id=${model.id} | apiId=${model.apiId}`);
       channel.info(`Endpoint: ${getEndpoint(modelProvider, secrets.apiEndpoint)}`);
+    }
+    if (Settings.verboseEnabled()) {
+      logVerboseMessages(messages, options.tools);
     }
 
     const apiUrl = getEndpoint(modelProvider, secrets.apiEndpoint);
@@ -205,14 +244,6 @@ export class Adapter implements vscode.LanguageModelChatProvider {
             `tool: ${ready.gate.toolName}`,
         );
       }
-
-      void dumpRequest(
-        this.storageUri,
-        session.id,
-        ready.body,
-        tagRequest(messages, options.tools),
-        ready.apiKey,
-      );
 
       const { promptTokens } = await forwardStream(ready, progress, token, session.id);
 
@@ -259,7 +290,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     _token: vscode.CancellationToken,
   ): Promise<number> {
     const { modelId } = this.resolveModelIdentity(modelInfo.id);
-    const entry = modelById.get(modelId);
+    const entry = registry.modelById.get(modelId);
     const defaultRatio = entry
       ? (resolveTrait(entry, 'tokenRatio') ?? Settings.tokenRatio() ?? DEFAULT_CHARS_PER_TOKEN)
       : (Settings.tokenRatio() ?? DEFAULT_CHARS_PER_TOKEN);
@@ -289,13 +320,18 @@ export class Adapter implements vscode.LanguageModelChatProvider {
   }
 
   async configureApiKey(providerId?: string): Promise<void> {
-    let modelProvider = providerId ? ALL_PROVIDERS.find((p) => p.id === providerId) : undefined;
+    let modelProvider = providerId
+      ? registry.ALL_PROVIDERS.find((p) => p.id === providerId)
+      : undefined;
 
     if (!modelProvider) {
-      const items = ALL_PROVIDERS.map((p) => ({
+      const items = registry.ALL_PROVIDERS.map((p) => ({
         label: p.label,
         description: p.id,
-        detail: t(p.detailKey, String(ALL_MODELS.filter((m) => m.provider.id === p.id).length)),
+        detail: t(
+          p.detailKey,
+          String(registry.ALL_MODELS.filter((m) => m.provider.id === p.id).length),
+        ),
       }));
 
       const picked = await vscode.window.showQuickPick(items, {
@@ -304,7 +340,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       });
 
       if (!picked) return;
-      modelProvider = ALL_PROVIDERS.find((p) => p.id === picked.description);
+      modelProvider = registry.ALL_PROVIDERS.find((p) => p.id === picked.description);
     }
     if (!modelProvider) return;
 

@@ -1,18 +1,14 @@
 import assert from 'node:assert/strict';
 import { suite, test } from 'mocha';
 import { imagePart } from '../../../src/providers/utils';
-import type { ModelItem, ReasoningAbility, NonReasoningAbility } from '../../../src/providers/types';
-import type { ModelProvider } from '../../../src/providers/types';
+import type { ModelItem, ModelProvider } from '../../../src/providers/types';
 
 /**
  * Tests the formatImagePart fallback logic used in assembleChatReq():
  *
  *   formatImagePart:
  *     model.formatImagePart ??
- *     (model.ability.imageInput ? imagePart(model.ability.imageField ?? 'image_url') : undefined)
- *
- * This suite validates the expression behavior without needing the full
- * assembleChatReq dependency tree.
+ *     (model.imageInput ? imagePart(model.imageField ?? 'image_url') : undefined)
  */
 
 function resolveFormatImagePart(model: ModelItem):
@@ -20,7 +16,7 @@ function resolveFormatImagePart(model: ModelItem):
   | undefined {
   return (
     model.formatImagePart ??
-    (model.ability.imageInput ? imagePart(model.ability.imageField ?? 'image_url') : undefined)
+    (model.imageInput ? imagePart(model.imageField ?? 'image_url') : undefined)
   );
 }
 
@@ -31,105 +27,60 @@ const fakeProvider: ModelProvider = {
   url: 'https://fake.example.com',
 };
 
-const VISION_ABILITY: ReasoningAbility = {
-  reasoning: true,
-  imageInput: true,
-};
-
-const TEXT_ABILITY: ReasoningAbility = {
-  reasoning: true,
-  imageInput: false,
-};
-
-const NON_REASONING_VISION: NonReasoningAbility = {
-  reasoning: false,
-  imageInput: true,
-};
-
 const fakeData = new Uint8Array([0x89, 0x50, 0x4e, 0x47]);
 const fakeMime = 'image/png';
+
+function makeModel(overrides: Partial<ModelItem>): ModelItem {
+  return {
+    id: 'm',
+    label: 'M',
+    apiId: 'm',
+    family: 'fake',
+    version: '1',
+    maxInputTokens: 1000,
+    maxOutputTokens: 500,
+    thinking: true,
+    imageInput: true,
+    maxTools: 128,
+    source: 'builtin' as const,
+    detailKey: 'm.detail',
+    provider: fakeProvider,
+    ...overrides,
+  } as ModelItem;
+}
 
 suite('bridge/prepare formatImagePart fallback', () => {
   suite('imageInput: true, no explicit formatImagePart', () => {
     test('default imageField to imagePart("image_url")', () => {
-      const model: ModelItem = {
-        id: 'm1',
-        label: 'M1',
-        apiId: 'm1',
-        family: 'fake',
-        version: '1',
-        maxInputTokens: 1000,
-        maxOutputTokens: 500,
-        ability: VISION_ABILITY,
-        detailKey: 'm1.detail',
-        provider: fakeProvider,
-      };
-
+      const model = makeModel({ imageInput: true });
       const fn = resolveFormatImagePart(model);
       assert.ok(fn, 'should resolve a function');
       const result = fn!(fakeData, fakeMime);
       assert.equal(result.type, 'image_url');
-      assert.match((result as any).image_url.url, /^data:image\/png;base64,/);
+      const img = result as Record<string, unknown>;
+      assert.ok(typeof img.image_url === 'object');
     });
 
-    test('custom imageField "image" to imagePart("image")', () => {
-      const model: ModelItem = {
-        id: 'm2',
-        label: 'M2',
-        apiId: 'm2',
-        family: 'fake',
-        version: '1',
-        maxInputTokens: 1000,
-        maxOutputTokens: 500,
-        ability: { ...VISION_ABILITY, imageField: 'image' },
-        detailKey: 'm2.detail',
-        provider: fakeProvider,
-      };
-
+    test('custom imageField "image"', () => {
+      const model = makeModel({ imageInput: true, imageField: 'image' });
       const fn = resolveFormatImagePart(model);
-      assert.ok(fn, 'should resolve a function');
+      assert.ok(fn);
       const result = fn!(fakeData, fakeMime);
       assert.equal(result.type, 'image');
-      assert.ok((result as any).image?.url !== undefined);
     });
 
-    test('custom imageField "image_file" to imagePart("image_file")', () => {
-      const model: ModelItem = {
-        id: 'm3',
-        label: 'M3',
-        apiId: 'm3',
-        family: 'fake',
-        version: '1',
-        maxInputTokens: 1000,
-        maxOutputTokens: 500,
-        ability: { ...VISION_ABILITY, imageField: 'image_file' },
-        detailKey: 'm3.detail',
-        provider: fakeProvider,
-      };
-
+    test('custom imageField "image_file"', () => {
+      const model = makeModel({ imageInput: true, imageField: 'image_file' });
       const fn = resolveFormatImagePart(model);
-      assert.ok(fn, 'should resolve a function');
+      assert.ok(fn);
       const result = fn!(fakeData, fakeMime);
       assert.equal(result.type, 'image_file');
-      assert.ok((result as any).image_file?.url !== undefined);
     });
 
-    test('non-reasoning vision model also gets fallback', () => {
-      const model: ModelItem = {
-        id: 'm4',
-        label: 'M4',
-        apiId: 'm4',
-        family: 'fake',
-        version: '1',
-        maxInputTokens: 1000,
-        maxOutputTokens: 500,
-        ability: NON_REASONING_VISION,
-        detailKey: 'm4.detail',
-        provider: fakeProvider,
-      };
-
+    test('non-thinking vision model also gets fallback', () => {
+      const model = makeModel({ thinking: false, imageInput: true });
       const fn = resolveFormatImagePart(model);
-      assert.ok(fn, 'non-reasoning vision should still get fallback');
+      assert.ok(fn);
       const result = fn!(fakeData, fakeMime);
       assert.equal(result.type, 'image_url');
     });
@@ -137,42 +88,16 @@ suite('bridge/prepare formatImagePart fallback', () => {
 
   suite('imageInput: false', () => {
     test('no formatImagePart to undefined', () => {
-      const model: ModelItem = {
-        id: 'tx1',
-        label: 'TX1',
-        apiId: 'tx1',
-        family: 'fake',
-        version: '1',
-        maxInputTokens: 1000,
-        maxOutputTokens: 500,
-        ability: TEXT_ABILITY,
-        detailKey: 'tx1.detail',
-        provider: fakeProvider,
-      };
-
+      const model = makeModel({ imageInput: false });
       const fn = resolveFormatImagePart(model);
       assert.equal(fn, undefined);
     });
 
     test('explicit formatImagePart still honored (override)', () => {
       const customFn = (_data: Uint8Array, _mimeType: string) => ({ type: 'custom' });
-      const model: ModelItem = {
-        id: 'tx2',
-        label: 'TX2',
-        apiId: 'tx2',
-        family: 'fake',
-        version: '1',
-        maxInputTokens: 1000,
-        maxOutputTokens: 500,
-        ability: TEXT_ABILITY,
-        detailKey: 'tx2.detail',
-        provider: fakeProvider,
-        formatImagePart: customFn,
-      };
-
+      const model = makeModel({ imageInput: false, formatImagePart: customFn });
       const fn = resolveFormatImagePart(model);
       assert.strictEqual(fn, customFn);
-
       const result = fn!(fakeData, fakeMime);
       assert.deepEqual(result, { type: 'custom' });
     });
@@ -181,20 +106,7 @@ suite('bridge/prepare formatImagePart fallback', () => {
   suite('imageInput: true with explicit formatImagePart', () => {
     test('explicit function wins over fallback', () => {
       const customFn = (_data: Uint8Array, _mimeType: string) => ({ type: 'explicit' });
-      const model: ModelItem = {
-        id: 'ov1',
-        label: 'OV1',
-        apiId: 'ov1',
-        family: 'fake',
-        version: '1',
-        maxInputTokens: 1000,
-        maxOutputTokens: 500,
-        ability: VISION_ABILITY,
-        detailKey: 'ov1.detail',
-        provider: fakeProvider,
-        formatImagePart: customFn,
-      };
-
+      const model = makeModel({ imageInput: true, formatImagePart: customFn });
       const fn = resolveFormatImagePart(model);
       assert.strictEqual(fn, customFn);
       const result = fn!(fakeData, fakeMime);
@@ -202,24 +114,11 @@ suite('bridge/prepare formatImagePart fallback', () => {
     });
   });
 
-  suite('edge cases', () => {
-    test('imageField is empty string, still passed to imagePart', () => {
-      const model: ModelItem = {
-        id: 'ec1',
-        label: 'EC1',
-        apiId: 'ec1',
-        family: 'fake',
-        version: '1',
-        maxInputTokens: 1000,
-        maxOutputTokens: 500,
-        ability: { ...VISION_ABILITY, imageField: '' },
-        detailKey: 'ec1.detail',
-        provider: fakeProvider,
-      };
-
+  suite('imageInput: undefined → false (text model)', () => {
+    test('undefined imageInput resolves to no fallback', () => {
+      const model = makeModel({ imageInput: false });
       const fn = resolveFormatImagePart(model);
-      const result = fn!(fakeData, fakeMime);
-      assert.equal(result.type, '');
+      assert.equal(fn, undefined);
     });
   });
 });

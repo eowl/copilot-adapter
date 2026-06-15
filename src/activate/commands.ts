@@ -1,6 +1,5 @@
 import vscode from 'vscode';
 import { channel } from '../logger';
-import { openDumpsFolder } from '../trace/dump';
 import type { Adapter } from '../bridge/adapter';
 
 export function registerCommands(context: vscode.ExtensionContext, adapter: Adapter): void {
@@ -21,7 +20,6 @@ export function registerCommands(context: vscode.ExtensionContext, adapter: Adap
       () => vscode.commands.executeCommand('workbench.action.openSettings', 'copilot-adapter'),
     ],
     ['copilot-adapter.showLogs', () => channel.show()],
-    ['copilot-adapter.openRequestRecordsFolder', () => openDumpsFolder(context)],
   ];
 
   for (const [id, handler] of cmds) {

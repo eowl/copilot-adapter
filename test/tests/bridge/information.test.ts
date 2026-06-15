@@ -15,8 +15,11 @@ function makeTestModel(overrides: Partial<ModelItem> = {}): ModelItem {
     version: '1',
     maxInputTokens: 1000,
     maxOutputTokens: 500,
-    ability: { reasoning: true, imageInput: false, maxTools: 10 },
+    thinking: true,
+    imageInput: false,
+    maxTools: 10,
     detailKey: 'model.kimi-k2.5.detail',
+    source: 'builtin' as const,
     provider: DEEPSEEK,
     ...overrides,
   };
@@ -89,7 +92,7 @@ suite('bridge/information buildChatInfo', () => {
   });
 
   test('visionProxy overrides imageInput capability', () => {
-    const model = makeTestModel({ ability: { reasoning: true, imageInput: false } });
+    const model = makeTestModel({ imageInput: false });
     const info = buildChatInfo(model, true, true); // hasVisionProxy = true
 
     assert.equal(info.capabilities!.imageInput, true);
@@ -104,7 +107,7 @@ suite('bridge/information buildChatInfo', () => {
   });
 
   test('toolCalling passes through maxTools value from model ability', () => {
-    const model = makeTestModel({ ability: { reasoning: true, imageInput: false, maxTools: 5 } });
+    const model = makeTestModel({ maxTools: 5 });
     const info = buildChatInfo(model, true);
 
     assert.equal(info.capabilities!.toolCalling, 5);

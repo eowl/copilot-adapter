@@ -5,7 +5,7 @@ import { ThinkTagParser } from '../../../src/providers/parsers/tag';
 import type { ModelItem } from '../../../src/providers/types';
 
 function reasoningModel(): ModelItem {
-  return MM_MODELS.find((m) => m.ability.reasoning)! as ModelItem;
+  return MM_MODELS.find((m) => m.thinking)! as ModelItem;
 }
 
 suite('providers/minimax model.createContentParser()', () => {
@@ -45,8 +45,8 @@ suite('providers/minimax model list', () => {
 
   test('M3 model has thinking config', () => {
     const m3 = MM_MODELS.find((m) => m.label === 'MiniMax M3')!;
-    assert.ok(m3.thinking !== undefined);
-    assert.equal(m3.thinking!.default, 'adaptive');
+    assert.ok(m3.thinkingConfig !== undefined);
+    assert.equal(m3.thinkingConfig!.default, 'adaptive');
     assert.ok(m3.requestExtras !== undefined);
     assert.ok(m3.configSchema !== undefined);
   });

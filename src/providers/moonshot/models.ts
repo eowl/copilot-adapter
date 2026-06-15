@@ -1,7 +1,7 @@
-import type { ModelItem, ReasoningAbility, ThinkingConfig } from '../types';
+import type { ModelItem, ThinkingConfig } from '../types';
 import { MOONSHOT } from './provider';
 
-const MS_THINKING: ThinkingConfig = {
+const MS_THINKING_CONFIG: ThinkingConfig = {
   default: 'adaptive',
   options: [
     {
@@ -19,7 +19,7 @@ const MS_THINKING: ThinkingConfig = {
   ],
 };
 
-const MS_K26_THINKING: ThinkingConfig = {
+const MS_K26_THINKING_CONFIG: ThinkingConfig = {
   default: 'enabled',
   options: [
     {
@@ -43,25 +43,23 @@ const MS_K26_THINKING: ThinkingConfig = {
   ],
 };
 
-const MS_ABILITY: ReasoningAbility = {
-  maxTools: 128,
-  imageInput: true,
-  reasoning: true,
-};
-
 const MS_BASE = {
-  family: 'kimi' as const,
-  ability: MS_ABILITY,
+  family: 'kimi',
   provider: MOONSHOT,
-  thinking: MS_THINKING,
+  thinking: true,
+  imageInput: true,
+  maxTools: 128,
+  thinkingConfig: MS_THINKING_CONFIG,
   maxTokensField: 'max_completion_tokens',
 };
 
 const MS_K26_BASE = {
-  family: 'kimi' as const,
-  ability: MS_ABILITY,
+  family: 'kimi',
   provider: MOONSHOT,
-  thinking: MS_K26_THINKING,
+  thinking: true,
+  imageInput: true,
+  maxTools: 128,
+  thinkingConfig: MS_K26_THINKING_CONFIG,
   maxTokensField: 'max_completion_tokens',
 };
 
@@ -86,4 +84,4 @@ export const MS_MODELS: readonly ModelItem[] = [
     maxOutputTokens: 128_000,
     detailKey: 'model.kimi-k2.5.detail',
   },
-];
+] as ModelItem[];

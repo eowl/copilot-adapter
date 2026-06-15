@@ -44,7 +44,7 @@ export function routeToolFlow(
     liveMessages = stripWarmupMessages(liveMessages);
   }
 
-  const tools = buildToolList(vsTools, modelItem.ability.maxTools);
+  const tools = buildToolList(vsTools, modelItem.maxTools);
 
   if (stabilize && vsTools && vsTools.length > 0) {
     const toolNames = vsTools.map((t) => t.name);

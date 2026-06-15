@@ -1,57 +1,16 @@
-import path from 'node:path';
-import { DEEPSEEK, DEEPSEEK_ENDPOINTS } from './deepseek';
-import { MINIMAX, MINIMAX_ENDPOINTS } from './minimax';
-import { MOONSHOT, MOONSHOT_ENDPOINTS } from './moonshot';
-import { QWEN, QWEN_ENDPOINTS } from './qwen';
-import { ZHIPU, ZHIPU_ENDPOINTS } from './zhipu';
-import { composeModelProvider, modelKey } from './utils';
-import { loadAllJsonModels } from './loader';
-import type { ModelItem, ModelProvider, ModelEndpoint } from './types';
+/**
+ * Backward-compatibility re-exports.
+ *
+ * The canonical model registry now lives in `src/registry/`.
+ * This module re-exports everything downstream code expects so existing
+ * imports don't break.
+ */
 
-export { DEEPSEEK, MINIMAX, MOONSHOT, QWEN, ZHIPU };
-export type { ModelProvider, ModelEndpoint, ModelItem };
+export { DEEPSEEK } from './deepseek';
+export { MINIMAX } from './minimax';
+export { MOONSHOT } from './moonshot';
+export { QWEN } from './qwen';
+export { ZHIPU } from './zhipu';
+export type { ModelProvider, ModelEndpoint, ModelItem } from './types';
 
-composeModelProvider(DEEPSEEK, DEEPSEEK_ENDPOINTS);
-composeModelProvider(MINIMAX, MINIMAX_ENDPOINTS);
-composeModelProvider(MOONSHOT, MOONSHOT_ENDPOINTS);
-composeModelProvider(QWEN, QWEN_ENDPOINTS);
-composeModelProvider(ZHIPU, ZHIPU_ENDPOINTS);
-
-export const ALL_PROVIDERS: readonly ModelProvider[] = [DEEPSEEK, MINIMAX, MOONSHOT, QWEN, ZHIPU];
-
-export const providerById = new Map<string, ModelProvider>(ALL_PROVIDERS.map((mp) => [mp.id, mp]));
-
-export const endpointById = new Map<string, ModelEndpoint>(
-  ALL_PROVIDERS.flatMap((mp) => mp.endpoints ?? []).map((me) => [me.id, me]),
-);
-
-export const ALL_MODELS: readonly ModelItem[] = (() => {
-  const seen = new Set<string>();
-  const result: ModelItem[] = [];
-
-  // JSON models first
-  const modelsDir = path.join(__dirname, '..', '..', 'models');
-  for (const mi of loadAllJsonModels(modelsDir, { providerById, endpointById })) {
-    const key = modelKey(mi);
-    if (!seen.has(key)) {
-      seen.add(key);
-      result.push(mi);
-    }
-  }
-
-  for (const mp of ALL_PROVIDERS) {
-    for (const me of mp.endpoints ?? []) {
-      for (const mi of me.models ?? []) {
-        const key = modelKey(mi);
-        if (!seen.has(key)) {
-          seen.add(key);
-          result.push(mi);
-        }
-      }
-    }
-  }
-
-  return result;
-})();
-
-export const modelById = new Map<string, ModelItem>(ALL_MODELS.map((mi) => [modelKey(mi), mi]));
+export { ALL_PROVIDERS, providerById, endpointById, ALL_MODELS, modelById } from '../registry';

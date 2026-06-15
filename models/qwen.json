@@ -1,7 +1,7 @@
 {
   "providerId": "qwen",
   "endpointId": "cn",
-  "thinking": {
+  "thinkingConfig": {
     "default": "high",
     "options": [
       { "value": "high", "label": "think.high", "hint": "think.high.hint",
@@ -22,7 +22,10 @@
       "maxInputTokens": 616000,
       "maxOutputTokens": 384000,
       "detailKey": "model.deepseek-v4-pro.detail",
-      "ability": { "maxTools": 128, "imageInput": false, "reasoning": true }
+      "thinking": true,
+      "imageInput": false,
+      "maxTools": 128,
+      "maxTokensField": "max_completion_tokens"
     }
   ]
 }

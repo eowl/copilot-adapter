@@ -117,5 +117,3 @@ export const en: Translation = {
 
   'tools.drift': 'The following tools were removed to keep the conversation on track: {0}.',
 };
-
-/* register() intentionally removed — not needed for tests */

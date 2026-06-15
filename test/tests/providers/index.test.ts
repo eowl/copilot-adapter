@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { suite, test } from 'mocha';
-import { ALL_MODELS, ALL_PROVIDERS, providerById, modelById, DEEPSEEK, MINIMAX, MOONSHOT, QWEN, ZHIPU } from '../../../src/providers/index';
+import { ALL_MODELS, ALL_PROVIDERS, providerById, modelById, DEEPSEEK, MINIMAX, MOONSHOT, QWEN, ZHIPU } from '../../../src/registry';
 
 suite('providers/index', () => {
   suite('ALL_PROVIDERS', () => {

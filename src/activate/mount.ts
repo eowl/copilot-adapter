@@ -1,5 +1,5 @@
 import vscode from 'vscode';
-import { ALL_PROVIDERS } from '../providers';
+import { ALL_PROVIDERS } from '../registry';
 import { Adapter } from '../bridge/adapter';
 import { channel } from '../logger';
 

@@ -1,7 +1,7 @@
-import type { ModelItem, NonReasoningAbility, ReasoningAbility, ThinkingConfig } from '../types';
+import type { ModelItem, ThinkingConfig } from '../types';
 import { ZHIPU } from './provider';
 
-const BM_THINKING: ThinkingConfig = {
+const BM_THINKING_CONFIG: ThinkingConfig = {
   default: 'adaptive',
   options: [
     {
@@ -19,54 +19,38 @@ const BM_THINKING: ThinkingConfig = {
   ],
 };
 
-const BM_REASONING_ABILITY: ReasoningAbility = {
-  maxTools: 128,
-  imageInput: false,
-  reasoning: true,
-};
-
-const BM_PLAIN_ABILITY: NonReasoningAbility = {
-  maxTools: 128,
-  imageInput: false,
-  reasoning: false,
-};
-
-const BM_VISION_REASONING_ABILITY: ReasoningAbility = {
-  maxTools: 128,
-  imageInput: true,
-  reasoning: true,
-};
-
-const BM_VISION_PLAIN_ABILITY: NonReasoningAbility = {
-  maxTools: 128,
-  imageInput: true,
-  reasoning: false,
-};
-
 const BM_THINK_BASE = {
-  family: 'glm' as const,
-  ability: BM_REASONING_ABILITY,
+  family: 'glm',
   provider: ZHIPU,
-  thinking: BM_THINKING,
+  thinking: true,
+  imageInput: false,
+  maxTools: 128,
+  thinkingConfig: BM_THINKING_CONFIG,
 };
 
 const BM_PLAIN_BASE = {
-  family: 'glm' as const,
-  ability: BM_PLAIN_ABILITY,
+  family: 'glm',
   provider: ZHIPU,
+  thinking: false,
+  imageInput: false,
+  maxTools: 128,
 };
 
 const BM_VISION_THINK_BASE = {
-  family: 'glm' as const,
-  ability: BM_VISION_REASONING_ABILITY,
+  family: 'glm',
   provider: ZHIPU,
-  thinking: BM_THINKING,
+  thinking: true,
+  imageInput: true,
+  maxTools: 128,
+  thinkingConfig: BM_THINKING_CONFIG,
 };
 
 const BM_VISION_PLAIN_BASE = {
-  family: 'glm' as const,
-  ability: BM_VISION_PLAIN_ABILITY,
+  family: 'glm',
   provider: ZHIPU,
+  thinking: false,
+  imageInput: true,
+  maxTools: 128,
 };
 
 export const ZP_MODELS: readonly ModelItem[] = [
@@ -270,4 +254,4 @@ export const ZP_MODELS: readonly ModelItem[] = [
     maxOutputTokens: 1_024,
     detailKey: 'model.glm-4v-flash.detail',
   },
-];
+] as ModelItem[];
