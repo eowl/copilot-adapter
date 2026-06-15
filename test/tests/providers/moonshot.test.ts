@@ -8,8 +8,8 @@ suite('providers/moonshot', () => {
     assert.equal(MOONSHOT.id, 'moonshot');
   });
 
-  test('has 2 models', () => {
-    assert.equal(MS_MODELS.length, 2);
+  test('has 4 models', () => {
+    assert.equal(MS_MODELS.length, 4);
   });
 
   test('K2.5 has 2-value thinking (adaptive / disabled)', () => {

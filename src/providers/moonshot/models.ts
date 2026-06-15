@@ -43,6 +43,18 @@ const MS_K26_THINKING_CONFIG: ThinkingConfig = {
   ],
 };
 
+const MS_K27_THINKING_CONFIG: ThinkingConfig = {
+  default: 'enabled',
+  options: [
+    {
+      value: 'enabled',
+      label: 'model.kimi.think.enabledAlways',
+      hint: 'model.kimi.think.enabledAlways.hint',
+      requestFields: { thinking: { type: 'enabled', keep: 'all' } },
+    },
+  ],
+};
+
 const MS_BASE = {
   family: 'kimi',
   provider: MOONSHOT,
@@ -60,6 +72,16 @@ const MS_K26_BASE = {
   imageInput: true,
   maxTools: 128,
   thinkingConfig: MS_K26_THINKING_CONFIG,
+  maxTokensField: 'max_completion_tokens',
+};
+
+const MS_K27_BASE = {
+  family: 'kimi',
+  provider: MOONSHOT,
+  thinking: true,
+  imageInput: true,
+  maxTools: 128,
+  thinkingConfig: MS_K27_THINKING_CONFIG,
   maxTokensField: 'max_completion_tokens',
 };
 
@@ -83,5 +105,25 @@ export const MS_MODELS: readonly ModelItem[] = [
     maxInputTokens: 256_000,
     maxOutputTokens: 128_000,
     detailKey: 'model.kimi-k2.5.detail',
+  },
+  {
+    ...MS_K27_BASE,
+    id: 'kimi-k2.7-code',
+    label: 'Kimi K2.7 Code',
+    apiId: 'kimi-k2.7-code',
+    version: '2.7',
+    maxInputTokens: 256_000,
+    maxOutputTokens: 128_000,
+    detailKey: 'model.kimi-k2.7-code.detail',
+  },
+  {
+    ...MS_K27_BASE,
+    id: 'kimi-k2.7-code-highspeed',
+    label: 'Kimi K2.7 High-Speed',
+    apiId: 'kimi-k2.7-code-highspeed',
+    version: '2.7',
+    maxInputTokens: 256_000,
+    maxOutputTokens: 128_000,
+    detailKey: 'model.kimi-k2.7-code-highspeed.detail',
   },
 ] as ModelItem[];

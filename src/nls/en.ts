@@ -10,8 +10,15 @@ export const en: Translation = {
   'model.deepseek-v4-flash.detail': 'Fast, general-purpose model',
   'model.deepseek-v4-pro.detail': 'Deep reasoning model',
 
+  'model.kimi-k2.7-code.detail':
+    'Kimi K2.7 Code is an open-source, coding-focused agentic model developed by Moonshot AI',
+  'model.kimi-k2.7-code-highspeed.detail':
+    'Kimi K2.7 Code High-Speed Edition, the same model as Kimi K2.7 Code, but with output speed about 5-6 times faster than the standard version',
   'model.kimi-k2.6.detail': 'Latest flagship — enhanced long-range coding & reasoning',
   'model.kimi-k2.5.detail': 'Deep reasoning model with vision support',
+  'model.kimi.think.enabledAlways': 'Thinking Mode',
+  'model.kimi.think.enabledAlways.hint':
+    'This model always thinks and always enables the Preserved Thinking mode, which cannot be disabled',
 
   'model.minimax-m2.detail': 'Deep reasoning model',
   'model.minimax-m2.1.detail': 'Deep reasoning model',
