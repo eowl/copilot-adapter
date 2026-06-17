@@ -116,6 +116,12 @@ Chars-per-token ratio calibrated for deepseek: 4.00 to 3.38 (based on API usage:
 
 ### 自定义模型
 
+VS Code Copilot Chat 官方的 **Custom Endpoint** 仅支持基础的模型配置（名称、端点、API Key），无法使用视觉代理、定制化思考模式和缓存命中率日志。Copilot Adapter 的 **Custom Models** 填补了这些缺口：
+
+- **视觉代理** — 纯文本模型也能通过自动视觉代理管线处理图片附件。
+- **可定制的思考模式** — 针对不同厂商的请求体格式（DeepSeek、Qwen、Anthropic 等）配置各模型的推理强度，在模型选择器中即可切换。
+- **缓存命中率日志** — 在输出频道中查看每次请求的前缀缓存命中/未命中率。
+
 通过在配置文件中定义元数据（名称、端点、能力、token 限制），可将任意兼容 OpenAI 接口的模型接入 Copilot Chat。思考模型（`"thinking": true`）会根据模型 ID 自动匹配预置的推理强度配置，同时支持完整自定义。
 
 详细图文教程请参阅[如何添加自定义模型](docs/add-custom-model.zh-cn.md)。涵盖 DeepSeek、OpenAI、Anthropic、通义千问、智谱、MiniMax、Gemini、Grok 等的即用型模板见 [`custom-models-template.zh-cn.jsonc`](docs/custom-models-template.zh-cn.jsonc)。
