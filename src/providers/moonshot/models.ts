@@ -1,59 +1,10 @@
-import type { ModelItem, ThinkingConfig } from '../types';
+import type { ModelItem } from '../types';
 import { MOONSHOT } from './provider';
-
-const MS_THINKING_CONFIG: ThinkingConfig = {
-  default: 'adaptive',
-  options: [
-    {
-      value: 'adaptive',
-      label: 'think.adaptive',
-      hint: 'think.adaptive.hint',
-      requestFields: { thinking: { type: 'enabled' } },
-    },
-    {
-      value: 'disabled',
-      label: 'think.none',
-      hint: 'think.none.hint',
-      requestFields: { thinking: { type: 'disabled' } },
-    },
-  ],
-};
-
-const MS_K26_THINKING_CONFIG: ThinkingConfig = {
-  default: 'enabled',
-  options: [
-    {
-      value: 'enabled',
-      label: 'think.enabled',
-      hint: 'think.enabled.hint',
-      requestFields: { thinking: { type: 'enabled' } },
-    },
-    {
-      value: 'enabled_keep',
-      label: 'think.enabledKeep',
-      hint: 'think.enabledKeep.hint',
-      requestFields: { thinking: { type: 'enabled', keep: 'all' } },
-    },
-    {
-      value: 'disabled',
-      label: 'think.disabled',
-      hint: 'think.disabled.hint',
-      requestFields: { thinking: { type: 'disabled' } },
-    },
-  ],
-};
-
-const MS_K27_THINKING_CONFIG: ThinkingConfig = {
-  default: 'enabled',
-  options: [
-    {
-      value: 'enabled',
-      label: 'model.kimi.think.enabledAlways',
-      hint: 'model.kimi.think.enabledAlways.hint',
-      requestFields: { thinking: { type: 'enabled', keep: 'all' } },
-    },
-  ],
-};
+import {
+  MOONSHOT_THINKING,
+  MOONSHOT_K26_THINKING,
+  MOONSHOT_K27_THINKING,
+} from '../defines';
 
 const MS_BASE = {
   family: 'kimi',
@@ -61,7 +12,7 @@ const MS_BASE = {
   thinking: true,
   imageInput: true,
   maxTools: 128,
-  thinkingConfig: MS_THINKING_CONFIG,
+  thinkingConfig: MOONSHOT_THINKING,
   maxTokensField: 'max_completion_tokens',
 };
 
@@ -71,7 +22,7 @@ const MS_K26_BASE = {
   thinking: true,
   imageInput: true,
   maxTools: 128,
-  thinkingConfig: MS_K26_THINKING_CONFIG,
+  thinkingConfig: MOONSHOT_K26_THINKING,
   maxTokensField: 'max_completion_tokens',
 };
 
@@ -81,7 +32,7 @@ const MS_K27_BASE = {
   thinking: true,
   imageInput: true,
   maxTools: 128,
-  thinkingConfig: MS_K27_THINKING_CONFIG,
+  thinkingConfig: MOONSHOT_K27_THINKING,
   maxTokensField: 'max_completion_tokens',
 };
 

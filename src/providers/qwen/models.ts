@@ -1,23 +1,6 @@
-import type { ModelItem, ThinkingConfig } from '../types';
+import type { ModelItem } from '../types';
 import { QWEN } from './provider';
-
-const QWEN_THINKING_CONFIG: ThinkingConfig = {
-  default: 'adaptive',
-  options: [
-    {
-      value: 'adaptive',
-      label: 'think.adaptive',
-      hint: 'think.adaptive.hint',
-      requestFields: { enable_thinking: true },
-    },
-    {
-      value: 'disabled',
-      label: 'think.none',
-      hint: 'think.none.hint',
-      requestFields: { enable_thinking: false },
-    },
-  ],
-};
+import { QWEN_THINKING } from '../defines';
 
 const QWEN_BASE = {
   family: 'qwen',
@@ -26,7 +9,7 @@ const QWEN_BASE = {
   thinking: true,
   imageInput: false,
   maxTools: 128,
-  thinkingConfig: QWEN_THINKING_CONFIG,
+  thinkingConfig: QWEN_THINKING,
 };
 
 const QWEN_VISION_BASE = {
@@ -36,7 +19,7 @@ const QWEN_VISION_BASE = {
   thinking: true,
   imageInput: true,
   maxTools: 128,
-  thinkingConfig: QWEN_THINKING_CONFIG,
+  thinkingConfig: QWEN_THINKING,
 };
 
 export const QWEN_BASE_MODELS: readonly ModelItem[] = [

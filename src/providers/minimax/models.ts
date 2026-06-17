@@ -1,23 +1,6 @@
-import type { ModelItem, ThinkingConfig } from '../types';
+import type { ModelItem } from '../types';
 import { MINIMAX } from './provider';
-
-const MM_THINKING_CONFIG: ThinkingConfig = {
-  default: 'adaptive',
-  options: [
-    {
-      value: 'adaptive',
-      label: 'think.adaptive',
-      hint: 'think.adaptive.hint',
-      requestFields: { thinking: { type: 'adaptive' } },
-    },
-    {
-      value: 'disabled',
-      label: 'think.none',
-      hint: 'think.none.hint',
-      requestFields: { thinking: { type: 'disabled' } },
-    },
-  ],
-};
+import { MINIMAX_THINKING } from '../defines';
 
 const MM_BASE = {
   family: 'minimax',
@@ -28,7 +11,7 @@ const MM_BASE = {
   imageInput: false,
   maxTools: 64,
   thinkingTag: 'think',
-  thinkingConfig: MM_THINKING_CONFIG,
+  thinkingConfig: MINIMAX_THINKING,
   contentTag: 'think',
 };
 
@@ -41,7 +24,7 @@ const MM_M3_BASE = {
   imageInput: true,
   maxTools: 64,
   thinkingTag: 'think',
-  thinkingConfig: MM_THINKING_CONFIG,
+  thinkingConfig: MINIMAX_THINKING,
   contentTag: 'think',
 };
 

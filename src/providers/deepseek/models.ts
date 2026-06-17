@@ -1,29 +1,6 @@
-import type { ModelItem, ThinkingConfig } from '../types';
+import type { ModelItem } from '../types';
 import { DEEPSEEK } from './provider';
-
-const DS_THINKING_CONFIG: ThinkingConfig = {
-  default: 'high',
-  options: [
-    {
-      value: 'high',
-      label: 'think.high',
-      hint: 'think.high.hint',
-      requestFields: { thinking: { type: 'enabled' }, reasoning_effort: 'high' },
-    },
-    {
-      value: 'max',
-      label: 'think.max',
-      hint: 'think.max.hint',
-      requestFields: { thinking: { type: 'enabled' }, reasoning_effort: 'max' },
-    },
-    {
-      value: 'none',
-      label: 'think.none',
-      hint: 'think.none.hint',
-      requestFields: { thinking: { type: 'disabled' } },
-    },
-  ],
-};
+import { DEEPSEEK_THINKING } from '../defines';
 
 const DS_BASE = {
   family: 'deepseek',
@@ -31,7 +8,7 @@ const DS_BASE = {
   thinking: true,
   imageInput: false,
   maxTools: 128,
-  thinkingConfig: DS_THINKING_CONFIG,
+  thinkingConfig: DEEPSEEK_THINKING,
 };
 
 export const DS_MODELS: readonly ModelItem[] = [

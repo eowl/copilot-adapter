@@ -61,8 +61,8 @@ export interface ModelItem extends ApiTraits {
   readonly id: string;
   readonly label: string;
   readonly apiId: string;
-  readonly family: string;
-  readonly version: string;
+  readonly family?: string;
+  readonly version?: string;
   readonly maxInputTokens: number;
   readonly maxOutputTokens: number;
   readonly detailKey: string;
