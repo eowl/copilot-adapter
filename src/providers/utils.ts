@@ -3,7 +3,7 @@ import type { ApiTraits, ModelItem, ModelProvider, ModelEndpoint } from './types
 /** Build the provider- and endpoint-qualified unique key for a model. */
 export function modelKey(mi: ModelItem): string {
   const ep = mi.endpoint?.id ?? '';
-  
+
   return `${mi.id}-${mi.provider.id}${ep ? `-${ep}` : ''}`;
 }
 

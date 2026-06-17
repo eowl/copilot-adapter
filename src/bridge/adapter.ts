@@ -216,8 +216,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     token: vscode.CancellationToken,
   ): Promise<void> {
     const { modelId, prefix } = this.resolveModelIdentity(modelInfo.id);
-    const model =
-      registry.modelById.get(modelId) ?? this.dynamicModels.get(modelId);
+    const model = registry.modelById.get(modelId) ?? this.dynamicModels.get(modelId);
 
     if (!model) {
       throw new Error(t('err.unknownModel', modelInfo.id));
@@ -314,8 +313,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     _token: vscode.CancellationToken,
   ): Promise<number> {
     const { modelId } = this.resolveModelIdentity(modelInfo.id);
-    const entry =
-      registry.modelById.get(modelId) ?? this.dynamicModels.get(modelId);
+    const entry = registry.modelById.get(modelId) ?? this.dynamicModels.get(modelId);
     const defaultRatio = entry
       ? (resolveTrait(entry, 'tokenRatio') ?? Settings.tokenRatio() ?? DEFAULT_CHARS_PER_TOKEN)
       : (Settings.tokenRatio() ?? DEFAULT_CHARS_PER_TOKEN);

@@ -13,7 +13,14 @@ composeModelProvider(MOONSHOT, MOONSHOT_ENDPOINTS);
 composeModelProvider(QWEN, QWEN_ENDPOINTS);
 composeModelProvider(ZHIPU, ZHIPU_ENDPOINTS);
 
-export const ALL_PROVIDERS: readonly ModelProvider[] = [DEEPSEEK, MINIMAX, MOONSHOT, QWEN, ZHIPU, CUSTOM];
+export const ALL_PROVIDERS: readonly ModelProvider[] = [
+  DEEPSEEK,
+  MINIMAX,
+  MOONSHOT,
+  QWEN,
+  ZHIPU,
+  CUSTOM,
+];
 
 const _providerById = new Map<string, ModelProvider>(ALL_PROVIDERS.map((mp) => [mp.id, mp]));
 

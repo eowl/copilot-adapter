@@ -82,9 +82,7 @@ function expandThinkingConfig(
     label: level.charAt(0).toUpperCase() + level.slice(1),
     hint: '',
     requestFields:
-      format === 'responses'
-        ? { reasoning: { effort: level } }
-        : { reasoning_effort: level },
+      format === 'responses' ? { reasoning: { effort: level } } : { reasoning_effort: level },
   }));
 
   return { default: levels[0], options };

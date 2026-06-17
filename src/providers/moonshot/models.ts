@@ -1,10 +1,6 @@
 import type { ModelItem } from '../types';
 import { MOONSHOT } from './provider';
-import {
-  MOONSHOT_THINKING,
-  MOONSHOT_K26_THINKING,
-  MOONSHOT_K27_THINKING,
-} from '../defines';
+import { MOONSHOT_THINKING, MOONSHOT_K26_THINKING, MOONSHOT_K27_THINKING } from '../defines';
 
 const MS_BASE = {
   family: 'kimi',
