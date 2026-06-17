@@ -1,0 +1,396 @@
+// 自定义模型配置模板
+// 将模型条目复制到 chatLanguageModels.json 的 "models" 数组中
+//
+// 字段注释说明：
+//   [必填] — 必须提供
+//   [选填] — 可以省略（展示的值即为默认值）
+//
+// "supportsReasoningEffort" 控制模型选择器中显示的思考强度选项，
+// 以及发送给 API 的请求字段格式。
+//
+// 不填时，扩展会根据模型 ID 自动匹配预置配置（如 deepseek-v4-pro → DeepSeek
+// 配置、qwen3.7-max → Qwen 配置、claude-sonnet-4-20250514 → Anthropic 配置
+// 等）。未识别的 ID 使用通用 fallback：["minimal", "low", "medium", "high"]。
+//
+// 以下示例展示的是该模型的默认配置。如需自定义，请按相同格式修改后填入。
+
+{
+  // ============================================================================
+  // DeepSeek — api.deepseek.com
+  // ============================================================================
+  "deepseek-v4-pro": {
+    "id": "deepseek-v4-pro",                      // [必填] 模型唯一标识符
+    "name": "DeepSeek V4 Pro",                     // [必填] 模型选择器中的显示名称
+    "url": "https://api.deepseek.com/chat/completions", // [必填] API 端点 URL
+    "toolCalling": true,                           // [必填] 是否支持工具调用
+    "vision": false,                               // [必填] 是否支持图片输入
+    "maxInputTokens": 616000,                      // [必填] 模型最大输入 token 数
+    "maxOutputTokens": 384000,                     // [必填] 模型最大输出 token 数
+    "thinking": true,                              // [选填] 是否支持思考/推理（默认: false）
+    // [选填] 以下为该模型的默认配置。如需修改选项、标签或请求字段，请按此格式
+    // 填入 "supportsReasoningEffort"。
+    "supportsReasoningEffort": {
+      "default": "high",                           // 默认思考模式
+      "options": [
+        {
+          "value": "high",                         // 发送到 API 的值
+          "label": "高",                           // 选择器中的显示标签
+          "hint": "完整推理，最高质量",              // 标签下方的描述说明
+          "requestFields": {                       // 合并到请求体中的字段
+            "thinking": { "type": "enabled" },
+            "reasoning_effort": "high"
+          }
+        },
+        {
+          "value": "max",
+          "label": "最大",
+          "hint": "最大推理深度",
+          "requestFields": {
+            "thinking": { "type": "enabled" },
+            "reasoning_effort": "max"
+          }
+        },
+        {
+          "value": "none",
+          "label": "关闭",
+          "hint": "不进行推理 — 直接回复",
+          "requestFields": { "thinking": { "type": "disabled" } }
+        }
+      ]
+    }
+  },
+
+  // ============================================================================
+  // OpenAI — api.openai.com
+  // ============================================================================
+  "openai-gpt-5": {
+    "id": "gpt-5",                                 // [必填]
+    "name": "GPT-5",                               // [必填]
+    "url": "https://api.openai.com/v1/chat/completions", // [必填]
+    "toolCalling": true,                           // [必填]
+    "vision": true,                                // [必填]
+    "maxInputTokens": 128000,                      // [必填]
+    "maxOutputTokens": 16384,                      // [必填]
+    "thinking": true,                              // [选填]（默认: false）
+    // [选填] 该模型不在内置映射中，展示的是通用 fallback。 如需自定义请填入。
+    "supportsReasoningEffort": ["minimal", "low", "medium", "high"]
+  },
+
+  "openai-o4-mini": {
+    "id": "o4-mini",                               // [必填]
+    "name": "O4 Mini",                             // [必填]
+    "url": "https://api.openai.com/v1/chat/completions", // [必填]
+    "toolCalling": true,                           // [必填]
+    "vision": true,                                // [必填]
+    "maxInputTokens": 200000,                      // [必填]
+    "maxOutputTokens": 100000,                     // [必填]
+    "thinking": true,                              // [选填]（默认: false）
+    // [选填] 如无特殊需求无需填写，展示的即为默认值。
+    "supportsReasoningEffort": ["minimal", "low", "medium", "high"]
+  },
+
+  // ============================================================================
+  // OpenAI Responses API — api.openai.com/v1/responses
+  // ============================================================================
+  "openai-gpt-5-responses": {
+    "id": "gpt-5",                                 // [必填]
+    "name": "GPT-5 (Responses API)",               // [必填]
+    "url": "https://api.openai.com/v1/responses",  // [必填]
+    "toolCalling": true,                           // [必填]
+    "vision": true,                                // [必填]
+    "maxInputTokens": 128000,                      // [必填]
+    "maxOutputTokens": 16384,                      // [必填]
+    "thinking": true,                              // [选填]（默认: false）
+    // [选填] "responses" 格式发送 { reasoning: { effort } } 而非 reasoning_effort。
+    "reasoningEffortFormat": "responses",
+    // [选填] 如无特殊需求无需填写，展示的即为默认值。
+    "supportsReasoningEffort": ["minimal", "low", "medium", "high"]
+  },
+
+  // ============================================================================
+  // Anthropic（Messages API）— api.anthropic.com
+  // ============================================================================
+  "anthropic-claude-opus-4-5": {
+    "id": "claude-opus-4-5-20250301",              // [必填]
+    "name": "Claude Opus 4.5",                     // [必填]
+    "url": "https://api.anthropic.com/v1/messages", // [必填]
+    "toolCalling": true,                           // [必填]
+    "vision": true,                                // [必填]
+    "maxInputTokens": 200000,                      // [必填]
+    "maxOutputTokens": 32000,                      // [必填]
+    "thinking": true,                              // [选填]（默认: false）
+    // [选填] 以下为该模型的默认配置。如需自定义 budget_tokens 或增删选项，
+    // 请按此格式填入 "supportsReasoningEffort"。
+    "supportsReasoningEffort": {
+      "default": "high",
+      "options": [
+        {
+          "value": "high",
+          "label": "高",
+          "hint": "扩展思考，16K token 预算",
+          "requestFields": { "thinking": { "type": "enabled", "budget_tokens": 16000 } }
+        },
+        {
+          "value": "medium",
+          "label": "中",
+          "hint": "均衡思考，8K token 预算",
+          "requestFields": { "thinking": { "type": "enabled", "budget_tokens": 8000 } }
+        },
+        {
+          "value": "disabled",
+          "label": "关闭",
+          "hint": "不进行扩展思考",
+          "requestFields": { "thinking": { "type": "disabled" } }
+        }
+      ]
+    }
+  },
+
+  "anthropic-claude-sonnet-4": {
+    "id": "claude-sonnet-4-20250514",              // [必填]
+    "name": "Claude Sonnet 4",                     // [必填]
+    "url": "https://api.anthropic.com/v1/messages", // [必填]
+    "toolCalling": true,                           // [必填]
+    "vision": true,                                // [必填]
+    "maxInputTokens": 200000,                      // [必填]
+    "maxOutputTokens": 64000,                      // [必填]
+    "thinking": true,                              // [选填]（默认: false）
+    // [选填] 如无特殊需求无需填写，展示的即为默认值。
+    "supportsReasoningEffort": {
+      "default": "high",
+      "options": [
+        {
+          "value": "high",
+          "label": "高",
+          "hint": "扩展思考，16K token 预算",
+          "requestFields": { "thinking": { "type": "enabled", "budget_tokens": 16000 } }
+        },
+        {
+          "value": "disabled",
+          "label": "关闭",
+          "hint": "不进行扩展思考",
+          "requestFields": { "thinking": { "type": "disabled" } }
+        }
+      ]
+    }
+  },
+
+  // ============================================================================
+  // Moonshot / Kimi — api.moonshot.cn
+  // ============================================================================
+  "moonshot-kimi-k2.7": {
+    "id": "kimi-k2.7-code",                        // [必填]
+    "name": "Kimi K2.7 Code",                      // [必填]
+    "url": "https://api.moonshot.cn/v1/chat/completions", // [必填]
+    "toolCalling": true,                           // [必填]
+    "vision": true,                                // [必填]
+    "maxInputTokens": 128000,                      // [必填]
+    "maxOutputTokens": 32000,                      // [必填]
+    "thinking": true,                              // [选填]（默认: false）
+    // [选填] 以下为该模型的默认配置。如需自定义请填入。
+    "supportsReasoningEffort": {
+      "default": "enabled",
+      "options": [
+        {
+          "value": "enabled",
+          "label": "开启",
+          "hint": "思考已开启，保留全部",
+          "requestFields": { "thinking": { "type": "enabled", "keep": "all" } }
+        }
+      ]
+    }
+  },
+
+  "moonshot-kimi-k2.6": {
+    "id": "kimi-k2.6",                             // [必填]
+    "name": "Kimi K2.6",                           // [必填]
+    "url": "https://api.moonshot.cn/v1/chat/completions", // [必填]
+    "toolCalling": true,                           // [必填]
+    "vision": true,                                // [必填]
+    "maxInputTokens": 128000,                      // [必填]
+    "maxOutputTokens": 32000,                      // [必填]
+    "thinking": true,                              // [选填]（默认: false）
+    // [选填] 如无特殊需求无需填写，展示的即为默认值。
+    "supportsReasoningEffort": {
+      "default": "enabled",
+      "options": [
+        {
+          "value": "enabled",
+          "label": "开启",
+          "hint": "思考已开启",
+          "requestFields": { "thinking": { "type": "enabled" } }
+        },
+        {
+          "value": "enabled_keep",
+          "label": "开启（保留）",
+          "hint": "思考已开启，保留全部历史",
+          "requestFields": { "thinking": { "type": "enabled", "keep": "all" } }
+        },
+        {
+          "value": "disabled",
+          "label": "关闭",
+          "hint": "不进行思考",
+          "requestFields": { "thinking": { "type": "disabled" } }
+        }
+      ]
+    }
+  },
+
+  // ============================================================================
+  // Qwen / 阿里云 — dashscope.aliyuncs.com
+  // ============================================================================
+  "qwen3.7-max": {
+    "id": "qwen3.7-max",                           // [必填]
+    "name": "通义千问 3.7 Max",                     // [必填]
+    "url": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions", // [必填]
+    "toolCalling": true,                           // [必填]
+    "vision": false,                               // [必填]
+    "maxInputTokens": 991000,                      // [必填]
+    "maxOutputTokens": 65536,                      // [必填]
+    "thinking": true,                              // [选填]（默认: false）
+    // [选填] 以下为该模型的默认配置。如需自定义请填入。
+    "supportsReasoningEffort": {
+      "default": "adaptive",
+      "options": [
+        {
+          "value": "adaptive",
+          "label": "自适应",
+          "hint": "模型自行决定何时思考",
+          "requestFields": { "enable_thinking": true }
+        },
+        {
+          "value": "disabled",
+          "label": "关闭",
+          "hint": "不进行思考",
+          "requestFields": { "enable_thinking": false }
+        }
+      ]
+    }
+  },
+
+  "qwen3.7-plus": {
+    "id": "qwen3.7-plus",                          // [必填]
+    "name": "通义千问 3.7 Plus",                    // [必填]
+    "url": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions", // [必填]
+    "toolCalling": true,                           // [必填]
+    "vision": true,                                // [必填]
+    "maxInputTokens": 991000,                      // [必填]
+    "maxOutputTokens": 65536,                      // [必填]
+    "thinking": true,                              // [选填]（默认: false）
+    // [选填] 如无特殊需求无需填写，展示的即为默认值。
+    "supportsReasoningEffort": {
+      "default": "adaptive",
+      "options": [
+        {
+          "value": "adaptive",
+          "label": "自适应",
+          "hint": "模型自行决定何时思考",
+          "requestFields": { "enable_thinking": true }
+        },
+        {
+          "value": "disabled",
+          "label": "关闭",
+          "hint": "不进行思考",
+          "requestFields": { "enable_thinking": false }
+        }
+      ]
+    }
+  },
+
+  // ============================================================================
+  // Zhipu / 智谱 GLM — open.bigmodel.cn
+  // ============================================================================
+  "zhipu-glm-5.1": {
+    "id": "glm-5.1",                               // [必填]
+    "name": "GLM-5.1",                             // [必填]
+    "url": "https://open.bigmodel.cn/api/paas/v4/chat/completions", // [必填]
+    "toolCalling": true,                           // [必填]
+    "vision": false,                               // [必填]
+    "maxInputTokens": 128000,                      // [必填]
+    "maxOutputTokens": 32000,                      // [必填]
+    "thinking": true,                              // [选填]（默认: false）
+    // [选填] 以下为该模型的默认配置。如需自定义请填入。
+    "supportsReasoningEffort": {
+      "default": "adaptive",
+      "options": [
+        {
+          "value": "adaptive",
+          "label": "自适应",
+          "hint": "模型自行决定何时思考",
+          "requestFields": { "thinking": { "type": "enabled" } }
+        },
+        {
+          "value": "disabled",
+          "label": "关闭",
+          "hint": "不进行思考",
+          "requestFields": { "thinking": { "type": "disabled" } }
+        }
+      ]
+    }
+  },
+
+  // ============================================================================
+  // MiniMax — api.minimaxi.com
+  // ============================================================================
+  "minimax-m3.1": {
+    "id": "MiniMax-M3.1",                          // [必填]
+    "name": "MiniMax M3.1",                        // [必填]
+    "url": "https://api.minimaxi.com/v1/chat/completions", // [必填]
+    "toolCalling": true,                           // [必填]
+    "vision": true,                                // [必填]
+    "maxInputTokens": 204800,                      // [必填]
+    "maxOutputTokens": 196608,                     // [必填]
+    "thinking": true,                              // [选填]（默认: false）
+    "thinkingTag": "think",                        // [选填] 用于从流式响应中解析思考内容的标签（如 <think>）
+    // [选填] 以下为该模型的默认配置。如需自定义请填入。
+    "supportsReasoningEffort": {
+      "default": "adaptive",
+      "options": [
+        {
+          "value": "adaptive",
+          "label": "自适应",
+          "hint": "模型自行决定何时思考",
+          "requestFields": { "thinking": { "type": "adaptive" } }
+        },
+        {
+          "value": "disabled",
+          "label": "关闭",
+          "hint": "不进行思考",
+          "requestFields": { "thinking": { "type": "disabled" } }
+        }
+      ]
+    }
+  },
+
+  // ============================================================================
+  // Google Gemini — generativelanguage.googleapis.com
+  // ============================================================================
+  "google-gemini-2.5-pro": {
+    "id": "gemini-2.5-pro",                        // [必填]
+    "name": "Gemini 2.5 Pro",                      // [必填]
+    "url": "https://generativelanguage.googleapis.com/v1beta/chat/completions", // [必填]
+    "toolCalling": true,                           // [必填]
+    "vision": true,                                // [必填]
+    "maxInputTokens": 1048576,                     // [必填]
+    "maxOutputTokens": 65536,                      // [必填]
+    "thinking": true,                              // [选填]（默认: false）
+    // [选填] 该模型不在内置映射中，展示的是通用 fallback。 如需自定义请填入。
+    "supportsReasoningEffort": ["low", "medium", "high"]
+  },
+
+  // ============================================================================
+  // xAI / Grok — api.x.ai
+  // ============================================================================
+  "xai-grok-4": {
+    "id": "grok-4",                                // [必填]
+    "name": "Grok 4",                              // [必填]
+    "url": "https://api.x.ai/v1/chat/completions", // [必填]
+    "toolCalling": true,                           // [必填]
+    "vision": true,                                // [必填]
+    "maxInputTokens": 128000,                      // [必填]
+    "maxOutputTokens": 32000,                      // [必填]
+    "thinking": true,                              // [选填]（默认: false）
+    // [选填] 该模型不在内置映射中，展示的是通用 fallback。 如需自定义请填入。
+    "supportsReasoningEffort": ["low", "high"]
+  }
+}

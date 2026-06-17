@@ -183,6 +183,9 @@
         "displayName": "Custom Models",
         "configuration": {
           "type": "object",
+          "required": [
+            "apiKey"
+          ],
           "properties": {
             "apiKey": {
               "type": "string",
@@ -190,27 +193,6 @@
               "minLength": 1,
               "description": "API key for the models",
               "title": "API Key"
-            },
-            "apiType": {
-              "type": "string",
-              "enum": [
-                "chat-completions",
-                "responses",
-                "messages"
-              ],
-              "enumItemLabels": [
-                "Chat Completions",
-                "Responses",
-                "Messages"
-              ],
-              "enumDescriptions": [
-                "Chat Completions API",
-                "Responses API",
-                "Messages API"
-              ],
-              "default": "chat-completions",
-              "title": "API Type",
-              "markdownDescription": "Default request/response format for models in this group. Individual models can override this with their own `apiType` property; when both are unset the type is inferred from the URL path."
             },
             "models": {
               "type": "array",
@@ -272,6 +254,10 @@
                     "type": "boolean",
                     "description": "Whether the model supports tool calling"
                   },
+                  "maxTools": {
+                    "type": "number",
+                    "description": "Maximum number of tools that can be called in a single request. Only applicable if `toolCalling` is true. If not set, tool calling is enabled with no specific limit."
+                  },
                   "vision": {
                     "type": "boolean",
                     "description": "Whether the model supports vision capabilities"
@@ -301,6 +287,10 @@
                     "type": "boolean",
                     "default": false,
                     "description": "Whether the model supports thinking capabilities"
+                  },
+                  "thinkingTag": {
+                    "type": "string",
+                    "description": "An optional tag included in the request when thinking mode is enabled, allowing the model to adjust its response format or behavior accordingly."
                   },
                   "streaming": {
                     "type": "boolean",

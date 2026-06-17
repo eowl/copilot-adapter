@@ -1,0 +1,62 @@
+# How to Add a Custom Model
+
+The **Custom Models** provider lets you bring any OpenAI-compatible model into Copilot Chat.
+You define model metadata (name, endpoint, capabilities, token limits) directly in the
+configuration file — no coding required.
+
+---
+
+## Step 1  Open the Language Models panel
+
+Open the model management panel, or press `Ctrl/Cmd+Shift+P` and type *Language Models*.
+Click **+ Add Model…** in the top-right corner and choose **Custom Models** from the dropdown.
+
+![Language Models panel — Add Model dropdown with Custom Models selected](../assets/images/en/add-custom-model-01.png)
+
+---
+
+## Step 2  Enter a group name and API Key
+
+A dialog will prompt you for a **Group Name** (defaults to "Custom Models") and your **API Key**.
+The key is stored exclusively in VS Code Secret Storage and never written to disk.
+
+![Group name](../assets/images/en/add-custom-model-02.png)
+
+![API Key](../assets/images/en/add-custom-model-03.png)
+
+---
+
+## Step 3  Configure your models in the `models` array
+
+The JSON file opens at the correct position.  Add one or more model objects to the
+`"models"` array.  Each model requires at minimum `id`, `name`, `url`, `toolCalling`,
+`vision`, `maxInputTokens`, and `maxOutputTokens`.
+
+For thinking models (`"thinking": true`), the `"supportsReasoningEffort"` field is
+**optional** — when omitted, the extension auto-selects the correct pre-built config
+based on the model `id`.  Fill it in only if you need to customize the options,
+labels, or request body shape.
+
+![Editing the models array in chatLanguageModels.json](../assets/images/en/add-custom-model-04.png)
+
+> **Tip:** See [`custom-models-template.jsonc`](../docs/custom-models-template.jsonc) for ready-to-copy
+> model templates covering DeepSeek, OpenAI, Anthropic, Qwen, Zhipu, MiniMax, Gemini, Grok, and more.
+
+---
+
+## Step 4  Your custom models appear in the model picker
+
+Save the file.  Open the Copilot Chat model picker — your custom models now appear
+under the **Custom Models** group.  Select one and start chatting.
+
+![Model picker showing custom models](../assets/images/en/add-custom-model-05.png)
+
+---
+
+## Step 5  Add or edit models in the current group
+
+In the model management list, find the Custom Models group you just added and click the
+gear icon on the right.  Select **Open JSON in Language Models** to add or edit models
+directly in the `models` array.
+
+![Add or edit models in the current group](../assets/images/en/add-custom-model-06.png)

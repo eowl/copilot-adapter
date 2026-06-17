@@ -14,7 +14,7 @@ Click the model selector at the bottom of the Copilot Chat input. You'll see the
 
 ## Step 2 Open the Language Models panel and click "+ Add Models..."
 
-Open the **Language Models** panel (`Ctrl/Cmd+Shift+P` *Language Models*), then click **+ Add Models...** in the top-right corner. After installing the extension, the dropdown will include all providers it supports select the one you need.
+Open the **Language Models** panel (or `Ctrl/Cmd+Shift+P` *Language Models*), then click **+ Add Models...** in the top-right corner. After installing the extension, the dropdown will include all providers it supports select the one you need.
 
 ![Language Models panel with Add Models dropdown](../assets/images/en/add-model-step-02.png)
 

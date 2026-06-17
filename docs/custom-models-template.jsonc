@@ -1,0 +1,405 @@
+// Custom Models Configuration Template
+// Copy a model entry into the "models" array in chatLanguageModels.json
+//
+// Comment legend for each field:
+//   [Required] — must be provided
+//   [Optional] — can be omitted (the value shown is the default)
+//
+// "supportsReasoningEffort" controls which thinking-effort options appear in
+// the model picker and what request fields are sent to the API.
+//
+// When omitted, the extension auto-selects the correct pre-built config for
+// known model IDs (e.g. deepseek-v4-pro → DeepSeek config, qwen3.7-max → Qwen
+// config, claude-sonnet-4-20250514 → Anthropic config, etc.).  For unrecognized
+// IDs the generic ["minimal", "low", "medium", "high"] fallback is used.
+//
+// The examples below show the default config that would be applied.  Only
+// fill in "supportsReasoningEffort" if you need to customize it.
+
+{
+  // ============================================================================
+  // DeepSeek — api.deepseek.com
+  // ============================================================================
+  "deepseek-v4-pro": {
+    "id": "deepseek-v4-pro",                      // [Required] Unique model identifier
+    "name": "DeepSeek V4 Pro",                     // [Required] Display name in model picker
+    "url": "https://api.deepseek.com/chat/completions", // [Required] API endpoint URL
+    "toolCalling": true,                           // [Required] Whether the model supports tool calling
+    "vision": false,                               // [Required] Whether the model supports image input
+    "maxInputTokens": 616000,                      // [Required] Max input tokens the model accepts
+    "maxOutputTokens": 384000,                     // [Required] Max output tokens the model generates
+    "thinking": true,                              // [Optional] Whether the model supports thinking/reasoning (default: false)
+    // [Optional] The config below is the default for this model.  Only add this
+    // field if you need to change the options, labels, or request fields.
+    "supportsReasoningEffort": {
+      "default": "high",                           // Default thinking mode
+      "options": [
+        {
+          "value": "high",                         // Value sent in the API request
+          "label": "High",                         // Display label in the picker
+          "hint": "Full reasoning, maximum quality", // Description shown below the label
+          "requestFields": {                       // Fields merged into the request body
+            "thinking": { "type": "enabled" },
+            "reasoning_effort": "high"
+          }
+        },
+        {
+          "value": "max",
+          "label": "Max",
+          "hint": "Maximum reasoning depth",
+          "requestFields": {
+            "thinking": { "type": "enabled" },
+            "reasoning_effort": "max"
+          }
+        },
+        {
+          "value": "none",
+          "label": "None",
+          "hint": "No reasoning — direct response only",
+          "requestFields": { "thinking": { "type": "disabled" } }
+        }
+      ]
+    }
+  },
+
+  // ============================================================================
+  // OpenAI — api.openai.com
+  // ============================================================================
+  "openai-gpt-5": {
+    "id": "gpt-5",                                 // [Required]
+    "name": "GPT-5",                               // [Required]
+    "url": "https://api.openai.com/v1/chat/completions", // [Required]
+    "toolCalling": true,                           // [Required]
+    "vision": true,                                // [Required]
+    "maxInputTokens": 128000,                      // [Required]
+    "maxOutputTokens": 16384,                      // [Required]
+    "thinking": true,                              // [Optional] (default: false)
+    // [Optional] Default for this model (generic reasoning_effort fallback —
+    // "gpt-5" is not in the built-in mapping).  Omit to accept this default.
+    "supportsReasoningEffort": ["minimal", "low", "medium", "high"]
+  },
+
+  "openai-o4-mini": {
+    "id": "o4-mini",                               // [Required]
+    "name": "O4 Mini",                             // [Required]
+    "url": "https://api.openai.com/v1/chat/completions", // [Required]
+    "toolCalling": true,                           // [Required]
+    "vision": true,                                // [Required]
+    "maxInputTokens": 200000,                      // [Required]
+    "maxOutputTokens": 100000,                     // [Required]
+    "thinking": true,                              // [Optional] (default: false)
+    // [Optional] Default shown.  Only add to customize.
+    "supportsReasoningEffort": ["minimal", "low", "medium", "high"]
+  },
+
+  // ============================================================================
+  // OpenAI Responses API — api.openai.com/v1/responses
+  // ============================================================================
+  "openai-gpt-5-responses": {
+    "id": "gpt-5",                                 // [Required]
+    "name": "GPT-5 (Responses API)",               // [Required]
+    "url": "https://api.openai.com/v1/responses",  // [Required]
+    "toolCalling": true,                           // [Required]
+    "vision": true,                                // [Required]
+    "maxInputTokens": 128000,                      // [Required]
+    "maxOutputTokens": 16384,                      // [Required]
+    "thinking": true,                              // [Optional] (default: false)
+    // [Optional] "responses" format sends { reasoning: { effort } } instead of reasoning_effort.
+    "reasoningEffortFormat": "responses",
+    // [Optional] Default shown.  Only add to customize.
+    "supportsReasoningEffort": ["minimal", "low", "medium", "high"]
+  },
+
+  // ============================================================================
+  // Anthropic (Messages API) — api.anthropic.com
+  // ============================================================================
+  "anthropic-claude-opus-4-5": {
+    "id": "claude-opus-4-5-20250301",              // [Required]
+    "name": "Claude Opus 4.5",                     // [Required]
+    "url": "https://api.anthropic.com/v1/messages", // [Required]
+    "toolCalling": true,                           // [Required]
+    "vision": true,                                // [Required]
+    "maxInputTokens": 200000,                      // [Required]
+    "maxOutputTokens": 32000,                      // [Required]
+    "thinking": true,                              // [Optional] (default: false)
+    // [Optional] The config below is the default for this model.
+    // Only add this field to customize budget_tokens or add/remove options.
+    "supportsReasoningEffort": {
+      "default": "high",
+      "options": [
+        {
+          "value": "high",
+          "label": "High",
+          "hint": "Extended thinking with 16K token budget",
+          "requestFields": { "thinking": { "type": "enabled", "budget_tokens": 16000 } }
+        },
+        {
+          "value": "medium",
+          "label": "Medium",
+          "hint": "Balanced thinking with 8K token budget",
+          "requestFields": { "thinking": { "type": "enabled", "budget_tokens": 8000 } }
+        },
+        {
+          "value": "disabled",
+          "label": "Disabled",
+          "hint": "No extended thinking",
+          "requestFields": { "thinking": { "type": "disabled" } }
+        }
+      ]
+    }
+  },
+
+  "anthropic-claude-sonnet-4": {
+    "id": "claude-sonnet-4-20250514",              // [Required]
+    "name": "Claude Sonnet 4",                     // [Required]
+    "url": "https://api.anthropic.com/v1/messages", // [Required]
+    "toolCalling": true,                           // [Required]
+    "vision": true,                                // [Required]
+    "maxInputTokens": 200000,                      // [Required]
+    "maxOutputTokens": 64000,                      // [Required]
+    "thinking": true,                              // [Optional] (default: false)
+    // [Optional] Default shown.  Only add to customize.
+    "supportsReasoningEffort": {
+      "default": "high",
+      "options": [
+        {
+          "value": "high",
+          "label": "High",
+          "hint": "Extended thinking with 16K token budget",
+          "requestFields": { "thinking": { "type": "enabled", "budget_tokens": 16000 } }
+        },
+        {
+          "value": "disabled",
+          "label": "Disabled",
+          "hint": "No extended thinking",
+          "requestFields": { "thinking": { "type": "disabled" } }
+        }
+      ]
+    }
+  },
+
+  // ============================================================================
+  // Moonshot / Kimi — api.moonshot.cn
+  // ============================================================================
+  "moonshot-kimi-k2.7": {
+    "id": "kimi-k2.7-code",                        // [Required]
+    "name": "Kimi K2.7 Code",                      // [Required]
+    "url": "https://api.moonshot.cn/v1/chat/completions", // [Required]
+    "toolCalling": true,                           // [Required]
+    "vision": true,                                // [Required]
+    "maxInputTokens": 128000,                      // [Required]
+    "maxOutputTokens": 32000,                      // [Required]
+    "thinking": true,                              // [Optional] (default: false)
+    // [Optional] The config below is the default for this model.
+    // Only add this field to customize.
+    "supportsReasoningEffort": {
+      "default": "enabled",
+      "options": [
+        {
+          "value": "enabled",
+          "label": "Enabled",
+          "hint": "Thinking enabled, keep all",
+          "requestFields": { "thinking": { "type": "enabled", "keep": "all" } }
+        }
+      ]
+    }
+  },
+
+  "moonshot-kimi-k2.6": {
+    "id": "kimi-k2.6",                             // [Required]
+    "name": "Kimi K2.6",                           // [Required]
+    "url": "https://api.moonshot.cn/v1/chat/completions", // [Required]
+    "toolCalling": true,                           // [Required]
+    "vision": true,                                // [Required]
+    "maxInputTokens": 128000,                      // [Required]
+    "maxOutputTokens": 32000,                      // [Required]
+    "thinking": true,                              // [Optional] (default: false)
+    // [Optional] Default shown.  Only add to customize.
+    "supportsReasoningEffort": {
+      "default": "enabled",
+      "options": [
+        {
+          "value": "enabled",
+          "label": "Enabled",
+          "hint": "Thinking enabled",
+          "requestFields": { "thinking": { "type": "enabled" } }
+        },
+        {
+          "value": "enabled_keep",
+          "label": "Enabled (Keep)",
+          "hint": "Thinking enabled, keep all history",
+          "requestFields": { "thinking": { "type": "enabled", "keep": "all" } }
+        },
+        {
+          "value": "disabled",
+          "label": "Disabled",
+          "hint": "No thinking",
+          "requestFields": { "thinking": { "type": "disabled" } }
+        }
+      ]
+    }
+  },
+
+  // ============================================================================
+  // Qwen / Alibaba Cloud — dashscope.aliyuncs.com
+  // ============================================================================
+  "qwen3.7-max": {
+    "id": "qwen3.7-max",                           // [Required]
+    "name": "Qwen3.7 Max",                         // [Required]
+    "url": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions", // [Required]
+    "toolCalling": true,                           // [Required]
+    "vision": false,                               // [Required]
+    "maxInputTokens": 991000,                      // [Required]
+    "maxOutputTokens": 65536,                      // [Required]
+    "thinking": true,                              // [Optional] (default: false)
+    // [Optional] The config below is the default for this model.
+    // Only add this field to customize.
+    "supportsReasoningEffort": {
+      "default": "adaptive",
+      "options": [
+        {
+          "value": "adaptive",
+          "label": "Adaptive",
+          "hint": "Model decides when to think",
+          "requestFields": { "enable_thinking": true }
+        },
+        {
+          "value": "disabled",
+          "label": "Disabled",
+          "hint": "No thinking",
+          "requestFields": { "enable_thinking": false }
+        }
+      ]
+    }
+  },
+
+  "qwen3.7-plus": {
+    "id": "qwen3.7-plus",                          // [Required]
+    "name": "Qwen3.7 Plus",                        // [Required]
+    "url": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions", // [Required]
+    "toolCalling": true,                           // [Required]
+    "vision": true,                                // [Required]
+    "maxInputTokens": 991000,                      // [Required]
+    "maxOutputTokens": 65536,                      // [Required]
+    "thinking": true,                              // [Optional] (default: false)
+    // [Optional] Default shown.  Only add to customize.
+    "supportsReasoningEffort": {
+      "default": "adaptive",
+      "options": [
+        {
+          "value": "adaptive",
+          "label": "Adaptive",
+          "hint": "Model decides when to think",
+          "requestFields": { "enable_thinking": true }
+        },
+        {
+          "value": "disabled",
+          "label": "Disabled",
+          "hint": "No thinking",
+          "requestFields": { "enable_thinking": false }
+        }
+      ]
+    }
+  },
+
+  // ============================================================================
+  // Zhipu / GLM — open.bigmodel.cn
+  // ============================================================================
+  "zhipu-glm-5.1": {
+    "id": "glm-5.1",                               // [Required]
+    "name": "GLM-5.1",                             // [Required]
+    "url": "https://open.bigmodel.cn/api/paas/v4/chat/completions", // [Required]
+    "toolCalling": true,                           // [Required]
+    "vision": false,                               // [Required]
+    "maxInputTokens": 128000,                      // [Required]
+    "maxOutputTokens": 32000,                      // [Required]
+    "thinking": true,                              // [Optional] (default: false)
+    // [Optional] The config below is the default for this model.
+    // Only add this field to customize.
+    "supportsReasoningEffort": {
+      "default": "adaptive",
+      "options": [
+        {
+          "value": "adaptive",
+          "label": "Adaptive",
+          "hint": "Model decides when to think",
+          "requestFields": { "thinking": { "type": "enabled" } }
+        },
+        {
+          "value": "disabled",
+          "label": "Disabled",
+          "hint": "No thinking",
+          "requestFields": { "thinking": { "type": "disabled" } }
+        }
+      ]
+    }
+  },
+
+  // ============================================================================
+  // MiniMax — api.minimaxi.com
+  // ============================================================================
+  "minimax-m3.1": {
+    "id": "MiniMax-M3.1",                          // [Required]
+    "name": "MiniMax M3.1",                        // [Required]
+    "url": "https://api.minimaxi.com/v1/chat/completions", // [Required]
+    "toolCalling": true,                           // [Required]
+    "vision": true,                                // [Required]
+    "maxInputTokens": 204800,                      // [Required]
+    "maxOutputTokens": 196608,                     // [Required]
+    "thinking": true,                              // [Optional] (default: false)
+    "thinkingTag": "think",                        // [Optional] Tag used to parse thinking content from stream (e.g. <think>)
+    // [Optional] The config below is the default for this model.
+    // Only add this field to customize.
+    "supportsReasoningEffort": {
+      "default": "adaptive",
+      "options": [
+        {
+          "value": "adaptive",
+          "label": "Adaptive",
+          "hint": "Model decides when to think",
+          "requestFields": { "thinking": { "type": "adaptive" } }
+        },
+        {
+          "value": "disabled",
+          "label": "Disabled",
+          "hint": "No thinking",
+          "requestFields": { "thinking": { "type": "disabled" } }
+        }
+      ]
+    }
+  },
+
+  // ============================================================================
+  // Google Gemini — generativelanguage.googleapis.com
+  // ============================================================================
+  "google-gemini-2.5-pro": {
+    "id": "gemini-2.5-pro",                        // [Required]
+    "name": "Gemini 2.5 Pro",                      // [Required]
+    "url": "https://generativelanguage.googleapis.com/v1beta/chat/completions", // [Required]
+    "toolCalling": true,                           // [Required]
+    "vision": true,                                // [Required]
+    "maxInputTokens": 1048576,                     // [Required]
+    "maxOutputTokens": 65536,                      // [Required]
+    "thinking": true,                              // [Optional] (default: false)
+    // [Optional] "gemini-2.5-pro" is not in the built-in mapping —
+    // the generic fallback is shown.  Only add this field to customize.
+    "supportsReasoningEffort": ["low", "medium", "high"]
+  },
+
+  // ============================================================================
+  // xAI / Grok — api.x.ai
+  // ============================================================================
+  "xai-grok-4": {
+    "id": "grok-4",                                // [Required]
+    "name": "Grok 4",                              // [Required]
+    "url": "https://api.x.ai/v1/chat/completions", // [Required]
+    "toolCalling": true,                           // [Required]
+    "vision": true,                                // [Required]
+    "maxInputTokens": 128000,                      // [Required]
+    "maxOutputTokens": 32000,                      // [Required]
+    "thinking": true,                              // [Optional] (default: false)
+    // [Optional] "grok-4" is not in the built-in mapping —
+    // the generic fallback is shown.  Only add this field to customize.
+    "supportsReasoningEffort": ["low", "high"]
+  }
+}

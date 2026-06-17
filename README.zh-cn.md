@@ -18,8 +18,10 @@
   - [视觉代理](#视觉代理)
   - [前缀缓存命中率](#前缀缓存命中率)
   - [上下文窗口计算](#上下文窗口计算)
+  - [自定义模型](#自定义模型)
 - [配置参考](#配置参考)
 - [命令](#命令)
+- [注意事项](#注意事项)
 
 ---
 
@@ -112,6 +114,12 @@ Chars-per-token ratio calibrated for deepseek: 4.00 to 3.38 (based on API usage:
 
 无法获取精确用量的提供商（如 MiniMax）保持静态默认比例。
 
+### 自定义模型
+
+通过在配置文件中定义元数据（名称、端点、能力、token 限制），可将任意兼容 OpenAI 接口的模型接入 Copilot Chat。思考模型（`"thinking": true`）会根据模型 ID 自动匹配预置的推理强度配置，同时支持完整自定义。
+
+详细图文教程请参阅[如何添加自定义模型](docs/add-custom-model.zh-cn.md)。涵盖 DeepSeek、OpenAI、Anthropic、通义千问、智谱、MiniMax、Gemini、Grok 等的即用型模板见 [`custom-models-template.zh-cn.jsonc`](docs/custom-models-template.zh-cn.jsonc)。
+
 ---
 
 ## 配置参考
@@ -158,3 +166,9 @@ Chars-per-token ratio calibrated for deepseek: 4.00 to 3.38 (based on API usage:
 ## 许可证
 
 [MIT](LICENSE)
+
+---
+
+## 注意事项
+
+**Profile 隔离：** 如果你使用了 VS Code 的 [Profiles](https://code.visualstudio.com/docs/editor/profiles) 功能，官方 Copilot Chat 的配置是按 Profile 隔离的——Copilot Adapter 的配置同样遵循此规则。API Key、模型分组和自定义模型定义均作用于当前活动的 Profile。
