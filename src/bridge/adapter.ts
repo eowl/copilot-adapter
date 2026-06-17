@@ -19,8 +19,7 @@ import {
 } from './tally';
 import { ApiError } from '../client/error';
 import { seedManagedGroup } from './managed';
-import { CUSTOM } from '../providers/custom';
-import type { CustomModelConfig } from '../providers/custom';
+import { CUSTOM, buildCustomModels } from '../providers/custom';
 import type { ModelItem, ModelProvider } from '../providers/types';
 
 type PrepareOptions = vscode.PrepareLanguageModelChatModelOptions;
@@ -163,7 +162,11 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       if (!Array.isArray(rawModels) || rawModels.length === 0) {
         return [];
       }
-      visibleModels = this.buildCustomModels(rawModels as CustomModelConfig[]);
+      visibleModels = buildCustomModels(rawModels as Parameters<typeof buildCustomModels>[0]);
+      this.dynamicModels.clear();
+      for (const m of visibleModels) {
+        this.dynamicModels.set(registry.modelKey(m), m);
+      }
     } else {
       const providerModels = registry.ALL_MODELS.filter(
         (m) => m.provider.id === this.filteredProviderId,
@@ -203,40 +206,6 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     return visibleModels.map(
       (model) => buildChatInfo(model, hasKey, this.visionProxyAvailable, idPrefix) as ChatInfo,
     );
-  }
-
-  /**
-   * Build ModelItem entries from custom provider's models[] configuration array.
-   * These are cached in `dynamicModels` so provideLanguageModelChatResponse can find them.
-   */
-  private buildCustomModels(configs: readonly CustomModelConfig[]): ModelItem[] {
-    this.dynamicModels.clear();
-    const result: ModelItem[] = [];
-
-    for (const cfg of configs) {
-      const model: ModelItem = {
-        id: cfg.id,
-        label: cfg.name,
-        apiId: cfg.id,
-        family: 'custom',
-        version: '',
-        maxInputTokens: cfg.maxInputTokens,
-        maxOutputTokens: cfg.maxOutputTokens,
-        detailKey: `Custom model: ${cfg.id}`,
-        thinking: cfg.thinking ?? false,
-        imageInput: cfg.vision,
-        maxTools: cfg.toolCalling ? undefined : 0,
-        source: 'custom',
-        provider: CUSTOM,
-        url: cfg.url,
-      };
-
-      const key = registry.modelKey(model);
-      this.dynamicModels.set(key, model);
-      result.push(model);
-    }
-
-    return result;
   }
 
   async provideLanguageModelChatResponse(

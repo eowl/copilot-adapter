@@ -1,7 +1,5 @@
-/**
- * Type for a single model entry in the custom models array from chatLanguageModels.json.
- * Mirrors the JSON schema defined in package.json's custom provider configuration.
- */
+import type { ThinkingConfig } from '../types';
+
 export interface CustomModelConfig {
   readonly id: string;
   readonly name: string;
@@ -15,7 +13,7 @@ export interface CustomModelConfig {
   readonly thinking?: boolean;
   readonly streaming?: boolean;
   readonly zeroDataRetentionEnabled?: boolean;
-  readonly supportsReasoningEffort?: readonly string[];
+  readonly supportsReasoningEffort?: readonly string[] | ThinkingConfig;
   readonly reasoningEffortFormat?: 'chat-completions' | 'responses';
   readonly requestHeaders?: Record<string, string>;
 }
