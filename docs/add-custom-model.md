@@ -47,7 +47,7 @@ labels, or request body shape.
 | `name` | `string` | Yes | Display name shown in the model picker |
 | `url` | `string` | Yes | API endpoint URL, must start with `http://` or `https://` |
 | `toolCalling` | `boolean` | Yes | Whether the model supports tool calling (Function Calling) |
-| `vision` | `boolean` | Yes | Whether the model supports image input |
+| `vision` | `boolean` | Yes | Whether the model supports image input. Set to `false` if the model does not support images, otherwise the vision proxy from other multimodal models cannot be applied |
 | `maxInputTokens` | `number` | Yes | Maximum input tokens the model accepts |
 | `maxOutputTokens` | `number` | Yes | Maximum output tokens the model generates |
 | `thinking` | `boolean` | No | Whether the model supports thinking/reasoning, default `false`. When `true` and `supportsReasoningEffort` is unset, a pre-built config is auto-matched by model `id` |

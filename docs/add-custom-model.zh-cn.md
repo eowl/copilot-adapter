@@ -43,7 +43,7 @@ JSON 文件会打开到正确位置。在 `"models"` 数组中添加一个或多
 | `name` | `string` | 是 | 模型选择器中的显示名称 |
 | `url` | `string` | 是 | API 端点 URL，需以 `http://` 或 `https://` 开头 |
 | `toolCalling` | `boolean` | 是 | 是否支持工具调用（Function Calling） |
-| `vision` | `boolean` | 是 | 是否支持图片输入 |
+| `vision` | `boolean` | 是 | 是否支持图片输入。如为纯文本模型，务必设为 `false`，否则无法应用视觉代理 |
 | `maxInputTokens` | `number` | 是 | 模型支持的最大输入 token 数 |
 | `maxOutputTokens` | `number` | 是 | 模型支持的最大输出 token 数 |
 | `thinking` | `boolean` | 否 | 是否支持思考/推理，默认 `false`。设为 `true` 时如未填 `supportsReasoningEffort` 将自动匹配预置配置 |
