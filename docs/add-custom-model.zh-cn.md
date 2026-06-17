@@ -33,6 +33,24 @@ JSON 文件会打开到正确位置。在 `"models"` 数组中添加一个或多
 对于思考模型（`"thinking": true`），`"supportsReasoningEffort"` 字段为**选填**——
 不填时扩展会根据模型 `id` 自动匹配预置配置。如需自定义选项、标签或请求体格式再填写。
 
+---
+
+### `models` 字段参考
+
+| 字段 | 类型 | 必填 | 说明 |
+|---|---|---|---|
+| `id` | `string` | 是 | 模型唯一标识符，也是发送给 API 的 `model` 值 |
+| `name` | `string` | 是 | 模型选择器中的显示名称 |
+| `url` | `string` | 是 | API 端点 URL，需以 `http://` 或 `https://` 开头 |
+| `toolCalling` | `boolean` | 是 | 是否支持工具调用（Function Calling） |
+| `vision` | `boolean` | 是 | 是否支持图片输入 |
+| `maxInputTokens` | `number` | 是 | 模型支持的最大输入 token 数 |
+| `maxOutputTokens` | `number` | 是 | 模型支持的最大输出 token 数 |
+| `thinking` | `boolean` | 否 | 是否支持思考/推理，默认 `false`。设为 `true` 时如未填 `supportsReasoningEffort` 将自动匹配预置配置 |
+| `thinkingTag` | `string` | 否 | 用于从流式响应中解析思考内容的标签（如 MiniMax 的 `<think>`） |
+| `supportsReasoningEffort` | `string[]` 或 `object` | 否 | 思考强度选项。字符串数组形式（如 `["low", "high"]`）自动生成请求字段；对象形式可精确控制每个选项的 `requestFields`、`label`、`hint` |
+| `maxTools` | `number` | 否 | 单次请求可调用的最大工具数，默认 `128`（`toolCalling: true` 时）或自动禁用（`toolCalling: false` 时） |
+
 ![在 chatLanguageModels.json 中编辑 models 数组](../assets/images/zh/add-custom-model-04.png)
 
 > **提示：** 参考 [`custom-models-template.zh-cn.jsonc`](../docs/custom-models-template.zh-cn.jsonc)

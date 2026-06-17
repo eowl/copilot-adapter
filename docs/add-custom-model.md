@@ -37,6 +37,24 @@ For thinking models (`"thinking": true`), the `"supportsReasoningEffort"` field 
 based on the model `id`.  Fill it in only if you need to customize the options,
 labels, or request body shape.
 
+---
+
+### `models` Field Reference
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `id` | `string` | Yes | Unique model identifier; also sent as the `model` value in API requests |
+| `name` | `string` | Yes | Display name shown in the model picker |
+| `url` | `string` | Yes | API endpoint URL, must start with `http://` or `https://` |
+| `toolCalling` | `boolean` | Yes | Whether the model supports tool calling (Function Calling) |
+| `vision` | `boolean` | Yes | Whether the model supports image input |
+| `maxInputTokens` | `number` | Yes | Maximum input tokens the model accepts |
+| `maxOutputTokens` | `number` | Yes | Maximum output tokens the model generates |
+| `thinking` | `boolean` | No | Whether the model supports thinking/reasoning, default `false`. When `true` and `supportsReasoningEffort` is unset, a pre-built config is auto-matched by model `id` |
+| `thinkingTag` | `string` | No | Tag used to parse thinking content from streaming responses (e.g. `<think>` for MiniMax) |
+| `supportsReasoningEffort` | `string[]` or `object` | No | Thinking effort options. Array form (e.g. `["low", "high"]`) auto-generates request fields; object form gives precise control over `requestFields`, `label`, `hint` per option |
+| `maxTools` | `number` | No | Maximum tools per request, defaults to `128` (`toolCalling: true`) or auto-disabled (`toolCalling: false`) |
+
 ![Editing the models array in chatLanguageModels.json](../assets/images/en/add-custom-model-04.png)
 
 > **Tip:** See [`custom-models-template.jsonc`](../docs/custom-models-template.jsonc) for ready-to-copy
