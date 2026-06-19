@@ -155,6 +155,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     // the static registry.
     let visibleModels: ModelItem[];
     let modelProvider: ModelProvider;
+    let providerModels: ModelItem[] = [];
 
     if (this.filteredProviderId === 'custom') {
       modelProvider = CUSTOM;
@@ -168,21 +169,11 @@ export class Adapter implements vscode.LanguageModelChatProvider {
         this.dynamicModels.set(registry.modelKey(m), m);
       }
     } else {
-      const providerModels = registry.ALL_MODELS.filter(
+      providerModels = registry.ALL_MODELS.filter(
         (m) => m.provider.id === this.filteredProviderId,
       );
       if (providerModels.length === 0) return [];
       modelProvider = providerModels[0]?.provider;
-
-      const apiEndpoint =
-        typeof groupCfg['apiEndpoint'] === 'string' ? (groupCfg['apiEndpoint'] as string) : '';
-      const resolvedEndpoint = apiEndpoint
-        ? resolveEndpoint(modelProvider, apiEndpoint)
-        : undefined;
-      const activeEndpointId = resolvedEndpoint?.id ?? modelProvider.endpoints?.[0]?.id;
-      visibleModels = activeEndpointId
-        ? providerModels.filter((m) => m.endpoint?.id === activeEndpointId)
-        : providerModels;
     }
 
     // Retrieve prefix for this apiKey (pre-registered by configureApiKey or a previous call)
@@ -191,6 +182,8 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       const prefix = this.nextPrefix === 0 ? '' : String(this.nextPrefix);
       secrets = {
         apiKey,
+        apiEndpoint:
+          typeof groupCfg['apiEndpoint'] === 'string' ? (groupCfg['apiEndpoint'] as string) : undefined,
         prefix,
         label: opts.group ?? modelProvider.label,
       };
@@ -200,6 +193,19 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       }
       this.nextPrefix++;
     }
+
+    // Resolve active endpoint: prefer secrets (set by configureApiKey), then
+    // groupCfg (set by VS Code managed group), then fallback to first endpoint.
+    const effectiveEndpoint =
+      secrets.apiEndpoint ??
+      (typeof groupCfg['apiEndpoint'] === 'string' ? (groupCfg['apiEndpoint'] as string) : undefined);
+    const resolvedEndpoint = effectiveEndpoint
+      ? resolveEndpoint(modelProvider, effectiveEndpoint)
+      : undefined;
+    const activeEndpointId = resolvedEndpoint?.id ?? modelProvider.endpoints?.[0]?.id;
+    visibleModels = activeEndpointId
+      ? providerModels.filter((m) => m.endpoint?.id === activeEndpointId)
+      : providerModels;
 
     const idPrefix = secrets.prefix;
 
