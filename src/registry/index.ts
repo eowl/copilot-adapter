@@ -5,6 +5,7 @@ import {
   providerById,
   endpointById,
   DEEPSEEK,
+  MIMO,
   MINIMAX,
   MOONSHOT,
   QWEN,
@@ -15,7 +16,7 @@ import type { ModelItem, Registries } from './types';
 import { CUSTOM } from '../providers/custom';
 
 export { ALL_PROVIDERS, providerById, endpointById };
-export { DEEPSEEK, MINIMAX, MOONSHOT, QWEN, ZHIPU, CUSTOM };
+export { DEEPSEEK, MIMO, MINIMAX, MOONSHOT, QWEN, ZHIPU, CUSTOM };
 export type { ModelItem };
 
 export function modelKey(mi: ModelItem): string {

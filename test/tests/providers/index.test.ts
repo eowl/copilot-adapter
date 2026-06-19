@@ -1,11 +1,11 @@
 import assert from 'node:assert/strict';
 import { suite, test } from 'mocha';
-import { ALL_MODELS, ALL_PROVIDERS, providerById, modelById, DEEPSEEK, MINIMAX, MOONSHOT, QWEN, ZHIPU, CUSTOM } from '../../../src/registry';
+import { ALL_MODELS, ALL_PROVIDERS, providerById, modelById, DEEPSEEK, MINIMAX, MOONSHOT, MIMO, QWEN, ZHIPU, CUSTOM } from '../../../src/registry';
 
 suite('providers/index', () => {
   suite('ALL_PROVIDERS', () => {
-    test('has exactly 6 providers', () => {
-      assert.equal(ALL_PROVIDERS.length, 6);
+    test('has exactly 7 providers', () => {
+      assert.equal(ALL_PROVIDERS.length, 7);
     });
 
     test('first provider is DEEPSEEK', () => {
@@ -20,16 +20,20 @@ suite('providers/index', () => {
       assert.strictEqual(ALL_PROVIDERS[2], MOONSHOT);
     });
 
-    test('fourth provider is QWEN', () => {
-      assert.strictEqual(ALL_PROVIDERS[3], QWEN);
+    test('fourth provider is MIMO', () => {
+      assert.strictEqual(ALL_PROVIDERS[3], MIMO);
     });
 
-    test('fifth provider is ZHIPU', () => {
-      assert.strictEqual(ALL_PROVIDERS[4], ZHIPU);
+    test('fifth provider is QWEN', () => {
+      assert.strictEqual(ALL_PROVIDERS[4], QWEN);
     });
 
-    test('sixth provider is CUSTOM', () => {
-      assert.strictEqual(ALL_PROVIDERS[5], CUSTOM);
+    test('sixth provider is ZHIPU', () => {
+      assert.strictEqual(ALL_PROVIDERS[5], ZHIPU);
+    });
+
+    test('seventh provider is CUSTOM', () => {
+      assert.strictEqual(ALL_PROVIDERS[6], CUSTOM);
     });
   });
 
@@ -44,6 +48,10 @@ suite('providers/index', () => {
 
     test('maps "moonshot": MOONSHOT', () => {
       assert.strictEqual(providerById.get('moonshot'), MOONSHOT);
+    });
+
+    test('maps "mimo": MIMO', () => {
+      assert.strictEqual(providerById.get('mimo'), MIMO);
     });
 
     test('maps "qwen": QWEN', () => {
@@ -62,8 +70,8 @@ suite('providers/index', () => {
       assert.equal(providerById.get('unknown-provider'), undefined);
     });
 
-    test('has exactly 6 entries', () => {
-      assert.equal(providerById.size, 6);
+    test('has exactly 7 entries', () => {
+      assert.equal(providerById.size, 7);
     });
   });
 

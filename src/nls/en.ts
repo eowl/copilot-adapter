@@ -4,6 +4,7 @@ export const en: Translation = {
   'provider.deepseek.detail': 'General-purpose & deep reasoning',
   'provider.minimax.detail': 'Deep reasoning with long context support',
   'provider.moonshot.detail': 'Moonshot Kimi series',
+  'provider.mimo.detail': 'MIMO series',
   'provider.qwen.detail': 'Alibaba Qwen series',
   'provider.zhipu.detail': 'Zhipu BigModel GLM series',
 
@@ -67,9 +68,12 @@ export const en: Translation = {
     'Free visual reasoning — complex scenes, multi-step analysis',
   'model.glm-4v-flash.detail': 'Free model — image understanding, multilingual',
 
+  'model.mimo-v2.5-pro.detail': 'Deep reasoning model with large context support',
+  'model.mimo-v2.5.detail': 'Deep reasoning model with vision support',
+
   'auth.keyInput': 'Enter {0} API Key',
   'auth.keyInputHinted': 'Enter {0} API Key (format: {1})',
-  'auth.keyHint': 'sk-...',
+  'auth.keyHint': 'API Key...',
   'auth.keyRequired': 'API Key must not be blank',
   'auth.keyStored': '{0} API Key saved securely.',
   'auth.chooseProvider': 'Select a provider',

@@ -178,6 +178,24 @@ export const ANTHROPIC_THINKING: ThinkingConfig = {
 
 export const DEFAULT_REASONING_LEVELS: readonly string[] = ['minimal', 'low', 'medium', 'high'];
 
+export const MIMO_THINKING: ThinkingConfig = {
+  default: 'enabled',
+  options: [
+    {
+      value: 'enabled',
+      label: 'think.enabled',
+      hint: 'think.enabled.hint',
+      requestFields: { thinking: { type: 'enabled' } },
+    },
+    {
+      value: 'disabled',
+      label: 'think.none',
+      hint: 'think.none.hint',
+      requestFields: { thinking: { type: 'disabled' } },
+    },
+  ],
+};
+
 export const MODEL_THINKING_MAP: ReadonlyMap<string, ThinkingConfig> = new Map([
   // DeepSeek
   ['deepseek-v4-pro', DEEPSEEK_THINKING],
@@ -205,6 +223,10 @@ export const MODEL_THINKING_MAP: ReadonlyMap<string, ThinkingConfig> = new Map([
   ['MiniMax-M2.5', MINIMAX_THINKING],
   ['MiniMax-M2.1', MINIMAX_THINKING],
   ['MiniMax-M2', MINIMAX_THINKING],
+
+  // MIMO
+  ['mimo-v2.5-pro', MIMO_THINKING],
+  ['mimo-v2.5', MIMO_THINKING],
 
   // Anthropic / Claude
   ['claude-opus-4-5-20250301', ANTHROPIC_THINKING],

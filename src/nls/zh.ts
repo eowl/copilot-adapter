@@ -4,6 +4,7 @@ export const zh: Translation = {
   'provider.deepseek.detail': '通用对话与深度推理',
   'provider.minimax.detail': '深度推理，支持超长上下文',
   'provider.moonshot.detail': '月之暗面 Kimi 系列',
+  'provider.mimo.detail': 'MIMO 系列',
   'provider.qwen.detail': '阿里云通义千问系列',
   'provider.zhipu.detail': '智谱 BigModel GLM 系列',
 
@@ -63,9 +64,12 @@ export const zh: Translation = {
   'model.glm-4.1v-thinking-flash.detail': '免费视觉推理——复杂场景、多步骤分析',
   'model.glm-4v-flash.detail': '免费模型——图像理解、多语言支持',
 
+  'model.mimo-v2.5-pro.detail': '深度推理模型，支持超大上下文',
+  'model.mimo-v2.5.detail': '深度推理模型，支持视觉功能',
+
   'auth.keyInput': '请输入 {0} API Key',
   'auth.keyInputHinted': '请输入 {0} API Key（格式：{1}）',
-  'auth.keyHint': 'sk-...',
+  'auth.keyHint': 'API Key...',
   'auth.keyRequired': '请输入有效的 API Key',
   'auth.keyStored': '{0} API Key 已安全保存。',
   'auth.chooseProvider': '选择提供商',

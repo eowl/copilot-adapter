@@ -155,6 +155,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     // the static registry.
     let visibleModels: ModelItem[];
     let modelProvider: ModelProvider;
+    let providerModels: ModelItem[] = [];
 
     if (this.filteredProviderId === 'custom') {
       modelProvider = CUSTOM;
@@ -168,16 +169,16 @@ export class Adapter implements vscode.LanguageModelChatProvider {
         this.dynamicModels.set(registry.modelKey(m), m);
       }
     } else {
-      const providerModels = registry.ALL_MODELS.filter(
-        (m) => m.provider.id === this.filteredProviderId,
-      );
+      providerModels = registry.ALL_MODELS.filter((m) => m.provider.id === this.filteredProviderId);
       if (providerModels.length === 0) return [];
       modelProvider = providerModels[0]?.provider;
 
       const apiEndpoint =
         typeof groupCfg['apiEndpoint'] === 'string' ? (groupCfg['apiEndpoint'] as string) : '';
-      const resolvedEndpoint = apiEndpoint
-        ? resolveEndpoint(modelProvider, apiEndpoint)
+      const effectiveEndpoint =
+        this.groupSecrets.get(apiKey)?.apiEndpoint ?? (apiEndpoint || undefined);
+      const resolvedEndpoint = effectiveEndpoint
+        ? resolveEndpoint(modelProvider, effectiveEndpoint)
         : undefined;
       const activeEndpointId = resolvedEndpoint?.id ?? modelProvider.endpoints?.[0]?.id;
       visibleModels = activeEndpointId
@@ -191,6 +192,10 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       const prefix = this.nextPrefix === 0 ? '' : String(this.nextPrefix);
       secrets = {
         apiKey,
+        apiEndpoint:
+          typeof groupCfg['apiEndpoint'] === 'string'
+            ? (groupCfg['apiEndpoint'] as string)
+            : undefined,
         prefix,
         label: opts.group ?? modelProvider.label,
       };
@@ -348,7 +353,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       : undefined;
 
     if (!modelProvider) {
-      const items = registry.ALL_PROVIDERS.map((p) => ({
+      const items = registry.ALL_PROVIDERS.filter((p) => p.id !== 'custom').map((p) => ({
         label: p.label,
         description: p.id,
         detail: t(p.detailKey),
