@@ -353,11 +353,13 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       : undefined;
 
     if (!modelProvider) {
-      const items = registry.ALL_PROVIDERS.map((p) => ({
-        label: p.label,
-        description: p.id,
-        detail: t(p.detailKey),
-      }));
+      const items = registry.ALL_PROVIDERS
+        .filter((p) => p.id !== 'custom')
+        .map((p) => ({
+          label: p.label,
+          description: p.id,
+          detail: t(p.detailKey),
+        }));
 
       const picked = await vscode.window.showQuickPick(items, {
         title: t('auth.chooseProvider'),

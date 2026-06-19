@@ -74,7 +74,7 @@ export const en: Translation = {
 
   'auth.keyInput': 'Enter {0} API Key',
   'auth.keyInputHinted': 'Enter {0} API Key (format: {1})',
-  'auth.keyHint': 'sk-...',
+  'auth.keyHint': 'API Key...',
   'auth.keyRequired': 'API Key must not be blank',
   'auth.keyStored': '{0} API Key saved securely.',
   'auth.chooseProvider': 'Select a provider',

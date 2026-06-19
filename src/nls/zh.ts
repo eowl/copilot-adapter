@@ -69,7 +69,7 @@ export const zh: Translation = {
 
   'auth.keyInput': '请输入 {0} API Key',
   'auth.keyInputHinted': '请输入 {0} API Key（格式：{1}）',
-  'auth.keyHint': 'sk-...',
+  'auth.keyHint': 'API Key...',
   'auth.keyRequired': '请输入有效的 API Key',
   'auth.keyStored': '{0} API Key 已安全保存。',
   'auth.chooseProvider': '选择提供商',

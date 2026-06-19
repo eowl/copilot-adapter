@@ -19,7 +19,7 @@ export const MIMO: ModelProvider = {
       reasoning_tokens: 'completion_tokens_details.reasoning_tokens',
     },
   },
-  apiKeyHint: 'sk-...',
+  apiKeyHint: 'sk-... or tp-...',
   links: {
     apiHost: 'api.xiaomimimo.com'
   },
