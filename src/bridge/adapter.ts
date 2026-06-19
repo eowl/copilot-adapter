@@ -169,9 +169,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
         this.dynamicModels.set(registry.modelKey(m), m);
       }
     } else {
-      providerModels = registry.ALL_MODELS.filter(
-        (m) => m.provider.id === this.filteredProviderId,
-      );
+      providerModels = registry.ALL_MODELS.filter((m) => m.provider.id === this.filteredProviderId);
       if (providerModels.length === 0) return [];
       modelProvider = providerModels[0]?.provider;
 
@@ -195,7 +193,9 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       secrets = {
         apiKey,
         apiEndpoint:
-          typeof groupCfg['apiEndpoint'] === 'string' ? (groupCfg['apiEndpoint'] as string) : undefined,
+          typeof groupCfg['apiEndpoint'] === 'string'
+            ? (groupCfg['apiEndpoint'] as string)
+            : undefined,
         prefix,
         label: opts.group ?? modelProvider.label,
       };
@@ -353,13 +353,11 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       : undefined;
 
     if (!modelProvider) {
-      const items = registry.ALL_PROVIDERS
-        .filter((p) => p.id !== 'custom')
-        .map((p) => ({
-          label: p.label,
-          description: p.id,
-          detail: t(p.detailKey),
-        }));
+      const items = registry.ALL_PROVIDERS.filter((p) => p.id !== 'custom').map((p) => ({
+        label: p.label,
+        description: p.id,
+        detail: t(p.detailKey),
+      }));
 
       const picked = await vscode.window.showQuickPick(items, {
         title: t('auth.chooseProvider'),

@@ -33,5 +33,5 @@ export const MIMO_MODELS: readonly ModelItem[] = [
     maxOutputTokens: 128_000,
     imageInput: true,
     detailKey: 'model.mimo-v2.5.detail',
-  }
+  },
 ] as ModelItem[];

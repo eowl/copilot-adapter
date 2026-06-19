@@ -194,7 +194,7 @@ export const MIMO_THINKING: ThinkingConfig = {
       requestFields: { thinking: { type: 'disabled' } },
     },
   ],
-}
+};
 
 export const MODEL_THINKING_MAP: ReadonlyMap<string, ThinkingConfig> = new Map([
   // DeepSeek

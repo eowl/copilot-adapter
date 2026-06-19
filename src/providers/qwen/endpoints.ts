@@ -39,7 +39,7 @@ export const QWEN_ENDPOINTS: readonly ModelEndpoint[] = [
     },
     QWEN_BASE_MODELS,
   ),
-   composeModelEndpoint(
+  composeModelEndpoint(
     {
       id: 'JP',
       label: 'Japan (Tokyo)',

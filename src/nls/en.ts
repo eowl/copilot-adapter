@@ -8,7 +8,6 @@ export const en: Translation = {
   'provider.qwen.detail': 'Alibaba Qwen series',
   'provider.zhipu.detail': 'Zhipu BigModel GLM series',
 
-
   'model.deepseek-v4-flash.detail': 'Fast, general-purpose model',
   'model.deepseek-v4-pro.detail': 'Deep reasoning model',
 

@@ -21,6 +21,6 @@ export const MIMO: ModelProvider = {
   },
   apiKeyHint: 'sk-... or tp-...',
   links: {
-    apiHost: 'api.xiaomimimo.com'
+    apiHost: 'api.xiaomimimo.com',
   },
 };
