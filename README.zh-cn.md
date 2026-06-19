@@ -34,7 +34,7 @@
 | **Moonshot (Kimi)** | [`platform.moonshot.cn`](https://platform.moonshot.cn/) [`platform.moonshot.ai`](https://platform.moonshot.ai/) | `Kimi K2.7 Code` `Kimi K2.7 Code High-Speed` `Kimi K2.6` `Kimi K2.5` |
 | **Qwen** | [`bailian.console.aliyun.com`](https://bailian.console.aliyun.com/) `CN` `US` `SGP` `EU` `JP` | `Qwen3.7 Max` `Qwen3.7 Plus` `Qwen3.6 Max` `Qwen3.6 Plus` `Qwen3.6 Flash` `Qwen3.5 Plus` `Qwen3.5 Flash` `Qwen3 Max` `Qwen3 Coder Plus` `Qwen3 Coder Flash` `Qwen Plus (US only)` `Qwen Flash (US only)` |
 | **智谱 (GLM)** | [`open.bigmodel.cn`](https://open.bigmodel.cn/) [`api.z.ai`](https://api.z.ai/) `Coding Plan`| `GLM-5.2` `GLM-5.1` `GLM-5` `GLM-5-Turbo` `GLM-4.7` `GLM-4.7-FlashX` `GLM-4.6` `GLM-4.5-Air` `GLM-4.5-AirX` `GLM-4-Long` `GLM-4-FlashX-250414` `GLM-4.7-Flash` `GLM-4.5-Flash` `GLM-4-Flash-250414` `GLM-5V-Turbo` `GLM-4.6V` `GLM-OCR` `GLM-4.1V-Thinking-FlashX` `GLM-4.6V-Flash` `GLM-4.1V-Thinking-Flash` `GLM-4V-Flash` |
-| **Xiaomi MIMO** | [`api.xiaomimimo.com`](https://api.xiaomimimo.com/) `Token Plan CN` `Token Plan SPG` `Token Plan EU` | `mimo-v2.5-pro` `mimo-v2.5` |
+| **Xiaomi MIMO** | [`api.xiaomimimo.com`](https://api.xiaomimimo.com/) `Token Plan CN` `Token Plan SGP` `Token Plan EU` | `mimo-v2.5-pro` `mimo-v2.5` |
 
 *以上模型列表是该扩展内置的，如需要其它模型请参考[自定义模型](#自定义模型)*
 
