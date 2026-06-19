@@ -184,9 +184,27 @@
         "configuration": {
           "type": "object",
           "required": [
+            "apiEndpoint",
             "apiKey"
           ],
           "properties": {
+            "apiEndpoint": {
+              "type": "string",
+              "title": "%copilot-adapter.provider.mimo.apiEndpoint.title%",
+              "enum": [
+                "mimo",
+                "mimo-token-plan-cn",
+                "mimo-token-plan-spg",
+                "mimo-token-plan-ams"
+              ],
+              "enumDescriptions": [
+                "%copilot-adapter.provider.mimo.apiEndpoint.option.mimo%",
+                "%copilot-adapter.provider.mimo.apiEndpoint.option.mimo-token-plan-cn%",
+                "%copilot-adapter.provider.mimo.apiEndpoint.option.mimo-token-plan-spg%",
+                "%copilot-adapter.provider.mimo.apiEndpoint.option.mimo-token-plan-ams%"
+              ],
+              "description": "%copilot-adapter.provider.mimo.apiEndpoint.description%"
+            },
             "apiKey": {
               "type": "string",
               "title": "%copilot-adapter.provider.mimo.apiKey.title%",
