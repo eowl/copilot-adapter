@@ -170,8 +170,8 @@ suite('composeModelProvider / composeModelEndpoint', () => {
       [m1, m2],
     );
     assert.equal(ep.models!.length, 2);
-    assert.equal(m1.endpoint?.id, 'a');
-    assert.equal(m2.endpoint?.id, 'a');
+    assert.equal(ep.models![0].endpoint?.id, 'a');
+    assert.equal(ep.models![1].endpoint?.id, 'a');
   });
 
   test('composeModelProvider wires endpoints with provider back-refs', () => {

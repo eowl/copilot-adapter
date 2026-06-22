@@ -1,10 +1,12 @@
 import assert from 'node:assert/strict';
 import { suite, test } from 'mocha';
 import { QWEN, QWEN_BASE_MODELS, QWEN_US_MODELS } from '../../../src/providers/qwen';
+import { backfillModel } from '../../../src/providers/loader';
 import type { ModelItem } from '../../../src/providers/types';
 
 suite('providers/qwen model.requestExtras()', () => {
   const model = QWEN_BASE_MODELS[0] as ModelItem;
+  backfillModel(model);
   const requestExtras = model.requestExtras!;
 
   test('model has thinking config', () => {

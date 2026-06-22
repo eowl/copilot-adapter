@@ -1,10 +1,12 @@
 import assert from 'node:assert/strict';
 import { suite, test } from 'mocha';
 import { DEEPSEEK, DS_MODELS } from '../../../src/providers/deepseek';
+import { backfillModel } from '../../../src/providers/loader';
 import type { ModelItem } from '../../../src/providers/types';
 
 suite('providers/deepseek model.requestExtras()', () => {
   const model = DS_MODELS[0] as ModelItem;
+  backfillModel(model);
   const requestExtras = model.requestExtras!;
 
   test('model has thinking config with 3 options', () => {
@@ -68,12 +70,12 @@ suite('providers/deepseek model.requestExtras()', () => {
     assert.equal(DS_MODELS.length, 2);
   });
 
-  test('first model is deepseek-v4-flash', () => {
-    assert.equal(DS_MODELS[0].id, 'deepseek-v4-flash');
+  test('first model is deepseek-v4-pro', () => {
+    assert.equal(DS_MODELS[0].id, 'deepseek-v4-pro');
   });
 
-  test('second model is deepseek-v4-pro', () => {
-    assert.equal(DS_MODELS[1].id, 'deepseek-v4-pro');
+  test('second model is deepseek-v4-flash', () => {
+    assert.equal(DS_MODELS[1].id, 'deepseek-v4-flash');
   });
 
   test('DEEPSEEK provider id is "deepseek"', () => {

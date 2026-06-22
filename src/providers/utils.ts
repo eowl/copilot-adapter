@@ -1,4 +1,5 @@
 import type { ApiTraits, ModelItem, ModelProvider, ModelEndpoint } from './types';
+import { backfillModel } from './loader';
 
 /** Build the provider- and endpoint-qualified unique key for a model. */
 export function modelKey(mi: ModelItem): string {
@@ -62,14 +63,12 @@ export function composeModelEndpoint(
   modelEndpoint: ModelEndpoint,
   modelItems: readonly ModelItem[],
 ): ModelEndpoint {
-  modelEndpoint.models = modelItems as ModelItem[];
-  for (const mi of modelItems) {
+  modelEndpoint.models = modelItems.map(mi => ({ ...mi })) as ModelItem[]; // shallow copy
+  
+  for (const mi of modelEndpoint.models) {
     mi.endpoint = modelEndpoint;
     mi.source = 'builtin';
 
-    // Backfill functions from static thinking / contentTag config
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const { backfillModel } = require('./loader') as typeof import('./loader');
     backfillModel(mi);
   }
 

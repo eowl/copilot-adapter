@@ -1,10 +1,13 @@
 import assert from 'node:assert/strict';
 import { suite, test } from 'mocha';
 import { ZHIPU, ZP_MODELS } from '../../../src/providers/zhipu';
+import { backfillModel } from '../../../src/providers/loader';
 
 suite('providers/zhipu', () => {
   const thinkingModel = ZP_MODELS.find((m) => m.label === 'GLM-5.1')!;
   const plainModel = ZP_MODELS.find((m) => m.label === 'GLM-4.5-Air')!;
+  backfillModel(thinkingModel);
+  backfillModel(plainModel);
 
   suite('thinking-capable models requestExtras()', () => {
     test('thinking model has thinking config', () => {

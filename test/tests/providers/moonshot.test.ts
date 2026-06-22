@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { suite, test } from 'mocha';
 import { MOONSHOT, MS_MODELS } from '../../../src/providers/moonshot';
+import { backfillModel } from '../../../src/providers/loader';
 import type { ModelItem } from '../../../src/providers/types';
 
 suite('providers/moonshot', () => {
@@ -21,6 +22,7 @@ suite('providers/moonshot', () => {
 
   test('K2.6 has 3-value thinking (enabled / enabled_keep / disabled)', () => {
     const k26 = MS_MODELS.find((m) => m.label === 'Kimi K2.6')! as ModelItem;
+    backfillModel(k26);
     assert.ok(k26.thinkingConfig !== undefined);
     assert.equal(k26.thinkingConfig!.default, 'enabled');
     assert.equal(k26.thinkingConfig!.options.length, 3);

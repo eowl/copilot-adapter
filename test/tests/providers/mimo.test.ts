@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { suite, test } from 'mocha';
 import { MIMO, MIMO_MODELS } from '../../../src/providers/mimo';
 import { MIMO_ENDPOINTS } from '../../../src/providers/mimo/endpoints';
+import { backfillModel } from '../../../src/providers/loader';
 import type { ModelItem } from '../../../src/providers/types';
 
 function proModel(): ModelItem {
@@ -73,6 +74,7 @@ suite('providers/mimo model list', () => {
 
 suite('providers/mimo model.requestExtras()', () => {
   const model = proModel();
+  backfillModel(model);
   const requestExtras = model.requestExtras!;
 
   test('model has thinking config with 2 options', () => {
@@ -117,6 +119,7 @@ suite('providers/mimo model.requestExtras()', () => {
 
   test('both models have same thinking extras behavior', () => {
     for (const m of MIMO_MODELS) {
+      backfillModel(m);
       const extras = m.requestExtras!;
       assert.deepEqual(extras({ thinkingMode: 'enabled' }), {
         thinking: { type: 'enabled' },
@@ -129,8 +132,10 @@ suite('providers/mimo model.requestExtras()', () => {
 });
 
 suite('providers/mimo model.configSchema()', () => {
+  const pro = proModel();
+  backfillModel(pro);
   test('pro model has config schema with thinkingMode enum', () => {
-    const schema = proModel().configSchema!();
+    const schema = pro.configSchema!();
     assert.ok(schema !== undefined);
     const props = (schema as Record<string, unknown>).properties as Record<string, unknown>;
     assert.ok(props.thinkingMode !== undefined);
@@ -141,7 +146,9 @@ suite('providers/mimo model.configSchema()', () => {
   });
 
   test('base model has config schema', () => {
-    const schema = baseModel().configSchema!();
+    const bm = baseModel();
+    backfillModel(bm);
+    const schema = bm.configSchema!();
     assert.ok(schema !== undefined);
   });
 });

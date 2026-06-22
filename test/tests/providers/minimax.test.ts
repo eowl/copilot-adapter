@@ -2,10 +2,13 @@ import assert from 'node:assert/strict';
 import { suite, test } from 'mocha';
 import { MINIMAX, MM_MODELS } from '../../../src/providers/minimax';
 import { ThinkTagParser } from '../../../src/providers/parsers/tag';
+import { backfillModel } from '../../../src/providers/loader';
 import type { ModelItem } from '../../../src/providers/types';
 
 function reasoningModel(): ModelItem {
-  return MM_MODELS.find((m) => m.thinking)! as ModelItem;
+  const m = MM_MODELS.find((m) => m.thinking)! as ModelItem;
+  backfillModel(m);
+  return m;
 }
 
 suite('providers/minimax model.createContentParser()', () => {
@@ -39,12 +42,14 @@ suite('providers/minimax model list', () => {
 
   test('M2 models have contentTag "think"', () => {
     const m2 = MM_MODELS.find((m) => m.label === 'MiniMax M2')!;
+    backfillModel(m2);
     assert.equal(m2.contentTag, 'think');
     assert.ok(m2.createContentParser !== undefined);
   });
 
   test('M3 model has thinking config', () => {
     const m3 = MM_MODELS.find((m) => m.label === 'MiniMax M3')!;
+    backfillModel(m3);
     assert.ok(m3.thinkingConfig !== undefined);
     assert.equal(m3.thinkingConfig!.default, 'adaptive');
     assert.ok(m3.requestExtras !== undefined);
