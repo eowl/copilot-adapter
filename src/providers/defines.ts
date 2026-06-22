@@ -194,7 +194,7 @@ export const DEFAULT_THINKING: ThinkingConfig = {
       requestFields: { thinking: { type: 'disabled' } },
     },
   ],
-}
+};
 
 export const MIMO_THINKING: ThinkingConfig = DEFAULT_THINKING;
 export const VOLCENGINE_THINKING: ThinkingConfig = DEFAULT_THINKING;

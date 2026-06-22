@@ -20,9 +20,9 @@ export const DEEPSEEK_V4_PRO: ModelItem = {
   maxInputTokens: 616_000,
   maxOutputTokens: 384_000,
   detailKey: 'model.deepseek-v4-pro.detail',
-} as ModelItem
+} as ModelItem;
 
-export const DEEPSEEK_V4_FLASH: ModelItem =   {
+export const DEEPSEEK_V4_FLASH: ModelItem = {
   ...DS_BASE,
   id: 'deepseek-v4-flash',
   label: 'DeepSeek V4 Flash',
@@ -31,9 +31,6 @@ export const DEEPSEEK_V4_FLASH: ModelItem =   {
   maxInputTokens: 616_000,
   maxOutputTokens: 384_000,
   detailKey: 'model.deepseek-v4-flash.detail',
-} as ModelItem
+} as ModelItem;
 
-export const DS_MODELS: readonly ModelItem[] = [
-  DEEPSEEK_V4_PRO,
-  DEEPSEEK_V4_FLASH
-] as ModelItem[];
+export const DS_MODELS: readonly ModelItem[] = [DEEPSEEK_V4_PRO, DEEPSEEK_V4_FLASH] as ModelItem[];

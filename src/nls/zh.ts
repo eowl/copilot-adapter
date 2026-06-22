@@ -68,14 +68,19 @@ export const zh: Translation = {
   'model.mimo-v2.5-pro.detail': '深度推理模型，支持超大上下文',
   'model.mimo-v2.5.detail': '深度推理模型，支持视觉功能',
 
-  'model.doubao-seed-2.0-pro.detail': '侧重长链路推理能力与复杂任务稳定性，适配真实业务中的复杂场景',
-  'model.doubao-seed-2.0-mini.detail': '豆包大模型家族全模态理解模型，更短的思考长度，更高的tokens效率',
-  'model.doubao-seed-2.0-lite.detail': '豆包大模型家族首款全模态理解模型，支持视频、图像、音频、文本原生统一理解，同时升级Agent、Coding与GUI能力',
+  'model.doubao-seed-2.0-pro.detail':
+    '侧重长链路推理能力与复杂任务稳定性，适配真实业务中的复杂场景',
+  'model.doubao-seed-2.0-mini.detail':
+    '豆包大模型家族全模态理解模型，更短的思考长度，更高的tokens效率',
+  'model.doubao-seed-2.0-lite.detail':
+    '豆包大模型家族首款全模态理解模型，支持视频、图像、音频、文本原生统一理解，同时升级Agent、Coding与GUI能力',
   'model.doubao-seed-2.0-code.detail': 'Seed 2.0 的编程加强版，更适合 Agentic Coding',
 
   'model.dola-seed-2.0-pro.detail': '侧重长链路推理能力与复杂任务稳定性，适配真实业务中的复杂场景',
-  'model.dola-seed-2.0-mini.detail': 'Dola大模型家族全模态理解模型，更短的思考长度，更高的tokens效率',
-  'model.dola-seed-2.0-lite.detail': 'Dola大模型家族首款全模态理解模型，支持视频、图像、音频、文本原生统一理解，同时升级Agent、Coding与GUI能力',
+  'model.dola-seed-2.0-mini.detail':
+    'Dola大模型家族全模态理解模型，更短的思考长度，更高的tokens效率',
+  'model.dola-seed-2.0-lite.detail':
+    'Dola大模型家族首款全模态理解模型，支持视频、图像、音频、文本原生统一理解，同时升级Agent、Coding与GUI能力',
   'model.dola-seed-2.0-code.detail': 'Seed 2.0 的编程加强版，更适合 Agentic Coding',
 
   'auth.keyInput': '请输入 {0} API Key',

@@ -63,8 +63,8 @@ export function composeModelEndpoint(
   modelEndpoint: ModelEndpoint,
   modelItems: readonly ModelItem[],
 ): ModelEndpoint {
-  modelEndpoint.models = modelItems.map(mi => ({ ...mi })) as ModelItem[]; // shallow copy
-  
+  modelEndpoint.models = modelItems.map((mi) => ({ ...mi })) as ModelItem[]; // shallow copy
+
   for (const mi of modelEndpoint.models) {
     mi.endpoint = modelEndpoint;
     mi.source = 'builtin';

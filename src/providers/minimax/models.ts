@@ -38,7 +38,7 @@ export const MM_M3: ModelItem = {
   maxInputTokens: 1_000_000,
   maxOutputTokens: 40960,
   detailKey: 'model.minimax-m3.detail',
-} as ModelItem
+} as ModelItem;
 
 export const MM_M2_7: ModelItem = {
   ...MM_BASE,
@@ -47,7 +47,7 @@ export const MM_M2_7: ModelItem = {
   apiId: 'MiniMax-M2.7',
   version: '2.7',
   detailKey: 'model.minimax-m2.7.detail',
-} as ModelItem
+} as ModelItem;
 
 export const MM_MODELS: readonly ModelItem[] = [
   {
@@ -99,5 +99,5 @@ export const MM_MODELS: readonly ModelItem[] = [
     version: '2.7',
     detailKey: 'model.minimax-m2.7-highspeed.detail',
   },
-  MM_M3
+  MM_M3,
 ] as ModelItem[];

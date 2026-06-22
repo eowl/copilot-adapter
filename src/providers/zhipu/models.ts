@@ -45,7 +45,7 @@ const BM_VISION_PLAIN_BASE = {
   maxTools: 128,
 };
 
-export const ZHIPU_GLM_4_7: ModelItem =  {
+export const ZHIPU_GLM_4_7: ModelItem = {
   ...BM_THINK_BASE,
   id: 'glm-4.7',
   label: 'GLM-4.7',
@@ -54,7 +54,7 @@ export const ZHIPU_GLM_4_7: ModelItem =  {
   maxInputTokens: 200_000,
   maxOutputTokens: 128_000,
   detailKey: 'model.glm-4.7.detail',
-} as ModelItem
+} as ModelItem;
 
 export const ZHIPU_GLM_5_2: ModelItem = {
   ...BM_GLM52_BASE,
@@ -65,7 +65,7 @@ export const ZHIPU_GLM_5_2: ModelItem = {
   maxInputTokens: 872_000,
   maxOutputTokens: 128_000,
   detailKey: 'model.glm-5.2.detail',
-} as ModelItem
+} as ModelItem;
 
 export const ZHIPU_GLM_5_1: ModelItem = {
   ...BM_THINK_BASE,
@@ -76,7 +76,7 @@ export const ZHIPU_GLM_5_1: ModelItem = {
   maxInputTokens: 200_000,
   maxOutputTokens: 128_000,
   detailKey: 'model.glm-5.1.detail',
-} as ModelItem
+} as ModelItem;
 
 export const ZP_MODELS: readonly ModelItem[] = [
   ZHIPU_GLM_5_2,

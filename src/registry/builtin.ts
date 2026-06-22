@@ -9,7 +9,6 @@ import { CUSTOM } from '../providers/custom';
 import { composeModelProvider } from '../providers/utils';
 import type { ModelItem, ModelProvider, ModelEndpoint } from '../providers/types';
 
-
 composeModelProvider(DEEPSEEK, DEEPSEEK_ENDPOINTS);
 composeModelProvider(MINIMAX, MINIMAX_ENDPOINTS);
 composeModelProvider(MOONSHOT, MOONSHOT_ENDPOINTS);

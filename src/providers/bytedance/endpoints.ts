@@ -1,6 +1,11 @@
 import type { ModelEndpoint } from '../types';
 import { composeModelEndpoint } from '../utils';
-import { VOLCENGINE_MODELS, VOLCENGINE_CODING_PLAN_MODELS, MODELARK_MODELS, MODELARK_CODING_PLAN_MODESL } from './models';
+import {
+  VOLCENGINE_MODELS,
+  VOLCENGINE_CODING_PLAN_MODELS,
+  MODELARK_MODELS,
+  MODELARK_CODING_PLAN_MODESL,
+} from './models';
 
 export const BYTEDANCE_ENDPOINTS: readonly ModelEndpoint[] = [
   composeModelEndpoint(
@@ -42,5 +47,5 @@ export const BYTEDANCE_ENDPOINTS: readonly ModelEndpoint[] = [
       url: 'https://ark.eu-west.bytepluses.com/api/v3',
     },
     MODELARK_MODELS,
-  )
+  ),
 ];
