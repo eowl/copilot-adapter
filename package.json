@@ -2,7 +2,7 @@
   "name": "copilot-adapter",
   "displayName": "Copilot Adapter",
   "description": "AI Models Adapter for Copilot Chat",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "publisher": "Eowl",
   "license": "MIT",
   "icon": "assets/icon.png",
