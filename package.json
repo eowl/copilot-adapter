@@ -215,6 +215,36 @@
         }
       },
       {
+        "vendor": "copilot-adapter-bytedance",
+        "displayName": "Bytedance(Volcengine, Byteplus)",
+        "configuration": {
+          "type": "object",
+          "required": [
+            "apiEndpoint",
+            "apiKey"
+          ],
+          "properties": {
+            "apiEndpoint": {
+              "type": "string",
+              "title": "%copilot-adapter.provider.bytedance.apiEndpoint.title%",
+              "enum": [
+                "volcengine"
+              ],
+              "enumDescriptions": [
+                "%copilot-adapter.provider.bytedance.apiEndpoint.option.volcengine%"
+              ],
+              "description": "%copilot-adapter.provider.bytedance.apiEndpoint.description%"
+            },
+            "apiKey": {
+              "type": "string",
+              "title": "%copilot-adapter.provider.bytedance.apiKey.title%",
+              "description": "%copilot-adapter.provider.bytedance.apiKey.description%",
+              "secret": true
+            }
+          }
+        }
+      },
+      {
         "vendor": "copilot-adapter-custom",
         "displayName": "Custom Models",
         "configuration": {

@@ -178,7 +178,7 @@ export const ANTHROPIC_THINKING: ThinkingConfig = {
 
 export const DEFAULT_REASONING_LEVELS: readonly string[] = ['minimal', 'low', 'medium', 'high'];
 
-export const MIMO_THINKING: ThinkingConfig = {
+export const DEFAULT_THINKING: ThinkingConfig = {
   default: 'enabled',
   options: [
     {
@@ -194,7 +194,10 @@ export const MIMO_THINKING: ThinkingConfig = {
       requestFields: { thinking: { type: 'disabled' } },
     },
   ],
-};
+}
+
+export const MIMO_THINKING: ThinkingConfig = DEFAULT_THINKING;
+export const VOLCENGINE_THINKING: ThinkingConfig = DEFAULT_THINKING;
 
 export const MODEL_THINKING_MAP: ReadonlyMap<string, ThinkingConfig> = new Map([
   // DeepSeek

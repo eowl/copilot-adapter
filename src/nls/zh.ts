@@ -7,6 +7,7 @@ export const zh: Translation = {
   'provider.mimo.detail': 'MIMO 系列',
   'provider.qwen.detail': '阿里云通义千问系列',
   'provider.zhipu.detail': '智谱 BigModel GLM 系列',
+  'provider.bytedance.detail': '字节跳动 火山方舟',
 
   'model.deepseek-v4-flash.detail': '快速通用模型',
   'model.deepseek-v4-pro.detail': '深度推理模型',
@@ -66,6 +67,12 @@ export const zh: Translation = {
 
   'model.mimo-v2.5-pro.detail': '深度推理模型，支持超大上下文',
   'model.mimo-v2.5.detail': '深度推理模型，支持视觉功能',
+
+  'model.doubao-seed-2.0-pro.detail': '侧重长链路推理能力与复杂任务稳定性，适配真实业务中的复杂场景',
+  'model.doubao-seed-2.0-mini.detail': '豆包大模型家族全模态理解模型，更短的思考长度，更高的tokens效率',
+  'model.doubao-seed-2.0-lite.detail': '豆包大模型家族首款全模态理解模型，支持视频、图像、音频、文本原生统一理解，同时升级Agent、Coding与GUI能力',
+  'model.doubao-seed-2.0-code.detail': 'Seed 2.0 的编程加强版，更适合 Agentic Coding',
+
 
   'auth.keyInput': '请输入 {0} API Key',
   'auth.keyInputHinted': '请输入 {0} API Key（格式：{1}）',

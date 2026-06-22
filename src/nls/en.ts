@@ -7,6 +7,7 @@ export const en: Translation = {
   'provider.mimo.detail': 'MIMO series',
   'provider.qwen.detail': 'Alibaba Qwen series',
   'provider.zhipu.detail': 'Zhipu BigModel GLM series',
+  'provider.bytedance.detail': 'BytePlus ModelArk',
 
   'model.deepseek-v4-flash.detail': 'Fast, general-purpose model',
   'model.deepseek-v4-pro.detail': 'Deep reasoning model',
@@ -70,6 +71,11 @@ export const en: Translation = {
 
   'model.mimo-v2.5-pro.detail': 'Deep reasoning model with large context support',
   'model.mimo-v2.5.detail': 'Deep reasoning model with vision support',
+
+  'model.doubao-seed-2.0-pro.detail': 'Focused on long-chain reasoning and stability in complex task execution, designed for complex real-world business scenarios.',
+  'model.doubao-seed-2.0-mini.detail': 'Balances generation quality and response speed, making it a strong general-purpose production model.',
+  'model.doubao-seed-2.0-lite.detail': 'Balances generation quality and response speed, making it a strong general-purpose production model.',
+  'model.doubao-seed-2.0-code.detail': 'Precise code generation capabilities, along with task scheduling and logical coordination. (Multimodal visual understanding)',
 
   'auth.keyInput': 'Enter {0} API Key',
   'auth.keyInputHinted': 'Enter {0} API Key (format: {1})',

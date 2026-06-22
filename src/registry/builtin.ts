@@ -4,9 +4,11 @@ import { MOONSHOT, MOONSHOT_ENDPOINTS } from '../providers/moonshot';
 import { MIMO, MIMO_ENDPOINTS } from '../providers/mimo';
 import { QWEN, QWEN_ENDPOINTS } from '../providers/qwen';
 import { ZHIPU, ZHIPU_ENDPOINTS } from '../providers/zhipu';
+import { BYTEDANCE, BYTEDANCE_ENDPOINTS } from '../providers/bytedance';
 import { CUSTOM } from '../providers/custom';
 import { composeModelProvider } from '../providers/utils';
 import type { ModelItem, ModelProvider, ModelEndpoint } from '../providers/types';
+
 
 composeModelProvider(DEEPSEEK, DEEPSEEK_ENDPOINTS);
 composeModelProvider(MINIMAX, MINIMAX_ENDPOINTS);
@@ -14,6 +16,7 @@ composeModelProvider(MOONSHOT, MOONSHOT_ENDPOINTS);
 composeModelProvider(MIMO, MIMO_ENDPOINTS);
 composeModelProvider(QWEN, QWEN_ENDPOINTS);
 composeModelProvider(ZHIPU, ZHIPU_ENDPOINTS);
+composeModelProvider(BYTEDANCE, BYTEDANCE_ENDPOINTS);
 
 export const ALL_PROVIDERS: readonly ModelProvider[] = [
   DEEPSEEK,
@@ -22,6 +25,7 @@ export const ALL_PROVIDERS: readonly ModelProvider[] = [
   MIMO,
   QWEN,
   ZHIPU,
+  BYTEDANCE,
   CUSTOM,
 ];
 
@@ -34,7 +38,7 @@ const _endpointById = new Map<string, ModelEndpoint>(
 export const providerById: ReadonlyMap<string, ModelProvider> = _providerById;
 export const endpointById: ReadonlyMap<string, ModelEndpoint> = _endpointById;
 
-export { DEEPSEEK, MINIMAX, MOONSHOT, MIMO, QWEN, ZHIPU };
+export { DEEPSEEK, MINIMAX, MOONSHOT, MIMO, QWEN, ZHIPU, BYTEDANCE };
 export type { ModelProvider, ModelEndpoint, ModelItem };
 
 export function loadBuiltinModels(): ModelItem[] {
