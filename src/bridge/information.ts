@@ -60,7 +60,7 @@ export function buildChatInfo(
 }
 
 function toModelCostInfo(
-  pricing: Readonly<Record<PricingCurrency, ModelPricing>> | undefined,
+  pricing: Readonly<Partial<Record<PricingCurrency, ModelPricing>>> | undefined,
   currency?: PricingCurrency,
 ): Pick<ChatInfo, 'inputCost' | 'outputCost' | 'cacheCost'> {
   if (!currency || !pricing) {

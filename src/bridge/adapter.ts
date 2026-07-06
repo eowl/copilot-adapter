@@ -156,6 +156,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     let visibleModels: ModelItem[];
     let modelProvider: ModelProvider;
     let providerModels: ModelItem[] = [];
+    let resolvedPricingCurrency = Settings.pricingCurrency();
 
     if (this.filteredProviderId === 'custom') {
       modelProvider = CUSTOM;
@@ -184,6 +185,8 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       visibleModels = activeEndpointId
         ? providerModels.filter((m) => m.endpoint?.id === activeEndpointId)
         : providerModels;
+
+      resolvedPricingCurrency = resolvedEndpoint?.pricingCurrency ?? Settings.pricingCurrency();
     }
 
     // Retrieve prefix for this apiKey (pre-registered by configureApiKey or a previous call)
@@ -215,7 +218,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
           hasKey,
           this.visionProxyAvailable,
           idPrefix,
-          Settings.pricingCurrency(),
+          resolvedPricingCurrency,
         ) as ChatInfo,
     );
   }
@@ -290,7 +293,6 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       // preventing calibration from ever triggering.
       if (promptTokens > 0) {
         try {
-          // defaultRatio cascade: model trait → user setting → hard-coded default
           const defaultRatio =
             resolveTrait(model, 'tokenRatio') ?? Settings.tokenRatio() ?? DEFAULT_CHARS_PER_TOKEN;
           const bodyChars = countMessageChars(messages);
