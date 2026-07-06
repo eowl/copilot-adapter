@@ -64,9 +64,9 @@ export type PriceCategory = 'low' | 'medium' | 'high' | 'very_high';
 export type PriceValue = number | string;
 
 export interface ModelPricing {
-	cacheHitInput: PriceValue;
-	cacheMissInput: PriceValue;
-	output: PriceValue;
+  cacheHitInput: PriceValue;
+  cacheMissInput: PriceValue;
+  output: PriceValue;
 }
 
 export interface ModelItem extends ApiTraits {

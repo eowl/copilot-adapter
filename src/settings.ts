@@ -92,7 +92,7 @@ export class Settings {
   static pricingCurrency(): PricingCurrency {
     const raw = this.section().get<string>('pricingCurrency', '');
     if (raw === 'CNY' || raw === 'USD') return raw;
-    
+
     return vscode.env.language.toLowerCase().startsWith('zh') ? 'CNY' : 'USD';
   }
 }
