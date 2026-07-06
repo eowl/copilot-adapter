@@ -67,17 +67,26 @@ function toModelCostInfo(
     return {};
   }
 
-  const p = pricing[currency];
-  if (!p) {
-    return {};
+  let p = pricing[currency];
+  let symbol: string;
+
+  if (p) {
+    symbol = currency === 'CNY' ? '¥' : '$';
+  } else {
+    const fallback = (Object.keys(pricing) as PricingCurrency[])[0];
+    p = pricing[fallback];
+    if (!p) return {};
+
+    symbol = fallback === 'CNY' ? '¥' : '$';
   }
-  
-  const symbol = currency === 'CNY' ? '¥' : '$';
+
+  const fmt = (v: number | string): string =>
+    typeof v === 'string' ? `${symbol}${v}` : `${symbol}${v}`;
 
   return {
-    inputCost: `${symbol}${p.cacheMissInput}`,
-    outputCost: `${symbol}${p.output}`,
-    cacheCost: `${symbol}${p.cacheHitInput}`,
+    inputCost: fmt(p.cacheMissInput),
+    outputCost: fmt(p.output),
+    cacheCost: fmt(p.cacheHitInput),
   };
 }
 

@@ -61,10 +61,12 @@ export type PricingCurrency = 'USD' | 'CNY';
 
 export type PriceCategory = 'low' | 'medium' | 'high' | 'very_high';
 
+export type PriceValue = number | string;
+
 export interface ModelPricing {
-	cacheHitInput: number;
-	cacheMissInput: number;
-	output: number;
+	cacheHitInput: PriceValue;
+	cacheMissInput: PriceValue;
+	output: PriceValue;
 }
 
 export interface ModelItem extends ApiTraits {
