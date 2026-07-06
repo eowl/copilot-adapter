@@ -11,7 +11,7 @@ import type { ReqOptions } from '../../../src/bridge/information';
 
 /**
  * Sanity: verify that MIMO endpoints array was set up correctly
- * after import-time composition (composeModelEndpoint → composeModelProvider).
+ * after import-time composition (composeModelEndpoint then composeModelProvider).
  */
 suite('bridge/endpoint MIMO composition', () => {
   test('MIMO provider has all 4 endpoints', () => {
@@ -253,8 +253,8 @@ suite('bridge/endpoint provideLanguageModelChatResponse URL assembly', () => {
       endpoint: undefined,
     } as ModelItem;
 
-    // resolveTrait(model, 'url') → model.url (undefined) → model.endpoint?.url (undefined)
-    // → model.provider.url = 'https://api.xiaomimimo.com/v1'
+    // resolveTrait(model, 'url'): model.url (undefined), then model.endpoint?.url (undefined),
+    // then model.provider.url = 'https://api.xiaomimimo.com/v1'
     const apiUrl = resolveTrait(model, 'url') ?? getEndpoint(MIMO, 'mimo-token-plan-cn');
     // resolveTrait finds provider.url first
     assert.equal(apiUrl, 'https://api.xiaomimimo.com/v1');

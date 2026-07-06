@@ -132,4 +132,79 @@ suite('bridge/information buildChatInfo', () => {
     assert.equal(info.id, 'some-model-deepseek');
     assert.ok(!info.id.includes('::'));
   });
+
+  suite('pricing', () => {
+    const USD_PRICING = Object.freeze({
+      USD: { cacheHitInput: 0.01, cacheMissInput: 0.02, output: 0.03 },
+      CNY: { cacheHitInput: 0.07, cacheMissInput: 0.14, output: 0.28 },
+    });
+
+    const CNY_ONLY_PRICING = Object.freeze({
+      CNY: { cacheHitInput: 1, cacheMissInput: 2, output: 3 },
+    });
+
+    test('emits CNY cost fields when currency is CNY', () => {
+      const model = makeTestModel({ pricing: USD_PRICING });
+      const info = buildChatInfo(model, true, false, '', 'CNY');
+
+      assert.equal(info.inputCost, '¥0.14');
+      assert.equal(info.outputCost, '¥0.28');
+      assert.equal(info.cacheCost, '¥0.07');
+    });
+
+    test('emits USD cost fields when currency is USD', () => {
+      const model = makeTestModel({ pricing: USD_PRICING });
+      const info = buildChatInfo(model, true, false, '', 'USD');
+
+      assert.equal(info.inputCost, '$0.02');
+      assert.equal(info.outputCost, '$0.03');
+      assert.equal(info.cacheCost, '$0.01');
+    });
+
+    test('emits string price values with symbol prefix', () => {
+      const model = makeTestModel({
+        pricing: { CNY: { cacheHitInput: '0.42 / 0.84', cacheMissInput: '2.1 / 4.2', output: '8.4 / 16.8' } },
+      });
+      const info = buildChatInfo(model, true, false, '', 'CNY');
+
+      assert.equal(info.inputCost, '¥2.1 / 4.2');
+      assert.equal(info.outputCost, '¥8.4 / 16.8');
+      assert.equal(info.cacheCost, '¥0.42 / 0.84');
+    });
+
+    test('falls back to available currency when preferred currency missing', () => {
+      const model = makeTestModel({ pricing: CNY_ONLY_PRICING });
+      const info = buildChatInfo(model, true, false, '', 'USD');
+
+      assert.equal(info.inputCost, '¥2');
+      assert.equal(info.outputCost, '¥3');
+      assert.equal(info.cacheCost, '¥1');
+    });
+
+    test('emits no cost fields when pricing is undefined', () => {
+      const model = makeTestModel({ pricing: undefined });
+      const info = buildChatInfo(model, true, false, '', 'CNY');
+
+      assert.equal(info.inputCost, undefined);
+      assert.equal(info.outputCost, undefined);
+      assert.equal(info.cacheCost, undefined);
+    });
+
+    test('emits no cost fields when pricingCurrency is undefined', () => {
+      const model = makeTestModel({ pricing: USD_PRICING });
+      const info = buildChatInfo(model, true, false, '', undefined);
+
+      assert.equal(info.inputCost, undefined);
+      assert.equal(info.outputCost, undefined);
+      assert.equal(info.cacheCost, undefined);
+    });
+
+    test('emits isBYOK=true and isUserSelectable=true', () => {
+      const model = makeTestModel();
+      const info = buildChatInfo(model, true);
+
+      assert.equal(info.isBYOK, true);
+      assert.equal(info.isUserSelectable, true);
+    });
+  });
 });

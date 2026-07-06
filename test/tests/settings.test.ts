@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { suite, test, afterEach } from 'mocha';
 import * as vscode from 'vscode';
 import { Settings, type DebugLevel } from '../../src/settings';
-import { stub } from '../helpers/stubs';
+import { stub, stubConfig, stubNested } from '../helpers/stubs';
 
 function stubDebugMode(level: DebugLevel | undefined): () => void {
   const mockConfig = {
@@ -87,6 +87,58 @@ suite('Settings debug level', () => {
     test('returns true when level is "verbose"', () => {
       restore = stubDebugMode('verbose');
       assert.equal(Settings.verboseEnabled(), true);
+    });
+  });
+
+  suite('pricingCurrency()', () => {
+    let restoreConfig: () => void;
+    let restoreLang: () => void;
+
+    afterEach(() => {
+      restoreConfig?.();
+      restoreLang?.();
+    });
+
+    test('returns CNY when settings has "CNY" regardless of locale', () => {
+      restoreConfig = stubConfig({ pricingCurrency: 'CNY' });
+      restoreLang = stubNested(vscode as unknown as Record<string, unknown>, 'env.language', 'en');
+      assert.equal(Settings.pricingCurrency(), 'CNY');
+    });
+
+    test('returns USD when settings has "USD" regardless of locale', () => {
+      restoreConfig = stubConfig({ pricingCurrency: 'USD' });
+      restoreLang = stubNested(vscode as unknown as Record<string, unknown>, 'env.language', 'zh-cn');
+      assert.equal(Settings.pricingCurrency(), 'USD');
+    });
+
+    test('returns CNY locale fallback when settings is empty and language is zh-cn', () => {
+      restoreConfig = stubConfig({ pricingCurrency: '' });
+      restoreLang = stubNested(vscode as unknown as Record<string, unknown>, 'env.language', 'zh-cn');
+      assert.equal(Settings.pricingCurrency(), 'CNY');
+    });
+
+    test('returns CNY locale fallback when settings is empty and language is zh-tw', () => {
+      restoreConfig = stubConfig({ pricingCurrency: '' });
+      restoreLang = stubNested(vscode as unknown as Record<string, unknown>, 'env.language', 'zh-tw');
+      assert.equal(Settings.pricingCurrency(), 'CNY');
+    });
+
+    test('returns USD locale fallback when settings is empty and language is en', () => {
+      restoreConfig = stubConfig({ pricingCurrency: '' });
+      restoreLang = stubNested(vscode as unknown as Record<string, unknown>, 'env.language', 'en');
+      assert.equal(Settings.pricingCurrency(), 'USD');
+    });
+
+    test('returns USD locale fallback when settings is empty and language is ja', () => {
+      restoreConfig = stubConfig({ pricingCurrency: '' });
+      restoreLang = stubNested(vscode as unknown as Record<string, unknown>, 'env.language', 'ja');
+      assert.equal(Settings.pricingCurrency(), 'USD');
+    });
+
+    test('returns locale fallback when settings has invalid value', () => {
+      restoreConfig = stubConfig({ pricingCurrency: 'EUR' });
+      restoreLang = stubNested(vscode as unknown as Record<string, unknown>, 'env.language', 'zh-cn');
+      assert.equal(Settings.pricingCurrency(), 'CNY');
     });
   });
 });

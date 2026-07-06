@@ -220,7 +220,7 @@ suite('bridge/utils/preflight', () => {
       ];
       const restore = stubConfig({ maxWarmupRounds: 3 });
       try {
-        // inProgress=true → needsWarmup returns false (don't start a new round)
+        // inProgress is true so needsWarmup returns false (don't start a new round)
         assert.equal(needsWarmup(messages, [ACTIVATE_TOOL], true), false);
       } finally {
         restore();

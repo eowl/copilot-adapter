@@ -114,7 +114,7 @@ suite('bridge/prepare formatImagePart fallback', () => {
     });
   });
 
-  suite('imageInput: undefined → false (text model)', () => {
+  suite('imageInput: undefined treated as false (text model)', () => {
     test('undefined imageInput resolves to no fallback', () => {
       const model = makeModel({ imageInput: false });
       const fn = resolveFormatImagePart(model);
