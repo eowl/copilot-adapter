@@ -20,7 +20,7 @@ import {
 import { ApiError } from '../client/error';
 import { seedManagedGroup } from './managed';
 import { CUSTOM, buildCustomModels } from '../providers/custom';
-import type { ModelItem, ModelProvider } from '../providers/types';
+import type { ModelItem, ModelProvider, PricingCurrency } from '../providers/types';
 
 type PrepareOptions = vscode.PrepareLanguageModelChatModelOptions;
 
@@ -156,7 +156,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     let visibleModels: ModelItem[];
     let modelProvider: ModelProvider;
     let providerModels: ModelItem[] = [];
-    let resolvedPricingCurrency = Settings.pricingCurrency();
+    let resolvedPricingCurrency: PricingCurrency | undefined = Settings.pricingCurrency();
 
     if (this.filteredProviderId === 'custom') {
       modelProvider = CUSTOM;
@@ -186,7 +186,10 @@ export class Adapter implements vscode.LanguageModelChatProvider {
         ? providerModels.filter((m) => m.endpoint?.id === activeEndpointId)
         : providerModels;
 
-      resolvedPricingCurrency = resolvedEndpoint?.pricingCurrency ?? Settings.pricingCurrency();
+      resolvedPricingCurrency =
+        resolvedEndpoint?.billing === 'plan'
+          ? undefined
+          : (resolvedEndpoint?.pricingCurrency ?? Settings.pricingCurrency());
     }
 
     // Retrieve prefix for this apiKey (pre-registered by configureApiKey or a previous call)

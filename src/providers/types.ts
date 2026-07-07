@@ -26,6 +26,8 @@ export interface ApiTraits {
 
 export type PricingCurrency = 'USD' | 'CNY';
 
+export type BillingMode = 'api' | 'plan';
+
 export type PriceCategory = 'low' | 'medium' | 'high' | 'very_high';
 
 export type PriceValue = number | string;
@@ -51,6 +53,7 @@ export interface ModelEndpoint extends ApiTraits {
   models?: readonly ModelItem[];
 
   pricingCurrency?: PricingCurrency;
+  billing?: BillingMode;
 }
 
 export interface ThinkingOption {
