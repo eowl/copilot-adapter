@@ -58,7 +58,7 @@ export async function forwardStream(
           resolveTrait(ready.model, 'thinkingField'),
           ready.model.createContentParser?.(),
           effectiveSignal,
-          modelProvider.links,
+          ready.model.endpoint?.links ?? modelProvider.links,
         );
 
         for await (const event of gen) {
