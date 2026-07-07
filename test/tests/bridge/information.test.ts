@@ -199,6 +199,36 @@ suite('bridge/information buildChatInfo', () => {
       assert.equal(info.cacheCost, undefined);
     });
 
+    test('emits priceCategory when set on model', () => {
+      const model = makeTestModel({ pricing: USD_PRICING, priceCategory: 'low' });
+      const info = buildChatInfo(model, true, false, '', 'USD');
+
+      assert.equal(info.priceCategory, 'low');
+    });
+
+    test('emits priceCategory even when pricing is undefined', () => {
+      const model = makeTestModel({ pricing: undefined, priceCategory: 'high' });
+      const info = buildChatInfo(model, true);
+
+      assert.equal(info.priceCategory, 'high');
+      assert.equal(info.inputCost, undefined);
+    });
+
+    test('emits priceCategory even when pricingCurrency is undefined', () => {
+      const model = makeTestModel({ pricing: USD_PRICING, priceCategory: 'medium' });
+      const info = buildChatInfo(model, true, false, '', undefined);
+
+      assert.equal(info.priceCategory, 'medium');
+      assert.equal(info.inputCost, undefined);
+    });
+
+    test('emits no priceCategory when not set', () => {
+      const model = makeTestModel({ pricing: USD_PRICING });
+      const info = buildChatInfo(model, true, false, '', 'USD');
+
+      assert.equal(info.priceCategory, undefined);
+    });
+
     test('emits isBYOK=true and isUserSelectable=true', () => {
       const model = makeTestModel();
       const info = buildChatInfo(model, true);

@@ -50,6 +50,7 @@ export const MM_M3: ModelItem = {
       output: '8.4(<=512K)/16.8(512K~1M)',
     },
   },
+  priceCategory: 'low',
 } as ModelItem;
 
 export const MM_M2_7: ModelItem = {
@@ -71,6 +72,7 @@ export const MM_M2_7: ModelItem = {
       output: 8.4,
     },
   },
+  priceCategory: 'low',
 } as ModelItem;
 
 export const MM_MODELS: readonly ModelItem[] = [

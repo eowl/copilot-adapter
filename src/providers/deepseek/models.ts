@@ -24,6 +24,7 @@ export const DEEPSEEK_V4_PRO: ModelItem = {
     USD: { cacheHitInput: 0.003625, cacheMissInput: 0.435, output: 0.87 },
     CNY: { cacheHitInput: 0.025, cacheMissInput: 3, output: 6 },
   },
+  priceCategory: 'low',
 } as ModelItem;
 
 export const DEEPSEEK_V4_FLASH: ModelItem = {
@@ -39,6 +40,7 @@ export const DEEPSEEK_V4_FLASH: ModelItem = {
     USD: { cacheHitInput: 0.0028, cacheMissInput: 0.14, output: 0.28 },
     CNY: { cacheHitInput: 0.02, cacheMissInput: 1, output: 2 },
   },
+  priceCategory: 'low',
 } as ModelItem;
 
 export const DS_MODELS: readonly ModelItem[] = [DEEPSEEK_V4_PRO, DEEPSEEK_V4_FLASH] as ModelItem[];

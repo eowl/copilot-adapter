@@ -99,6 +99,7 @@ export interface ModelItem extends ApiTraits {
   readonly contentTag?: string;
 
   pricing?: Readonly<Partial<Record<PricingCurrency, ModelPricing>>>;
+  priceCategory?: PriceCategory;
 
   requestExtras?(modelConfig: Record<string, unknown> | undefined): Record<string, unknown>;
   configSchema?(): Record<string, unknown> | undefined;

@@ -1,7 +1,7 @@
 import vscode from 'vscode';
 import { t } from '../nls';
 import { modelKey } from '../providers/utils';
-import type { ModelItem, ModelPricing, PricingCurrency } from '../providers/types';
+import type { ModelItem, ModelPricing, PriceCategory, PricingCurrency } from '../providers/types';
 
 /** Extended chat model information returned to VS Code. */
 export interface ChatInfo extends vscode.LanguageModelChatInformation {
@@ -13,6 +13,7 @@ export interface ChatInfo extends vscode.LanguageModelChatInformation {
   readonly inputCost?: string;
   readonly outputCost?: string;
   readonly cacheCost?: string;
+  readonly priceCategory?: PriceCategory;
 }
 
 /** Extended request options from VS Code's language model chat. */
@@ -53,7 +54,7 @@ export function buildChatInfo(
     detail: detail,
     statusIcon: notConfigured ? new vscode.ThemeIcon('warning') : undefined,
     configurationSchema: schema,
-    ...toModelCostInfo(modelItem.pricing, pricingCurrency),
+    ...toModelCostInfo(modelItem.pricing, modelItem.priceCategory, pricingCurrency),
   } as unknown as ChatInfo;
 
   return info;
@@ -61,10 +62,11 @@ export function buildChatInfo(
 
 function toModelCostInfo(
   pricing: Readonly<Partial<Record<PricingCurrency, ModelPricing>>> | undefined,
+  priceCategory: PriceCategory | undefined,
   currency?: PricingCurrency,
-): Pick<ChatInfo, 'inputCost' | 'outputCost' | 'cacheCost'> {
+): Pick<ChatInfo, 'inputCost' | 'outputCost' | 'cacheCost' | 'priceCategory'> {
   if (!currency || !pricing) {
-    return {};
+    return priceCategory ? { priceCategory } : {};
   }
 
   let p = pricing[currency];
@@ -75,7 +77,7 @@ function toModelCostInfo(
   } else {
     const fallback = (Object.keys(pricing) as PricingCurrency[])[0];
     p = pricing[fallback];
-    if (!p) return {};
+    if (!p) return priceCategory ? { priceCategory } : {};
 
     symbol = fallback === 'CNY' ? '¥' : '$';
   }
@@ -87,6 +89,7 @@ function toModelCostInfo(
     inputCost: fmt(p.cacheMissInput),
     outputCost: fmt(p.output),
     cacheCost: fmt(p.cacheHitInput),
+    ...(priceCategory ? { priceCategory } : {}),
   };
 }
 

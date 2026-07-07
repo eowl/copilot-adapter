@@ -69,6 +69,7 @@ export const ZHIPU_GLM_5_2: ModelItem = {
     USD: { cacheHitInput: 0.26, cacheMissInput: 1.4, output: 4.4 },
     CNY: { cacheHitInput: 2, cacheMissInput: 8, output: 28 },
   },
+  priceCategory: 'high',
 } as ModelItem;
 
 export const ZHIPU_GLM_5_1: ModelItem = {
@@ -88,6 +89,7 @@ export const ZHIPU_GLM_5_1: ModelItem = {
       output: '24(<32K)/28(>=32K)',
     },
   },
+  priceCategory: 'high',
 } as ModelItem;
 
 export const ZP_MODELS: readonly ModelItem[] = [
@@ -110,6 +112,7 @@ export const ZP_MODELS: readonly ModelItem[] = [
         output: '18(<32K)/22(>=32K)',
       },
     },
+    priceCategory: 'medium',
   },
   {
     ...BM_THINK_BASE,
@@ -128,6 +131,7 @@ export const ZP_MODELS: readonly ModelItem[] = [
         output: '22(<32K)/26(>=32K)',
       },
     },
+    priceCategory: 'high',
   },
   ZHIPU_GLM_4_7,
   {
