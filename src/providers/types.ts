@@ -28,7 +28,7 @@ export type PricingCurrency = 'USD' | 'CNY';
 
 export type BillingMode = 'api' | 'plan';
 
-export type PriceCategory = 'low' | 'medium' | 'high' | 'very_high';
+export type PriceCategory = 'low' | 'medium' | 'high' | 'very_high' | 'plan';
 
 export type PriceValue = number | string;
 

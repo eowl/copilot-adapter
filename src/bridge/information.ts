@@ -54,7 +54,11 @@ export function buildChatInfo(
     detail: detail,
     statusIcon: notConfigured ? new vscode.ThemeIcon('warning') : undefined,
     configurationSchema: schema,
-    ...toModelCostInfo(modelItem.pricing, modelItem.priceCategory, pricingCurrency),
+    ...toModelCostInfo(
+      modelItem.pricing,
+      modelItem.endpoint?.billing === 'plan' ? 'plan' : modelItem.priceCategory,
+      pricingCurrency,
+    ),
   } as unknown as ChatInfo;
 
   return info;
