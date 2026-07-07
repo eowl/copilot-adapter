@@ -1,6 +1,6 @@
 import { pack } from '../serialize';
 import type { ApiReq, Chunk, StreamEvent, ToolCall } from './types';
-import { buildHttpError, toApiError, type ProviderLinks } from './error';
+import { buildHttpError, toApiError, type ServiceLinks } from './error';
 import { channel } from '../logger';
 import type { ContentParser } from '../providers/types';
 
@@ -11,7 +11,7 @@ export async function* streamHttp(
   thinkingField: string | undefined,
   contentParser: ContentParser | undefined,
   signal: AbortSignal,
-  links?: ProviderLinks,
+  links?: ServiceLinks,
 ): AsyncGenerator<StreamEvent> {
   const url = apiUrl.endsWith('/chat/completions') ? apiUrl : `${apiUrl}/chat/completions`;
 

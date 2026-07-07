@@ -1,4 +1,4 @@
-import type { ProviderLinks } from '../client/error';
+import type { ServiceLinks } from '../client/error';
 import type { UsagePayload } from '../bridge/types';
 
 /**
@@ -38,7 +38,7 @@ export interface ModelProvider extends ApiTraits {
   readonly detailKey: string;
   readonly url: string;
   readonly supportsStreamUsage?: boolean;
-  readonly links?: ProviderLinks;
+  readonly links?: ServiceLinks;
   readonly apiKeyHint?: string;
 
   endpoints?: ModelEndpoint[];
@@ -54,6 +54,7 @@ export interface ModelEndpoint extends ApiTraits {
 
   pricingCurrency?: PricingCurrency;
   billing?: BillingMode;
+  readonly links?: ServiceLinks;
 }
 
 export interface ThinkingOption {

@@ -2,7 +2,7 @@ import { t } from '../nls';
 
 export type ApiErrorKind = 'http' | 'network' | 'unknown';
 
-export interface ProviderLinks {
+export interface ServiceLinks {
   apiHost?: string;
   apiKeys?: string;
   usage?: string;
@@ -18,7 +18,7 @@ export class ApiError extends Error {
     public readonly kind: ApiErrorKind,
     public readonly summary: string,
     public readonly diagnostic: string,
-    public readonly links?: ProviderLinks,
+    public readonly links?: ServiceLinks,
     public readonly status?: number,
   ) {
     super(summary);
@@ -26,7 +26,7 @@ export class ApiError extends Error {
   }
 }
 
-export async function buildHttpError(response: Response, links?: ProviderLinks): Promise<ApiError> {
+export async function buildHttpError(response: Response, links?: ServiceLinks): Promise<ApiError> {
   const status = response.status;
   let body = '';
   try {
@@ -41,7 +41,7 @@ export async function buildHttpError(response: Response, links?: ProviderLinks):
   return new ApiError('http', summary, diagnostic, links, status);
 }
 
-function mapHttpStatus(status: number, links?: ProviderLinks): string {
+function mapHttpStatus(status: number, links?: ServiceLinks): string {
   const logsHint = links ? ` ${t('err.action.logs')}.` : '';
   switch (status) {
     case 401:
@@ -59,7 +59,7 @@ function mapHttpStatus(status: number, links?: ProviderLinks): string {
   }
 }
 
-export function wrapFetchError(err: unknown, apiUrl: string, links?: ProviderLinks): ApiError {
+export function wrapFetchError(err: unknown, apiUrl: string, links?: ServiceLinks): ApiError {
   if (err instanceof ApiError) return err;
 
   const message = err instanceof Error ? err.message : String(err);
@@ -95,7 +95,7 @@ export function wrapFetchError(err: unknown, apiUrl: string, links?: ProviderLin
 }
 
 /** Wraps any error into an ApiError suitable for throwing to VS Code. */
-export function toApiError(err: unknown, apiUrl: string, links?: ProviderLinks): ApiError {
+export function toApiError(err: unknown, apiUrl: string, links?: ServiceLinks): ApiError {
   if (err instanceof ApiError) return err;
 
   return wrapFetchError(err, apiUrl, links);
