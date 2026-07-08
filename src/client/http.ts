@@ -1,6 +1,7 @@
 import { pack } from '../serialize';
 import type { ApiReq, Chunk, StreamEvent, ToolCall } from './types';
-import { buildHttpError, toApiError, type ServiceLinks } from './error';
+import { buildHttpError, toApiError } from './error';
+import type { ServiceLinks } from '../providers/types';
 import { channel } from '../logger';
 import type { ContentParser } from '../providers/types';
 

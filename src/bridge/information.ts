@@ -14,6 +14,7 @@ export interface ChatInfo extends vscode.LanguageModelChatInformation {
   readonly outputCost?: string;
   readonly cacheCost?: string;
   readonly priceCategory?: PriceCategory;
+  readonly category?: string;
 }
 
 /** Extended request options from VS Code's language model chat. */
@@ -29,6 +30,7 @@ export function buildChatInfo(
   hasVisionProxy = false,
   idPrefix = '',
   pricingCurrency?: PricingCurrency,
+  balance?: string,
 ): ChatInfo {
   const modelProvider = modelItem.provider;
   const schema = modelItem.configSchema?.();
@@ -37,6 +39,12 @@ export function buildChatInfo(
 
   const qualifiedId = modelKey(modelItem);
   const infoId = idPrefix ? `${idPrefix}::${qualifiedId}` : qualifiedId;
+  const costInfo = toModelCostInfo(
+    modelItem.pricing,
+    modelItem.endpoint?.billing === 'plan' ? 'plan' : modelItem.priceCategory,
+    pricingCurrency,
+  );
+
   const info = {
     id: infoId,
     name: modelItem.label,
@@ -54,11 +62,8 @@ export function buildChatInfo(
     detail: detail,
     statusIcon: notConfigured ? new vscode.ThemeIcon('warning') : undefined,
     configurationSchema: schema,
-    ...toModelCostInfo(
-      modelItem.pricing,
-      modelItem.endpoint?.billing === 'plan' ? 'plan' : modelItem.priceCategory,
-      pricingCurrency,
-    ),
+    ...costInfo,
+    ...(balance ? { category: t('balance.label', balance) } : {}),
   } as unknown as ChatInfo;
 
   return info;

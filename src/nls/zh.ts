@@ -134,8 +134,9 @@ export const zh: Translation = {
   'err.action.usage': '查看用量',
   'err.action.status': '查看状态',
   'err.action.logs': '查看日志',
-
   'err.unknownModel': '未知模型：{0}。',
 
+  'balance.label': '余额：{0}',
+  
   'tools.drift': '以下工具已从对话中移除以保持上下文连贯：{0}。',
 };

@@ -146,5 +146,7 @@ export const en: Translation = {
 
   'err.unknownModel': 'Unknown model: {0}.',
 
+  'balance.label': 'Balance: {0}',
+  
   'tools.drift': 'The following tools were removed to keep the conversation on track: {0}.',
 };

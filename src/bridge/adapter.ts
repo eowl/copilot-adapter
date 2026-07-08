@@ -20,6 +20,7 @@ import {
 import { ApiError } from '../client/error';
 import { seedManagedGroup } from './managed';
 import { CUSTOM, buildCustomModels } from '../providers/custom';
+import { getCachedBalance, queryBalance } from './balance';
 import type { ModelItem, ModelProvider, PricingCurrency } from '../providers/types';
 
 type PrepareOptions = vscode.PrepareLanguageModelChatModelOptions;
@@ -156,6 +157,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     let visibleModels: ModelItem[];
     let modelProvider: ModelProvider;
     let providerModels: ModelItem[] = [];
+    let resolvedEndpoint: ModelItem['endpoint'];
     let resolvedPricingCurrency: PricingCurrency | undefined = Settings.pricingCurrency();
 
     if (this.filteredProviderId === 'custom') {
@@ -178,7 +180,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
         typeof groupCfg['apiEndpoint'] === 'string' ? (groupCfg['apiEndpoint'] as string) : '';
       const effectiveEndpoint =
         this.groupSecrets.get(apiKey)?.apiEndpoint ?? (apiEndpoint || undefined);
-      const resolvedEndpoint = effectiveEndpoint
+      resolvedEndpoint = effectiveEndpoint
         ? resolveEndpoint(modelProvider, effectiveEndpoint)
         : undefined;
       const activeEndpointId = resolvedEndpoint?.id ?? modelProvider.endpoints?.[0]?.id;
@@ -214,6 +216,31 @@ export class Adapter implements vscode.LanguageModelChatProvider {
 
     const idPrefix = secrets.prefix;
 
+    // Resolve the active endpoint for balance query
+    const activeEndpoint = resolvedEndpoint ?? modelProvider.endpoints?.[0];
+    const endpointId = activeEndpoint?.id ?? '';
+    const balanceLinks = activeEndpoint?.links;
+
+    // Use cached balance if fresh; otherwise fire async query
+    let balance: string | undefined;
+    if (hasKey && endpointId) {
+      const cached = getCachedBalance(apiKey, endpointId);
+      if (cached) {
+        balance = cached.display;
+      } else if (balanceLinks?.balance) {
+        // Fire query in background and refresh when complete
+        queryBalance(apiKey, endpointId, balanceLinks)
+          .then((result) => {
+            if (result.display !== 'N/A') {
+              this.changeEmitter.fire();
+            }
+          })
+          .catch(() => {
+            // already logged in queryBalance
+          });
+      }
+    }
+
     return visibleModels.map(
       (model) =>
         buildChatInfo(
@@ -222,6 +249,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
           this.visionProxyAvailable,
           idPrefix,
           resolvedPricingCurrency,
+          balance,
         ) as ChatInfo,
     );
   }

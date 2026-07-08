@@ -31,7 +31,7 @@ function stubNls(): () => void {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     require('../../../src/nls'),
     't',
-    (key: string) => key,
+    (key: string, ...args: string[]) => [key, ...args].join(': '),
   );
 }
 
@@ -235,6 +235,31 @@ suite('bridge/information buildChatInfo', () => {
 
       assert.equal(info.isBYOK, true);
       assert.equal(info.isUserSelectable, true);
+    });
+  });
+
+  suite('category (balance)', () => {
+    test('emits category with balance when provided', () => {
+      const model = makeTestModel({
+        pricing: {
+          CNY: { cacheHitInput: 0.07, cacheMissInput: 0.14, output: 0.28 },
+        },
+      });
+      const info = buildChatInfo(model, true, false, '', 'CNY', '¥19.20');
+
+      assert.ok(info.category!.includes('balance.label'));
+      assert.ok(info.category!.includes('¥19.20'));
+    });
+
+    test('emits undefined category when balance not provided', () => {
+      const model = makeTestModel({
+        pricing: {
+          CNY: { cacheHitInput: 0.07, cacheMissInput: 0.14, output: 0.28 },
+        },
+      });
+      const info = buildChatInfo(model, true, false, '', 'CNY');
+
+      assert.equal(info.category, undefined);
     });
   });
 });
