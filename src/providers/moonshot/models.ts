@@ -44,6 +44,7 @@ export const MS_K2_7_CODE: ModelItem = {
   pricing: {
     CNY: { default: { cacheInput: 1.30, input: 6.50, output: 27.00 } },
   },
+  priceCategory: 'high',
 } as ModelItem;
 
 export const MS_K2_7_CODE_HIGHSPEED: ModelItem = {
@@ -58,6 +59,7 @@ export const MS_K2_7_CODE_HIGHSPEED: ModelItem = {
   pricing: {
     CNY: { default: { cacheInput: 2.60, input: 13.00, output: 54.00 } },
   },
+  priceCategory: 'very_high',
 } as ModelItem;
 
 export const MS_K2_6: ModelItem = {
@@ -72,6 +74,7 @@ export const MS_K2_6: ModelItem = {
   pricing: {
     CNY: { default: { cacheInput: 1.10, input: 6.50, output: 27.00 } },
   },
+  priceCategory: 'high',
 } as ModelItem;
 
 export const MS_K2_5: ModelItem = {
@@ -86,6 +89,7 @@ export const MS_K2_5: ModelItem = {
   pricing: {
     CNY: { default: { cacheInput: 0.70, input: 4.00, output: 21.00 } },
   },
+  priceCategory: 'high',
 } as ModelItem;
 
 export const MS_MODELS: readonly ModelItem[] = [
