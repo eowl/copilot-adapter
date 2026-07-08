@@ -1,13 +1,7 @@
 import { t } from '../nls';
+import type { ServiceLinks } from '../providers/types';
 
 export type ApiErrorKind = 'http' | 'network' | 'unknown';
-
-export interface ServiceLinks {
-  apiHost?: string;
-  apiKeys?: string;
-  usage?: string;
-  status?: string;
-}
 
 /**
  * Structured error from the LLM API layer.

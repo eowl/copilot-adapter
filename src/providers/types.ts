@@ -1,5 +1,12 @@
-import type { ServiceLinks } from '../client/error';
 import type { UsagePayload } from '../bridge/types';
+
+export interface ServiceLinks {
+  apiHost?: string;
+  apiKeys?: string;
+  usage?: string;
+  status?: string;
+  balance?: string;
+}
 
 /**
  * Stateful per-request parser for the content stream.
