@@ -1,6 +1,16 @@
 import { channel } from '../logger';
 import type { ServiceLinks } from '../providers/types';
 
+/** Currency-to-symbol mapping used by all balance display logic. */
+const CURRENCY_SYMBOLS: Record<string, string> = {
+  CNY: '¥',
+  USD: '$',
+};
+
+function currencySymbol(currency: string): string {
+  return CURRENCY_SYMBOLS[currency] ?? `${currency} `;
+}
+
 /**
  * Shape returned by DeepSeek's /user/balance endpoint.
  * Other providers may return different shapes — handle per-provider.
@@ -51,8 +61,7 @@ export function getCachedBalance(
 /**
  * Query DeepSeek's /user/balance endpoint.
  */
-async function queryDeepSeekBalance(apiKey: string): Promise<BalanceResult> {
-  const url = 'https://api.deepseek.com/user/balance';
+async function queryDeepSeekBalance(apiKey: string, url: string): Promise<BalanceResult> {
 
   const response = await fetch(url, {
     method: 'GET',
@@ -81,27 +90,73 @@ async function queryDeepSeekBalance(apiKey: string): Promise<BalanceResult> {
     return { display: 'N/A', raw: data };
   }
 
-  const symbol = info.currency === 'CNY' ? '¥' : info.currency === 'USD' ? '$' : `${info.currency} `;
+  return {
+    display: `${currencySymbol(info.currency)}${info.total_balance}`,
+    raw: data,
+  };
+}
+
+/**
+ * Query Moonshot's /users/me/balance endpoint.
+ */
+async function queryMoonshotBalance(apiKey: string, url: string, currency: string): Promise<BalanceResult> {
+
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Balance query failed: HTTP ${response.status}`);
+  }
+
+  const data = (await response.json()) as {
+    code: number;
+    data: {
+      available_balance: number;
+      voucher_balance: number;
+      cash_balance: number;
+    };
+    scode: string;
+    status: boolean;
+  };
+
+  if (!data.status || !data.data) {
+    return { display: 'N/A', raw: data };
+  }
 
   return {
-    display: `${symbol}${info.total_balance}`,
+    display: `${currencySymbol(currency)}${data.data.available_balance.toFixed(2)}`,
     raw: data,
   };
 }
 
 /**
  * Query balance for a given provider endpoint.
- * Dispatches to the appropriate provider-specific handler based on links.
+ * Dispatches to the appropriate provider-specific handler based on endpointId.
  */
 export async function queryBalance(
   apiKey: string,
   endpointId: string,
-  _links?: ServiceLinks,
+  links?: ServiceLinks,
 ): Promise<BalanceResult> {
-  // For now only DeepSeek is supported; other providers will follow
-  // the same pattern once balance endpoints are known.
+  const url = links?.balance;
+  if (!url) return { display: 'N/A' };
+
   try {
-    const result = await queryDeepSeekBalance(apiKey);
+    let result: BalanceResult;
+
+    if (endpointId === 'deepseek') {
+      result = await queryDeepSeekBalance(apiKey, url);
+    } else if (endpointId === 'moonshot.cn') {
+      result = await queryMoonshotBalance(apiKey, url, 'CNY');
+    } else if (endpointId === 'moonshot.ai') {
+      result = await queryMoonshotBalance(apiKey, url, 'USD');
+    } else {
+      return { display: 'N/A' };
+    }
 
     // Cache the result
     cache.set(cacheKey(apiKey, endpointId), {
