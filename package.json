@@ -644,8 +644,28 @@
           ],
           "markdownDescription": "%copilot-adapter.config.pricingCurrency.description%"
         },
-        "copilot-adapter.maxWarmupRounds": {
+        "copilot-adapter.balanceCacheTime": {
           "order": 14,
+          "type": "number",
+          "default": 60,
+          "enum": [
+            0,
+            30,
+            60,
+            120,
+            300
+          ],
+          "enumItemLabels": [
+            "%copilot-adapter.config.balanceCacheTime.off%",
+            "%copilot-adapter.config.balanceCacheTime.30s%",
+            "%copilot-adapter.config.balanceCacheTime.60s%",
+            "%copilot-adapter.config.balanceCacheTime.120s%",
+            "%copilot-adapter.config.balanceCacheTime.300s%"
+          ],
+          "markdownDescription": "%copilot-adapter.config.balanceCacheTime.description%"
+        },
+        "copilot-adapter.maxWarmupRounds": {
+          "order": 15,
           "type": "number",
           "default": 3,
           "minimum": 1,

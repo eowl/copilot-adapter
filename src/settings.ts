@@ -95,4 +95,8 @@ export class Settings {
 
     return vscode.env.language.toLowerCase().startsWith('zh') ? 'CNY' : 'USD';
   }
+
+  static balanceCacheTime(): number {
+    return this.section().get<number>('balanceCacheTime', 60);
+  }
 }

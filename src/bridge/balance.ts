@@ -1,4 +1,5 @@
 import { channel } from '../logger';
+import { Settings } from '../settings';
 import type { ServiceLinks } from '../providers/types';
 
 /** Currency-to-symbol mapping used by all balance display logic. */
@@ -30,8 +31,10 @@ interface CacheEntry {
   timestamp: number;
 }
 
-/** Default cache TTL: 5 minutes. */
-const DEFAULT_TTL_MS = 5 * 60 * 1000;
+/** Default cache TTL from settings (seconds). */
+function defaultTtlMs(): number {
+  return Settings.balanceCacheTime() * 1000;
+}
 
 const cache = new Map<string, CacheEntry>();
 
@@ -45,7 +48,7 @@ function cacheKey(apiKey: string, endpointId: string): string {
 export function getCachedBalance(
   apiKey: string,
   endpointId: string,
-  ttlMs = DEFAULT_TTL_MS,
+  ttlMs = defaultTtlMs(),
 ): BalanceResult | undefined {
   const entry = cache.get(cacheKey(apiKey, endpointId));
   if (!entry) return undefined;
