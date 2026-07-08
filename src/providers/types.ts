@@ -37,8 +37,6 @@ export type BillingMode = 'api' | 'plan';
 
 export type PriceCategory = 'low' | 'medium' | 'high' | 'very_high' | 'plan';
 
-export type PriceValue = number | string;
-
 export interface ModelProvider extends ApiTraits {
   readonly id: string;
   readonly label: string;
@@ -76,10 +74,16 @@ export interface ThinkingConfig {
   readonly options: readonly ThinkingOption[];
 }
 
+export interface PricingDefinition {
+  input?: number;
+  output?: number;
+  cacheInput?: number;
+  cacheWrite?: number;
+}
+
 export interface ModelPricing {
-  cacheHitInput: PriceValue;
-  cacheMissInput: PriceValue;
-  output: PriceValue;
+  default: PricingDefinition;
+  longContext?: PricingDefinition;
 }
 
 export interface ModelItem extends ApiTraits {

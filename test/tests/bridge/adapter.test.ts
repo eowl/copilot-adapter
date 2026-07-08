@@ -150,8 +150,8 @@ suite('bridge/adapter multi-group', () => {
 
   suite('pricingCurrency priority via buildChatInfo', () => {
     const USD_PRICING = Object.freeze({
-      USD: { cacheHitInput: 0.01, cacheMissInput: 0.02, output: 0.03 },
-      CNY: { cacheHitInput: 0.07, cacheMissInput: 0.14, output: 0.28 },
+      USD: { default: { cacheInput: 0.01, input: 0.02, output: 0.03 } },
+      CNY: { default: { cacheInput: 0.07, input: 0.14, output: 0.28 } },
     });
 
     // helper: call buildChatInfo and assert specific currency output
@@ -183,16 +183,16 @@ suite('bridge/adapter multi-group', () => {
         assert.equal(info.outputCost, undefined);
         assert.equal(info.cacheCost, undefined);
       } else {
-        assert.equal(info.inputCost, `${expectedSymbol}${expectedInput}`);
+        assert.equal(info.inputCost, parseFloat(expectedInput));
       }
     }
 
-    test('explicit USD currency produces "$" prefix', () => {
-      assertCurrency('USD', '$', '0.02');
+    test('explicit USD currency returns number', () => {
+      assertCurrency('USD', '', '0.02');
     });
 
-    test('explicit CNY currency produces "¥" prefix', () => {
-      assertCurrency('CNY', '¥', '0.14');
+    test('explicit CNY currency returns number', () => {
+      assertCurrency('CNY', '', '0.14');
     });
 
     test('undefined currency suppresses all cost fields', () => {

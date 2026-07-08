@@ -66,8 +66,8 @@ export const ZHIPU_GLM_5_2: ModelItem = {
   maxOutputTokens: 128_000,
   detailKey: 'model.glm-5.2.detail',
   pricing: {
-    USD: { cacheHitInput: 0.26, cacheMissInput: 1.4, output: 4.4 },
-    CNY: { cacheHitInput: 2, cacheMissInput: 8, output: 28 },
+    USD: { default: { cacheInput: 0.26, input: 1.4, output: 4.4 } },
+    CNY: { default: { cacheInput: 2, input: 8, output: 28 } },
   },
   priceCategory: 'high',
 } as ModelItem;
@@ -82,11 +82,18 @@ export const ZHIPU_GLM_5_1: ModelItem = {
   maxOutputTokens: 128_000,
   detailKey: 'model.glm-5.1.detail',
   pricing: {
-    USD: { cacheHitInput: 0.26, cacheMissInput: 1.4, output: 4.4 },
+    USD: { default: { cacheInput: 0.26, input: 1.4, output: 4.4 } },
     CNY: {
-      cacheHitInput: '1.3(<32K)/2(>=32K)',
-      cacheMissInput: '6(<32K)/8(>=32K)',
-      output: '24(<32K)/28(>=32K)',
+      default: { // <32K
+        cacheInput: 1.3,
+        input: 6,
+        output: 24,
+      },
+      longContext: { // >=32K
+        cacheInput: 3,
+        input: 10,
+        output: 32,
+      },
     },
   },
   priceCategory: 'high',
@@ -105,11 +112,18 @@ export const ZP_MODELS: readonly ModelItem[] = [
     maxOutputTokens: 128_000,
     detailKey: 'model.glm-5.detail',
     pricing: {
-      USD: { cacheHitInput: 0.2, cacheMissInput: 1, output: 3.2 },
+      USD: { default: { cacheInput: 0.2, input: 1, output: 3.2 } },
       CNY: {
-        cacheHitInput: '1(<32K)/1.5(>=32K)',
-        cacheMissInput: '4(<32K)/6(>=32K)',
-        output: '18(<32K)/22(>=32K)',
+        default: { // <32K
+          cacheInput: 1,
+          input: 4,
+          output: 18,
+        },
+        longContext: { // >=32K
+          cacheInput: 1.5,
+          input: 6,
+          output: 22,
+        },
       },
     },
     priceCategory: 'medium',
@@ -124,11 +138,18 @@ export const ZP_MODELS: readonly ModelItem[] = [
     maxOutputTokens: 128_000,
     detailKey: 'model.glm-5-turbo.detail',
     pricing: {
-      USD: { cacheHitInput: 0.24, cacheMissInput: 1.2, output: 4.0 },
+      USD: { default: { cacheInput: 0.24, input: 1.2, output: 4.0 } },
       CNY: {
-        cacheHitInput: '1.2(<32K)/1.8(>=32K)',
-        cacheMissInput: '5(<32K)/7(>=32K)',
-        output: '22(<32K)/26(>=32K)',
+        default: { // <32K
+          cacheInput: 1.2,
+          input: 5,
+          output: 22,
+        },
+        longContext: { // >=32K
+          cacheInput: 1.8,
+          input: 7,
+          output: 26,
+        },
       },
     },
     priceCategory: 'high',

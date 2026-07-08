@@ -3,16 +3,20 @@ import { t } from '../nls';
 import { modelKey } from '../providers/utils';
 import type { ModelItem, ModelPricing, PriceCategory, PricingCurrency } from '../providers/types';
 
-/** Extended chat model information returned to VS Code. */
 export interface ChatInfo extends vscode.LanguageModelChatInformation {
   readonly isBYOK: true;
   readonly isUserSelectable: boolean;
   statusIcon?: vscode.ThemeIcon;
   configurationSchema?: Record<string, unknown>;
 
-  readonly inputCost?: string;
-  readonly outputCost?: string;
-  readonly cacheCost?: string;
+  readonly inputCost?: number;
+  readonly outputCost?: number;
+  readonly cacheCost?: number;
+  readonly cacheWriteCost?: number;
+  readonly longContextInputCost?: number;
+  readonly longContextOutputCost?: number;
+  readonly longContextCacheCost?: number;
+  readonly longContextCacheWriteCost?: number;
   readonly priceCategory?: PriceCategory;
   readonly category?: string;
 }
@@ -73,31 +77,28 @@ function toModelCostInfo(
   pricing: Readonly<Partial<Record<PricingCurrency, ModelPricing>>> | undefined,
   priceCategory: PriceCategory | undefined,
   currency?: PricingCurrency,
-): Pick<ChatInfo, 'inputCost' | 'outputCost' | 'cacheCost' | 'priceCategory'> {
+): Pick<ChatInfo, 'inputCost' | 'outputCost' | 'cacheCost' | 'cacheWriteCost' | 'longContextInputCost' | 'longContextOutputCost' | 'longContextCacheCost' | 'longContextCacheWriteCost' | 'priceCategory'> {
   if (!currency || !pricing) {
     return priceCategory ? { priceCategory } : {};
   }
 
   let p = pricing[currency];
-  let symbol: string;
-
-  if (p) {
-    symbol = currency === 'CNY' ? '¥' : '$';
-  } else {
+  if (!p) {
     const fallback = (Object.keys(pricing) as PricingCurrency[])[0];
     p = pricing[fallback];
-    if (!p) return priceCategory ? { priceCategory } : {};
 
-    symbol = fallback === 'CNY' ? '¥' : '$';
+    if (!p) return priceCategory ? { priceCategory } : {};
   }
 
-  const fmt = (v: number | string): string =>
-    typeof v === 'string' ? `${symbol}${v}` : `${symbol}${v}`;
-
   return {
-    inputCost: fmt(p.cacheMissInput),
-    outputCost: fmt(p.output),
-    cacheCost: fmt(p.cacheHitInput),
+    inputCost: p.default.input,
+    outputCost: p.default.output,
+    cacheCost: p.default.cacheInput,
+    cacheWriteCost: p.default.cacheWrite,
+    longContextInputCost: p.longContext?.input,
+    longContextOutputCost: p.longContext?.output,
+    longContextCacheCost: p.longContext?.cacheInput,
+    longContextCacheWriteCost: p.longContext?.cacheWrite,
     ...(priceCategory ? { priceCategory } : {}),
   };
 }

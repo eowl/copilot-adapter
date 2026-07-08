@@ -135,50 +135,50 @@ suite('bridge/information buildChatInfo', () => {
 
   suite('pricing', () => {
     const USD_PRICING = Object.freeze({
-      USD: { cacheHitInput: 0.01, cacheMissInput: 0.02, output: 0.03 },
-      CNY: { cacheHitInput: 0.07, cacheMissInput: 0.14, output: 0.28 },
+      USD: { default: { cacheInput: 0.01, input: 0.02, output: 0.03 } },
+      CNY: { default: { cacheInput: 0.07, input: 0.14, output: 0.28 } },
     });
 
     const CNY_ONLY_PRICING = Object.freeze({
-      CNY: { cacheHitInput: 1, cacheMissInput: 2, output: 3 },
+      CNY: { default: { cacheInput: 1, input: 2, output: 3 } },
     });
 
-    test('emits CNY cost fields when currency is CNY', () => {
+    test('emits CNY cost fields as numbers when currency is CNY', () => {
       const model = makeTestModel({ pricing: USD_PRICING });
       const info = buildChatInfo(model, true, false, '', 'CNY');
 
-      assert.equal(info.inputCost, '¥0.14');
-      assert.equal(info.outputCost, '¥0.28');
-      assert.equal(info.cacheCost, '¥0.07');
+      assert.equal(info.inputCost, 0.14);
+      assert.equal(info.outputCost, 0.28);
+      assert.equal(info.cacheCost, 0.07);
     });
 
-    test('emits USD cost fields when currency is USD', () => {
+    test('emits USD cost fields as numbers when currency is USD', () => {
       const model = makeTestModel({ pricing: USD_PRICING });
       const info = buildChatInfo(model, true, false, '', 'USD');
 
-      assert.equal(info.inputCost, '$0.02');
-      assert.equal(info.outputCost, '$0.03');
-      assert.equal(info.cacheCost, '$0.01');
+      assert.equal(info.inputCost, 0.02);
+      assert.equal(info.outputCost, 0.03);
+      assert.equal(info.cacheCost, 0.01);
     });
 
-    test('emits string price values with symbol prefix', () => {
+    test('emits cost fields from pricing object', () => {
       const model = makeTestModel({
-        pricing: { CNY: { cacheHitInput: '0.42 / 0.84', cacheMissInput: '2.1 / 4.2', output: '8.4 / 16.8' } },
+        pricing: { CNY: { default: { cacheInput: 0.42, input: 2.1, output: 8.4 } } },
       });
       const info = buildChatInfo(model, true, false, '', 'CNY');
 
-      assert.equal(info.inputCost, '¥2.1 / 4.2');
-      assert.equal(info.outputCost, '¥8.4 / 16.8');
-      assert.equal(info.cacheCost, '¥0.42 / 0.84');
+      assert.equal(info.inputCost, 2.1);
+      assert.equal(info.outputCost, 8.4);
+      assert.equal(info.cacheCost, 0.42);
     });
 
     test('falls back to available currency when preferred currency missing', () => {
       const model = makeTestModel({ pricing: CNY_ONLY_PRICING });
       const info = buildChatInfo(model, true, false, '', 'USD');
 
-      assert.equal(info.inputCost, '¥2');
-      assert.equal(info.outputCost, '¥3');
-      assert.equal(info.cacheCost, '¥1');
+      assert.equal(info.inputCost, 2);
+      assert.equal(info.outputCost, 3);
+      assert.equal(info.cacheCost, 1);
     });
 
     test('emits no cost fields when pricing is undefined', () => {
@@ -242,7 +242,7 @@ suite('bridge/information buildChatInfo', () => {
     test('emits category with balance when provided', () => {
       const model = makeTestModel({
         pricing: {
-          CNY: { cacheHitInput: 0.07, cacheMissInput: 0.14, output: 0.28 },
+          CNY: { default: { cacheInput: 0.07, input: 0.14, output: 0.28 } },
         },
       });
       const info = buildChatInfo(model, true, false, '', 'CNY', '¥19.20');
@@ -254,7 +254,7 @@ suite('bridge/information buildChatInfo', () => {
     test('emits undefined category when balance not provided', () => {
       const model = makeTestModel({
         pricing: {
-          CNY: { cacheHitInput: 0.07, cacheMissInput: 0.14, output: 0.28 },
+          CNY: { default: { cacheInput: 0.07, input: 0.14, output: 0.28 } },
         },
       });
       const info = buildChatInfo(model, true, false, '', 'CNY');

@@ -40,14 +40,28 @@ export const MM_M3: ModelItem = {
   detailKey: 'model.minimax-m3.detail',
   pricing: {
     USD: {
-      cacheHitInput: '0.06(<=512K)/0.12(512K~1M)',
-      cacheMissInput: '0.3(<=512K)/0.6(512K~1M)',
-      output: '1.2(<=512K)/2.4(512K~1M)',
+      default: { // <= 512k
+        cacheInput: 0.06,
+        input: 0.3,
+        output: 1.2,
+      },
+      longContext: { // 512K~1M
+        cacheInput: 0.12,
+        input: 0.6,
+        output: 2.4,
+      }
     },
     CNY: {
-      cacheHitInput: '0.42(<=512K)/0.84(512K~1M)',
-      cacheMissInput: '2.1(<=512K)/4.2(512K~1M)',
-      output: '8.4(<=512K)/16.8(512K~1M)',
+      default: { // <= 512k
+        cacheInput: 0.42,
+        input: 2.1,
+        output: 8.4,
+      },
+      longContext: { // 512K~1M
+        cacheInput: 0.84,
+        input: 4.2,
+        output: 16.8,
+      }
     },
   },
   priceCategory: 'low',
@@ -62,14 +76,18 @@ export const MM_M2_7: ModelItem = {
   detailKey: 'model.minimax-m2.7.detail',
   pricing: {
     USD: {
-      cacheHitInput: 0.06,
-      cacheMissInput: 0.3,
-      output: 1.2,
+      default: {
+        cacheInput: 0.06,
+        input: 0.3,
+        output: 1.2,
+      },
     },
     CNY: {
-      cacheHitInput: 0.42,
-      cacheMissInput: 2.1,
-      output: 8.4,
+      default: {
+        cacheInput: 0.42,
+        input: 2.1,
+        output: 8.4,
+      },
     },
   },
   priceCategory: 'low',
@@ -126,14 +144,18 @@ export const MM_MODELS: readonly ModelItem[] = [
     detailKey: 'model.minimax-m2.7-highspeed.detail',
     pricing: {
       USD: {
-        cacheHitInput: 0.06,
-        cacheMissInput: 0.6,
-        output: 2.4,
+        default: {
+          cacheInput: 0.06,
+          input: 0.6,
+          output: 2.4,
+        },
       },
       CNY: {
-        cacheHitInput: 0.42,
-        cacheMissInput: 4.2,
-        output: 16.8,
+        default: {
+          cacheInput: 0.42,
+          input: 4.2,
+          output: 16.8,
+        },
       },
     },
   },
