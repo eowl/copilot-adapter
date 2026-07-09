@@ -253,7 +253,7 @@ suite('bridge/information buildChatInfo', () => {
 
     test('emits undefined category when balance not provided', () => {
       const model = makeTestModel({ pricing: PRICING });
-      const info = buildChatInfo(model, true, false, '', 'CNY');
+      const info = buildChatInfo(model, true, false, '');
 
       assert.equal(info.category, undefined);
     });
