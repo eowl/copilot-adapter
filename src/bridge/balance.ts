@@ -2,7 +2,6 @@ import { channel } from '../logger';
 import { Settings } from '../settings';
 import type { ServiceLinks } from '../providers/types';
 
-/** Currency-to-symbol mapping used by all balance display logic. */
 const CURRENCY_SYMBOLS: Record<string, string> = {
   CNY: '¥',
   USD: '$',
@@ -12,26 +11,17 @@ function currencySymbol(currency: string): string {
   return CURRENCY_SYMBOLS[currency] ?? `${currency} `;
 }
 
-/**
- * Shape returned by DeepSeek's /user/balance endpoint.
- * Other providers may return different shapes — handle per-provider.
- */
 export interface BalanceResult {
-  /** Formatted balance string for display, e.g. "¥19.20" */
   display: string;
-  /** Raw balance data — provider-specific */
+  currency?: string;
   raw?: unknown;
 }
 
-/**
- * In-memory cache entry for balance queries.
- */
 interface CacheEntry {
   data: BalanceResult;
   timestamp: number;
 }
 
-/** Default cache TTL from settings (seconds). */
 function defaultTtlMs(): number {
   return Settings.balanceCacheTime() * 1000;
 }
@@ -42,9 +32,6 @@ function cacheKey(apiKey: string, endpointId: string): string {
   return `${apiKey}:${endpointId}`;
 }
 
-/**
- * Return cached balance if it's fresh enough; otherwise undefined.
- */
 export function getCachedBalance(
   apiKey: string,
   endpointId: string,
@@ -61,9 +48,6 @@ export function getCachedBalance(
   return entry.data;
 }
 
-/**
- * Query DeepSeek's /user/balance endpoint.
- */
 async function queryDeepSeekBalance(apiKey: string, url: string): Promise<BalanceResult> {
 
   const response = await fetch(url, {
@@ -95,15 +79,12 @@ async function queryDeepSeekBalance(apiKey: string, url: string): Promise<Balanc
 
   return {
     display: `${currencySymbol(info.currency)}${info.total_balance}`,
+    currency: info.currency,
     raw: data,
   };
 }
 
-/**
- * Query Moonshot's /users/me/balance endpoint.
- */
 async function queryMoonshotBalance(apiKey: string, url: string, currency: string): Promise<BalanceResult> {
-
   const response = await fetch(url, {
     method: 'GET',
     headers: {
@@ -132,14 +113,11 @@ async function queryMoonshotBalance(apiKey: string, url: string, currency: strin
 
   return {
     display: `${currencySymbol(currency)}${data.data.available_balance.toFixed(2)}`,
+    currency,
     raw: data,
   };
 }
 
-/**
- * Query balance for a given provider endpoint.
- * Dispatches to the appropriate provider-specific handler based on endpointId.
- */
 export async function queryBalance(
   apiKey: string,
   endpointId: string,
@@ -161,7 +139,6 @@ export async function queryBalance(
       return { display: 'N/A' };
     }
 
-    // Cache the result
     cache.set(cacheKey(apiKey, endpointId), {
       data: result,
       timestamp: Date.now(),
