@@ -2,7 +2,7 @@
   "name": "copilot-adapter",
   "displayName": "Copilot Adapter",
   "description": "AI Models Adapter for Copilot Chat",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "publisher": "Eowl",
   "license": "MIT",
   "icon": "assets/icon.png",
@@ -636,7 +636,11 @@
           "order": 13,
           "type": "string",
           "default": "",
-          "enum": ["", "CNY", "USD"],
+          "enum": [
+            "",
+            "CNY",
+            "USD"
+          ],
           "enumItemLabels": [
             "%copilot-adapter.config.pricingCurrency.auto%",
             "CNY (¥)",
