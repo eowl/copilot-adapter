@@ -79,7 +79,7 @@
   "copilot-adapter.config.imageTokenEstimate.description": "计算 token 数时每张图片的估算 token 消耗，用于上下文窗口追踪。",
   "copilot-adapter.config.maxWarmupRounds.description": "启用工具预热时，每次请求的最大预热轮数。",
   "copilot-adapter.config.toolWarmup.description": "在正式请求之前向模型发送模拟的 activate_* 工具调用，帮助部分模型稳定其工具调用行为。每轮预热消耗少量 token。",
-  "copilot-adapter.config.pricingCurrency.description": "模型悬浮卡片上每百万 token 定价所用的货币。留空「自动」则跟随 VS Code 界面语言（中文 → CNY，其他 → USD）。",
+  "copilot-adapter.config.pricingCurrency.description": "模型悬浮卡片上额度单位的备选币种。优先级：余额 API 响应 > 端点配置 > 此设置 > VS Code 界面语言（中文为 CNY，其他为 USD）。",
   "copilot-adapter.config.pricingCurrency.auto": "自动（跟随语言）",
   "copilot-adapter.config.balanceCacheTime.description": "查询账户余额的请求缓存时长，到期后重新获取。选择「关闭」可禁用缓存（每次请求模型列表时都重新获取）。",
   "copilot-adapter.config.balanceCacheTime.off": "关闭（不缓存）",

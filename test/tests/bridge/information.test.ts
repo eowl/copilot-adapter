@@ -238,13 +238,13 @@ suite('bridge/information buildChatInfo', () => {
     });
   });
 
-  suite('category (balance)', () => {
+  suite('category (balance & credits unit)', () => {
+    const PRICING = Object.freeze({
+      CNY: { default: { cacheInput: 0.07, input: 0.14, output: 0.28 } },
+    });
+
     test('emits category with balance when provided', () => {
-      const model = makeTestModel({
-        pricing: {
-          CNY: { default: { cacheInput: 0.07, input: 0.14, output: 0.28 } },
-        },
-      });
+      const model = makeTestModel({ pricing: PRICING });
       const info = buildChatInfo(model, true, false, '', 'CNY', '¥19.20');
 
       assert.ok(info.category!.includes('balance.label'));
@@ -252,14 +252,106 @@ suite('bridge/information buildChatInfo', () => {
     });
 
     test('emits undefined category when balance not provided', () => {
+      const model = makeTestModel({ pricing: PRICING });
+      const info = buildChatInfo(model, true, false, '');
+
+      assert.equal(info.category, undefined);
+    });
+
+    test('emits credits unit when pricing and pricingCurrency present and billing is api', () => {
       const model = makeTestModel({
-        pricing: {
-          CNY: { default: { cacheInput: 0.07, input: 0.14, output: 0.28 } },
-        },
+        pricing: PRICING,
+        endpoint: { id: 'test-ep', label: 'Test', billing: 'api' } as ModelItem['endpoint'],
+      });
+      const info = buildChatInfo(model, true, false, '', 'CNY');
+
+      assert.ok(info.category!.includes('balance.creditsUnit'));
+      assert.ok(info.category!.includes('CNY'));
+    });
+
+    test('emits credits unit when billing is undefined (defaults to api)', () => {
+      const model = makeTestModel({
+        pricing: PRICING,
+        endpoint: { id: 'test-ep', label: 'Test' } as ModelItem['endpoint'],
+      });
+      const info = buildChatInfo(model, true, false, '', 'USD');
+
+      assert.ok(info.category!.includes('balance.creditsUnit'));
+      assert.ok(info.category!.includes('USD'));
+    });
+
+    test('does NOT emit credits unit when billing is plan', () => {
+      const model = makeTestModel({
+        pricing: PRICING,
+        endpoint: { id: 'test-ep', label: 'Test', billing: 'plan' } as ModelItem['endpoint'],
       });
       const info = buildChatInfo(model, true, false, '', 'CNY');
 
       assert.equal(info.category, undefined);
+    });
+
+    test('does NOT emit credits unit when pricing is undefined', () => {
+      const model = makeTestModel({
+        pricing: undefined,
+        endpoint: { id: 'test-ep', label: 'Test' } as ModelItem['endpoint'],
+      });
+      const info = buildChatInfo(model, true, false, '', 'CNY');
+
+      assert.equal(info.category, undefined);
+    });
+
+    test('does NOT emit credits unit when pricingCurrency is undefined', () => {
+      const model = makeTestModel({
+        pricing: PRICING,
+        endpoint: { id: 'test-ep', label: 'Test' } as ModelItem['endpoint'],
+      });
+      const info = buildChatInfo(model, true, false, '', undefined);
+
+      assert.equal(info.category, undefined);
+    });
+
+    test('emits both balance and credits unit joined by space', () => {
+      const model = makeTestModel({
+        pricing: PRICING,
+        endpoint: { id: 'test-ep', label: 'Test' } as ModelItem['endpoint'],
+      });
+      const info = buildChatInfo(model, true, false, '', 'CNY', '¥19.20');
+
+      assert.ok(info.category!.includes('balance.label'));
+      assert.ok(info.category!.includes('¥19.20'));
+      assert.ok(info.category!.includes('balance.creditsUnit'));
+      assert.ok(info.category!.includes('CNY'));
+      // Parts are joined by space, not pipe
+      assert.ok(info.category!.includes(' '));
+      assert.ok(!info.category!.includes('|'));
+    });
+
+    test('balanceCurrency from API response overrides pricingCurrency', () => {
+      const model = makeTestModel({
+        pricing: PRICING,
+        endpoint: { id: 'test-ep', label: 'Test' } as ModelItem['endpoint'],
+      });
+      // pricingCurrency says USD but balanceCurrency says CNY from API response
+      const info = buildChatInfo(model, true, false, '', 'USD', '¥19.20', 'CNY');
+
+      assert.ok(info.category!.includes('balance.label'));
+      assert.ok(info.category!.includes('¥19.20'));
+      assert.ok(info.category!.includes('balance.creditsUnit'));
+      assert.ok(info.category!.includes('CNY'));
+      assert.ok(!info.category!.includes('USD'));
+    });
+
+    test('balanceCurrency used for credits unit even without balance display', () => {
+      const model = makeTestModel({
+        pricing: PRICING,
+        endpoint: { id: 'test-ep', label: 'Test' } as ModelItem['endpoint'],
+      });
+      // No balance string, but balanceCurrency from API response still drives credits unit
+      const info = buildChatInfo(model, true, false, '', 'USD', undefined, 'CNY');
+
+      assert.ok(!info.category!.includes('balance.label'));
+      assert.ok(info.category!.includes('balance.creditsUnit'));
+      assert.ok(info.category!.includes('CNY'));
     });
   });
 });

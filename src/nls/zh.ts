@@ -137,6 +137,7 @@ export const zh: Translation = {
   'err.unknownModel': '未知模型：{0}。',
 
   'balance.label': '余额：{0}',
-  
+  'balance.creditsUnit': '额度单位：{0}',
+
   'tools.drift': '以下工具已从对话中移除以保持上下文连贯：{0}。',
 };

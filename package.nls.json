@@ -79,7 +79,7 @@
   "copilot-adapter.config.imageTokenEstimate.description": "Estimated token cost per image used when counting tokens for context-window tracking.",
   "copilot-adapter.config.maxWarmupRounds.description": "Maximum tool warmup rounds per request when tool warmup is enabled.",
   "copilot-adapter.config.toolWarmup.description": "Send fake activate_* tool calls to the model before the real request, to help some models stabilize their tool-calling behavior. Each warmup round costs a small number of tokens.",
-  "copilot-adapter.config.pricingCurrency.description": "Currency used to display per-token pricing on the model hover card. Leave `Auto` to follow VS Code language (zh → CNY, else USD).",
+  "copilot-adapter.config.pricingCurrency.description": "Fallback currency for the credits unit shown on the model hover card. Priority: balance API response > endpoint > this setting > VS Code language (zh CNY, else USD).",
   "copilot-adapter.config.pricingCurrency.auto": "Auto (language-based)",
   "copilot-adapter.config.balanceCacheTime.description": "How long to cache the account balance query result before re-fetching. Select `Off` to disable caching (fetch on every model list request).",
   "copilot-adapter.config.balanceCacheTime.off": "Off (no cache)",

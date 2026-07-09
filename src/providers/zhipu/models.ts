@@ -84,12 +84,14 @@ export const ZHIPU_GLM_5_1: ModelItem = {
   pricing: {
     USD: { default: { cacheInput: 0.26, input: 1.4, output: 4.4 } },
     CNY: {
-      default: { // <32K
+      default: {
+        // <32K
         cacheInput: 1.3,
         input: 6,
         output: 24,
       },
-      longContext: { // >=32K
+      longContext: {
+        // >=32K
         cacheInput: 3,
         input: 10,
         output: 32,
@@ -114,12 +116,14 @@ export const ZP_MODELS: readonly ModelItem[] = [
     pricing: {
       USD: { default: { cacheInput: 0.2, input: 1, output: 3.2 } },
       CNY: {
-        default: { // <32K
+        default: {
+          // <32K
           cacheInput: 1,
           input: 4,
           output: 18,
         },
-        longContext: { // >=32K
+        longContext: {
+          // >=32K
           cacheInput: 1.5,
           input: 6,
           output: 22,
@@ -140,12 +144,14 @@ export const ZP_MODELS: readonly ModelItem[] = [
     pricing: {
       USD: { default: { cacheInput: 0.24, input: 1.2, output: 4.0 } },
       CNY: {
-        default: { // <32K
+        default: {
+          // <32K
           cacheInput: 1.2,
           input: 5,
           output: 22,
         },
-        longContext: { // >=32K
+        longContext: {
+          // >=32K
           cacheInput: 1.8,
           input: 7,
           output: 26,

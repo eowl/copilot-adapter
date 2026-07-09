@@ -223,10 +223,12 @@ export class Adapter implements vscode.LanguageModelChatProvider {
 
     // Use cached balance if fresh; otherwise fire async query
     let balance: string | undefined;
+    let balanceCurrency: string | undefined;
     if (hasKey && endpointId) {
       const cached = getCachedBalance(apiKey, endpointId);
       if (cached) {
         balance = cached.display;
+        balanceCurrency = cached.currency;
       } else if (balanceLinks?.balance) {
         // Fire query in background and refresh when complete
         queryBalance(apiKey, endpointId, balanceLinks)
@@ -250,6 +252,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
           idPrefix,
           resolvedPricingCurrency,
           balance,
+          balanceCurrency,
         ) as ChatInfo,
     );
   }

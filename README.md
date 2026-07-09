@@ -155,6 +155,7 @@ The balance query result is cached to avoid excessive API calls. You can control
 | `copilot-adapter.tokenRatioCalibrationThreshold` | `0.1` | Minimum relative change (1–100%) to persist auto-calibrated ratio |
 | `copilot-adapter.toolWarmup` | `false` | Send fake `activate_*` tool calls before real requests (improves tool stability on some models) |
 | `copilot-adapter.balanceCacheTime` | `60` | Cache duration (seconds) for account balance queries. `0` disables caching — see [Account Balance Display](#account-balance-display) |
+| `copilot-adapter.pricingCurrency` | `""` | Fallback currency for credits unit on model hover cards. Priority: balance API > endpoint > this setting > VS Code language (zh → CNY, else USD) |
 | `copilot-adapter.maxWarmupRounds` | `3` | Max warmup rounds per request (requires `toolWarmup` on) |
 | `copilot-adapter.debugMode` | `"off"` | Log verbosity: `off` / `info` / `meta` / `verbose` |
 

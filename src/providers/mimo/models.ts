@@ -22,6 +22,11 @@ export const MIMO_MODELS: readonly ModelItem[] = [
     maxInputTokens: 896_000,
     maxOutputTokens: 128_000,
     detailKey: 'model.mimo-v2.5-pro.detail',
+    pricing: {
+      USD: { default: { cacheInput: 0.0036, input: 0.435, output: 0.87 } },
+      CNY: { default: { cacheInput: 0.025, input: 3.0, output: 6.0 } },
+    },
+    priceCategory: 'low',
   },
   {
     ...MIMO_BASE,
@@ -33,5 +38,10 @@ export const MIMO_MODELS: readonly ModelItem[] = [
     maxOutputTokens: 128_000,
     imageInput: true,
     detailKey: 'model.mimo-v2.5.detail',
+    pricing: {
+      USD: { default: { cacheInput: 0.0028, input: 0.14, output: 0.28 } },
+      CNY: { default: { cacheInput: 0.02, input: 1.0, output: 2.0 } },
+    },
+    priceCategory: 'low',
   },
 ] as ModelItem[];
