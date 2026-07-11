@@ -260,7 +260,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
           // Fire query in background; when complete VS Code will re-request info
           const sampleModel = visibleModels[0];
           if (sampleModel) {
-            this.refreshBalanceIfStale(apiKey, sampleModel, secrets);
+            this.refreshBalanceIfStale(apiKey, sampleModel);
           }
         }
       }
@@ -375,7 +375,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       // Refresh balance for the apiKey/endpoint used in this request.
       // Fire-and-forget — does not block the response.
       if (resolvedKey && secrets) {
-        this.refreshBalanceIfStale(resolvedKey, model, secrets);
+        this.refreshBalanceIfStale(resolvedKey, model);
       }
     } catch (err) {
       if (err instanceof ApiError) {
@@ -408,11 +408,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
    * an async balance query in the background and notify VS Code to refresh.
    * Safe to call as fire-and-forget — errors are caught silently.
    */
-  private refreshBalanceIfStale(
-    apiKey: string,
-    model: ModelItem,
-    _secrets: GroupSecrets,
-  ): void {
+  private refreshBalanceIfStale(apiKey: string, model: ModelItem): void {
     try {
       const activeEndpoint = model.endpoint ?? model.provider.endpoints?.[0];
       const endpointId = activeEndpoint?.id;
@@ -428,9 +424,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       this.pendingBalances.add(dedupKey);
 
       if (Settings.metaEnabled()) {
-        channel.info(
-          `Balance cache miss for ${model.provider.id}/${endpointId}, querying...`,
-        );
+        channel.info(`Balance cache miss for ${model.provider.id}/${endpointId}, querying...`);
       }
 
       queryBalance(apiKey, endpointId, balanceLinks)
