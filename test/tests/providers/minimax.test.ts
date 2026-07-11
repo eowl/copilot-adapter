@@ -40,10 +40,10 @@ suite('providers/minimax model list', () => {
     assert.equal(MINIMAX.id, 'minimax');
   });
 
-  test('M2 models have contentTag "think"', () => {
+  test('M2 models have thinkingTag "think"', () => {
     const m2 = MM_MODELS.find((m) => m.label === 'MiniMax M2')!;
     backfillModel(m2);
-    assert.equal(m2.contentTag, 'think');
+    assert.equal(m2.thinkingTag, 'think');
     assert.ok(m2.createContentParser !== undefined);
   });
 
@@ -56,8 +56,8 @@ suite('providers/minimax model list', () => {
     assert.ok(m3.configSchema !== undefined);
   });
 
-  test('M3 model has contentTag "think"', () => {
+  test('M3 model has thinkingTag "think"', () => {
     const m3 = MM_MODELS.find((m) => m.label === 'MiniMax M3')!;
-    assert.equal(m3.contentTag, 'think');
+    assert.equal(m3.thinkingTag, 'think');
   });
 });

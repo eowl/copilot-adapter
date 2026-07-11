@@ -77,6 +77,38 @@ function logVerboseMessages(
   }
 }
 
+function logRequestBody(body: Record<string, unknown>): void {
+  try {
+    const lines: string[] = ['Request body:'];
+    for (const [key, value] of Object.entries(body)) {
+      if (key === 'messages') {
+        const msgs = value as Array<{ role: string; content: unknown }>;
+        lines.push(`  ${key}: [${msgs.length} messages]`);
+        for (let i = 0; i < msgs.length; i++) {
+          const m = msgs[i];
+          const contentLen = JSON.stringify(m.content).length;
+          const truncated =
+            contentLen > 500
+              ? `${JSON.stringify(m.content).slice(0, 200)}... [${contentLen} chars]`
+              : JSON.stringify(m.content);
+          lines.push(
+            `    [${i}] role=${m.role} content(${contentLen})`,
+          );
+        }
+      } else if (key === 'tools') {
+        const tools = value as Array<{ function: { name: string } }> | undefined;
+        const names = tools?.map((t) => t.function.name).join(', ') ?? '(none)';
+        lines.push(`  ${key}: [${names}]`);
+      } else {
+        lines.push(`  ${key}: ${JSON.stringify(value)}`);
+      }
+    }
+    channel.info(lines.join('\n'));
+  } catch {
+    // must never throw
+  }
+}
+
 /**
  * Central provider that implements vscode.LanguageModelChatProvider.
  * Registered with vscode.lm.registerChatModelProvider.
@@ -315,6 +347,10 @@ export class Adapter implements vscode.LanguageModelChatProvider {
             `round ${ready.gate.round}/${ready.gate.totalRounds}, ` +
             `tool: ${ready.gate.toolName}`,
         );
+      }
+
+      if (Settings.metaEnabled()) {
+        logRequestBody(ready.body);
       }
 
       const { promptTokens } = await forwardStream(ready, progress, token, session.id);

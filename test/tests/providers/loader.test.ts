@@ -80,8 +80,8 @@ suite('providers/loader backfillModel()', () => {
     assert.equal(m.configSchema, undefined);
   });
 
-  test('generates createContentParser from contentTag', () => {
-    const m = makeModel({ contentTag: 'think' });
+  test('generates createContentParser from thinkingTag', () => {
+    const m = makeModel({ thinkingTag: 'think' });
     backfillModel(m);
     assert.ok(m.createContentParser !== undefined);
     const parser = m.createContentParser!();
@@ -90,7 +90,7 @@ suite('providers/loader backfillModel()', () => {
 
   test('does not overwrite existing createContentParser', () => {
     const orig = () => undefined;
-    const m = makeModel({ createContentParser: orig, contentTag: 'think' });
+    const m = makeModel({ createContentParser: orig, thinkingTag: 'think' });
     backfillModel(m);
     assert.strictEqual(m.createContentParser, orig);
   });

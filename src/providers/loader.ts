@@ -49,9 +49,8 @@ function buildConfigSchema(thinkingConfig: ThinkingConfig): () => Record<string,
   return () => schema;
 }
 
-function buildContentParser(contentTag: string): () => ContentParser {
-  const parser = new ThinkTagParser(contentTag);
-  return () => parser;
+function buildContentParser(thinkingTag: string): () => ContentParser {
+  return () => new ThinkTagParser(thinkingTag);
 }
 
 export function backfillModel(item: ModelItem): void {
@@ -63,8 +62,8 @@ export function backfillModel(item: ModelItem): void {
   if (!item.configSchema && jsonLike.thinkingConfig) {
     item.configSchema = buildConfigSchema(jsonLike.thinkingConfig);
   }
-  if (!item.createContentParser && jsonLike.contentTag) {
-    item.createContentParser = buildContentParser(jsonLike.contentTag);
+  if (!item.createContentParser && jsonLike.thinkingTag) {
+    item.createContentParser = buildContentParser(jsonLike.thinkingTag);
   }
 }
 
@@ -121,7 +120,6 @@ export function loadModelsFromJson(
       imageField: raw.imageField,
       thinkingTag: raw.thinkingTag,
       thinkingConfig: raw.thinkingConfig,
-      contentTag: raw.contentTag,
       source,
       provider,
       endpoint: targetEndpoint,

@@ -111,8 +111,6 @@ export interface ModelItem extends ApiTraits {
 
   readonly maxTools?: number;
 
-  readonly contentTag?: string;
-
   pricing?: Readonly<Partial<Record<PricingCurrency, ModelPricing>>>;
   priceCategory?: PriceCategory;
 
@@ -137,5 +135,5 @@ export interface ModelItemConfig extends Partial<
   readonly endpointId?: string;
   readonly thinking?: boolean;
   readonly thinkingConfig?: ThinkingConfig;
-  readonly contentTag?: string;
+  readonly thinkingTag?: string;
 }

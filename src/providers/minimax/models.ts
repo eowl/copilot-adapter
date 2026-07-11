@@ -12,7 +12,6 @@ const MM_BASE = {
   maxTools: 64,
   thinkingTag: 'think',
   thinkingConfig: MINIMAX_THINKING,
-  contentTag: 'think',
 };
 
 const MM_M3_BASE = {
@@ -25,7 +24,6 @@ const MM_M3_BASE = {
   maxTools: 64,
   thinkingTag: 'think',
   thinkingConfig: MINIMAX_THINKING,
-  contentTag: 'think',
 };
 
 export const MM_M3: ModelItem = {
