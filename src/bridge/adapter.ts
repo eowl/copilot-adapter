@@ -113,6 +113,8 @@ export class Adapter implements vscode.LanguageModelChatProvider {
   private readonly prefixToKey = new Map<string, string>();
   /** Dynamically built models from custom provider's models[] config, keyed by modelKey. */
   private readonly dynamicModels = new Map<string, ModelItem>();
+  /** Tracks in-flight balance queries to prevent duplicate requests. */
+  private readonly pendingBalances = new Set<string>();
 
   private nextPrefix = 0;
   private visionProxyAvailable = true;
@@ -242,30 +244,25 @@ export class Adapter implements vscode.LanguageModelChatProvider {
 
     const idPrefix = secrets.prefix;
 
-    // Resolve the active endpoint for balance query
-    const activeEndpoint = resolvedEndpoint ?? modelProvider.endpoints?.[0];
-    const endpointId = activeEndpoint?.id ?? '';
-    const balanceLinks = activeEndpoint?.links;
-
     // Use cached balance if fresh; otherwise fire async query
     let balance: string | undefined;
     let balanceCurrency: string | undefined;
-    if (hasKey && endpointId) {
-      const cached = getCachedBalance(apiKey, endpointId);
-      if (cached) {
-        balance = cached.display;
-        balanceCurrency = cached.currency;
-      } else if (balanceLinks?.balance) {
-        // Fire query in background and refresh when complete
-        queryBalance(apiKey, endpointId, balanceLinks)
-          .then((result) => {
-            if (result.display !== 'N/A') {
-              this.changeEmitter.fire();
-            }
-          })
-          .catch(() => {
-            // already logged in queryBalance
-          });
+    if (hasKey) {
+      const activeEndpoint = resolvedEndpoint ?? modelProvider.endpoints?.[0];
+      const endpointId = activeEndpoint?.id ?? '';
+
+      if (endpointId) {
+        const cached = getCachedBalance(apiKey, endpointId);
+        if (cached) {
+          balance = cached.display;
+          balanceCurrency = cached.currency;
+        } else {
+          // Fire query in background; when complete VS Code will re-request info
+          const sampleModel = visibleModels[0];
+          if (sampleModel) {
+            this.refreshBalanceIfStale(apiKey, sampleModel);
+          }
+        }
       }
     }
 
@@ -374,6 +371,12 @@ export class Adapter implements vscode.LanguageModelChatProvider {
           channel.error('Failed to calibrate ratio:', err);
         }
       }
+
+      // Refresh balance for the apiKey/endpoint used in this request.
+      // Fire-and-forget — does not block the response.
+      if (resolvedKey && secrets) {
+        this.refreshBalanceIfStale(resolvedKey, model);
+      }
     } catch (err) {
       if (err instanceof ApiError) {
         channel.error(err.summary, err.diagnostic);
@@ -398,6 +401,49 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     const charsPerToken = getCalibratedRatio(entry?.provider.id ?? '', defaultRatio);
 
     return estimateTokens(content, charsPerToken);
+  }
+
+  /**
+   * Check balance cache TTL for the given apiKey/endpoint.  If stale, fire
+   * an async balance query in the background and notify VS Code to refresh.
+   * Safe to call as fire-and-forget — errors are caught silently.
+   */
+  private refreshBalanceIfStale(apiKey: string, model: ModelItem): void {
+    try {
+      const activeEndpoint = model.endpoint ?? model.provider.endpoints?.[0];
+      const endpointId = activeEndpoint?.id;
+      const balanceLinks = activeEndpoint?.links;
+      if (!endpointId || !balanceLinks?.balance) return;
+
+      const cached = getCachedBalance(apiKey, endpointId);
+      if (cached) return; // still fresh
+
+      // Deduplicate: skip if a query for this apiKey+endpoint is already in flight
+      const dedupKey = `${apiKey}:${endpointId}`;
+      if (this.pendingBalances.has(dedupKey)) return;
+      this.pendingBalances.add(dedupKey);
+
+      if (Settings.metaEnabled()) {
+        channel.info(`Balance cache miss for ${model.provider.id}/${endpointId}, querying...`);
+      }
+
+      queryBalance(apiKey, endpointId, balanceLinks)
+        .then((result) => {
+          if (result.display !== 'N/A') {
+            this.changeEmitter.fire();
+          }
+        })
+        .catch((err) => {
+          channel.warn(
+            `Balance query promise failed for ${model.provider.id}/${endpointId}: ${String(err)}`,
+          );
+        })
+        .finally(() => {
+          this.pendingBalances.delete(dedupKey);
+        });
+    } catch (err) {
+      channel.warn(`refreshBalanceIfStale unexpected error: ${String(err)}`);
+    }
   }
 
   private resolveModelIdentity(id: string): { modelId: string; prefix: string } {
