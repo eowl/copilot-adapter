@@ -87,13 +87,7 @@ function logRequestBody(body: Record<string, unknown>): void {
         for (let i = 0; i < msgs.length; i++) {
           const m = msgs[i];
           const contentLen = JSON.stringify(m.content).length;
-          const truncated =
-            contentLen > 500
-              ? `${JSON.stringify(m.content).slice(0, 200)}... [${contentLen} chars]`
-              : JSON.stringify(m.content);
-          lines.push(
-            `    [${i}] role=${m.role} content(${contentLen})`,
-          );
+          lines.push(`    [${i}] role=${m.role} content(${contentLen})`);
         }
       } else if (key === 'tools') {
         const tools = value as Array<{ function: { name: string } }> | undefined;
