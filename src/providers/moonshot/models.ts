@@ -1,6 +1,11 @@
 import type { ModelItem } from '../types';
 import { MOONSHOT } from './provider';
-import { MOONSHOT_THINKING, MOONSHOT_K26_THINKING, MOONSHOT_K27_THINKING, MOONSHOT_K3_THINKING } from '../defines';
+import {
+  MOONSHOT_THINKING,
+  MOONSHOT_K26_THINKING,
+  MOONSHOT_K27_THINKING,
+  MOONSHOT_K3_THINKING,
+} from '../defines';
 
 const MS_BASE = {
   family: 'kimi',
@@ -52,7 +57,7 @@ export const MS_KIMI_K3: ModelItem = {
   detailKey: 'model.kimi-k3.detail',
   pricing: {
     CNY: { default: { cacheInput: 2, input: 20, output: 100 } },
-    USD: { default: { cacheInput: 0.30, input: 3, output: 15 } },
+    USD: { default: { cacheInput: 0.3, input: 3, output: 15 } },
   },
   priceCategory: 'high',
 } as ModelItem;
