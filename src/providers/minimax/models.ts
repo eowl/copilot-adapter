@@ -37,20 +37,6 @@ export const MM_M3: ModelItem = {
   maxOutputTokens: 40960,
   detailKey: 'model.minimax-m3.detail',
   pricing: {
-    USD: {
-      default: {
-        // <= 512k
-        cacheInput: 0.06,
-        input: 0.3,
-        output: 1.2,
-      },
-      longContext: {
-        // 512K~1M
-        cacheInput: 0.12,
-        input: 0.6,
-        output: 2.4,
-      },
-    },
     CNY: {
       default: {
         // <= 512k
@@ -65,6 +51,20 @@ export const MM_M3: ModelItem = {
         output: 16.8,
       },
     },
+    USD: {
+      default: {
+        // <= 512k
+        cacheInput: 0.06,
+        input: 0.3,
+        output: 1.2,
+      },
+      longContext: {
+        // 512K~1M
+        cacheInput: 0.12,
+        input: 0.6,
+        output: 2.4,
+      },
+    },
   },
   priceCategory: 'low',
 } as ModelItem;
@@ -77,18 +77,18 @@ export const MM_M2_7: ModelItem = {
   version: '2.7',
   detailKey: 'model.minimax-m2.7.detail',
   pricing: {
-    USD: {
-      default: {
-        cacheInput: 0.06,
-        input: 0.3,
-        output: 1.2,
-      },
-    },
     CNY: {
       default: {
         cacheInput: 0.42,
         input: 2.1,
         output: 8.4,
+      },
+    },
+    USD: {
+      default: {
+        cacheInput: 0.06,
+        input: 0.3,
+        output: 1.2,
       },
     },
   },
@@ -145,18 +145,18 @@ export const MM_MODELS: readonly ModelItem[] = [
     version: '2.7',
     detailKey: 'model.minimax-m2.7-highspeed.detail',
     pricing: {
-      USD: {
-        default: {
-          cacheInput: 0.06,
-          input: 0.6,
-          output: 2.4,
-        },
-      },
       CNY: {
         default: {
           cacheInput: 0.42,
           input: 4.2,
           output: 16.8,
+        },
+      },
+      USD: {
+        default: {
+          cacheInput: 0.06,
+          input: 0.6,
+          output: 2.4,
         },
       },
     },

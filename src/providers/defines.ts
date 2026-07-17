@@ -158,6 +158,18 @@ export const MOONSHOT_K27_THINKING: ThinkingConfig = {
   ],
 };
 
+export const MOONSHOT_K3_THINKING: ThinkingConfig = {
+  default: 'max',
+  options: [
+    {
+      value: 'max',
+      label: 'model.kimi.reasoningEffort.max',
+      hint: 'model.kimi.reasoningEffort.max.hint',
+      requestFields: { reasoning_effort: 'max' },
+    },
+  ],
+};
+
 export const ANTHROPIC_THINKING: ThinkingConfig = {
   default: 'high',
   options: [

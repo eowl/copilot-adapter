@@ -12,6 +12,7 @@ export const zh: Translation = {
   'model.deepseek-v4-flash.detail': '快速通用模型',
   'model.deepseek-v4-pro.detail': '深度推理模型',
 
+  'model.kimi-k3.detail': 'Kimi K3 是 Kimi 迄今能力最强的旗舰模型',
   'model.kimi-k2.7-code.detail': 'Kimi K2.7 Code 是 Kimi 迄今最智能的 Coding 模型',
   'model.kimi-k2.7-code-highspeed.detail':
     'Kimi K2.7 Code 高速版， 与 Kimi K2.7 Code 是同一个模型，但输出速度约为普通版的 5-6 倍',
@@ -20,6 +21,8 @@ export const zh: Translation = {
   'model.kimi.think.enabledAlways': '思考模式',
   'model.kimi.think.enabledAlways.hint':
     '该模型始终思考，并始终启用 Preserved Thinking 模式，不支持关闭',
+  'model.kimi.reasoningEffort.max': '最大推理',
+  'model.kimi.reasoningEffort.max.hint': '适合复杂问题',
 
   'model.minimax-m2.detail': '深度推理模型',
   'model.minimax-m2.1.detail': '深度推理模型',
