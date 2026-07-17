@@ -5,7 +5,7 @@ import { VOLCENGINE_THINKING } from '../defines';
 import { DEEPSEEK_V4_PRO, DEEPSEEK_V4_FLASH } from '../deepseek/models';
 import { ZHIPU_GLM_4_7, ZHIPU_GLM_5_2, ZHIPU_GLM_5_1 } from '../zhipu/models';
 import { MM_M3, MM_M2_7 } from '../minimax/models';
-import { MS_K2_7_CODE, MS_K2_6, MS_K2_5 } from '../moonshot/models';
+import { MS_KIMI_K2_7_CODE, MS_KIMI_K2_6, MS_KIMI_K2_5 } from '../moonshot/models';
 
 const DOUBAO_SEED_BASE = {
   family: 'doubao-seed',
@@ -108,8 +108,8 @@ export const VOLCENGINE_CODING_PLAN_MODELS: readonly ModelItem[] = [
   ZHIPU_GLM_5_2,
   MM_M2_7,
   MM_M3,
-  MS_K2_7_CODE,
-  MS_K2_6,
+  MS_KIMI_K2_7_CODE,
+  MS_KIMI_K2_6,
 ] as ModelItem[];
 
 const DOLA_SEED_BASE = {
@@ -205,5 +205,5 @@ export const MODELARK_CODING_PLAN_MODESL: readonly ModelItem[] = [
   DEEPSEEK_V4_FLASH,
   ZHIPU_GLM_5_1,
   ZHIPU_GLM_4_7,
-  MS_K2_5,
+  MS_KIMI_K2_5,
 ] as ModelItem[];

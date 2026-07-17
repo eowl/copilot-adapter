@@ -79,7 +79,6 @@ export const ZHIPU_GLM_5_1: ModelItem = {
   maxOutputTokens: 128_000,
   detailKey: 'model.glm-5.1.detail',
   pricing: {
-    USD: { default: { cacheInput: 0.26, input: 1.4, output: 4.4 } },
     CNY: {
       default: {
         // <32K
@@ -94,6 +93,7 @@ export const ZHIPU_GLM_5_1: ModelItem = {
         output: 32,
       },
     },
+    USD: { default: { cacheInput: 0.26, input: 1.4, output: 4.4 } },
   },
   priceCategory: 'high',
 } as ModelItem;
@@ -110,7 +110,6 @@ export const ZP_MODELS: readonly ModelItem[] = [
     maxOutputTokens: 128_000,
     detailKey: 'model.glm-5.detail',
     pricing: {
-      USD: { default: { cacheInput: 0.2, input: 1, output: 3.2 } },
       CNY: {
         default: {
           // <32K
@@ -125,6 +124,7 @@ export const ZP_MODELS: readonly ModelItem[] = [
           output: 22,
         },
       },
+      USD: { default: { cacheInput: 0.2, input: 1, output: 3.2 } },
     },
     priceCategory: 'medium',
   },
@@ -137,7 +137,6 @@ export const ZP_MODELS: readonly ModelItem[] = [
     maxOutputTokens: 128_000,
     detailKey: 'model.glm-5-turbo.detail',
     pricing: {
-      USD: { default: { cacheInput: 0.24, input: 1.2, output: 4.0 } },
       CNY: {
         default: {
           // <32K
@@ -152,6 +151,7 @@ export const ZP_MODELS: readonly ModelItem[] = [
           output: 26,
         },
       },
+      USD: { default: { cacheInput: 0.24, input: 1.2, output: 4.0 } },
     },
     priceCategory: 'high',
   },
