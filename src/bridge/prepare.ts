@@ -9,7 +9,7 @@ import type { ReqOptions } from './information';
 import type { ApiReq } from '../client/types';
 import { Settings } from '../settings';
 import { countMessageChars } from './tally';
-import { imagePart } from '../providers/utils';
+import { imagePart, apiModelId } from '../providers/utils';
 import { DEFAULT_IMAGE_FIELD } from './defines';
 
 export interface ReadyReq {
@@ -79,7 +79,7 @@ export async function assembleChatReq(ctx: PrepContext): Promise<ReadyReq> {
   const streamUsage = modelProvider.supportsStreamUsage !== false;
 
   const body: ApiReq = {
-    model: model.apiId,
+    model: apiModelId(model),
     messages: msgs,
     [model.maxTokensField ?? 'max_tokens']: maxOut,
     stream: true,

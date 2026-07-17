@@ -4,7 +4,7 @@ import type { MarkerPayload } from '../marker/types';
 import { streamHttp } from '../client/http';
 import { ApiError } from '../client/error';
 import { Settings } from '../settings';
-import { resolveTrait } from '../providers/utils';
+import { resolveTrait, apiModelId } from '../providers/utils';
 import type { UsagePayload } from './types';
 import { applyUsageSchema, buildUsageLog } from './usage';
 import { DEFAULT_CHARS_PER_TOKEN } from './tally';
@@ -109,7 +109,7 @@ export async function forwardStream(
               break;
 
             case 'usage':
-              promptTokens = reportUsage(ready, event.data, model.apiId, progress);
+              promptTokens = reportUsage(ready, event.data, apiModelId(model), progress);
 
               break;
           }
@@ -172,7 +172,7 @@ export async function forwardStream(
     }
 
     try {
-      channel.info(buildUsageLog(model.apiId, usage, ready.promptChars));
+      channel.info(buildUsageLog(apiModelId(model), usage, ready.promptChars));
     } catch (err) {
       channel.error('Failed to build fallback usage log:', err);
     }

@@ -108,7 +108,7 @@ export function loadModelsFromJson(
     const item: ModelItem = {
       id: raw.id ?? '',
       label: raw.label ?? '',
-      apiId: raw.apiId ?? '',
+      apiId: raw.apiId || undefined,
       family: raw.family ?? 'custom',
       version: raw.version ?? '',
       maxInputTokens: raw.maxInputTokens ?? 128_000,

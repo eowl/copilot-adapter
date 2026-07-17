@@ -19,7 +19,6 @@ export function buildCustomModels(configs: readonly CustomModelConfig[]): ModelI
     const model: ModelItem = {
       id: cfg.id,
       label: cfg.name,
-      apiId: cfg.id,
       family: 'custom',
       version: 'custom',
       maxInputTokens: cfg.maxInputTokens,

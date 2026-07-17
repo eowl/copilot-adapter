@@ -3,7 +3,7 @@ import { EXT_ID } from '../defines';
 import { channel } from '../logger';
 import { t } from '../nls';
 import * as registry from '../registry';
-import { resolveTrait, getEndpoint, resolveEndpoint } from '../providers/utils';
+import { resolveTrait, getEndpoint, resolveEndpoint, apiModelId } from '../providers/utils';
 import { Settings } from '../settings';
 import { buildChatInfo, type ChatInfo, type ReqOptions } from './information';
 import { Session } from './session';
@@ -306,7 +306,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       `Sending: ${modelProvider.label} / ${model.label} (prefix: ${prefix || '(default)'})`,
     );
     if (Settings.metaEnabled()) {
-      channel.info(`Model: id=${model.id} | apiId=${model.apiId}`);
+      channel.info(`Model: id=${model.id} | apiId=${apiModelId(model)}`);
       channel.info(`Endpoint: ${getEndpoint(modelProvider, secrets.apiEndpoint)}`);
     }
     if (Settings.verboseEnabled()) {

@@ -8,6 +8,11 @@ export function modelKey(mi: ModelItem): string {
   return `${mi.id}-${mi.provider.id}${ep ? `-${ep}` : ''}`;
 }
 
+/** Resolve the API-facing model identifier (apiId if set, otherwise id). */
+export function apiModelId(mi: ModelItem): string {
+  return mi.apiId ?? mi.id;
+}
+
 export function resolveTrait<K extends keyof ApiTraits>(
   modelItem: ModelItem,
   key: K,
