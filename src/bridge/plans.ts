@@ -110,10 +110,7 @@ function formatSegment(labelKey: string, remaining: string, limit: string): stri
   return t(labelKey, String(r), String(l));
 }
 
-async function queryKimiPlanUsage(
-  apiKey: string,
-  url: string,
-): Promise<PlanUsageResult> {
+async function queryKimiPlanUsage(apiKey: string, url: string): Promise<PlanUsageResult> {
   const response = await fetch(url, {
     method: 'GET',
     headers: {

@@ -23,7 +23,7 @@ export const MOONSHOT_ENDPOINTS: readonly ModelEndpoint[] = [
     },
     MS_MODELS,
   ),
-   composeModelEndpoint(
+  composeModelEndpoint(
     {
       id: 'kimi-code',
       label: 'Kimi Code',
