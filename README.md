@@ -19,6 +19,7 @@ Extend VS Code's native Copilot Chat with third-party AI models. Switch between 
   - [Prefix Cache Hit Rate](#prefix-cache-hit-rate)
   - [Context Window](#context-window)
   - [Custom Models](#custom-models)
+  - [Balance & usage display](#balance--usage-display)
 - [Configuration Reference](#configuration-reference)
 - [Commands](#commands)
 - [Notes](#notes)
@@ -31,7 +32,7 @@ Extend VS Code's native Copilot Chat with third-party AI models. Switch between 
 |---|---|---|
 | **DeepSeek** | [`Deepseek Platform`](https://platform.deepseek.com) | `V4 Pro` `V4 Flash`|
 | **MiniMax** | [`minimaxi.com`](https://www.minimaxi.com/) [`minimax.io`](https://www.minimax.io/) | `M3` `M2.7` `M2.7 Highspeed` `M2.5` `M2.5 Highspeed` `M2.1` `M2.1 Highspeed` `M2` |
-| **Moonshot (Kimi)** | [`platform.moonshot.cn`](https://platform.moonshot.cn/) [`platform.moonshot.ai`](https://platform.moonshot.ai/) | `Kimi K3` `Kimi K2.7 Code` `Kimi K2.7 Code High-Speed` `Kimi K2.6` `Kimi K2.5` |
+| **Moonshot (Kimi)** | [`platform.moonshot.cn`](https://platform.moonshot.cn/) [`platform.moonshot.ai`](https://platform.moonshot.ai/) [`Kimi Code`](https://www.kimi.com/code/docs/) | `Kimi K3` `Kimi K2.7 Code` `Kimi K2.7 Code High-Speed` `Kimi K2.6` `Kimi K2.5` |
 | **Qwen** | [`bailian.console.aliyun.com`](https://bailian.console.aliyun.com/) `CN` `US` `SGP` `EU` `JP` | `Qwen3.7 Max` `Qwen3.7 Plus` `Qwen3.6 Max` `Qwen3.6 Plus` `Qwen3.6 Flash` `Qwen3.5 Plus` `Qwen3.5 Flash` `Qwen3 Max` `Qwen3 Coder Plus` `Qwen3 Coder Flash` `Qwen Plus (US only)` `Qwen Flash (US only)` |
 | **Zhipu** | [`BigModel`](https://open.bigmodel.cn/) [`Z.ai`](https://api.z.ai/) `Coding Plan` | `GLM-5.2` `GLM-5.1` `GLM-5` `GLM-5-Turbo` `GLM-4.7` `GLM-4.7-FlashX` `GLM-4.6` `GLM-4.5-Air` `GLM-4.5-AirX` `GLM-4-Long` `GLM-4-FlashX-250414` `GLM-4.7-Flash` `GLM-4.5-Flash` `GLM-4-Flash-250414` `GLM-5V-Turbo` `GLM-4.6V` `GLM-OCR` `GLM-4.1V-Thinking-FlashX` `GLM-4.6V-Flash` `GLM-4.1V-Thinking-Flash` `GLM-4V-Flash` |
 | **Xiaomi MIMO** | [`Xiaomi MIMO`](https://mimo.mi.com/) `Token Plan CN` `Token Plan SGP` `Token Plan EU` | `mimo-v2.5-pro` `mimo-v2.5` |
@@ -131,11 +132,13 @@ Bring any OpenAI-compatible model into Copilot Chat by defining its metadata (na
 
 For a step-by-step guide with screenshots, see [How to Add a Custom Model](docs/add-custom-model.md).  Ready-to-copy templates for DeepSeek, OpenAI, Anthropic, Qwen, Zhipu, MiniMax, Gemini, Grok and more are available in [`custom-models-template.jsonc`](docs/custom-models-template.jsonc).
 
-### Account Balance Display
+### Balance & usage display
 
-For supported providers (DeepSeek, Moonshot), the extension can display your account balance on each model's information card. When a balance endpoint is configured, the balance label appears at the bottom of the model hover card in the Language Models panel.
+For API-key based providers (DeepSeek, Moonshot), the extension can display your account balance on each model's information card. For Coding Plan providers (Kimi Code), the extension displays plan usage quotas (rate-limit window, weekly usage and total quota). The result appears at the bottom of the model hover card in the Language Models panel.
 
-The balance query result is cached to avoid excessive API calls. You can control the cache duration via the `copilot-adapter.balanceCacheTime` setting. Changing it to `Off (no cache)` fetches the balance on every model list refresh.
+The query result is cached to avoid excessive API calls. You can control the cache duration via the `copilot-adapter.balanceCacheTime` setting. Changing it to `Off (no cache)` fetches the balance on every model list refresh.
+
+[Balance and Usage Information](docs/balance-usage-info.md)
 
 ---
 
@@ -154,7 +157,7 @@ The balance query result is cached to avoid excessive API calls. You can control
 | `copilot-adapter.tokenRatioAutoCalibrate` | `true` | Auto-tune ratio from actual API usage data over time |
 | `copilot-adapter.tokenRatioCalibrationThreshold` | `0.1` | Minimum relative change (1–100%) to persist auto-calibrated ratio |
 | `copilot-adapter.toolWarmup` | `false` | Send fake `activate_*` tool calls before real requests (improves tool stability on some models) |
-| `copilot-adapter.balanceCacheTime` | `60` | Cache duration (seconds) for account balance queries. `0` disables caching — see [Account Balance Display](#account-balance-display) |
+| `copilot-adapter.balanceCacheTime` | `60` | Cache duration (seconds) for balance/usage queries. `0` disables caching — see [Balance & usage display](#balance--usage-display) |
 | `copilot-adapter.pricingCurrency` | `""` | Fallback currency for credits unit on model hover cards. Priority: balance API > endpoint > this setting > VS Code language (zh → CNY, else USD) |
 | `copilot-adapter.maxWarmupRounds` | `3` | Max warmup rounds per request (requires `toolWarmup` on) |
 | `copilot-adapter.debugMode` | `"off"` | Log verbosity: `off` / `info` / `meta` / `verbose` |
