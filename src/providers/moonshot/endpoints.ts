@@ -27,7 +27,9 @@ export const MOONSHOT_ENDPOINTS: readonly ModelEndpoint[] = [
     {
       id: 'kimi-code',
       label: 'Kimi Code',
-      url: 'https://api.kimi.com/coding/v1	',
+      url: 'https://api.kimi.com/coding/v1',
+      billing: 'plan',
+      links: { usage: 'https://api.kimi.com/coding/v1/usages' },
     },
     MS_KC_MODELS,
   ),

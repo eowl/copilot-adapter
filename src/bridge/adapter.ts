@@ -21,6 +21,7 @@ import { ApiError } from '../client/error';
 import { seedManagedGroup } from './managed';
 import { CUSTOM, buildCustomModels } from '../providers/custom';
 import { getCachedBalance, queryBalance } from './balance';
+import { getCachedPlanUsage, queryPlanUsage } from './plans';
 import type { ModelItem, ModelProvider, PricingCurrency } from '../providers/types';
 
 type PrepareOptions = vscode.PrepareLanguageModelChatModelOptions;
@@ -244,14 +245,15 @@ export class Adapter implements vscode.LanguageModelChatProvider {
 
     const idPrefix = secrets.prefix;
 
-    // Use cached balance if fresh; otherwise fire async query
+    // Use cached balance if fresh; otherwise fire async query.
+    // Only query balance for api billing (not 'plan') when a balance link exists.
     let balance: string | undefined;
     let balanceCurrency: string | undefined;
     if (hasKey) {
       const activeEndpoint = resolvedEndpoint ?? modelProvider.endpoints?.[0];
       const endpointId = activeEndpoint?.id ?? '';
 
-      if (endpointId) {
+      if (endpointId && activeEndpoint?.billing !== 'plan' && activeEndpoint?.links?.balance) {
         const cached = getCachedBalance(apiKey, endpointId);
         if (cached) {
           balance = cached.display;
@@ -261,6 +263,25 @@ export class Adapter implements vscode.LanguageModelChatProvider {
           const sampleModel = visibleModels[0];
           if (sampleModel) {
             this.refreshBalanceIfStale(apiKey, sampleModel);
+          }
+        }
+      }
+    }
+
+    // Plan usage for plan billing when a usage link exists
+    let planUsage: string | undefined;
+    if (hasKey) {
+      const activeEndpoint = resolvedEndpoint ?? modelProvider.endpoints?.[0];
+      const endpointId = activeEndpoint?.id ?? '';
+
+      if (endpointId && activeEndpoint?.billing === 'plan' && activeEndpoint?.links?.usage) {
+        const cached = getCachedPlanUsage(apiKey, endpointId);
+        if (cached) {
+          planUsage = cached.display;
+        } else {
+          const sampleModel = visibleModels[0];
+          if (sampleModel) {
+            this.refreshPlanUsageIfStale(apiKey, sampleModel);
           }
         }
       }
@@ -276,6 +297,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
           resolvedPricingCurrency,
           balance,
           balanceCurrency,
+          planUsage,
         ) as ChatInfo,
     );
   }
@@ -413,7 +435,8 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       const activeEndpoint = model.endpoint ?? model.provider.endpoints?.[0];
       const endpointId = activeEndpoint?.id;
       const balanceLinks = activeEndpoint?.links;
-      if (!endpointId || !balanceLinks?.balance) return;
+      // Skip if no balance link or billing is plan (credits-based)
+      if (!endpointId || !balanceLinks?.balance || activeEndpoint?.billing === 'plan') return;
 
       const cached = getCachedBalance(apiKey, endpointId);
       if (cached) return; // still fresh
@@ -443,6 +466,49 @@ export class Adapter implements vscode.LanguageModelChatProvider {
         });
     } catch (err) {
       channel.warn(`refreshBalanceIfStale unexpected error: ${String(err)}`);
+    }
+  }
+
+  /**
+   * Fire an async plan usage query in the background and notify VS Code to refresh.
+   * Safe to call as fire-and-forget — errors are caught silently.
+   */
+  private refreshPlanUsageIfStale(apiKey: string, model: ModelItem): void {
+    try {
+      const activeEndpoint = model.endpoint ?? model.provider.endpoints?.[0];
+      const endpointId = activeEndpoint?.id;
+      const usageLinks = activeEndpoint?.links;
+      // Skip if no usage link or billing is not plan
+      if (!endpointId || !usageLinks?.usage || activeEndpoint?.billing !== 'plan') return;
+
+      const cached = getCachedPlanUsage(apiKey, endpointId);
+      if (cached) return;
+
+      // Deduplicate: skip if a query for this apiKey+endpoint is already in flight
+      const dedupKey = `plan-usage:${apiKey}:${endpointId}`;
+      if (this.pendingBalances.has(dedupKey)) return;
+      this.pendingBalances.add(dedupKey);
+
+      if (Settings.metaEnabled()) {
+        channel.info(`Plan usage cache miss for ${model.provider.id}/${endpointId}, querying...`);
+      }
+
+      queryPlanUsage(apiKey, endpointId, usageLinks)
+        .then((result) => {
+          if (result.display !== '') {
+            this.changeEmitter.fire();
+          }
+        })
+        .catch((err) => {
+          channel.warn(
+            `Plan usage query promise failed for ${model.provider.id}/${endpointId}: ${String(err)}`,
+          );
+        })
+        .finally(() => {
+          this.pendingBalances.delete(dedupKey);
+        });
+    } catch (err) {
+      channel.warn(`refreshPlanUsageIfStale unexpected error: ${String(err)}`);
     }
   }
 
