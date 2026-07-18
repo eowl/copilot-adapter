@@ -106,6 +106,8 @@ export const zh: Translation = {
   'think.none.hint': '无推理步骤',
   'think.adaptive': '自适应',
   'think.adaptive.hint': '模型自动调整推理深度',
+  'think.low': '低',
+  'think.low.hint': '适合简单任务',
   'think.high': '高',
   'think.high.hint': '适合日常任务',
   'think.max': '最大',

@@ -170,6 +170,54 @@ export const MOONSHOT_K3_THINKING: ThinkingConfig = {
   ],
 };
 
+export const MOONSHOT_KIMI_CODE_THINKING: ThinkingConfig = {
+  default: 'enabled',
+  options: [
+    {
+      value: 'enabled',
+      label: 'think.enabled',
+      hint: 'think.enabled.hint',
+      requestFields: { thinking: { type: 'enabled' } },
+    },
+    {
+      value: 'disabled',
+      label: 'think.disabled',
+      hint: 'think.disabled.hint',
+      requestFields: { thinking: { type: 'disabled' } },
+    },
+  ],
+};
+
+export const MOONSHOT_KIMI_CODE_K3_THINKING: ThinkingConfig = {
+  default: 'max',
+  options: [
+    {
+      value: 'max',
+      label: 'think.max',
+      hint: 'think.max.hint',
+      requestFields: { thinking: { type: 'enabled' }, reasoning_effort: 'max' },
+    },
+    {
+      value: 'high',
+      label: 'think.high',
+      hint: 'think.high.hint',
+      requestFields: { thinking: { type: 'enabled' }, reasoning_effort: 'high' },
+    },
+    {
+      value: 'low',
+      label: 'think.low',
+      hint: 'think.low.hint',
+      requestFields: { thinking: { type: 'enabled' }, reasoning_effort: 'low' },
+    },
+    {
+      value: 'none',
+      label: 'think.none',
+      hint: 'think.none.hint',
+      requestFields: { thinking: { type: 'disabled' } },
+    },
+  ],
+};
+
 export const ANTHROPIC_THINKING: ThinkingConfig = {
   default: 'high',
   options: [

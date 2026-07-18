@@ -5,6 +5,8 @@ import {
   MOONSHOT_K26_THINKING,
   MOONSHOT_K27_THINKING,
   MOONSHOT_K3_THINKING,
+  MOONSHOT_KIMI_CODE_THINKING,
+  MOONSHOT_KIMI_CODE_K3_THINKING
 } from '../defines';
 
 const MS_BASE = {
@@ -125,16 +127,22 @@ export const MS_KIMI_K2_5: ModelItem = {
 export const MS_KC_KIMI_K3: ModelItem = {
   ...MS_KIMI_K3,
   id: 'k3',
+  label: 'Kimi Code K3',
+  thinkingConfig: MOONSHOT_KIMI_CODE_K3_THINKING,
 } as ModelItem;
 
 export const MS_KC_KIMI_K2_7_CODE: ModelItem = {
   ...MS_KIMI_K2_7_CODE,
   id: 'kimi-for-coding',
+  label: 'Kimi Code K2.7',
+  thinkingConfig: MOONSHOT_KIMI_CODE_THINKING,
 } as ModelItem;
 
 export const MS_KC_KIMI_K2_7_CODE_HIGHSPEED: ModelItem = {
   ...MS_KIMI_K2_7_CODE_HIGHSPEED,
   id: 'kimi-for-coding-highspeed',
+  label: 'Kimi Code K2.7 High-Speed',
+  thinkingConfig: MOONSHOT_KIMI_CODE_THINKING,
 } as ModelItem;
 
 export const MS_MODELS: readonly ModelItem[] = [

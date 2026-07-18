@@ -115,6 +115,8 @@ export const en: Translation = {
   'think.none.hint': 'No reasoning steps; fastest output',
   'think.adaptive': 'Adaptive',
   'think.adaptive.hint': 'Model auto-adjusts reasoning depth',
+  'think.low': 'Low',
+  'think.low.hint': 'Suitable for simple tasks',
   'think.high': 'High',
   'think.high.hint': 'Good for day-to-day coding tasks',
   'think.max': 'Max',
