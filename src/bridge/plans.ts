@@ -153,7 +153,7 @@ export async function queryPlanUsage(
   links?: ServiceLinks,
 ): Promise<PlanUsageResult> {
   const url = links?.usage;
-  if (!url) return { display: '' };
+  if (!url) return ERROR_SENTINEL;
 
   try {
     let result: PlanUsageResult;
@@ -161,7 +161,7 @@ export async function queryPlanUsage(
     if (endpointId === 'kimi-code') {
       result = await queryKimiPlanUsage(apiKey, url);
     } else {
-      return { display: '' };
+      return ERROR_SENTINEL;
     }
 
     cache.set(cacheKey(apiKey, endpointId), {

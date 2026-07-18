@@ -159,7 +159,7 @@ function buildCategory(
     parts.push(planUsage);
   }
 
-  return parts.length > 0 ? parts.join(', ') : undefined;
+  return parts.length > 0 ? parts.join(' ') : undefined;
 }
 
 export function resolveModelConfig(options: ReqOptions): Record<string, unknown> {

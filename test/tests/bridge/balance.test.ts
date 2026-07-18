@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { suite, test } from 'mocha';
-import { getCachedBalance, queryBalance } from '../../../src/bridge/balance';
+import { getCachedBalance, queryBalance, isBalanceErrorSentinel } from '../../../src/bridge/balance';
 
 suite('bridge/balance getCachedBalance', () => {
   test('returns undefined when nothing cached', () => {
@@ -15,20 +15,23 @@ suite('bridge/balance getCachedBalance', () => {
 });
 
 suite('bridge/balance queryBalance', () => {
-  test('returns N/A display when links are undefined', async () => {
+  test('returns error sentinel when links are undefined', async () => {
     const result = await queryBalance('key', 'some-ep', undefined);
-    assert.equal(result.display, 'N/A');
+    assert.equal(isBalanceErrorSentinel(result), true);
+    assert.equal(result.display, '');
   });
 
-  test('returns N/A display when balance URL is empty', async () => {
+  test('returns error sentinel when balance URL is empty', async () => {
     const result = await queryBalance('key', 'some-ep', {});
-    assert.equal(result.display, 'N/A');
+    assert.equal(isBalanceErrorSentinel(result), true);
+    assert.equal(result.display, '');
   });
 
-  test('returns N/A display for unknown endpoint id', async () => {
+  test('returns error sentinel for unknown endpoint id', async () => {
     const result = await queryBalance('key', 'unknown-provider', {
       balance: 'https://example.com/balance',
     });
-    assert.equal(result.display, 'N/A');
+    assert.equal(isBalanceErrorSentinel(result), true);
+    assert.equal(result.display, '');
   });
 });

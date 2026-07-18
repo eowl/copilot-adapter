@@ -138,7 +138,7 @@ export async function queryBalance(
   links?: ServiceLinks,
 ): Promise<BalanceResult> {
   const url = links?.balance;
-  if (!url) return { display: 'N/A' };
+  if (!url) return ERROR_SENTINEL;
 
   try {
     let result: BalanceResult;
@@ -150,7 +150,7 @@ export async function queryBalance(
     } else if (endpointId === 'moonshot.ai') {
       result = await queryMoonshotBalance(apiKey, url, 'USD');
     } else {
-      return { display: 'N/A' };
+      return ERROR_SENTINEL;
     }
 
     cache.set(cacheKey(apiKey, endpointId), {

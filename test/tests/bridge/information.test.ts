@@ -310,7 +310,7 @@ suite('bridge/information buildChatInfo', () => {
       assert.equal(info.category, undefined);
     });
 
-    test('emits both balance and credits unit joined by space', () => {
+    test('emits both balance and credits unit joined by comma-space', () => {
       const model = makeTestModel({
         pricing: PRICING,
         endpoint: { id: 'test-ep', label: 'Test' } as ModelItem['endpoint'],
@@ -321,9 +321,8 @@ suite('bridge/information buildChatInfo', () => {
       assert.ok(info.category!.includes('¥19.20'));
       assert.ok(info.category!.includes('balance.creditsUnit'));
       assert.ok(info.category!.includes('CNY'));
-      // Parts are joined by space, not pipe
-      assert.ok(info.category!.includes(' '));
-      assert.ok(!info.category!.includes('|'));
+      // Parts are joined by ", "
+      assert.ok(info.category!.includes(', '));
     });
 
     test('balanceCurrency from API response overrides pricingCurrency', () => {
@@ -352,6 +351,41 @@ suite('bridge/information buildChatInfo', () => {
       assert.ok(!info.category!.includes('balance.label'));
       assert.ok(info.category!.includes('balance.creditsUnit'));
       assert.ok(info.category!.includes('CNY'));
+    });
+
+    test('emits planUsage in category when provided for plan billing', () => {
+      const model = makeTestModel({
+        pricing: PRICING,
+        endpoint: { id: 'test-ep', label: 'Test', billing: 'plan' } as ModelItem['endpoint'],
+      });
+      const info = buildChatInfo(model, true, false, '', undefined, undefined, undefined, '5H: 97/100');
+
+      assert.ok(info.category!.includes('5H: 97/100'));
+      // plan billing should NOT emit credits unit
+      assert.ok(!info.category!.includes('balance.creditsUnit'));
+    });
+
+    test('planUsage joined with balance when both present', () => {
+      const model = makeTestModel({
+        pricing: PRICING,
+        endpoint: { id: 'test-ep', label: 'Test' } as ModelItem['endpoint'],
+      });
+      const info = buildChatInfo(model, true, false, '', 'CNY', '¥19.20', undefined, '5H: 97/100');
+
+      assert.ok(info.category!.includes('balance.label'));
+      assert.ok(info.category!.includes('¥19.20'));
+      assert.ok(info.category!.includes('balance.creditsUnit'));
+      assert.ok(info.category!.includes('5H: 97/100'));
+    });
+
+    test('planUsage is undefined in category when not provided', () => {
+      const model = makeTestModel({
+        pricing: PRICING,
+        endpoint: { id: 'test-ep', label: 'Test', billing: 'plan' } as ModelItem['endpoint'],
+      });
+      const info = buildChatInfo(model, true, false, '', undefined, undefined, undefined, undefined);
+
+      assert.equal(info.category, undefined);
     });
   });
 });
