@@ -1,5 +1,6 @@
 import { channel } from '../logger';
 import { Settings } from '../settings';
+import { t } from '../nls';
 import type { ServiceLinks } from '../providers/types';
 
 export interface PlanUsageResult {
@@ -100,14 +101,13 @@ function formatKimiWindow(window: KimiUsageWindow): string {
   return `${window.duration}${kimiTimeUnitLabel(window.timeUnit)}`;
 }
 
-function formatSegment(label: string, remaining: string, limit: string): string {
+function formatSegment(labelKey: string, remaining: string, limit: string): string {
   const r = parseInt(remaining, 10);
   const l = parseInt(limit, 10);
   if (isNaN(r) || isNaN(l)) {
-    return `${label}: ${remaining}/${limit}`;
+    return t(labelKey, remaining, limit);
   }
-
-  return `${label}: ${r}/${l}`;
+  return t(labelKey, String(r), String(l));
 }
 
 async function queryKimiPlanUsage(
@@ -133,18 +133,18 @@ async function queryKimiPlanUsage(
   const limitWindow = data.limits?.[0];
   if (limitWindow?.window && limitWindow?.detail) {
     const w = formatKimiWindow(limitWindow.window);
-    parts.push(formatSegment(w, limitWindow.detail.remaining, limitWindow.detail.limit));
+    parts.push(t('plan.usage.window', w, limitWindow.detail.remaining, limitWindow.detail.limit));
   }
 
   if (data.usage) {
-    parts.push(formatSegment('Weekly', data.usage.remaining, data.usage.limit));
+    parts.push(formatSegment('plan.usage.weekly', data.usage.remaining, data.usage.limit));
   }
 
   if (data.totalQuota) {
-    parts.push(formatSegment('Total', data.totalQuota.remaining, data.totalQuota.limit));
+    parts.push(formatSegment('plan.usage.total', data.totalQuota.remaining, data.totalQuota.limit));
   }
 
-  return { display: parts.length > 0 ? parts.join(', ') : '', raw: data };
+  return { display: parts.length > 0 ? parts.join(' ') : '', raw: data };
 }
 
 export async function queryPlanUsage(

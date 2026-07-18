@@ -154,5 +154,9 @@ export const en: Translation = {
   'balance.label': 'Balance: {0}',
   'balance.creditsUnit': 'Credits Unit: {0}',
 
+  'plan.usage.window': '{0}: {1}/{2}',
+  'plan.usage.weekly': 'Weekly: {0}/{1}',
+  'plan.usage.total': 'Total: {0}/{1}',
+
   'tools.drift': 'The following tools were removed to keep the conversation on track: {0}.',
 };

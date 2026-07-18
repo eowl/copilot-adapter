@@ -144,5 +144,9 @@ export const zh: Translation = {
   'balance.label': '余额：{0}',
   'balance.creditsUnit': '额度单位：{0}',
 
+  'plan.usage.window': '{0}: {1}/{2}',
+  'plan.usage.weekly': '周: {0}/{1}',
+  'plan.usage.total': '总量: {0}/{1}',
+
   'tools.drift': '以下工具已从对话中移除以保持上下文连贯：{0}。',
 };
