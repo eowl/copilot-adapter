@@ -310,7 +310,7 @@ suite('bridge/information buildChatInfo', () => {
       assert.equal(info.category, undefined);
     });
 
-    test('emits both balance and credits unit joined by comma-space', () => {
+    test('emits both balance and credits unit joined by space', () => {
       const model = makeTestModel({
         pricing: PRICING,
         endpoint: { id: 'test-ep', label: 'Test' } as ModelItem['endpoint'],
@@ -321,8 +321,9 @@ suite('bridge/information buildChatInfo', () => {
       assert.ok(info.category!.includes('¥19.20'));
       assert.ok(info.category!.includes('balance.creditsUnit'));
       assert.ok(info.category!.includes('CNY'));
-      // Parts are joined by ", "
-      assert.ok(info.category!.includes(', '));
+      // Parts are joined by space, not comma
+      assert.ok(info.category!.includes(' '));
+      assert.ok(!info.category!.includes(','));
     });
 
     test('balanceCurrency from API response overrides pricingCurrency', () => {
