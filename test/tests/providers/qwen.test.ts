@@ -25,9 +25,9 @@ suite('providers/qwen model.requestExtras()', () => {
     assert.deepEqual(result, { enable_thinking: true });
   });
 
-  test('undefined modelConfig defaults to enable_thinking true', () => {
+  test('undefined modelConfig does not inject fields', () => {
     const result = requestExtras(undefined);
-    assert.deepEqual(result, { enable_thinking: true });
+    assert.deepEqual(result, {});
   });
 
   test('unknown thinkingMode defaults to enable_thinking true', () => {

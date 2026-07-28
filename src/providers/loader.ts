@@ -20,7 +20,12 @@ function buildRequestExtras(
 
   return (modelConfig) => {
     const selectedValue = modelConfig?.thinkingMode;
-    if (typeof selectedValue !== 'string') return { ...defaultFields };
+    // If the user has never chosen a thinking mode (modelConfig is empty or
+    // missing thinkingMode), don't inject any thinking fields — let the API
+    // use its native default behaviour. Only apply fields when the user has
+    // explicitly selected a mode in the UI.
+    if (typeof selectedValue !== 'string') return {};
+
     const opt = thinkingConfig.options.find((o) => o.value === selectedValue);
 
     return { ...(opt?.requestFields ?? defaultFields) };

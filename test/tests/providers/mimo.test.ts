@@ -107,14 +107,14 @@ suite('providers/mimo model.requestExtras()', () => {
     assert.deepEqual(result, { thinking: { type: 'enabled' } });
   });
 
-  test('undefined thinkingMode defaults to "enabled"', () => {
+  test('undefined thinkingMode does not inject fields', () => {
     const result = requestExtras({});
-    assert.deepEqual(result, { thinking: { type: 'enabled' } });
+    assert.deepEqual(result, {});
   });
 
-  test('undefined modelConfig defaults to "enabled"', () => {
+  test('undefined modelConfig does not inject fields', () => {
     const result = requestExtras(undefined);
-    assert.deepEqual(result, { thinking: { type: 'enabled' } });
+    assert.deepEqual(result, {});
   });
 
   test('both models have same thinking extras behavior', () => {
