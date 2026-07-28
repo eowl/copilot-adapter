@@ -25,7 +25,7 @@ function buildRequestExtras(
     // use its native default behaviour. Only apply fields when the user has
     // explicitly selected a mode in the UI.
     if (typeof selectedValue !== 'string') return {};
-    
+
     const opt = thinkingConfig.options.find((o) => o.value === selectedValue);
 
     return { ...(opt?.requestFields ?? defaultFields) };
