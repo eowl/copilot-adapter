@@ -50,20 +50,14 @@ suite('providers/deepseek model.requestExtras()', () => {
     });
   });
 
-  test('undefined effort defaults to "high"', () => {
+  test('undefined effort (no thinkingMode key) does not inject fields', () => {
     const result = requestExtras({});
-    assert.deepEqual(result, {
-      thinking: { type: 'enabled' },
-      reasoning_effort: 'high',
-    });
+    assert.deepEqual(result, {});
   });
 
-  test('undefined modelConfig defaults to "high"', () => {
+  test('undefined modelConfig does not inject fields', () => {
     const result = requestExtras(undefined);
-    assert.deepEqual(result, {
-      thinking: { type: 'enabled' },
-      reasoning_effort: 'high',
-    });
+    assert.deepEqual(result, {});
   });
 
   test('DEEPSEEK has exactly 2 models', () => {

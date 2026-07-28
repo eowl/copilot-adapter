@@ -33,8 +33,8 @@ suite('providers/zhipu', () => {
       });
     });
 
-    test('undefined modelConfig defaults to thinking enabled', () => {
-      assert.deepEqual(requestExtras(undefined), { thinking: { type: 'enabled' } });
+    test('undefined modelConfig does not inject fields', () => {
+      assert.deepEqual(requestExtras(undefined), {});
     });
 
     test('unknown thinkingMode defaults to thinking enabled', () => {

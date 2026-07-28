@@ -55,10 +55,10 @@ suite('providers/loader backfillModel()', () => {
     assert.deepEqual(m.requestExtras!({ thinkingMode: 'unknown' }), { enable_thinkingConfig: true });
   });
 
-  test('requestExtras defaults to default option on undefined config', () => {
+  test('requestExtras returns empty object on undefined config', () => {
     const m = makeModel({ thinkingConfig: adaptiveDisabledThinking() });
     backfillModel(m);
-    assert.deepEqual(m.requestExtras!(undefined), { enable_thinkingConfig: true });
+    assert.deepEqual(m.requestExtras!(undefined), {});
   });
 
   test('generates configSchema from thinking config', () => {
