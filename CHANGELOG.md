@@ -1,5 +1,12 @@
 # Changelog
 
+## [v0.1.12](https://github.com/eowl/copilot-adapter/releases/tag/v0.1.12) 2026-07-28
+
+* Fix: thiking effort by @eowl in https://github.com/eowl/copilot-adapter/pull/55
+* Chore: added changelog list by @eowl in https://github.com/eowl/copilot-adapter/pull/56
+
+**Full Changelog**: https://github.com/eowl/copilot-adapter/compare/v0.1.11...v0.1.12
+
 ## [v0.1.11](https://github.com/eowl/copilot-adapter/releases/tag/v0.1.11) 2026-07-18
 
 * Refactor: Refactor model api by @eowl in https://github.com/eowl/copilot-adapter/pull/51
