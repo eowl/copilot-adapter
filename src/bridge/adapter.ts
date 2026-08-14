@@ -203,7 +203,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     } else {
       providerModels = registry.ALL_MODELS.filter((m) => m.provider.id === this.filteredProviderId);
       if (providerModels.length === 0) return [];
-      modelProvider = providerModels[0]?.provider;
+      modelProvider = providerModels[0].provider;
 
       const apiEndpoint =
         typeof groupCfg['apiEndpoint'] === 'string' ? (groupCfg['apiEndpoint'] as string) : '';
@@ -244,15 +244,14 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     }
 
     const idPrefix = secrets.prefix;
+    const activeEndpoint = resolvedEndpoint ?? modelProvider.endpoints?.[0];
+    const endpointId = activeEndpoint?.id ?? '';
 
     // Use cached balance if fresh; otherwise fire async query.
     // Only query balance for api billing (not 'plan') when a balance link exists.
     let balance: string | undefined;
     let balanceCurrency: string | undefined;
     if (hasKey) {
-      const activeEndpoint = resolvedEndpoint ?? modelProvider.endpoints?.[0];
-      const endpointId = activeEndpoint?.id ?? '';
-
       if (endpointId && activeEndpoint?.billing !== 'plan' && activeEndpoint?.links?.balance) {
         const cached = getCachedBalance(apiKey, endpointId);
         if (cached) {
@@ -273,9 +272,6 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     // Plan usage for plan billing when a usage link exists
     let planUsage: string | undefined;
     if (hasKey) {
-      const activeEndpoint = resolvedEndpoint ?? modelProvider.endpoints?.[0];
-      const endpointId = activeEndpoint?.id ?? '';
-
       if (endpointId && activeEndpoint?.billing === 'plan' && activeEndpoint?.links?.usage) {
         const cached = getCachedPlanUsage(apiKey, endpointId);
         if (cached) {
