@@ -34,6 +34,7 @@ export const QWEN_3_8_MAX: ModelItem = {
   version: '3.8',
   maxInputTokens: 991_000,
   maxOutputTokens: 128_000,
+  imageInput: true,
   detailKey: 'model.qwen3.8-max.detail',
   thinkingConfig: QWEN_3_8_MAX_THINKING,
 };
@@ -45,6 +46,7 @@ export const QWEN_3_7_MAX: ModelItem = {
   version: '3.7',
   maxInputTokens: 991_000,
   maxOutputTokens: 65_536,
+  imageInput: true,
   detailKey: 'model.qwen3.7-max.detail',
 };
 
@@ -55,6 +57,7 @@ export const QWEN_3_7_PLUS: ModelItem = {
   version: '3.7',
   maxInputTokens: 991_000,
   maxOutputTokens: 65_536,
+  imageInput: true,
   detailKey: 'model.qwen3.7-plus.detail',
 };
 
@@ -75,6 +78,7 @@ export const QWEN_3_6_PLUS: ModelItem = {
   version: '3.6',
   maxInputTokens: 991_000,
   maxOutputTokens: 65_536,
+  imageInput: true,
   detailKey: 'model.qwen3.6-plus.detail',
 };
 
@@ -85,6 +89,7 @@ export const QWEN_3_6_FLASH: ModelItem = {
   version: '3.6',
   maxInputTokens: 991_000,
   maxOutputTokens: 65_536,
+  imageInput: true,
   detailKey: 'model.qwen3.6-flash.detail',
 };
 
@@ -95,6 +100,7 @@ export const QWEN_3_5_PLUS: ModelItem = {
   version: '3.5',
   maxInputTokens: 991_000,
   maxOutputTokens: 65_536,
+  imageInput: true,
   detailKey: 'model.qwen3.5-plus.detail',
 };
 
@@ -105,6 +111,7 @@ export const QWEN_3_5_FLASH: ModelItem = {
   version: '3.5',
   maxInputTokens: 991_000,
   maxOutputTokens: 65_536,
+  imageInput: true,
   detailKey: 'model.qwen3.5-flash.detail',
 };
 
@@ -301,6 +308,8 @@ export const QWEN_SGP_MODELS: readonly ModelItem[] = [
   ...QWEN_BASE_MODELS,
   DEEPSEEK_V4_PRO,
   DEEPSEEK_V4_FLASH,
+  DEEPSEEK_V4_PRO_0813,
+  DEEPSEEK_V4_FLASH_0731,
   ZHIPU_GLM_5_2,
   ZHIPU_GLM_5_1,
   MS_KIMI_K2_7_CODE,
@@ -310,6 +319,8 @@ export const QWEN_DE_MODELS: readonly ModelItem[] = [
   ...QWEN_BASE_MODELS,
   DEEPSEEK_V4_PRO,
   DEEPSEEK_V4_FLASH,
+  DEEPSEEK_V4_PRO_0813,
+  DEEPSEEK_V4_FLASH_0731,
   ZHIPU_GLM_5_2,
   ZHIPU_GLM_5_1,
   MS_KIMI_K2_7_CODE,
@@ -319,6 +330,8 @@ export const QWEN_JP_MODELS: readonly ModelItem[] = [
   ...QWEN_BASE_MODELS,
   DEEPSEEK_V4_PRO,
   DEEPSEEK_V4_FLASH,
+  DEEPSEEK_V4_PRO_0813,
+  DEEPSEEK_V4_FLASH_0731,
   ZHIPU_GLM_5_2,
   ZHIPU_GLM_5_1,
   MS_KIMI_K2_7_CODE,
@@ -328,7 +341,16 @@ export const QWEN_US_MODELS: readonly ModelItem[] = [
   ...QWEN_BASE_MODELS,
   QWEN_PLUS_US,
   QWEN_FLASH_US,
+  QWEN_3_7_MAX_US,
+  QWEN_3_7_PLUS_US,
+  DEEPSEEK_V4_PRO,
+  DEEPSEEK_V4_FLASH,
+  DEEPSEEK_V4_PRO_0813,
+  DEEPSEEK_V4_FLASH_0731,
   DEEPSEEK_V4_PRO_US,
   DEEPSEEK_V4_FLASH_US,
   ZHIPU_GLM_5_2_US,
+  ZHIPU_GLM_5_2,
+  ZHIPU_GLM_5_1,
+  MS_KIMI_K2_7_CODE,
 ];

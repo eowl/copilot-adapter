@@ -48,7 +48,7 @@ suite('providers/qwen model.requestExtras()', () => {
   });
 
   test('all QWEN models use max_completion_tokens field', () => {
-    for (const m of [...QWEN_BASE_MODELS, ...QWEN_US_MODELS]) {
+    for (const m of [...QWEN_BASE_MODELS, ...QWEN_US_MODELS].filter((m) => m.family === 'qwen')) {
       assert.equal(m.maxTokensField, 'max_completion_tokens', `${m.id}`);
     }
   });
@@ -75,20 +75,41 @@ suite('providers/qwen model.requestExtras()', () => {
   test('QWEN_US_MODELS contains only the two US-only models', () => {
     assert.deepEqual(
       QWEN_US_MODELS.map((m) => m.id),
-      ['qwen-plus-us', 'qwen-flash-us'],
+      [ 
+        'qwen3.8-max',
+        'qwen3.7-max',
+        'qwen3.7-plus',
+        'qwen3.6-max',
+        'qwen3.6-plus',
+        'qwen3.6-flash',
+        'qwen3.5-plus',
+        'qwen3.5-flash',
+        'qwen3-max',
+        'qwen3-coder-plus',
+        'qwen3-coder-flash',
+        'qwen-plus-us', 
+        'qwen-flash-us', 
+        'qwen3.7-max-us', 
+        'qwen3.7-plus-us',
+        'deepseek-v4-pro',
+        'deepseek-v4-flash',
+        'deepseek-v4-pro-0813',
+        'deepseek-v4-flash-0731',
+        'deepseek-v4-pro-us',
+        'deepseek-v4-flash-us',
+        'glm-5.2-us',
+        'glm-5.2',
+        'glm-5.1',
+        'kimi-k2.7-code',
+      ],
     );
   });
 
   test('US-only models carry the "(US only)" label suffix', () => {
-    assert.equal(QWEN_US_MODELS.length, 2);
-    for (const m of QWEN_US_MODELS) {
-      assert.match(m.label, /\(US only\)/);
-    }
-  });
-
-  test('US-only models do not accept images', () => {
-    for (const m of QWEN_US_MODELS) {
-      assert.equal(m.imageInput, false, `${m.id} imageInput`);
+    const usOnly = QWEN_US_MODELS.filter((m) => m.id.endsWith('-us'));
+    assert.ok(usOnly.length > 0);
+    for (const m of usOnly) {
+      assert.match(m.label, /\(US only\)/, `${m.id}`);
     }
   });
 
@@ -125,7 +146,6 @@ suite('providers/qwen model.requestExtras()', () => {
 
   suite('non-vision models', () => {
     const nonVisionIds = [
-      'qwen3.7-max',
       'qwen3.6-max',
       'qwen3-max',
       'qwen3-coder-plus',

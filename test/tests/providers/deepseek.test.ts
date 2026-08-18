@@ -61,7 +61,7 @@ suite('providers/deepseek model.requestExtras()', () => {
   });
 
   test('DEEPSEEK has exactly 2 models', () => {
-    assert.equal(DS_MODELS.length, 2);
+    assert.equal(DS_MODELS.length, 4);
   });
 
   test('first model is deepseek-v4-pro', () => {

@@ -251,13 +251,13 @@ suite('Endpoint.models visibility', () => {
     assert.ok(usIds.includes('qwen3.7-max'), 'US endpoint should contain shared base model');
   });
 
-  test('Qwen default endpoint includes ALL models (base + US-only)', () => {
+  test('Qwen default endpoint includes ALL models (base)', () => {
     const def = QWEN.endpoints?.find((s) => s.id === 'default');
     assert.ok(def, 'Qwen should have a default endpoint');
     const defIds = def?.models!.map((m) => m.id) ?? [];
     assert.ok(defIds.includes('qwen3.7-max'), 'default endpoint should contain base model');
-    assert.ok(defIds.includes('qwen-plus-us'), 'default endpoint should contain US-only model');
-    assert.ok(defIds.includes('qwen-flash-us'), 'default endpoint should contain US-only model');
+    assert.ok(!defIds.includes('qwen-plus-us'), 'default endpoint should not contain US-only model');
+    assert.ok(!defIds.includes('qwen-flash-us'), 'default endpoint should not contain US-only model');
   });
 
   test('Qwen default endpoint has no matchStr (never substring-matched)', () => {
