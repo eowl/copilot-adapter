@@ -3,7 +3,13 @@ import { EXT_ID } from '../defines';
 import { channel } from '../logger';
 import { t } from '../nls';
 import * as registry from '../registry';
-import { resolveTrait, resolveEndpoint, apiModelId, hasEndpointPlaceholder, resolveRequestUrl } from '../providers/utils';
+import {
+  resolveTrait,
+  resolveEndpoint,
+  apiModelId,
+  hasEndpointPlaceholder,
+  resolveRequestUrl,
+} from '../providers/utils';
 import { Settings } from '../settings';
 import { buildChatInfo, type ChatInfo, type ReqOptions } from './information';
 import { Session } from './session';
@@ -334,7 +340,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     channel.info(
       `Sending: ${modelProvider.label} / ${model.label} (prefix: ${prefix || '(default)'})`,
     );
-    
+
     if (Settings.verboseEnabled()) {
       logVerboseMessages(messages, options.tools);
     }
@@ -469,17 +475,15 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       isErrorSentinel: isPlanUsageErrorSentinel,
     });
   }
-  private refreshUsageCacheIfStale<T extends { display: string }>(
-    args: {
-      apiKey: string;
-      model: ModelItem;
-      kind: 'balance' | 'plan-usage';
-      expectPlan: boolean;
-      getCached: (apiKey: string, endpointId: string) => T | undefined;
-      query: (apiKey: string, endpointId: string, links: ServiceLinks) => Promise<T>;
-      isErrorSentinel: (result: T) => boolean;
-    },
-  ): void {
+  private refreshUsageCacheIfStale<T extends { display: string }>(args: {
+    apiKey: string;
+    model: ModelItem;
+    kind: 'balance' | 'plan-usage';
+    expectPlan: boolean;
+    getCached: (apiKey: string, endpointId: string) => T | undefined;
+    query: (apiKey: string, endpointId: string, links: ServiceLinks) => Promise<T>;
+    isErrorSentinel: (result: T) => boolean;
+  }): void {
     const { apiKey, model, kind, expectPlan, getCached, query, isErrorSentinel } = args;
     const methodName = kind === 'balance' ? 'refreshBalanceIfStale' : 'refreshPlanUsageIfStale';
 

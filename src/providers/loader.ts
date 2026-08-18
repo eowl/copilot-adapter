@@ -42,7 +42,7 @@ function buildConfigSchema(thinkingConfig: ThinkingConfig): () => Record<string,
     labels.push(t(o.label) || o.label || o.value);
     hints.push(t(o.hint) || o.hint || '');
   }
-  
+
   const schema = {
     properties: {
       thinkingMode: {
