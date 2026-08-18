@@ -42,6 +42,36 @@ export const QWEN_THINKING: ThinkingConfig = {
   ],
 };
 
+export const QWEN_3_8_MAX_THINKING: ThinkingConfig = {
+  default: 'high',
+  options: [
+    {
+      value: 'max',
+      label: 'think.max',
+      hint: 'think.max.hint',
+      requestFields: { enable_thinking: true, reasoning_effort: 'max' },
+    },
+    {
+      value: 'high',
+      label: 'think.high',
+      hint: 'think.high.hint',
+      requestFields: { enable_thinking: true, reasoning_effort: 'high' },
+    },
+    {
+      value: 'low',
+      label: 'think.low',
+      hint: 'think.low.hint',
+      requestFields: { enable_thinking: true, reasoning_effort: 'low' },
+    },
+    {
+      value: 'none',
+      label: 'think.none',
+      hint: 'think.none.hint',
+      requestFields: { enable_thinking: false },
+    },
+  ],
+};
+
 export const ZHIPU_THINKING: ThinkingConfig = {
   default: 'adaptive',
   options: [

@@ -35,9 +35,10 @@ export const zh: Translation = {
   'model.minimax-m2.7-highspeed.detail': '深度推理，高速版',
   'model.minimax-m3.detail': '深度推理，支持图像',
 
-  'model.qwen3.7-max.detail': '旗舰模型，最新一代',
+  'model.qwen3.8-max.detail': '旗舰模型，最新一代',
+  'model.qwen3.7-max.detail': 'Qwen3.7系列中规模最大、综合能力最强的Max模型',
   'model.qwen3.7-plus.detail': '均衡型通用模型',
-  'model.qwen3.6-max.detail': '旗舰模型',
+  'model.qwen3.6-max.detail': 'Qwen3.6系列中规模最大、综合能力最强的Max模型',
   'model.qwen3.6-plus.detail': '均衡型通用模型',
   'model.qwen3.6-flash.detail': '快速低成本模型',
   'model.qwen3.5-plus.detail': '均衡型通用模型',

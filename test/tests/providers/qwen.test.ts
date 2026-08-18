@@ -1,11 +1,11 @@
 import assert from 'node:assert/strict';
 import { suite, test } from 'mocha';
-import { QWEN, QWEN_BASE_MODELS, QWEN_US_MODELS } from '../../../src/providers/qwen';
+import { QWEN, QWEN_BASE_MODELS, QWEN_US_MODELS, QWEN_3_7_MAX } from '../../../src/providers/qwen';
 import { backfillModel } from '../../../src/providers/loader';
 import type { ModelItem } from '../../../src/providers/types';
 
 suite('providers/qwen model.requestExtras()', () => {
-  const model = QWEN_BASE_MODELS[0] as ModelItem;
+  const model = QWEN_3_7_MAX;
   backfillModel(model);
   const requestExtras = model.requestExtras!;
 
@@ -56,7 +56,8 @@ suite('providers/qwen model.requestExtras()', () => {
   test('QWEN exposes the expected base model ids', () => {
     assert.deepEqual(
       QWEN_BASE_MODELS.map((m) => m.id),
-      [
+      [ 
+        'qwen3.8-max',
         'qwen3.7-max',
         'qwen3.7-plus',
         'qwen3.6-max',
