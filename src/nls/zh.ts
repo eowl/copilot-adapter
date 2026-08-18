@@ -48,6 +48,8 @@ export const zh: Translation = {
   'model.qwen3-coder-flash.detail': '快速代码专精模型',
   'model.qwen-plus-us.detail': '均衡型模型——仅在 US 区域端点可用',
   'model.qwen-flash-us.detail': '快速低成本模型——仅在 US 区域端点可用',
+  'model.qwen3.7-plus-us.detail': '均衡型模型——仅在 US 区域端点可用',
+  'model.qwen3.7-max-us.detail': '规模最大、综合能力最强的模型——仅在 US 区域端点可用',
 
   'model.glm-5.2.detail': '最新旗舰——Coding 开源 SOTA',
   'model.glm-5.1.detail': '高智能基座——Coding 能力对齐 Claude',

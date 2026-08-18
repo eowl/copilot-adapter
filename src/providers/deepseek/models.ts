@@ -41,4 +41,16 @@ export const DEEPSEEK_V4_FLASH: ModelItem = {
   priceCategory: 'low',
 };
 
-export const DS_MODELS: readonly ModelItem[] = [DEEPSEEK_V4_PRO, DEEPSEEK_V4_FLASH];
+export const DEEPSEEK_V4_PRO_0813: ModelItem = {
+  ...DEEPSEEK_V4_PRO,
+  id: 'deepseek-v4-pro-0813',
+  label: 'DeepSeek V4 Pro 0813',
+};
+
+export const DEEPSEEK_V4_FLASH_0731: ModelItem = {
+  ...DEEPSEEK_V4_FLASH,
+  id: 'deepseek-v4-flash-0731',
+  label: 'DeepSeek V4 Flash 0731',
+};                                
+
+export const DS_MODELS: readonly ModelItem[] = [DEEPSEEK_V4_PRO, DEEPSEEK_V4_FLASH, DEEPSEEK_V4_PRO_0813, DEEPSEEK_V4_FLASH_0731];

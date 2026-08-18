@@ -95,6 +95,15 @@ export const MM_M2_7: ModelItem = {
   priceCategory: 'low',
 };
 
+export const MM_M2_5: ModelItem = {
+  ...MM_BASE,
+  id: 'minimax-m2.5',
+  label: 'MiniMax M2.5',
+  apiId: 'MiniMax-M2.5',
+  version: '2.5',
+  detailKey: 'model.minimax-m2.5.detail',
+}
+
 export const MM_MODELS: readonly ModelItem[] = [
   {
     ...MM_BASE,
@@ -120,14 +129,7 @@ export const MM_MODELS: readonly ModelItem[] = [
     version: '2.1',
     detailKey: 'model.minimax-m2.1-highspeed.detail',
   },
-  {
-    ...MM_BASE,
-    id: 'minimax-m2.5',
-    label: 'MiniMax M2.5',
-    apiId: 'MiniMax-M2.5',
-    version: '2.5',
-    detailKey: 'model.minimax-m2.5.detail',
-  },
+  MM_M2_5,
   {
     ...MM_BASE,
     id: 'minimax-m2.5-highspeed',

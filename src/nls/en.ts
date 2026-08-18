@@ -48,6 +48,8 @@ export const en: Translation = {
   'model.qwen3-coder-flash.detail': 'Fast coding-focused model',
   'model.qwen-plus-us.detail': 'Balanced model — only available on the US region endpoint',
   'model.qwen-flash-us.detail': 'Fast, low-cost model — only available on the US region endpoint',
+  'model.qwen3.7-plus-us.detail': 'Balanced model — only available on the US region endpoint',
+  'model.qwen3.7-max-us.detail': 'Largest and most capable model — only available on the US region endpoint',
 
   'model.glm-5.2.detail': 'Latest flagship — open-source Coding SOTA',
   'model.glm-5.1.detail': 'High-intelligence base — Coding on par with Claude',
