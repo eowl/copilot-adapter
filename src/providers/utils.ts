@@ -39,6 +39,16 @@ export function getEndpoint(modelProvider: ModelProvider, apiEndpoint?: string):
   return modelProvider.endpoints?.[0]?.url ?? modelProvider.url;
 }
 
+export function hasEndpointPlaceholder(url: string): boolean {
+  return url.includes('{') && url.includes('}');
+}
+
+export function resolveRequestUrl(model: ModelItem, apiEndpoint?: string): string {
+  const explicitUrl = apiEndpoint?.includes('://') ? apiEndpoint : undefined;
+
+  return explicitUrl ?? resolveTrait(model, 'url') ?? getEndpoint(model.provider, apiEndpoint);
+}
+
 export function resolveEndpoint(
   modelProvider: ModelProvider,
   apiEndpoint: string,
@@ -48,7 +58,16 @@ export function resolveEndpoint(
   const exact = modelProvider.endpoints.find((s) => s.id === apiEndpoint);
   if (exact) return exact;
 
-  return modelProvider.endpoints.find((s) => s.matchStr && apiEndpoint.includes(s.matchStr));
+  let best: (typeof modelProvider.endpoints)[number] | undefined;
+  for (const s of modelProvider.endpoints) {
+    if (s.matchStr && apiEndpoint.includes(s.matchStr)) {
+      if (!best || s.matchStr.length > (best.matchStr?.length ?? 0)) {
+        best = s;
+      }
+    }
+  }
+
+  return best;
 }
 
 export function composeModelProvider(

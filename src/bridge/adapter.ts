@@ -3,7 +3,13 @@ import { EXT_ID } from '../defines';
 import { channel } from '../logger';
 import { t } from '../nls';
 import * as registry from '../registry';
-import { resolveTrait, getEndpoint, resolveEndpoint, apiModelId } from '../providers/utils';
+import {
+  resolveTrait,
+  resolveEndpoint,
+  apiModelId,
+  hasEndpointPlaceholder,
+  resolveRequestUrl,
+} from '../providers/utils';
 import { Settings } from '../settings';
 import { buildChatInfo, type ChatInfo, type ReqOptions } from './information';
 import { Session } from './session';
@@ -212,7 +218,14 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       resolvedEndpoint = effectiveEndpoint
         ? resolveEndpoint(modelProvider, effectiveEndpoint)
         : undefined;
-      const activeEndpointId = resolvedEndpoint?.id ?? modelProvider.endpoints?.[0]?.id;
+      // A provider may define a `default` endpoint (full model list, no matchStr)
+      // as the fallback for free-text URLs that don't map to a specific region.
+      // When present it also serves as the endpoint used when the field is left
+      // empty; otherwise fall back to the first endpoint.
+      const defaultEndpointId = modelProvider.endpoints?.find((e) => e.id === 'default')?.id;
+      const activeEndpointId = effectiveEndpoint
+        ? (resolvedEndpoint?.id ?? defaultEndpointId ?? modelProvider.endpoints?.[0]?.id)
+        : (defaultEndpointId ?? modelProvider.endpoints?.[0]?.id);
       visibleModels = activeEndpointId
         ? providerModels.filter((m) => m.endpoint?.id === activeEndpointId)
         : providerModels;
@@ -327,17 +340,22 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     channel.info(
       `Sending: ${modelProvider.label} / ${model.label} (prefix: ${prefix || '(default)'})`,
     );
-    if (Settings.metaEnabled()) {
-      channel.info(`Model: id=${model.id} | apiId=${apiModelId(model)}`);
-      channel.info(`Endpoint: ${getEndpoint(modelProvider, secrets.apiEndpoint)}`);
-    }
+
     if (Settings.verboseEnabled()) {
       logVerboseMessages(messages, options.tools);
     }
 
-    // For custom models, use the URL from the model item itself (set from config).
-    // For built-in providers, resolve via getEndpoint.
-    const apiUrl = resolveTrait(model, 'url') ?? getEndpoint(modelProvider, secrets.apiEndpoint);
+    const apiUrl = resolveRequestUrl(model, secrets.apiEndpoint);
+
+    if (hasEndpointPlaceholder(apiUrl)) {
+      throw new Error(t('err.apiEndpointPlaceholder', '{WorkspaceId}'));
+    }
+
+    if (Settings.metaEnabled()) {
+      channel.info(`Model: id=${model.id} | apiId=${apiModelId(model)}`);
+      channel.info(`Endpoint: id=${model.endpoint?.id ?? '(none)'} | url=${apiUrl}`);
+    }
+
     const session = Session.fromMessages(messages);
     try {
       const ready = await assembleChatReq({
@@ -457,17 +475,15 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       isErrorSentinel: isPlanUsageErrorSentinel,
     });
   }
-  private refreshUsageCacheIfStale<T extends { display: string }>(
-    args: {
-      apiKey: string;
-      model: ModelItem;
-      kind: 'balance' | 'plan-usage';
-      expectPlan: boolean;
-      getCached: (apiKey: string, endpointId: string) => T | undefined;
-      query: (apiKey: string, endpointId: string, links: ServiceLinks) => Promise<T>;
-      isErrorSentinel: (result: T) => boolean;
-    },
-  ): void {
+  private refreshUsageCacheIfStale<T extends { display: string }>(args: {
+    apiKey: string;
+    model: ModelItem;
+    kind: 'balance' | 'plan-usage';
+    expectPlan: boolean;
+    getCached: (apiKey: string, endpointId: string) => T | undefined;
+    query: (apiKey: string, endpointId: string, links: ServiceLinks) => Promise<T>;
+    isErrorSentinel: (result: T) => boolean;
+  }): void {
     const { apiKey, model, kind, expectPlan, getCached, query, isErrorSentinel } = args;
     const methodName = kind === 'balance' ? 'refreshBalanceIfStale' : 'refreshPlanUsageIfStale';
 
