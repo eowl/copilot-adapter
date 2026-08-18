@@ -39,6 +39,10 @@ export function getEndpoint(modelProvider: ModelProvider, apiEndpoint?: string):
   return modelProvider.endpoints?.[0]?.url ?? modelProvider.url;
 }
 
+export function hasEndpointPlaceholder(url: string): boolean {
+  return url.includes('{') && url.includes('}');
+}
+
 export function resolveEndpoint(
   modelProvider: ModelProvider,
   apiEndpoint: string,

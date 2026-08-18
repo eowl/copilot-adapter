@@ -143,6 +143,9 @@ export const zh: Translation = {
   'err.action.logs': '查看日志',
   'err.unknownModel': '未知模型：{0}。',
 
+  'err.apiEndpointPlaceholder':
+    'API 端点包含未解析的占位符，请填写完整 URL 并将 {0} 替换为您的实际业务空间 ID。',
+
   'balance.label': '余额：{0}',
   'balance.creditsUnit': '额度单位：{0}',
 

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { suite, test } from 'mocha';
-import { composeModelProvider, composeModelEndpoint, getEndpoint, resolveEndpoint, resolveTrait, imagePart } from '../../../src/providers/utils';
+import { composeModelProvider, composeModelEndpoint, getEndpoint, resolveEndpoint, resolveTrait, hasEndpointPlaceholder, imagePart } from '../../../src/providers/utils';
 import { DEFAULT_ENDPOINT_URLS } from '../../../src/providers/endpoints';
 import { MINIMAX } from '../../../src/providers/minimax';
 import { ZHIPU } from '../../../src/providers/zhipu';
@@ -158,6 +158,30 @@ suite('resolveEndpoint', () => {
   test('returns undefined when provider has no endpoints', () => {
     const fake = { id: 'x', endpoints: undefined } as unknown as ModelProvider;
     assert.equal(resolveEndpoint(fake, 'whatever'), undefined);
+  });
+});
+
+suite('hasEndpointPlaceholder', () => {
+  test('detects {workspace} placeholder', () => {
+    assert.equal(
+      hasEndpointPlaceholder('https://{workspace}.ap-southeast-1.maas.aliyuncs.com/compatible-mode/v1'),
+      true,
+    );
+  });
+
+  test('detects {WorkspaceId} placeholder', () => {
+    assert.equal(
+      hasEndpointPlaceholder('https://{WorkspaceId}.ap-northeast-1.maas.aliyuncs.com/compatible-mode/v1'),
+      true,
+    );
+  });
+
+  test('returns false for a plain URL', () => {
+    assert.equal(hasEndpointPlaceholder('https://dashscope.aliyuncs.com/compatible-mode/v1'), false);
+  });
+
+  test('returns false for a URL with no braces', () => {
+    assert.equal(hasEndpointPlaceholder('https://api.deepseek.com'), false);
   });
 });
 

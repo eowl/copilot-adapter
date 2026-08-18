@@ -152,6 +152,9 @@ export const en: Translation = {
 
   'err.unknownModel': 'Unknown model: {0}.',
 
+  'err.apiEndpointPlaceholder':
+    'The API endpoint contains an unresolved placeholder. Enter a full URL and replace {0} with your actual workspace ID.',
+
   'balance.label': 'Balance: {0}',
   'balance.creditsUnit': 'Credits Unit: {0}',
 

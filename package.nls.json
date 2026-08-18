@@ -12,7 +12,7 @@
   "copilot-adapter.provider.qwen.apiKey.title": "Qwen API Key",
   "copilot-adapter.provider.qwen.apiKey.description": "Your Alibaba DashScope API key for Qwen. Keys start with 'sk-'.",
   "copilot-adapter.provider.qwen.apiEndpoint.title": "API Endpoint",
-  "copilot-adapter.provider.qwen.apiEndpoint.description": "Qwen API endpoint URL. Leave empty for CN: https://dashscope.aliyuncs.com/compatible-mode/v1 | US: https://dashscope-us.aliyuncs.com/compatible-mode/v1 | SGP: https://{WorkspaceId}.ap-southeast-1.maas.aliyuncs.com/compatible-mode/v1 | EU: https://{WorkspaceId}.eu-central-1.maas.aliyuncs.com/compatible-mode/v1. Replace {WorkspaceId} with your actual workspace ID.",
+  "copilot-adapter.provider.qwen.apiEndpoint.description": "Qwen API endpoint URL. Leave empty for CN: https://dashscope.aliyuncs.com/compatible-mode/v1 | US: https://dashscope-us.aliyuncs.com/compatible-mode/v1 | SGP: https://{workspace}.ap-southeast-1.maas.aliyuncs.com/compatible-mode/v1 | EU: https://{workspace}.eu-central-1.maas.aliyuncs.com/compatible-mode/v1. Replace {workspace} with your actual workspace ID.",
   "copilot-adapter.provider.zhipu.apiKey.title": "Zhipu API Key",
   "copilot-adapter.provider.zhipu.apiKey.description": "Your Zhipu API key for the GLM series.",
   "copilot-adapter.provider.zhipu.apiEndpoint.title": "API Endpoint",

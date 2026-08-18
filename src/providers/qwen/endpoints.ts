@@ -43,7 +43,7 @@ export const QWEN_ENDPOINTS: readonly ModelEndpoint[] = [
     {
       id: 'JP',
       label: 'Japan (Tokyo)',
-      url: 'https://{WorkspaceId}.ap-northeast-1.maas.aliyuncs.com/compatible-mode/v1',
+      url: 'https://{workspace}.ap-northeast-1.maas.aliyuncs.com/compatible-mode/v1',
       matchStr: 'ap-northeast-1.maas.aliyuncs.com',
     },
     QWEN_BASE_MODELS,

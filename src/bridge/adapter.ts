@@ -3,7 +3,7 @@ import { EXT_ID } from '../defines';
 import { channel } from '../logger';
 import { t } from '../nls';
 import * as registry from '../registry';
-import { resolveTrait, getEndpoint, resolveEndpoint, apiModelId } from '../providers/utils';
+import { resolveTrait, getEndpoint, resolveEndpoint, apiModelId, hasEndpointPlaceholder } from '../providers/utils';
 import { Settings } from '../settings';
 import { buildChatInfo, type ChatInfo, type ReqOptions } from './information';
 import { Session } from './session';
@@ -335,14 +335,21 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     // For custom models, use the URL from the model item itself (set from config).
     // For built-in providers, resolve via getEndpoint.
     const apiUrl =
-    (secrets.apiEndpoint?.includes('://') ? secrets.apiEndpoint : undefined) ??
-    resolveTrait(model, 'url') ??
-    getEndpoint(modelProvider, secrets.apiEndpoint);
+      (secrets.apiEndpoint?.includes('://') ? secrets.apiEndpoint : undefined) ??
+      resolveTrait(model, 'url') ??
+      getEndpoint(modelProvider, secrets.apiEndpoint);
+
+    // Regional endpoints (SGP/EU/JP) use a `{workspace}` placeholder that the user
+    // must replace with their actual workspace ID. Never send the template as-is.
+    if (hasEndpointPlaceholder(apiUrl)) {
+      throw new Error(t('err.apiEndpointPlaceholder', '{workspace}'));
+    }
+
+    const endpoint = resolveEndpoint(modelProvider, secrets.apiEndpoint ?? '');
 
     if (Settings.metaEnabled()) {
       channel.info(`Model: id=${model.id} | apiId=${apiModelId(model)}`);
-      channel.info(`Endpoint: ${getEndpoint(modelProvider, secrets.apiEndpoint)}`);
-      channel.info(`Resolved URL: ${apiUrl}`);
+      channel.info(`Endpoint: id=${endpoint?.id ?? '(none)'} | url=${apiUrl}`);
     }
 
     const session = Session.fromMessages(messages);
