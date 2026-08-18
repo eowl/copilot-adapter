@@ -35,7 +35,7 @@ const cases: EndpointCase[] = [
   {
     label: 'Qwen: no overrides returns first endpoint url',
     provider: QWEN,
-    expected: DEFAULT_ENDPOINT_URLS.qwen,
+    expected: 'https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/compatible-mode/v1',
   },
   {
     label: 'DeepSeek: no overrides returns first endpoint url',
@@ -131,7 +131,7 @@ suite('resolveEndpoint', () => {
   });
 
   test('returns Qwen US endpoint by match', () => {
-    const ep = resolveEndpoint(QWEN, 'https://dashscope-us.aliyuncs.com/compatible-mode/v1');
+    const ep = resolveEndpoint(QWEN, 'https://abc.us-east-1.maas.aliyuncs.com/compatible-mode/v1');
     assert.equal(ep?.id, 'us');
   });
 
@@ -146,8 +146,13 @@ suite('resolveEndpoint', () => {
   });
 
   test('returns Qwen CN endpoint by match', () => {
-    const ep = resolveEndpoint(QWEN, 'https://dashscope.aliyuncs.com/compatible-mode/v1');
+    const ep = resolveEndpoint(QWEN, 'https://ws-xxx.cn-beijing.maas.aliyuncs.com/compatible-mode/v1');
     assert.equal(ep?.id, 'cn');
+  });
+
+  test('returns Qwen token-plan endpoint by match (more specific than cn)', () => {
+    const ep = resolveEndpoint(QWEN, 'https://token-plan.cn-beijing.maas.aliyuncs.com/compatible-mode/v1');
+    assert.equal(ep?.id, 'token-plan');
   });
 
   test('returns undefined when no endpoint matches', () => {
@@ -195,7 +200,7 @@ suite('resolveRequestUrl', () => {
 
   test('falls back to resolveTrait when no full URL is provided', () => {
     const url = resolveRequestUrl(cnModel, undefined);
-    assert.equal(url, 'https://dashscope.aliyuncs.com/compatible-mode/v1');
+    assert.equal(url, 'https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/compatible-mode/v1');
   });
 });
 
@@ -262,8 +267,52 @@ suite('Endpoint.models visibility', () => {
   });
 
   test('resolveEndpoint does not match default for an unmatchable URL', () => {
-    const ep = resolveEndpoint(QWEN, 'https://token-plan.cn-beijing.maas.aliyuncs.com/compatible-mode/v1');
+    const ep = resolveEndpoint(QWEN, 'https://dashscope.aliyuncs.com/compatible-mode/v1');
     assert.equal(ep, undefined, 'unmatchable URL should not resolve to any endpoint');
+  });
+});
+
+suite('Qwen activeEndpointId (leaving apiEndpoint empty vs unknown URL)', () => {
+  // Mirror the exact logic from adapter.ts provideLanguageModelChatInformation:
+  //   resolvedEndpoint = effectiveEndpoint ? resolveEndpoint(...) : undefined
+  //   defaultEndpointId = endpoints.find(e => e.id === 'default')?.id
+  //   activeEndpointId = effectiveEndpoint
+  //     ? (resolvedEndpoint?.id ?? defaultEndpointId ?? endpoints[0].id)
+  //     : (defaultEndpointId ?? endpoints[0].id)
+  function activeEndpointId(effectiveEndpoint: string | undefined): string | undefined {
+    const resolved = effectiveEndpoint
+      ? resolveEndpoint(QWEN, effectiveEndpoint)
+      : undefined;
+    const defaultEndpointId = QWEN.endpoints?.find((e) => e.id === 'default')?.id;
+    return effectiveEndpoint
+      ? (resolved?.id ?? defaultEndpointId ?? QWEN.endpoints?.[0]?.id)
+      : (defaultEndpointId ?? QWEN.endpoints?.[0]?.id);
+  }
+
+  test('leaving apiEndpoint empty defaults to the "default" endpoint (dashscope)', () => {
+    assert.equal(activeEndpointId(undefined), 'default');
+  });
+
+  test('empty string also defaults to the "default" endpoint', () => {
+    assert.equal(activeEndpointId(''), 'default');
+  });
+
+  test('an unmatchable URL falls back to the "default" endpoint', () => {
+    assert.equal(
+      activeEndpointId('https://dashscope.aliyuncs.com/compatible-mode/v1'),
+      'default',
+    );
+  });
+
+  test('a matchable URL resolves to its own endpoint (not default)', () => {
+    assert.equal(
+      activeEndpointId('https://token-plan.cn-beijing.maas.aliyuncs.com/compatible-mode/v1'),
+      'token-plan',
+    );
+    assert.equal(
+      activeEndpointId('https://ws-xxx.cn-beijing.maas.aliyuncs.com/compatible-mode/v1'),
+      'cn',
+    );
   });
 });
 

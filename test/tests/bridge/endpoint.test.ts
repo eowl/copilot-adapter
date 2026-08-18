@@ -5,7 +5,7 @@ import { MIMO } from '../../../src/providers/mimo';
 import { MIMO_MODELS } from '../../../src/providers/mimo/models';
 import { MIMO_ENDPOINTS } from '../../../src/providers/mimo/endpoints';
 import * as registry from '../../../src/registry';
-import { resolveTrait, getEndpoint, composeModelEndpoint, modelKey } from '../../../src/providers/utils';
+import { resolveTrait, getEndpoint, resolveEndpoint, composeModelEndpoint, modelKey } from '../../../src/providers/utils';
 import type { ModelItem, ModelProvider } from '../../../src/providers/types';
 import type { ReqOptions } from '../../../src/bridge/information';
 
@@ -172,10 +172,13 @@ suite('bridge/endpoint provideLanguageModelChatInformation filtering', () => {
     );
 
     const effectiveEndpoint = secretsApiEndpoint ?? groupCfgApiEndpoint;
+    const resolvedEndpoint = effectiveEndpoint
+      ? resolveEndpoint(provider, effectiveEndpoint)
+      : undefined;
+    const defaultEndpointId = provider.endpoints?.find((e) => e.id === 'default')?.id;
     const activeEndpointId = effectiveEndpoint
-      ? provider.endpoints?.find((e) => e.id === effectiveEndpoint)?.id
-        ?? provider.endpoints?.[0]?.id
-      : provider.endpoints?.[0]?.id;
+      ? (resolvedEndpoint?.id ?? defaultEndpointId ?? provider.endpoints?.[0]?.id)
+      : (defaultEndpointId ?? provider.endpoints?.[0]?.id);
 
     const visible =
       activeEndpointId

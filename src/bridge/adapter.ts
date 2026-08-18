@@ -212,9 +212,14 @@ export class Adapter implements vscode.LanguageModelChatProvider {
       resolvedEndpoint = effectiveEndpoint
         ? resolveEndpoint(modelProvider, effectiveEndpoint)
         : undefined;
+      // A provider may define a `default` endpoint (full model list, no matchStr)
+      // as the fallback for free-text URLs that don't map to a specific region.
+      // When present it also serves as the endpoint used when the field is left
+      // empty; otherwise fall back to the first endpoint.
+      const defaultEndpointId = modelProvider.endpoints?.find((e) => e.id === 'default')?.id;
       const activeEndpointId = effectiveEndpoint
-        ? (resolvedEndpoint?.id ?? 'default')
-        : (modelProvider.endpoints?.[0]?.id);
+        ? (resolvedEndpoint?.id ?? defaultEndpointId ?? modelProvider.endpoints?.[0]?.id)
+        : (defaultEndpointId ?? modelProvider.endpoints?.[0]?.id);
       visibleModels = activeEndpointId
         ? providerModels.filter((m) => m.endpoint?.id === activeEndpointId)
         : providerModels;
@@ -337,7 +342,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     const apiUrl = resolveRequestUrl(model, secrets.apiEndpoint);
 
     if (hasEndpointPlaceholder(apiUrl)) {
-      throw new Error(t('err.apiEndpointPlaceholder', '{workspace}'));
+      throw new Error(t('err.apiEndpointPlaceholder', '{WorkspaceId}'));
     }
 
     if (Settings.metaEnabled()) {

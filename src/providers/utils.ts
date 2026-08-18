@@ -58,7 +58,16 @@ export function resolveEndpoint(
   const exact = modelProvider.endpoints.find((s) => s.id === apiEndpoint);
   if (exact) return exact;
 
-  return modelProvider.endpoints.find((s) => s.matchStr && apiEndpoint.includes(s.matchStr));
+  let best: (typeof modelProvider.endpoints)[number] | undefined;
+  for (const s of modelProvider.endpoints) {
+    if (s.matchStr && apiEndpoint.includes(s.matchStr)) {
+      if (!best || s.matchStr.length > (best.matchStr?.length ?? 0)) {
+        best = s;
+      }
+    }
+  }
+
+  return best;
 }
 
 export function composeModelProvider(

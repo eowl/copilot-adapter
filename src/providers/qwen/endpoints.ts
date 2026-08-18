@@ -7,8 +7,8 @@ export const QWEN_ENDPOINTS: readonly ModelEndpoint[] = [
     {
       id: 'cn',
       label: 'CN Beijing',
-      url: 'https://dashscope.aliyuncs.com/compatible-mode/v1',
-      matchStr: 'dashscope.aliyuncs.com',
+      url: 'https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/compatible-mode/v1',
+      matchStr: 'cn-beijing.maas.aliyuncs.com',
     },
     QWEN_BASE_MODELS,
   ),
@@ -16,8 +16,8 @@ export const QWEN_ENDPOINTS: readonly ModelEndpoint[] = [
     {
       id: 'us',
       label: 'US',
-      url: 'https://dashscope-us.aliyuncs.com/compatible-mode/v1',
-      matchStr: 'dashscope-us.aliyuncs.com',
+      url: 'https://{WorkspaceId}.us-east-1.maas.aliyuncs.com/compatible-mode/v1',
+      matchStr: 'us-east-1.maas.aliyuncs.com',
     },
     [...QWEN_BASE_MODELS, ...QWEN_US_MODELS],
   ),
@@ -25,7 +25,7 @@ export const QWEN_ENDPOINTS: readonly ModelEndpoint[] = [
     {
       id: 'sgp',
       label: 'Singapore',
-      url: 'https://{workspace}.ap-southeast-1.maas.aliyuncs.com/compatible-mode/v1',
+      url: 'https://{WorkspaceId}.ap-southeast-1.maas.aliyuncs.com/compatible-mode/v1',
       matchStr: 'ap-southeast-1.maas.aliyuncs.com',
     },
     QWEN_BASE_MODELS,
@@ -34,17 +34,26 @@ export const QWEN_ENDPOINTS: readonly ModelEndpoint[] = [
     {
       id: 'eu',
       label: 'EU (Frankfurt)',
-      url: 'https://{workspace}.eu-central-1.maas.aliyuncs.com/compatible-mode/v1',
+      url: 'https://{WorkspaceId}.eu-central-1.maas.aliyuncs.com/compatible-mode/v1',
       matchStr: 'eu-central-1.maas.aliyuncs.com',
     },
     QWEN_BASE_MODELS,
   ),
   composeModelEndpoint(
     {
-      id: 'JP',
+      id: 'jp',
       label: 'Japan (Tokyo)',
-      url: 'https://{workspace}.ap-northeast-1.maas.aliyuncs.com/compatible-mode/v1',
+      url: 'https://{WorkspaceId}.ap-northeast-1.maas.aliyuncs.com/compatible-mode/v1',
       matchStr: 'ap-northeast-1.maas.aliyuncs.com',
+    },
+    QWEN_BASE_MODELS,
+  ),
+  composeModelEndpoint(
+    {
+      id: 'token-plan',
+      label: 'Token Plan',
+      url: 'https://token-plan.cn-beijing.maas.aliyuncs.com/compatible-mode/v1',
+      matchStr: 'token-plan.cn-beijing.maas.aliyuncs.com',
     },
     QWEN_BASE_MODELS,
   ),
