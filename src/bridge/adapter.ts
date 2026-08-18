@@ -327,10 +327,7 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     channel.info(
       `Sending: ${modelProvider.label} / ${model.label} (prefix: ${prefix || '(default)'})`,
     );
-    if (Settings.metaEnabled()) {
-      channel.info(`Model: id=${model.id} | apiId=${apiModelId(model)}`);
-      channel.info(`Endpoint: ${getEndpoint(modelProvider, secrets.apiEndpoint)}`);
-    }
+    
     if (Settings.verboseEnabled()) {
       logVerboseMessages(messages, options.tools);
     }
@@ -338,6 +335,13 @@ export class Adapter implements vscode.LanguageModelChatProvider {
     // For custom models, use the URL from the model item itself (set from config).
     // For built-in providers, resolve via getEndpoint.
     const apiUrl = resolveTrait(model, 'url') ?? getEndpoint(modelProvider, secrets.apiEndpoint);
+
+    if (Settings.metaEnabled()) {
+      channel.info(`Model: id=${model.id} | apiId=${apiModelId(model)}`);
+      channel.info(`Endpoint: ${getEndpoint(modelProvider, secrets.apiEndpoint)}`);
+      channel.info(`Resolved URL: ${apiUrl}`);
+    }
+
     const session = Session.fromMessages(messages);
     try {
       const ready = await assembleChatReq({
