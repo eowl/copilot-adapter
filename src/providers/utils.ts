@@ -43,6 +43,12 @@ export function hasEndpointPlaceholder(url: string): boolean {
   return url.includes('{') && url.includes('}');
 }
 
+export function resolveRequestUrl(model: ModelItem, apiEndpoint?: string): string {
+  const explicitUrl = apiEndpoint?.includes('://') ? apiEndpoint : undefined;
+
+  return explicitUrl ?? resolveTrait(model, 'url') ?? getEndpoint(model.provider, apiEndpoint);
+}
+
 export function resolveEndpoint(
   modelProvider: ModelProvider,
   apiEndpoint: string,

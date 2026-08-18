@@ -1,11 +1,11 @@
 import assert from 'node:assert/strict';
 import { suite, test } from 'mocha';
-import { composeModelProvider, composeModelEndpoint, getEndpoint, resolveEndpoint, resolveTrait, hasEndpointPlaceholder, imagePart } from '../../../src/providers/utils';
+import { composeModelProvider, composeModelEndpoint, getEndpoint, resolveEndpoint, resolveTrait, hasEndpointPlaceholder, resolveRequestUrl, imagePart } from '../../../src/providers/utils';
 import { DEFAULT_ENDPOINT_URLS } from '../../../src/providers/endpoints';
 import { MINIMAX } from '../../../src/providers/minimax';
 import { ZHIPU } from '../../../src/providers/zhipu';
 import { MOONSHOT } from '../../../src/providers/moonshot';
-import { QWEN } from '../../../src/providers/qwen';
+import { QWEN, QWEN_ENDPOINTS } from '../../../src/providers/qwen';
 import { DEEPSEEK } from '../../../src/providers/deepseek';
 import type { ModelItem, ModelProvider } from '../../../src/providers/types';
 
@@ -182,6 +182,20 @@ suite('hasEndpointPlaceholder', () => {
 
   test('returns false for a URL with no braces', () => {
     assert.equal(hasEndpointPlaceholder('https://api.deepseek.com'), false);
+  });
+});
+
+suite('resolveRequestUrl', () => {
+  const cnModel = QWEN_ENDPOINTS[0].models![0] as ModelItem;
+
+  test('user-typed full URL wins over the model trait', () => {
+    const url = resolveRequestUrl(cnModel, 'https://s.ap-southeast-1.maas.aliyuncs.com/compatible-mode/v1');
+    assert.equal(url, 'https://s.ap-southeast-1.maas.aliyuncs.com/compatible-mode/v1');
+  });
+
+  test('falls back to resolveTrait when no full URL is provided', () => {
+    const url = resolveRequestUrl(cnModel, undefined);
+    assert.equal(url, 'https://dashscope.aliyuncs.com/compatible-mode/v1');
   });
 });
 
