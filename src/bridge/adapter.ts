@@ -334,7 +334,10 @@ export class Adapter implements vscode.LanguageModelChatProvider {
 
     // For custom models, use the URL from the model item itself (set from config).
     // For built-in providers, resolve via getEndpoint.
-    const apiUrl = resolveTrait(model, 'url') ?? getEndpoint(modelProvider, secrets.apiEndpoint);
+    const apiUrl =
+    (secrets.apiEndpoint?.includes('://') ? secrets.apiEndpoint : undefined) ??
+    resolveTrait(model, 'url') ??
+    getEndpoint(modelProvider, secrets.apiEndpoint);
 
     if (Settings.metaEnabled()) {
       channel.info(`Model: id=${model.id} | apiId=${apiModelId(model)}`);
