@@ -48,4 +48,12 @@ export const QWEN_ENDPOINTS: readonly ModelEndpoint[] = [
     },
     QWEN_BASE_MODELS,
   ),
+  composeModelEndpoint(
+    {
+      id: 'default',
+      label: 'Default',
+      url: 'https://dashscope.aliyuncs.com/compatible-mode/v1',
+    },
+    [...QWEN_BASE_MODELS, ...QWEN_US_MODELS],
+  ),
 ];

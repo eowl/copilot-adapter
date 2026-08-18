@@ -245,6 +245,26 @@ suite('Endpoint.models visibility', () => {
     const usIds = us?.models!.map((m) => m.id) ?? [];
     assert.ok(usIds.includes('qwen3.7-max'), 'US endpoint should contain shared base model');
   });
+
+  test('Qwen default endpoint includes ALL models (base + US-only)', () => {
+    const def = QWEN.endpoints?.find((s) => s.id === 'default');
+    assert.ok(def, 'Qwen should have a default endpoint');
+    const defIds = def?.models!.map((m) => m.id) ?? [];
+    assert.ok(defIds.includes('qwen3.7-max'), 'default endpoint should contain base model');
+    assert.ok(defIds.includes('qwen-plus-us'), 'default endpoint should contain US-only model');
+    assert.ok(defIds.includes('qwen-flash-us'), 'default endpoint should contain US-only model');
+  });
+
+  test('Qwen default endpoint has no matchStr (never substring-matched)', () => {
+    const def = QWEN.endpoints?.find((s) => s.id === 'default');
+    assert.ok(def, 'Qwen should have a default endpoint');
+    assert.equal(def?.matchStr, undefined, 'default endpoint must not define matchStr');
+  });
+
+  test('resolveEndpoint does not match default for an unmatchable URL', () => {
+    const ep = resolveEndpoint(QWEN, 'https://token-plan.cn-beijing.maas.aliyuncs.com/compatible-mode/v1');
+    assert.equal(ep, undefined, 'unmatchable URL should not resolve to any endpoint');
+  });
 });
 
 suite('resolveTrait model > endpoint > provider chain', () => {
