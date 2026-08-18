@@ -42,4 +42,4 @@ export const MIMO_MODELS: readonly ModelItem[] = [
     },
     priceCategory: 'low',
   },
-] as ModelItem[];
+];

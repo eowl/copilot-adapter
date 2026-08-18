@@ -53,7 +53,7 @@ export const ZHIPU_GLM_4_7: ModelItem = {
   maxInputTokens: 200_000,
   maxOutputTokens: 128_000,
   detailKey: 'model.glm-4.7.detail',
-} as ModelItem;
+};
 
 export const ZHIPU_GLM_5_2: ModelItem = {
   ...BM_GLM52_BASE,
@@ -68,7 +68,7 @@ export const ZHIPU_GLM_5_2: ModelItem = {
     CNY: { default: { cacheInput: 2, input: 8, output: 28 } },
   },
   priceCategory: 'high',
-} as ModelItem;
+};
 
 export const ZHIPU_GLM_5_1: ModelItem = {
   ...BM_THINK_BASE,
@@ -96,7 +96,7 @@ export const ZHIPU_GLM_5_1: ModelItem = {
     USD: { default: { cacheInput: 0.26, input: 1.4, output: 4.4 } },
   },
   priceCategory: 'high',
-} as ModelItem;
+};
 
 export const ZP_MODELS: readonly ModelItem[] = [
   ZHIPU_GLM_5_2,
@@ -300,4 +300,4 @@ export const ZP_MODELS: readonly ModelItem[] = [
     maxOutputTokens: 1_024,
     detailKey: 'model.glm-4v-flash.detail',
   },
-] as ModelItem[];
+];

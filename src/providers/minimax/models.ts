@@ -67,7 +67,7 @@ export const MM_M3: ModelItem = {
     },
   },
   priceCategory: 'low',
-} as ModelItem;
+};
 
 export const MM_M2_7: ModelItem = {
   ...MM_BASE,
@@ -93,7 +93,7 @@ export const MM_M2_7: ModelItem = {
     },
   },
   priceCategory: 'low',
-} as ModelItem;
+};
 
 export const MM_MODELS: readonly ModelItem[] = [
   {
@@ -162,4 +162,4 @@ export const MM_MODELS: readonly ModelItem[] = [
     },
   },
   MM_M3,
-] as ModelItem[];
+];

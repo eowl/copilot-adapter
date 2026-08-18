@@ -24,7 +24,7 @@ export const DEEPSEEK_V4_PRO: ModelItem = {
     USD: { default: { cacheInput: 0.003625, input: 0.435, output: 0.87 } },
   },
   priceCategory: 'low',
-} as ModelItem;
+};
 
 export const DEEPSEEK_V4_FLASH: ModelItem = {
   ...DS_BASE,
@@ -39,6 +39,6 @@ export const DEEPSEEK_V4_FLASH: ModelItem = {
     USD: { default: { cacheInput: 0.0028, input: 0.14, output: 0.28 } },
   },
   priceCategory: 'low',
-} as ModelItem;
+};
 
-export const DS_MODELS: readonly ModelItem[] = [DEEPSEEK_V4_PRO, DEEPSEEK_V4_FLASH] as ModelItem[];
+export const DS_MODELS: readonly ModelItem[] = [DEEPSEEK_V4_PRO, DEEPSEEK_V4_FLASH];

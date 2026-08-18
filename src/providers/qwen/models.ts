@@ -113,7 +113,7 @@ export const QWEN_BASE_MODELS: readonly ModelItem[] = [
     maxOutputTokens: 65_536,
     detailKey: 'model.qwen3-coder-flash.detail',
   },
-] as ModelItem[];
+];
 
 export const QWEN_US_MODELS: readonly ModelItem[] = [
   {
@@ -134,4 +134,4 @@ export const QWEN_US_MODELS: readonly ModelItem[] = [
     maxOutputTokens: 65_536,
     detailKey: 'model.qwen-flash-us.detail',
   },
-] as ModelItem[];
+];
