@@ -51,7 +51,8 @@ export const zh: Translation = {
   'model.qwen3.7-plus-us.detail': '均衡型模型——仅在 US 区域端点可用',
   'model.qwen3.7-max-us.detail': '规模最大、综合能力最强的模型——仅在 US 区域端点可用',
 
-  'model.glm-5.2.detail': '最新旗舰——Coding 开源 SOTA',
+  'model.glm-5.3.detail': 'GLM-5.3 是智谱最新旗舰模型，复杂软件工程与 Agent 任务能力全面进阶。',
+  'model.glm-5.2.detail': 'GLM-5.2 是面向长任务时代的旗舰模型',
   'model.glm-5.1.detail': '高智能基座——Coding 能力对齐 Claude',
   'model.glm-5.detail': '高智能基座——擅长 Agentic 长程规划与执行',
   'model.glm-5-turbo.detail': '龙虾增强基座——长程任务执行连续性好',

@@ -51,7 +51,8 @@ export const en: Translation = {
   'model.qwen3.7-plus-us.detail': 'Balanced model — only available on the US region endpoint',
   'model.qwen3.7-max-us.detail': 'Largest and most capable model — only available on the US region endpoint',
 
-  'model.glm-5.2.detail': 'Latest flagship — open-source Coding SOTA',
+  'model.glm-5.3.detail': 'GLM-5.3 is the latest flagship model from Zhipu',
+  'model.glm-5.2.detail': 'GLM-5.2 is the flagship model for the long-task era',
   'model.glm-5.1.detail': 'High-intelligence base — Coding on par with Claude',
   'model.glm-5.detail': 'High-intelligence base model — agentic long-horizon planning',
   'model.glm-5-turbo.detail': 'Lobster-tuned base model — optimized for long-task execution',
