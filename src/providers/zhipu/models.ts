@@ -122,37 +122,39 @@ export const ZHIPU_GLM_5_1: ModelItem = {
   priceCategory: 'high',
 };
 
+export const ZHIPU_GLM_5: ModelItem = {
+  ...BM_THINK_BASE,
+  id: 'glm-5',
+  label: 'GLM-5',
+  version: '5',
+  maxInputTokens: 200_000,
+  maxOutputTokens: 128_000,
+  detailKey: 'model.glm-5.detail',
+  pricing: {
+    CNY: {
+      default: {
+        // <32K
+        cacheInput: 1,
+        input: 4,
+        output: 18,
+      },
+      longContext: {
+        // >=32K
+        cacheInput: 1.5,
+        input: 6,
+        output: 22,
+      },
+    },
+    USD: { default: { cacheInput: 0.2, input: 1, output: 3.2 } },
+  },
+  priceCategory: 'medium',
+};
+
 export const ZP_MODELS: readonly ModelItem[] = [
   ZHIPU_GLM_5_3,
   ZHIPU_GLM_5_2,
   ZHIPU_GLM_5_1,
-  {
-    ...BM_THINK_BASE,
-    id: 'glm-5',
-    label: 'GLM-5',
-    version: '5',
-    maxInputTokens: 200_000,
-    maxOutputTokens: 128_000,
-    detailKey: 'model.glm-5.detail',
-    pricing: {
-      CNY: {
-        default: {
-          // <32K
-          cacheInput: 1,
-          input: 4,
-          output: 18,
-        },
-        longContext: {
-          // >=32K
-          cacheInput: 1.5,
-          input: 6,
-          output: 22,
-        },
-      },
-      USD: { default: { cacheInput: 0.2, input: 1, output: 3.2 } },
-    },
-    priceCategory: 'medium',
-  },
+  ZHIPU_GLM_5,
   {
     ...BM_THINK_BASE,
     id: 'glm-5-turbo',

@@ -7,6 +7,7 @@ import {
   QWEN_SGP_MODELS,
   QWEN_JP_MODELS,
   QWEN_DE_MODELS,
+  QWEN_TOKEN_PLAN_MODELS,
 } from './models';
 
 export const QWEN_ENDPOINTS: readonly ModelEndpoint[] = [
@@ -62,7 +63,7 @@ export const QWEN_ENDPOINTS: readonly ModelEndpoint[] = [
       url: 'https://token-plan.cn-beijing.maas.aliyuncs.com/compatible-mode/v1',
       matchStr: 'token-plan.cn-beijing.maas.aliyuncs.com',
     },
-    QWEN_BASE_MODELS,
+    QWEN_TOKEN_PLAN_MODELS,
   ),
   composeModelEndpoint(
     {
