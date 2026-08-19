@@ -65,9 +65,4 @@ export const DEEPSEEK_V4_FLASH_0731: ModelItem = {
   label: 'DeepSeek V4 Flash 0731',
 };
 
-export const DS_MODELS: readonly ModelItem[] = [
-  DEEPSEEK_V4_PRO,
-  DEEPSEEK_V4_FLASH,
-  DEEPSEEK_V4_PRO_0813,
-  DEEPSEEK_V4_FLASH_0731,
-];
+export const DS_MODELS: readonly ModelItem[] = [DEEPSEEK_V4_PRO, DEEPSEEK_V4_FLASH];
