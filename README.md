@@ -20,6 +20,7 @@ Extend VS Code's native Copilot Chat with third-party AI models. Switch between 
   - [Context Window](#context-window)
   - [Custom Models](#custom-models)
   - [Balance & usage display](#balance--usage-display)
+  - [Price display](#price-display)
 - [Configuration Reference](#configuration-reference)
 - [Commands](#commands)
 - [Notes](#notes)
@@ -139,6 +140,17 @@ For API-key based providers (DeepSeek, Moonshot), the extension can display your
 The query result is cached to avoid excessive API calls. You can control the cache duration via the `copilot-adapter.balanceCacheTime` setting. Changing it to `Off (no cache)` fetches the balance on every model list refresh.
 
 [Balance and Usage Information](docs/balance-usage-info.md)
+
+### Price display
+
+The extension uses VS Code's unit-price API. Some models are configured with pricing, and the extension shows the unit price (e.g. per 1K tokens or per 1M tokens) on the model hover card, and computes the available credits from the current balance or usage. Currency priority for the displayed price is:
+
+1. Currency returned in the balance API response
+2. Currency specified in the endpoint configuration
+3. Currency from the `copilot-adapter.pricingCurrency` setting
+4. VS Code UI language (Chinese → CNY, others → USD)
+
+*Note:* for `DeepSeek` models, the default price shown on the hover card is the official off-peak pricing, while the long-context price represents the official peak pricing (this is because VS Code's unit-price API only distinguishes `default` and `longContext`).
 
 ---
 

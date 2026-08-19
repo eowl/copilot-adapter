@@ -20,10 +20,10 @@ export const DEEPSEEK_V4_PRO: ModelItem = {
   maxOutputTokens: 384_000,
   detailKey: 'model.deepseek-v4-pro.detail',
   pricing: {
-    CNY: { default: { cacheInput: 0.025, input: 3, output: 6 } },
-    USD: { default: { cacheInput: 0.003625, input: 0.435, output: 0.87 } },
+    CNY: { default: { cacheInput: 0.15, input: 4.5, output: 13.5 }, longContext: { cacheInput: 0.3, input: 9, output: 27 } },
+    USD: { default: { cacheInput: 0.022, input: 0.66, output: 1.98 }, longContext: { cacheInput: 0.044, input: 1.32, output: 3.96 } },
   },
-  priceCategory: 'low',
+  priceCategory: 'medium',
 };
 
 export const DEEPSEEK_V4_FLASH: ModelItem = {
@@ -35,8 +35,8 @@ export const DEEPSEEK_V4_FLASH: ModelItem = {
   maxOutputTokens: 384_000,
   detailKey: 'model.deepseek-v4-flash.detail',
   pricing: {
-    CNY: { default: { cacheInput: 0.02, input: 1, output: 2 } },
-    USD: { default: { cacheInput: 0.0028, input: 0.14, output: 0.28 } },
+    CNY: { default: { cacheInput: 0.05, input: 1.5, output: 4.5 }, longContext: { cacheInput: 0.1, input: 3, output: 9 } },
+    USD: { default: { cacheInput: 0.007, input: 0.22, output: 0.66 }, longContext: { cacheInput: 0.014, input: 0.44, output: 1.32 } },
   },
   priceCategory: 'low',
 };
