@@ -1,6 +1,13 @@
 import type { ModelEndpoint } from '../types';
 import { composeModelEndpoint } from '../utils';
-import { QWEN_BASE_MODELS, QWEN_CN_MODELS, QWEN_US_MODELS, QWEN_SGP_MODELS, QWEN_JP_MODELS, QWEN_DE_MODELS } from './models';
+import {
+  QWEN_BASE_MODELS,
+  QWEN_CN_MODELS,
+  QWEN_US_MODELS,
+  QWEN_SGP_MODELS,
+  QWEN_JP_MODELS,
+  QWEN_DE_MODELS,
+} from './models';
 
 export const QWEN_ENDPOINTS: readonly ModelEndpoint[] = [
   composeModelEndpoint(

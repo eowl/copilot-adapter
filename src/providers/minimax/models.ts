@@ -102,7 +102,7 @@ export const MM_M2_5: ModelItem = {
   apiId: 'MiniMax-M2.5',
   version: '2.5',
   detailKey: 'model.minimax-m2.5.detail',
-}
+};
 
 export const MM_MODELS: readonly ModelItem[] = [
   {

@@ -41,9 +41,6 @@ export const MIMO_V2_5_FLASH: ModelItem = {
     CNY: { default: { cacheInput: 0.02, input: 1.0, output: 2.0 } },
   },
   priceCategory: 'low',
-}
+};
 
-export const MIMO_MODELS: readonly ModelItem[] = [
-  MIMO_V2_5_PRO,
-  MIMO_V2_5_FLASH
-];
+export const MIMO_MODELS: readonly ModelItem[] = [MIMO_V2_5_PRO, MIMO_V2_5_FLASH];

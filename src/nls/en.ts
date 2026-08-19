@@ -36,9 +36,11 @@ export const en: Translation = {
   'model.minimax-m3.detail': 'Deep reasoning with vision support',
 
   'model.qwen3.8-max.detail': 'Flagship model, latest generation',
-  'model.qwen3.7-max.detail': 'Qwen3.7 Max, the largest and most capable model in the Qwen3.7 series',
+  'model.qwen3.7-max.detail':
+    'Qwen3.7 Max, the largest and most capable model in the Qwen3.7 series',
   'model.qwen3.7-plus.detail': 'Balanced general-purpose model',
-  'model.qwen3.6-max.detail': 'Qwen3.6 Max, the largest and most capable model in the Qwen3.6 series',
+  'model.qwen3.6-max.detail':
+    'Qwen3.6 Max, the largest and most capable model in the Qwen3.6 series',
   'model.qwen3.6-plus.detail': 'Balanced general-purpose model',
   'model.qwen3.6-flash.detail': 'Fast, low-cost model',
   'model.qwen3.5-plus.detail': 'Balanced general-purpose model',
@@ -49,7 +51,8 @@ export const en: Translation = {
   'model.qwen-plus-us.detail': 'Balanced model — only available on the US region endpoint',
   'model.qwen-flash-us.detail': 'Fast, low-cost model — only available on the US region endpoint',
   'model.qwen3.7-plus-us.detail': 'Balanced model — only available on the US region endpoint',
-  'model.qwen3.7-max-us.detail': 'Largest and most capable model — only available on the US region endpoint',
+  'model.qwen3.7-max-us.detail':
+    'Largest and most capable model — only available on the US region endpoint',
 
   'model.glm-5.3.detail': 'GLM-5.3 is the latest flagship model from Zhipu',
   'model.glm-5.2.detail': 'GLM-5.2 is the flagship model for the long-task era',
