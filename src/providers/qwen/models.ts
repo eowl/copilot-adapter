@@ -7,7 +7,7 @@ import {
   DEEPSEEK_V4_PRO_0813,
   DEEPSEEK_V4_FLASH_0731,
 } from '../deepseek/models';
-import { ZHIPU_GLM_5_2, ZHIPU_GLM_5_1 } from '../zhipu/models';
+import { ZHIPU_GLM_5_2, ZHIPU_GLM_5_1, ZHIPU_GLM_5 } from '../zhipu/models';
 import { MM_M3, MM_M2_7, MM_M2_5 } from '../minimax/models';
 import { MS_KIMI_K2_7_CODE, MS_KIMI_K2_6, MS_KIMI_K2_5, MS_KIMI_K3 } from '../moonshot/models';
 import { MIMO_V2_5_PRO } from '../mimo/models';
@@ -208,61 +208,61 @@ export const ZHIPU_GLM_5_2_US: ModelItem = {
 export const ALI_THIRD_PARTY_MM_M3: ModelItem = {
   ...MM_M3,
   id: 'MiniMax/MiniMax-M3',
-  label: 'MiniMax-M3(Third Party)',
+  label: 'MiniMax-M3 (Third Party)',
 };
 
 export const ALI_THIRD_PARTY_MM_M2_7: ModelItem = {
   ...MM_M2_7,
   id: 'MiniMax/MiniMax-M2.7',
-  label: 'MiniMax-M2.7(Third Party)',
+  label: 'MiniMax-M2.7 (Third Party)',
 };
 
 export const ALI_THIRD_PARTY_MM_M2_5: ModelItem = {
   ...MM_M2_5,
   id: 'MiniMax/MiniMax-M2.5',
-  label: 'MiniMax-M2.5(Third Party)',
+  label: 'MiniMax-M2.5 (Third Party)',
 };
 
 export const ALI_THIRD_PARTY_MS_KIMI_K3: ModelItem = {
   ...MS_KIMI_K3,
   id: 'kimi/kimi-k3',
-  label: 'Kimi-K3(Third Party)',
+  label: 'Kimi-K3 (Third Party)',
 };
 
 export const ALI_THIRD_PARTY_MS_KIMI_K2_5: ModelItem = {
   ...MS_KIMI_K3,
   id: 'kimi/kimi-k2.5',
-  label: 'Kimi-K2.5(Third Party)',
+  label: 'Kimi-K2.5 (Third Party)',
 };
 
 export const ALI_THIRD_PARTY_MS_KIMI_K2_6: ModelItem = {
   ...MS_KIMI_K3,
   id: 'kimi/kimi-k2.6',
-  label: 'Kimi-K2.6(Third Party)',
+  label: 'Kimi-K2.6 (Third Party)',
 };
 
 export const ALI_THIRD_PARTY_MS_KIMI_K2_7_CODE: ModelItem = {
   ...MS_KIMI_K3,
   id: 'kimi/kimi-k2.7-code',
-  label: 'Kimi-K2.7-Code(Third Party)',
+  label: 'Kimi-K2.7-Code (Third Party)',
 };
 
 export const ALI_THIRD_PARTY_ZHIPU_GLM_5_2: ModelItem = {
   ...ZHIPU_GLM_5_2,
   id: 'ZHIPU/GLM-5.2',
-  label: 'GLM-5.2(Third Party)',
+  label: 'GLM-5.2 (Third Party)',
 };
 
 export const ALI_THIRD_PARTY_ZHIPU_GLM_5_1: ModelItem = {
   ...ZHIPU_GLM_5_1,
   id: 'ZHIPU/GLM-5.1',
-  label: 'GLM-5.1(Third Party)',
+  label: 'GLM-5.1 (Third Party)',
 };
 
 export const ALI_THIRD_PARTY_MIMO_V2_5_PRO: ModelItem = {
   ...MIMO_V2_5_PRO,
   id: 'xiaomi/mimo-v2.5-pro',
-  label: 'MIMO-V2.5-PRO(Third Party)',
+  label: 'MIMO-V2.5-PRO (Third Party)',
 };
 
 export const QWEN_BASE_MODELS: readonly ModelItem[] = [
@@ -358,4 +358,47 @@ export const QWEN_US_MODELS: readonly ModelItem[] = [
   ZHIPU_GLM_5_2,
   ZHIPU_GLM_5_1,
   MS_KIMI_K2_7_CODE,
+];
+
+export const QWEN_TOKEN_PLAN_TEAM_MODELS: readonly ModelItem[] = [
+  {
+    ...QWEN_3_6_PLUS,
+    label: 'Qwen3.6 Plus (Team only)',
+  },
+  {
+    ...DEEPSEEK_V4_FLASH,
+    label: 'DeepSeek V4 Flash (Team only)',
+  },
+  {
+    ...MS_KIMI_K2_7_CODE,
+    label: 'Kimi-K2.7-Code (Team only)',
+  },
+  {
+    ...MS_KIMI_K2_6,
+    label: 'Kimi-K2.6 (Team only)',
+  },
+  {
+    ...MS_KIMI_K2_5,
+    label: 'Kimi-K2.5 (Team only)',
+  },
+  {
+    ...ZHIPU_GLM_5_1,
+    label: 'GLM-5.1 (Team only)',
+  },
+  {
+    ...ZHIPU_GLM_5,
+    label: 'GLM-5 (Team only)',
+  },
+];
+
+export const QWEN_TOKEN_PLAN_MODELS: readonly ModelItem[] = [
+  ...QWEN_TOKEN_PLAN_TEAM_MODELS,
+  QWEN_3_8_MAX,
+  QWEN_3_7_MAX,
+  QWEN_3_7_PLUS,
+  QWEN_3_6_FLASH,
+  ZHIPU_GLM_5_2,
+  DEEPSEEK_V4_PRO,
+  DEEPSEEK_V4_PRO_0813,
+  DEEPSEEK_V4_FLASH_0731,
 ];
