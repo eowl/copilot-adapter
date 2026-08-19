@@ -62,7 +62,7 @@ export const MS_KIMI_K3: ModelItem = {
     USD: { default: { cacheInput: 0.3, input: 3, output: 15 } },
   },
   priceCategory: 'high',
-} as ModelItem;
+};
 
 export const MS_KIMI_K2_7_CODE: ModelItem = {
   ...MS_K27_BASE,
@@ -77,7 +77,7 @@ export const MS_KIMI_K2_7_CODE: ModelItem = {
     USD: { default: { cacheInput: 0.19, input: 0.95, output: 4.0 } },
   },
   priceCategory: 'high',
-} as ModelItem;
+};
 
 export const MS_KIMI_K2_7_CODE_HIGHSPEED: ModelItem = {
   ...MS_K27_BASE,
@@ -92,7 +92,7 @@ export const MS_KIMI_K2_7_CODE_HIGHSPEED: ModelItem = {
     USD: { default: { cacheInput: 0.38, input: 1.9, output: 8.0 } },
   },
   priceCategory: 'very_high',
-} as ModelItem;
+};
 
 export const MS_KIMI_K2_6: ModelItem = {
   ...MS_K26_BASE,
@@ -107,7 +107,7 @@ export const MS_KIMI_K2_6: ModelItem = {
     USD: { default: { cacheInput: 0.16, input: 0.95, output: 4.0 } },
   },
   priceCategory: 'high',
-} as ModelItem;
+};
 
 export const MS_KIMI_K2_5: ModelItem = {
   ...MS_BASE,
@@ -122,28 +122,28 @@ export const MS_KIMI_K2_5: ModelItem = {
     USD: { default: { cacheInput: 0.1, input: 0.6, output: 3.0 } },
   },
   priceCategory: 'high',
-} as ModelItem;
+};
 
 export const MS_KC_KIMI_K3: ModelItem = {
   ...MS_KIMI_K3,
   id: 'k3',
   label: 'Kimi Code K3',
   thinkingConfig: MOONSHOT_KIMI_CODE_K3_THINKING,
-} as ModelItem;
+};
 
 export const MS_KC_KIMI_K2_7_CODE: ModelItem = {
   ...MS_KIMI_K2_7_CODE,
   id: 'kimi-for-coding',
   label: 'Kimi Code K2.7',
   thinkingConfig: MOONSHOT_KIMI_CODE_THINKING,
-} as ModelItem;
+};
 
 export const MS_KC_KIMI_K2_7_CODE_HIGHSPEED: ModelItem = {
   ...MS_KIMI_K2_7_CODE_HIGHSPEED,
   id: 'kimi-for-coding-highspeed',
   label: 'Kimi Code K2.7 High-Speed',
   thinkingConfig: MOONSHOT_KIMI_CODE_THINKING,
-} as ModelItem;
+};
 
 export const MS_MODELS: readonly ModelItem[] = [
   MS_KIMI_K3,
@@ -151,10 +151,10 @@ export const MS_MODELS: readonly ModelItem[] = [
   MS_KIMI_K2_7_CODE_HIGHSPEED,
   MS_KIMI_K2_6,
   MS_KIMI_K2_5,
-] as ModelItem[];
+];
 
 export const MS_KC_MODELS: readonly ModelItem[] = [
   MS_KC_KIMI_K3,
   MS_KC_KIMI_K2_7_CODE,
   MS_KC_KIMI_K2_7_CODE_HIGHSPEED,
-] as ModelItem[];
+];

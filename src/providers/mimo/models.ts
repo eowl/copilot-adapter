@@ -12,34 +12,35 @@ const MIMO_BASE = {
   maxTokensField: 'max_completion_tokens',
 };
 
-export const MIMO_MODELS: readonly ModelItem[] = [
-  {
-    ...MIMO_BASE,
-    id: 'mimo-v2.5-pro',
-    label: 'MIMO V2.5 Pro',
-    version: '2.5',
-    maxInputTokens: 896_000,
-    maxOutputTokens: 128_000,
-    detailKey: 'model.mimo-v2.5-pro.detail',
-    pricing: {
-      USD: { default: { cacheInput: 0.0036, input: 0.435, output: 0.87 } },
-      CNY: { default: { cacheInput: 0.025, input: 3.0, output: 6.0 } },
-    },
-    priceCategory: 'low',
+export const MIMO_V2_5_PRO: ModelItem = {
+  ...MIMO_BASE,
+  id: 'mimo-v2.5-pro',
+  label: 'MIMO V2.5 Pro',
+  version: '2.5',
+  maxInputTokens: 896_000,
+  maxOutputTokens: 128_000,
+  detailKey: 'model.mimo-v2.5-pro.detail',
+  pricing: {
+    USD: { default: { cacheInput: 0.0036, input: 0.435, output: 0.87 } },
+    CNY: { default: { cacheInput: 0.025, input: 3.0, output: 6.0 } },
   },
-  {
-    ...MIMO_BASE,
-    id: 'mimo-v2.5',
-    label: 'MIMO V2.5',
-    version: '2.5',
-    maxInputTokens: 896_000,
-    maxOutputTokens: 128_000,
-    imageInput: true,
-    detailKey: 'model.mimo-v2.5.detail',
-    pricing: {
-      USD: { default: { cacheInput: 0.0028, input: 0.14, output: 0.28 } },
-      CNY: { default: { cacheInput: 0.02, input: 1.0, output: 2.0 } },
-    },
-    priceCategory: 'low',
+  priceCategory: 'low',
+};
+
+export const MIMO_V2_5_FLASH: ModelItem = {
+  ...MIMO_BASE,
+  id: 'mimo-v2.5',
+  label: 'MIMO V2.5',
+  version: '2.5',
+  maxInputTokens: 896_000,
+  maxOutputTokens: 128_000,
+  imageInput: true,
+  detailKey: 'model.mimo-v2.5.detail',
+  pricing: {
+    USD: { default: { cacheInput: 0.0028, input: 0.14, output: 0.28 } },
+    CNY: { default: { cacheInput: 0.02, input: 1.0, output: 2.0 } },
   },
-] as ModelItem[];
+  priceCategory: 'low',
+};
+
+export const MIMO_MODELS: readonly ModelItem[] = [MIMO_V2_5_PRO, MIMO_V2_5_FLASH];

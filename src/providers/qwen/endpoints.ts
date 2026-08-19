@@ -1,6 +1,13 @@
 import type { ModelEndpoint } from '../types';
 import { composeModelEndpoint } from '../utils';
-import { QWEN_BASE_MODELS, QWEN_US_MODELS } from './models';
+import {
+  QWEN_BASE_MODELS,
+  QWEN_CN_MODELS,
+  QWEN_US_MODELS,
+  QWEN_SGP_MODELS,
+  QWEN_JP_MODELS,
+  QWEN_DE_MODELS,
+} from './models';
 
 export const QWEN_ENDPOINTS: readonly ModelEndpoint[] = [
   composeModelEndpoint(
@@ -10,7 +17,7 @@ export const QWEN_ENDPOINTS: readonly ModelEndpoint[] = [
       url: 'https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/compatible-mode/v1',
       matchStr: 'cn-beijing.maas.aliyuncs.com',
     },
-    QWEN_BASE_MODELS,
+    QWEN_CN_MODELS,
   ),
   composeModelEndpoint(
     {
@@ -19,7 +26,7 @@ export const QWEN_ENDPOINTS: readonly ModelEndpoint[] = [
       url: 'https://{WorkspaceId}.us-east-1.maas.aliyuncs.com/compatible-mode/v1',
       matchStr: 'us-east-1.maas.aliyuncs.com',
     },
-    [...QWEN_BASE_MODELS, ...QWEN_US_MODELS],
+    QWEN_US_MODELS,
   ),
   composeModelEndpoint(
     {
@@ -28,7 +35,7 @@ export const QWEN_ENDPOINTS: readonly ModelEndpoint[] = [
       url: 'https://{WorkspaceId}.ap-southeast-1.maas.aliyuncs.com/compatible-mode/v1',
       matchStr: 'ap-southeast-1.maas.aliyuncs.com',
     },
-    QWEN_BASE_MODELS,
+    QWEN_SGP_MODELS,
   ),
   composeModelEndpoint(
     {
@@ -37,7 +44,7 @@ export const QWEN_ENDPOINTS: readonly ModelEndpoint[] = [
       url: 'https://{WorkspaceId}.eu-central-1.maas.aliyuncs.com/compatible-mode/v1',
       matchStr: 'eu-central-1.maas.aliyuncs.com',
     },
-    QWEN_BASE_MODELS,
+    QWEN_DE_MODELS,
   ),
   composeModelEndpoint(
     {
@@ -46,7 +53,7 @@ export const QWEN_ENDPOINTS: readonly ModelEndpoint[] = [
       url: 'https://{WorkspaceId}.ap-northeast-1.maas.aliyuncs.com/compatible-mode/v1',
       matchStr: 'ap-northeast-1.maas.aliyuncs.com',
     },
-    QWEN_BASE_MODELS,
+    QWEN_JP_MODELS,
   ),
   composeModelEndpoint(
     {
@@ -63,6 +70,6 @@ export const QWEN_ENDPOINTS: readonly ModelEndpoint[] = [
       label: 'Default',
       url: 'https://dashscope.aliyuncs.com/compatible-mode/v1',
     },
-    [...QWEN_BASE_MODELS, ...QWEN_US_MODELS],
+    QWEN_BASE_MODELS,
   ),
 ];

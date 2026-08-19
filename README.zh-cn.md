@@ -20,6 +20,7 @@
   - [上下文窗口计算](#上下文窗口计算)
   - [自定义模型](#自定义模型)
   - [余额与用量显示](#余额与用量显示)
+  - [价格显示](#价格显示)
 - [配置参考](#配置参考)
 - [命令](#命令)
 - [注意事项](#注意事项)
@@ -28,16 +29,16 @@
 
 ## 模型
 
-| 提供商 | 端点 | 模型 |
-|---|---|---|
-| **DeepSeek** | [`Deepseek Platform`](https://platform.deepseek.com) | `V4 Pro` `V4 Flash`|
-| **MiniMax** | [`minimaxi.com`](https://www.minimaxi.com/) [`minimax.io`](https://www.minimax.io/) | `M3` `M2.7` `M2.7 Highspeed` `M2.5` `M2.5 Highspeed` `M2.1` `M2.1 Highspeed` `M2` |
-| **Moonshot (Kimi)** | [`platform.moonshot.cn`](https://platform.moonshot.cn/) [`platform.moonshot.ai`](https://platform.moonshot.ai/) [`Kimi Code`](https://www.kimi.com/code/docs/) | `Kimi K3` `Kimi K2.7 Code` `Kimi K2.7 Code High-Speed` `Kimi K2.6` `Kimi K2.5` |
-| **Qwen** | [`bailian.console.aliyun.com`](https://bailian.console.aliyun.com/) `CN` `US` `SGP` `EU` `JP` | `Qwen3.7 Max` `Qwen3.7 Plus` `Qwen3.6 Max` `Qwen3.6 Plus` `Qwen3.6 Flash` `Qwen3.5 Plus` `Qwen3.5 Flash` `Qwen3 Max` `Qwen3 Coder Plus` `Qwen3 Coder Flash` `Qwen Plus (US only)` `Qwen Flash (US only)` |
-| **智谱** | [`BigModel`](https://open.bigmodel.cn/) [`Z.ai`](https://api.z.ai/) `Coding Plan` | `GLM-5.2` `GLM-5.1` `GLM-5` `GLM-5-Turbo` `GLM-4.7` `GLM-4.7-FlashX` `GLM-4.6` `GLM-4.5-Air` `GLM-4.5-AirX` `GLM-4-Long` `GLM-4-FlashX-250414` `GLM-4.7-Flash` `GLM-4.5-Flash` `GLM-4-Flash-250414` `GLM-5V-Turbo` `GLM-4.6V` `GLM-OCR` `GLM-4.1V-Thinking-FlashX` `GLM-4.6V-Flash` `GLM-4.1V-Thinking-Flash` `GLM-4V-Flash` |
-| **Xiaomi MIMO** | [`Xiaomi MIMO`](https://mimo.mi.com/) `Token Plan CN` `Token Plan SGP` `Token Plan EU` | `mimo-v2.5-pro` `mimo-v2.5` |
-| **ByteDance**| [`Volcengine`](https://ai.volcengine.com) `Volcengine Coding Plan`| `Doubao Seed 2.0 Pro` `Doubao Seed 2.0 Lite` `Doubao Seed 2.0 Mini` `Doubao Seed 2.0 Code` `Deepseek V4 Pro` `Deepseek V4 Flash` `kimi 2.5` `Kimi 2.6` `Kimi K2.7 Code` `GLM-5.2`|
-| **ByteDance**| [`BytePlus`](https://www.byteplus.com/en/product/modelark) `ap-southeast` `ap-southeast Coding Plan` `eu-west`| `Dola Seed 2.0 Pro` `Dola Seed 2.0 Lite` `Dola Seed 2.0 Mini` `Dola Seed 2.0 Code` `Deepseek V4 Pro` `Deepseek V4 Flash` `kimi 2.5` `GLM-5.1`|
+| 提供商 | 端点 | 模型 | 备注 |
+|---|---|---|---|
+| **DeepSeek** | [`Deepseek Platform`](https://platform.deepseek.com) | `V4 Pro` `V4 Flash` | |
+| **MiniMax** | [`minimaxi.com`](https://www.minimaxi.com/) [`minimax.io`](https://www.minimax.io/) | `M3` `M2.7` `M2.7 Highspeed` `M2.5` `M2.5 Highspeed` `M2.1` `M2.1 Highspeed` `M2` | |
+| **Moonshot (Kimi)** | [`platform.moonshot.cn`](https://platform.moonshot.cn/) [`platform.moonshot.ai`](https://platform.moonshot.ai/) [`Kimi Code`](https://www.kimi.com/code/docs/) | `Kimi K3` `Kimi K2.7 Code` `Kimi K2.7 Code High-Speed` `Kimi K2.6` `Kimi K2.5` | |
+| **Qwen** | [`bailian.console.aliyun.com`](https://bailian.console.aliyun.com/) `CN` `US` `SGP` `EU` `JP` `Token Plan` | `Qwen3.8 Max` `Qwen3.7 Max` `Qwen3.7 Plus` `Qwen3.6 Max` `Qwen3.6 Plus` `Qwen3.6 Flash` `Qwen3.5 Plus` `Qwen3.5 Flash` `Qwen3 Max` `Qwen3 Coder Plus` `Qwen3 Coder Flash` `Qwen Plus (US only)` `Qwen Flash (US only)` `MiniMax-M3 (Third Party)` `MiniMax-M2.7 (Third Party)` `MiniMax-M2.5 (Third Party)` `Kimi-K3 (Third Party)` `Kimi-K2.5 (Third Party)` `Kimi-K2.6 (Third Party)` `Kimi-K2.7-Code (Third Party)` `GLM-5.2 (Third Party)` `GLM-5.1 (Third Party)` `MIMO-V2.5-PRO (Third Party)` | *带 `(Third Party)` 标识的模型，需先在 Qwen 官网 Dashboard 的模型卡片中手动启用「服务开通」后方可使用。* |
+| **智谱** | [`BigModel`](https://open.bigmodel.cn/) [`Z.ai`](https://api.z.ai/) `Coding Plan` | `GLM-5.3` `GLM-5.2` `GLM-5.1` `GLM-5` `GLM-5-Turbo` `GLM-4.7` `GLM-4.7-FlashX` `GLM-4.6` `GLM-4.5-Air` `GLM-4.5-AirX` `GLM-4-Long` `GLM-4-FlashX-250414` `GLM-4.7-Flash` `GLM-4.5-Flash` `GLM-4-Flash-250414` `GLM-5V-Turbo` `GLM-4.6V` `GLM-OCR` `GLM-4.1V-Thinking-FlashX` `GLM-4.6V-Flash` `GLM-4.1V-Thinking-Flash` `GLM-4V-Flash` | |
+| **Xiaomi MIMO** | [`Xiaomi MIMO`](https://mimo.mi.com/) `Token Plan CN` `Token Plan SGP` `Token Plan EU` | `mimo-v2.5-pro` `mimo-v2.5` | |
+| **ByteDance**| [`Volcengine`](https://ai.volcengine.com) `Volcengine Coding Plan`| `Doubao Seed 2.0 Pro` `Doubao Seed 2.0 Lite` `Doubao Seed 2.0 Mini` `Doubao Seed 2.0 Code` `Deepseek V4 Pro` `Deepseek V4 Flash` `kimi 2.5` `Kimi 2.6` `Kimi K2.7 Code` `GLM-5.2` | |
+| **ByteDance**| [`BytePlus`](https://www.byteplus.com/en/product/modelark) `ap-southeast` `ap-southeast Coding Plan` `eu-west`| `Dola Seed 2.0 Pro` `Dola Seed 2.0 Lite` `Dola Seed 2.0 Mini` `Dola Seed 2.0 Code` `Deepseek V4 Pro` `Deepseek V4 Flash` `kimi 2.5` `GLM-5.1` | |
 
 *以上模型列表是该扩展内置的，如需要其它模型请参考[自定义模型](#自定义模型)*
 
@@ -139,6 +140,17 @@ VS Code Copilot Chat 官方的 **Custom Endpoint** 仅支持基础的模型配�
 查询结果会被缓存，避免频繁调用 API。你可以通过 `copilot-adapter.balanceCacheTime` 设置来控制缓存时长。选择「关闭（不缓存）」则每次刷新模型列表时都重新获取余额或用量。
 
 [余额与用量显示](docs/balance-usage-info.zh-cn.md)
+
+### 价格显示
+
+使用了`VSCode`提供的单位价格接口。部分模型配置了价格显示，扩展会在模型悬浮卡片中显示单位价格（如每 1K Token 或每 1M Token 等的价格），并根据当前余额或用量计算出可用额度。价格显示的币种优先级如下：
+
+1. 余额 API 响应中返回的币种
+2. 端点配置中指定的币种
+3. 扩展设置项 `copilot-adapter.pricingCurrency` 指定的币种
+4. VS Code 界面语言（中文为 CNY，其他为 USD）
+
+*备注：* `DeepSeek`系列的模型悬浮卡片中显示的默认价格是`空闲时段`的官方定价，长上下文价格表示的是`高峰时段`的官方定价（这是因为`VSCode`的单位价格接口只提供了`default`和`longContext`两种区分方式）。
 
 ---
 

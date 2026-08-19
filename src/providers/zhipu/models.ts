@@ -1,6 +1,6 @@
 import type { ModelItem } from '../types';
 import { ZHIPU } from './provider';
-import { ZHIPU_THINKING, ZHIPU_GLM52_THINKING } from '../defines';
+import { ZHIPU_THINKING, ZHIPU_GLM52_THINKING, ZHIPU_GLM53_THINKING } from '../defines';
 
 const BM_THINK_BASE = {
   family: 'glm',
@@ -18,6 +18,15 @@ const BM_GLM52_BASE = {
   imageInput: false,
   maxTools: 128,
   thinkingConfig: ZHIPU_GLM52_THINKING,
+};
+
+const BM_GLM53_BASE = {
+  family: 'glm',
+  provider: ZHIPU,
+  thinking: true,
+  imageInput: false,
+  maxTools: 128,
+  thinkingConfig: ZHIPU_GLM53_THINKING,
 };
 
 const BM_PLAIN_BASE = {
@@ -53,7 +62,22 @@ export const ZHIPU_GLM_4_7: ModelItem = {
   maxInputTokens: 200_000,
   maxOutputTokens: 128_000,
   detailKey: 'model.glm-4.7.detail',
-} as ModelItem;
+};
+
+export const ZHIPU_GLM_5_3: ModelItem = {
+  ...BM_GLM53_BASE,
+  id: 'glm-5.3',
+  label: 'GLM-5.3',
+  version: '5.3',
+  maxInputTokens: 872_000,
+  maxOutputTokens: 128_000,
+  detailKey: 'model.glm-5.3.detail',
+  pricing: {
+    USD: { default: { cacheInput: 0.26, input: 1.4, output: 4.4 } },
+    CNY: { default: { cacheInput: 2, input: 8, output: 28 } },
+  },
+  priceCategory: 'high',
+};
 
 export const ZHIPU_GLM_5_2: ModelItem = {
   ...BM_GLM52_BASE,
@@ -68,7 +92,7 @@ export const ZHIPU_GLM_5_2: ModelItem = {
     CNY: { default: { cacheInput: 2, input: 8, output: 28 } },
   },
   priceCategory: 'high',
-} as ModelItem;
+};
 
 export const ZHIPU_GLM_5_1: ModelItem = {
   ...BM_THINK_BASE,
@@ -96,9 +120,10 @@ export const ZHIPU_GLM_5_1: ModelItem = {
     USD: { default: { cacheInput: 0.26, input: 1.4, output: 4.4 } },
   },
   priceCategory: 'high',
-} as ModelItem;
+};
 
 export const ZP_MODELS: readonly ModelItem[] = [
+  ZHIPU_GLM_5_3,
   ZHIPU_GLM_5_2,
   ZHIPU_GLM_5_1,
   {
@@ -300,4 +325,4 @@ export const ZP_MODELS: readonly ModelItem[] = [
     maxOutputTokens: 1_024,
     detailKey: 'model.glm-4v-flash.detail',
   },
-] as ModelItem[];
+];

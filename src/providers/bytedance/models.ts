@@ -25,7 +25,7 @@ export const DOUBAO_SEED_2_0_PRO_260215: ModelItem = {
   maxInputTokens: 256_000,
   maxOutputTokens: 128_000,
   detailKey: 'model.doubao-seed-2.0-pro.detail',
-} as ModelItem;
+};
 
 export const DOUBAO_SEED_2_0_MINI_260428: ModelItem = {
   ...DOUBAO_SEED_BASE,
@@ -35,13 +35,13 @@ export const DOUBAO_SEED_2_0_MINI_260428: ModelItem = {
   maxInputTokens: 256_000,
   maxOutputTokens: 128_000,
   detailKey: 'model.doubao-seed-2.0-mini.detail',
-} as ModelItem;
+};
 
 export const DOUBAO_SEED_2_0_MINI_260215: ModelItem = {
   ...DOUBAO_SEED_2_0_MINI_260428,
   id: 'doubao-seed-2.0-mini-260215',
   label: 'Doubao Seed 2.0 Mini 260215',
-} as ModelItem;
+};
 
 export const DOUBAO_SEED_2_0_LITE_260428: ModelItem = {
   ...DOUBAO_SEED_BASE,
@@ -51,13 +51,13 @@ export const DOUBAO_SEED_2_0_LITE_260428: ModelItem = {
   maxInputTokens: 256_000,
   maxOutputTokens: 128_000,
   detailKey: 'model.doubao-seed-2.0-lite.detail',
-} as ModelItem;
+};
 
 export const DOUBAO_SEED_2_0_LITE_260215: ModelItem = {
   ...DOUBAO_SEED_2_0_LITE_260428,
   id: 'doubao-seed-2.0-lite-260215',
   label: 'Doubao Seed 2.0 Lite 260215',
-} as ModelItem;
+};
 
 export const DOUBAO_SEED_2_0_CODE: ModelItem = {
   ...DOUBAO_SEED_BASE,
@@ -67,22 +67,22 @@ export const DOUBAO_SEED_2_0_CODE: ModelItem = {
   maxInputTokens: 256_000,
   maxOutputTokens: 128_000,
   detailKey: 'model.doubao-seed-2.0-code.detail',
-} as ModelItem;
+};
 
 export const DEEPSEEK_V4_PRO_260425: ModelItem = {
   ...DEEPSEEK_V4_PRO,
   apiId: 'deepseek-v4-pro-260425',
-} as ModelItem;
+};
 
 export const DEEPSEEK_V4_FLASH_260425: ModelItem = {
   ...DEEPSEEK_V4_FLASH,
   apiId: 'deepseek-v4-flash-260425',
-} as ModelItem;
+};
 
 export const ZHIPU_GLM_4_7_251222: ModelItem = {
   ...ZHIPU_GLM_4_7,
   apiId: 'glm-4-7-251222',
-} as ModelItem;
+};
 
 export const VOLCENGINE_MODELS: readonly ModelItem[] = [
   DOUBAO_SEED_2_0_PRO_260215,
@@ -94,7 +94,7 @@ export const VOLCENGINE_MODELS: readonly ModelItem[] = [
   DEEPSEEK_V4_PRO_260425,
   DEEPSEEK_V4_FLASH_260425,
   ZHIPU_GLM_4_7_251222,
-] as ModelItem[];
+];
 
 export const VOLCENGINE_CODING_PLAN_MODELS: readonly ModelItem[] = [
   DOUBAO_SEED_2_0_PRO_260215,
@@ -110,7 +110,7 @@ export const VOLCENGINE_CODING_PLAN_MODELS: readonly ModelItem[] = [
   MM_M3,
   MS_KIMI_K2_7_CODE,
   MS_KIMI_K2_6,
-] as ModelItem[];
+];
 
 const DOLA_SEED_BASE = {
   family: 'dola-seed',
@@ -130,7 +130,7 @@ export const DOLA_SEED_2_0_PRO_260328: ModelItem = {
   maxInputTokens: 256_000,
   maxOutputTokens: 128_000,
   detailKey: 'model.dola-seed-2.0-pro.detail',
-} as ModelItem;
+};
 
 export const DOLA_SEED_2_0_LITE_260428: ModelItem = {
   ...DOLA_SEED_BASE,
@@ -140,7 +140,7 @@ export const DOLA_SEED_2_0_LITE_260428: ModelItem = {
   maxInputTokens: 256_000,
   maxOutputTokens: 128_000,
   detailKey: 'model.dola-seed-2.0-lite.detail',
-} as ModelItem;
+};
 
 export const DOLA_SEED_2_0_LITE_260228: ModelItem = {
   ...DOLA_SEED_BASE,
@@ -150,7 +150,7 @@ export const DOLA_SEED_2_0_LITE_260228: ModelItem = {
   maxInputTokens: 256_000,
   maxOutputTokens: 128_000,
   detailKey: 'model.dola-seed-2.0-lite.detail',
-} as ModelItem;
+};
 
 export const DOLA_SEED_2_0_MINI_260428: ModelItem = {
   ...DOLA_SEED_BASE,
@@ -160,7 +160,7 @@ export const DOLA_SEED_2_0_MINI_260428: ModelItem = {
   maxInputTokens: 256_000,
   maxOutputTokens: 128_000,
   detailKey: 'model.dola-seed-2.0-mini.detail',
-} as ModelItem;
+};
 
 export const DOLA_SEED_2_0_MINI_260215: ModelItem = {
   ...DOLA_SEED_BASE,
@@ -170,7 +170,7 @@ export const DOLA_SEED_2_0_MINI_260215: ModelItem = {
   maxInputTokens: 256_000,
   maxOutputTokens: 128_000,
   detailKey: 'model.dola-seed-2.0-mini.detail',
-} as ModelItem;
+};
 
 export const DOLA_SEED_2_0_CODE_260328: ModelItem = {
   ...DOLA_SEED_BASE,
@@ -180,7 +180,7 @@ export const DOLA_SEED_2_0_CODE_260328: ModelItem = {
   maxInputTokens: 256_000,
   maxOutputTokens: 128_000,
   detailKey: 'model.dola-seed-2.0-code.detail',
-} as ModelItem;
+};
 
 export const MODELARK_MODELS: readonly ModelItem[] = [
   DOLA_SEED_2_0_PRO_260328,
@@ -192,7 +192,7 @@ export const MODELARK_MODELS: readonly ModelItem[] = [
   DEEPSEEK_V4_PRO_260425,
   DEEPSEEK_V4_FLASH_260425,
   ZHIPU_GLM_4_7_251222,
-] as ModelItem[];
+];
 
 export const MODELARK_CODING_PLAN_MODESL: readonly ModelItem[] = [
   DOLA_SEED_2_0_PRO_260328,
@@ -206,4 +206,4 @@ export const MODELARK_CODING_PLAN_MODESL: readonly ModelItem[] = [
   ZHIPU_GLM_5_1,
   ZHIPU_GLM_4_7,
   MS_KIMI_K2_5,
-] as ModelItem[];
+];

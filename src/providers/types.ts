@@ -96,7 +96,7 @@ export interface ModelItem extends ApiTraits {
   readonly maxOutputTokens: number;
   readonly detailKey: string;
 
-  source: 'builtin' | 'custom';
+  source?: 'builtin' | 'custom';
 
   provider: ModelProvider;
   endpoint?: ModelEndpoint;
