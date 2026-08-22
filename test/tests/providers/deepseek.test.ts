@@ -60,8 +60,8 @@ suite('providers/deepseek model.requestExtras()', () => {
     assert.deepEqual(result, {});
   });
 
-  test('DEEPSEEK has exactly 2 models', () => {
-    assert.equal(DS_MODELS.length, 2);
+  test('DEEPSEEK has exactly 3 models', () => {
+    assert.equal(DS_MODELS.length, 3);
   });
 
   test('first model is deepseek-v4-pro', () => {
