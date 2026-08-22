@@ -31,7 +31,7 @@
 
 | 提供商 | 端点 | 模型 | 备注 |
 |---|---|---|---|
-| **DeepSeek** | [`Deepseek Platform`](https://platform.deepseek.com) | `V4 Pro` `V4 Flash` | |
+| **DeepSeek** | [`Deepseek Platform`](https://platform.deepseek.com) | `V4 Pro` `V4 Flash` `V4 Flash Vision Exp` | |
 | **MiniMax** | [`minimaxi.com`](https://www.minimaxi.com/) [`minimax.io`](https://www.minimax.io/) | `M3` `M2.7` `M2.7 Highspeed` `M2.5` `M2.5 Highspeed` `M2.1` `M2.1 Highspeed` `M2` | |
 | **Moonshot (Kimi)** | [`platform.moonshot.cn`](https://platform.moonshot.cn/) [`platform.moonshot.ai`](https://platform.moonshot.ai/) [`Kimi Code`](https://www.kimi.com/code/docs/) | `Kimi K3` `Kimi K2.7 Code` `Kimi K2.7 Code High-Speed` `Kimi K2.6` `Kimi K2.5` | |
 | **Qwen** | [`bailian.console.aliyun.com`](https://bailian.console.aliyun.com/) `CN` `US` `SGP` `EU` `JP` `Token Plan` | `Qwen3.8 Max` `Qwen3.7 Max` `Qwen3.7 Plus` `Qwen3.6 Max` `Qwen3.6 Plus` `Qwen3.6 Flash` `Qwen3.5 Plus` `Qwen3.5 Flash` `Qwen3 Max` `Qwen3 Coder Plus` `Qwen3 Coder Flash` `Qwen Plus (US only)` `Qwen Flash (US only)` `MiniMax-M3 (Third Party)` `MiniMax-M2.7 (Third Party)` `MiniMax-M2.5 (Third Party)` `Kimi-K3 (Third Party)` `Kimi-K2.5 (Third Party)` `Kimi-K2.6 (Third Party)` `Kimi-K2.7-Code (Third Party)` `GLM-5.2 (Third Party)` `GLM-5.1 (Third Party)` `MIMO-V2.5-PRO (Third Party)` | *带 `(Third Party)` 标识的模型，需先在 Qwen 官网 Dashboard 的模型卡片中手动启用「服务开通」后方可使用。* |
