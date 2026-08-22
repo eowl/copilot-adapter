@@ -11,6 +11,8 @@ export const zh: Translation = {
 
   'model.deepseek-v4-flash.detail': '快速通用模型',
   'model.deepseek-v4-pro.detail': '深度推理模型',
+  'model.deepseek-v4-flash-vision-exp.detail':
+    '模型支持在文本之外输入图片，你可以让模型描述图片、识别截图中的文字、分析图表等',
 
   'model.kimi-k3.detail': 'Kimi K3 是 Kimi 迄今能力最强的旗舰模型',
   'model.kimi-k2.7-code.detail':

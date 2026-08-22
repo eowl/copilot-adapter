@@ -11,6 +11,7 @@ export const en: Translation = {
 
   'model.deepseek-v4-flash.detail': 'Fast, general-purpose model',
   'model.deepseek-v4-pro.detail': 'Deep reasoning model',
+  'model.deepseek-v4-flash-vision-exp.detail': 'DeepSeek V4 Flash Vision Exp',
 
   'model.kimi-k3.detail': 'Kimi K3 is Kimi’s most capable flagship model to date',
   'model.kimi-k2.7-code.detail':
