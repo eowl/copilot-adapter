@@ -1,5 +1,19 @@
 # Changelog
 
+## [v0.1.15](https://github.com/eowl/copilot-adapter/releases/tag/v0.1.15) 2026-08-22
+
+* Feat: added DeepSeek V4 Flash Vision Exp model by @eowl in https://github.com/eowl/copilot-adapter/pull/65
+
+## [v0.1.14](https://github.com/eowl/copilot-adapter/releases/tag/v0.1.14) 2026-08-19
+
+* Feat: added qwen token plan model list by @eowl in https://github.com/eowl/copilot-adapter/pull/63
+
+## [v0.1.13](https://github.com/eowl/copilot-adapter/releases/tag/v0.1.13) 2026-08-19
+
+* Perf: code optimization by @eowl in https://github.com/eowl/copilot-adapter/pull/59
+* Refactor: built in custom url by @eowl in https://github.com/eowl/copilot-adapter/pull/60
+* Feat: models addon, GLM-5.3, Qwen 3.8max by @eowl in https://github.com/eowl/copilot-adapter/pull/61
+
 ## [v0.1.12](https://github.com/eowl/copilot-adapter/releases/tag/v0.1.12) 2026-07-28
 
 * Fix: thiking effort by @eowl in https://github.com/eowl/copilot-adapter/pull/55
