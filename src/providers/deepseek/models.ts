@@ -58,7 +58,7 @@ export const DEEPSEEK_V4_FLASH_VISION_EXP: ModelItem = {
   imageInput: true,
   id: 'deepseek-v4-flash-vision-exp',
   label: 'DeepSeek V4 Flash Vision Exp',
-  detailKey: 'model.deepseek-v4-flash-vision-exp.detail'
+  detailKey: 'model.deepseek-v4-flash-vision-exp.detail',
 };
 
 export const DEEPSEEK_V4_PRO_0813: ModelItem = {
@@ -73,4 +73,8 @@ export const DEEPSEEK_V4_FLASH_0731: ModelItem = {
   label: 'DeepSeek V4 Flash 0731',
 };
 
-export const DS_MODELS: readonly ModelItem[] = [DEEPSEEK_V4_PRO, DEEPSEEK_V4_FLASH, DEEPSEEK_V4_FLASH_VISION_EXP];
+export const DS_MODELS: readonly ModelItem[] = [
+  DEEPSEEK_V4_PRO,
+  DEEPSEEK_V4_FLASH,
+  DEEPSEEK_V4_FLASH_VISION_EXP,
+];
