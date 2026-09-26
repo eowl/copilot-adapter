@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.20](https://github.com/eowl/copilot-adapter/releases/tag/v0.1.20) 2026-09-26
+
+* fix: json parse in req by @eowl in [#75](https://github.com/eowl/copilot-adapter/pull/75)
+
+**Full Changelog**: https://github.com/eowl/copilot-adapter/compare/v0.1.19...v0.1.20
+
 ## [0.1.19](https://github.com/eowl/copilot-adapter/releases/tag/v0.1.19) 2026-09-23
 
 * feat: update MIMO models to v2.6 by @Lin-Ruipeng in [#73](https://github.com/eowl/copilot-adapter/pull/73)
