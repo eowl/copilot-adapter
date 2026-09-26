@@ -1,6 +1,7 @@
 import vscode from 'vscode';
 import { pack, sortKeys } from '../serialize';
 import { readMarkerFromMessage } from '../marker/codec';
+import { normalizeToolArgs } from '../client/json';
 import type { Msg, Tool, ToolCall } from '../client/types';
 
 function normalizeText(s: string): string {
@@ -43,7 +44,10 @@ export function translateMessages(
         toolCalls.push({
           id: part.callId,
           type: 'function',
-          function: { name: part.name, arguments: pack(part.input) },
+          function: {
+            name: part.name,
+            arguments: normalizeToolArgs(pack(part.input)),
+          },
         });
       } else if (part instanceof vscode.LanguageModelToolResultPart) {
         let text = '';

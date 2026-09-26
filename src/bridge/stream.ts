@@ -227,6 +227,10 @@ function tryParseJson(raw: string): unknown {
   try {
     return JSON.parse(raw);
   } catch {
+    channel.warn(
+      `Tool call arguments were not valid JSON (${raw.length} chars); ` +
+        `falling back to empty object. Head: ${raw.slice(0, 120)}`,
+    );
     return {};
   }
 }

@@ -63,6 +63,46 @@ suite('serialize', () => {
     });
   });
 
+  suite('pack() surrogate handling', () => {
+    test('preserves a valid emoji (surrogate pair) verbatim', () => {
+      const value = { text: 'hi \u{1F600}' };
+      assert.equal(pack(value), JSON.stringify({ text: 'hi \u{1F600}' }));
+      assert.ok(pack(value).includes('\u{1F600}'), 'emoji must survive packing');
+    });
+
+    test('never emits a lone high surrogate for a valid pair', () => {
+      const packed = pack({ emoji: '\u{1F600}' });
+      // A lone high surrogate would serialize as \ud83d (no pairing low).
+      assert.ok(!/\\ud83d(?!\\u[0-9a-fA-F]{4})/i.test(packed), packed);
+      assert.ok(!/\uD83D(?![\uDC00-\uDFFF])/.test(packed), 'lone high surrogate leaked');
+    });
+
+    test('replaces a genuinely lone high surrogate with U+FFFD', () => {
+      assert.equal(pack('a\uD83Db'), JSON.stringify('a\uFFFDb'));
+    });
+
+    test('replaces a genuinely lone low surrogate with U+FFFD', () => {
+      assert.equal(pack('a\uDE00b'), JSON.stringify('a\uFFFDb'));
+    });
+
+    test('keeps valid pairs and replaces only unpaired halves', () => {
+      const mixed = '\uD83D\uDE00\uD83D\uDE00'; // two valid pairs
+      assert.equal(pack(mixed), JSON.stringify('\u{1F600}\u{1F600}'));
+      const withLone = 'ok\u{1F600}\uD83D'; // pair + lone high
+      assert.equal(pack(withLone), JSON.stringify('ok\u{1F600}\uFFFD'));
+    });
+
+    test('packed output with emoji stays parseable JSON', () => {
+      const packed = pack({ text: 'emoji \u{1F600} here' });
+      assert.doesNotThrow(() => JSON.parse(packed));
+      assert.equal(JSON.parse(packed).text, 'emoji \u{1F600} here');
+    });
+
+    test('packPretty() also preserves valid pairs', () => {
+      assert.ok(packPretty({ e: '\u{1F600}' }).includes('\u{1F600}'));
+    });
+  });
+
   suite('packPretty()', () => {
     test('produces indented JSON', () => {
       const result = packPretty({ a: 1 });
