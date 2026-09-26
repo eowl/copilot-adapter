@@ -60,10 +60,17 @@ export function repairTruncatedJson(input: string): string | undefined {
     }
   }
 
-  let repaired = safeEnd < text.length ? text.slice(0, safeEnd) : text;
+  let repaired = text;
+  if (safeEnd < text.length) {
+    repaired = text.slice(0, safeEnd);
+    inString = true;
+    escaped = false;
+  }
+
   repaired = repaired.replace(/,\s*$/, '');
 
-  if (inString && safeEnd === text.length) {
+  if (inString) {
+    if (/\\$/.test(repaired)) repaired = repaired.slice(0, -1);
     repaired += '"';
   }
 
