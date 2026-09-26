@@ -31,11 +31,41 @@ export async function buildHttpError(response: Response, links?: ServiceLinks): 
 
   const diagnostic = `HTTP ${status}: ${body.slice(0, 400)}`;
 
-  const summary = mapHttpStatus(status, links);
+  const summary = mapHttpStatus(status, links, body);
   return new ApiError('http', summary, diagnostic, links, status);
 }
 
-function mapHttpStatus(status: number, links?: ServiceLinks): string {
+export function extractErrorDetail(body: string, maxLength = 200): string | undefined {
+  const text = body.trim();
+  if (!text) return undefined;
+
+  let detail: string | undefined;
+  try {
+    const parsed = JSON.parse(text) as Record<string, unknown>;
+    const err = parsed.error;
+    if (err && typeof err === 'object') {
+      const inner = err as Record<string, unknown>;
+      if (typeof inner.message === 'string' && inner.message) detail = inner.message;
+      else if (typeof inner.msg === 'string' && inner.msg) detail = inner.msg;
+    }
+    if (!detail) {
+      if (typeof parsed.message === 'string' && parsed.message) detail = parsed.message;
+      else if (typeof parsed.msg === 'string' && parsed.msg) detail = parsed.msg;
+      else if (typeof parsed.detail === 'string' && parsed.detail) detail = parsed.detail;
+    }
+  } catch {
+    // Not JSON — treat as plain text below.
+  }
+
+  if (!detail) detail = text;
+
+  detail = detail.replace(/\s+/g, ' ').trim();
+  if (!detail) return undefined;
+  if (detail.length > maxLength) detail = `${detail.slice(0, maxLength)}…`;
+  return detail;
+}
+
+function mapHttpStatus(status: number, links?: ServiceLinks, body = ''): string {
   const logsHint = links ? ` ${t('err.action.logs')}.` : '';
   switch (status) {
     case 401:
@@ -48,8 +78,12 @@ function mapHttpStatus(status: number, links?: ServiceLinks): string {
       return `${t('err.http.500')}${logsHint}`;
     case 503:
       return `${t('err.http.503')}${links?.status ? ` [${t('err.action.status')}](${links.status})` : ''}`;
-    default:
-      return `HTTP ${status} error.${logsHint}`;
+    default: {
+      const detail = extractErrorDetail(body);
+      return detail
+        ? `HTTP ${status} error: ${detail}${logsHint}`
+        : `HTTP ${status} error.${logsHint}`;
+    }
   }
 }
 

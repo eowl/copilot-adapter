@@ -1,9 +1,22 @@
 import { pack } from '../serialize';
 import type { ApiReq, Chunk, StreamEvent, ToolCall } from './types';
 import { buildHttpError, toApiError } from './error';
+import { sanitizeToolArgs } from './json';
 import type { ServiceLinks } from '../providers/types';
 import { channel } from '../logger';
 import type { ContentParser } from '../providers/types';
+
+function buildToolCall(id: string, name: string, args: string): ToolCall {
+  const fixed = sanitizeToolArgs(args);
+  if (fixed.kind !== 'ok') {
+    channel.warn(
+      `Tool call "${name}" (${id}) had invalid arguments JSON (${fixed.kind}); ` +
+        `${fixed.originalLength} chars to ${fixed.value.length} chars`,
+    );
+  }
+
+  return { id, type: 'function', function: { name, arguments: fixed.value } };
+}
 
 export async function* streamHttp(
   apiUrl: string,
@@ -70,12 +83,7 @@ export async function* streamHttp(
           // Flush any buffered tool calls
           for (const [, tc] of pendingCalls) {
             if (tc.id && tc.name) {
-              const call: ToolCall = {
-                id: tc.id,
-                type: 'function',
-                function: { name: tc.name, arguments: tc.args },
-              };
-              yield { kind: 'tool-call', call };
+              yield { kind: 'tool-call', call: buildToolCall(tc.id, tc.name, tc.args) };
             }
           }
           pendingCalls.clear();
@@ -142,11 +150,7 @@ export async function* streamHttp(
               if (tc.id && tc.name) {
                 yield {
                   kind: 'tool-call',
-                  call: {
-                    id: tc.id,
-                    type: 'function',
-                    function: { name: tc.name, arguments: tc.args },
-                  },
+                  call: buildToolCall(tc.id, tc.name, tc.args),
                 };
               }
             }

@@ -89,12 +89,37 @@ function logRequestBody(body: Record<string, unknown>): void {
     const lines: string[] = ['Request body:'];
     for (const [key, value] of Object.entries(body)) {
       if (key === 'messages') {
-        const msgs = value as Array<{ role: string; content: unknown }>;
+        const msgs = value as Array<{
+          role: string;
+          content: unknown;
+          tool_calls?: Array<{ id?: string; function?: { name?: string; arguments?: string } }>;
+        }>;
         lines.push(`  ${key}: [${msgs.length} messages]`);
         for (let i = 0; i < msgs.length; i++) {
           const m = msgs[i];
           const contentLen = JSON.stringify(m.content).length;
-          lines.push(`    [${i}] role=${m.role} content(${contentLen})`);
+          let detail = '';
+          if (Array.isArray(m.tool_calls) && m.tool_calls.length > 0) {
+            detail = m.tool_calls
+              .map((tc) => {
+                const args = tc.function?.arguments ?? '';
+                let innerBad = '';
+                try {
+                  const inner = JSON.parse(args) as unknown;
+                  const reText = JSON.stringify(inner);
+                  const bad = findBadEscape(reText);
+                  if (bad !== undefined) innerBad = ` ⚠INNER@${bad}`;
+                } catch (e) {
+                  innerBad = ` INNER-PARSE-FAIL:${(e as Error).message.slice(0, 40)}`;
+                }
+                const bad = findBadEscape(args);
+                const flag = bad === undefined ? '' : ` ⚠BAD@${bad}`;
+                return `${tc.function?.name ?? '?'}(${args.length})${flag}${innerBad}`;
+              })
+              .join(' ');
+            detail = ` tool_calls[${m.tool_calls.length}]: ${detail}`;
+          }
+          lines.push(`    [${i}] role=${m.role} content(${contentLen})${detail}`);
         }
       } else if (key === 'tools') {
         const tools = value as Array<{ function: { name: string } }> | undefined;
@@ -110,17 +135,26 @@ function logRequestBody(body: Record<string, unknown>): void {
   }
 }
 
-/**
- * Central provider that implements vscode.LanguageModelChatProvider.
- * Registered with vscode.lm.registerChatModelProvider.
- */
+export function findBadEscape(s: string): number | undefined {
+  for (let i = 0; i < s.length; i++) {
+    if (s[i] !== '\\') continue;
+    const next = s[i + 1];
+    if (next === undefined) return i; // Dangling backslash at EOF.
+    if (next === 'u') {
+      if (!/^[0-9a-fA-F]{4}$/.test(s.slice(i + 2, i + 6))) return i;
+      i += 5;
+      continue;
+    }
+    i++;
+  }
+  return undefined;
+}
+
 export class Adapter implements vscode.LanguageModelChatProvider {
   private readonly picker: VisionModelPicker;
   private readonly groupSecrets = new Map<string, GroupSecrets>();
   private readonly prefixToKey = new Map<string, string>();
-  /** Dynamically built models from custom provider's models[] config, keyed by modelKey. */
   private readonly dynamicModels = new Map<string, ModelItem>();
-  /** Tracks in-flight balance queries to prevent duplicate requests. */
   private readonly pendingBalances = new Set<string>();
 
   private nextPrefix = 0;

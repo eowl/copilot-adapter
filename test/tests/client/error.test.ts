@@ -1,6 +1,12 @@
 import assert from 'node:assert/strict';
 import { suite, test } from 'mocha';
-import { ApiError, buildHttpError, wrapFetchError, toApiError } from '../../../src/client/error';
+import {
+  ApiError,
+  buildHttpError,
+  extractErrorDetail,
+  wrapFetchError,
+  toApiError,
+} from '../../../src/client/error';
 
 suite('client/fault', () => {
   suite('ApiError', () => {
@@ -61,6 +67,57 @@ suite('client/fault', () => {
       const response = new Response('', { status: 418 });
       const err = await buildHttpError(response);
       assert.ok(err.summary.includes('418'), `summary: ${err.summary}`);
+    });
+
+    test('summarizes a 400 JSON body with the API reason', async () => {
+      const detail =
+        'Failed to parse the request body as JSON: messages[107].tool_calls[0].function.arguments: unexpected end of hex escape at line 1 column 264051';
+      const response = new Response(JSON.stringify({ error: { message: detail } }), { status: 400 });
+      const err = await buildHttpError(response);
+      assert.ok(err.summary.includes('400'), `summary: ${err.summary}`);
+      assert.ok(err.summary.includes('unexpected end of hex escape'), `summary: ${err.summary}`);
+    });
+
+    test('falls back to raw body for a 400 plain-text response', async () => {
+      const response = new Response('bad request: nope', { status: 400 });
+      const err = await buildHttpError(response);
+      assert.ok(err.summary.includes('bad request'), `summary: ${err.summary}`);
+    });
+  });
+
+  suite('extractErrorDetail()', () => {
+    test('reads error.message from a JSON body', () => {
+      assert.equal(extractErrorDetail('{"error":{"message":"boom"}}'), 'boom');
+    });
+
+    test('reads error.msg when message is absent', () => {
+      assert.equal(extractErrorDetail('{"error":{"msg":"bad key"}}'), 'bad key');
+    });
+
+    test('reads a flat message', () => {
+      assert.equal(extractErrorDetail('{"message":"rate limited"}'), 'rate limited');
+    });
+
+    test('reads a flat detail field', () => {
+      assert.equal(extractErrorDetail('{"detail":"not found"}'), 'not found');
+    });
+
+    test('falls back to plain text', () => {
+      assert.equal(extractErrorDetail('server exploded'), 'server exploded');
+    });
+
+    test('collapses whitespace', () => {
+      assert.equal(extractErrorDetail('{"error":{"message":"a\\n  b   c"}}'), 'a b c');
+    });
+
+    test('truncates with an ellipsis past maxLength', () => {
+      const long = 'x'.repeat(500);
+      const result = extractErrorDetail(`{"message":"${long}"}`, 20);
+      assert.equal(result, `${'x'.repeat(20)}…`);
+    });
+
+    test('returns undefined for an empty body', () => {
+      assert.equal(extractErrorDetail('   '), undefined);
     });
   });
 
