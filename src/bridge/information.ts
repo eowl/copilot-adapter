@@ -67,8 +67,9 @@ export function buildChatInfo(
     planUsage,
   );
   const category = usageParts.length > 0 ? usageParts.join(' ') : undefined;
-  const description =
-    notConfigured ? t('auth.noKeyTooltip', modelProvider.label) : appendLines(detail, usageParts);
+  const description = notConfigured
+    ? t('auth.noKeyTooltip', modelProvider.label)
+    : appendLines(detail, usageParts);
 
   const info = {
     id: infoId,
