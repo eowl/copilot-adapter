@@ -389,4 +389,97 @@ suite('bridge/information buildChatInfo', () => {
       assert.equal(info.category, undefined);
     });
   });
+
+  suite('detail (balance & credits unit)', () => {
+    const PRICING = Object.freeze({
+      CNY: { default: { cacheInput: 0.07, input: 0.14, output: 0.28 } },
+    });
+    const DETAIL_KEY = 'model.kimi-k2.5.detail';
+
+    test('keeps detail unchanged when no usage info is provided', () => {
+      const model = makeTestModel({ pricing: PRICING });
+      const info = buildChatInfo(model, true, false, '');
+
+      assert.equal(info.detail, DETAIL_KEY);
+    });
+
+    test('appends balance on a new line', () => {
+      const model = makeTestModel({ pricing: undefined });
+      const info = buildChatInfo(model, true, false, '', 'CNY', '¥19.20');
+
+      assert.equal(info.detail, `${DETAIL_KEY}  \nbalance.label: ¥19.20`);
+    });
+
+    test('appends credits unit as its own line when pricing is present', () => {
+      const model = makeTestModel({
+        pricing: PRICING,
+        endpoint: { id: 'test-ep', label: 'Test', billing: 'api' } as ModelItem['endpoint'],
+      });
+      const info = buildChatInfo(model, true, false, '', 'CNY', '¥19.20');
+
+      assert.equal(
+        info.detail,
+        `${DETAIL_KEY}  \nbalance.label: ¥19.20  \nbalance.creditsUnit: CNY`,
+      );
+    });
+
+    test('does NOT append credits unit when billing is plan', () => {
+      const model = makeTestModel({
+        pricing: PRICING,
+        endpoint: { id: 'test-ep', label: 'Test', billing: 'plan' } as ModelItem['endpoint'],
+      });
+      const info = buildChatInfo(model, true, false, '', 'CNY', '¥19.20');
+
+      assert.ok(!info.detail!.includes('balance.creditsUnit'));
+      assert.ok(info.detail!.includes('balance.label: ¥19.20'));
+    });
+
+    test('appends planUsage when provided', () => {
+      const model = makeTestModel({
+        pricing: PRICING,
+        endpoint: { id: 'test-ep', label: 'Test', billing: 'plan' } as ModelItem['endpoint'],
+      });
+      const info = buildChatInfo(model, true, false, '', undefined, undefined, undefined, '5H: 97/100');
+
+      assert.equal(info.detail, `${DETAIL_KEY}  \n5H: 97/100`);
+    });
+
+    test('balanceCurrency from API response overrides pricingCurrency', () => {
+      const model = makeTestModel({
+        pricing: PRICING,
+        endpoint: { id: 'test-ep', label: 'Test' } as ModelItem['endpoint'],
+      });
+      const info = buildChatInfo(model, true, false, '', 'USD', '¥19.20', 'CNY');
+
+      assert.ok(info.detail!.includes('balance.creditsUnit: CNY'));
+      assert.ok(!info.detail!.includes('USD'));
+    });
+
+    test('does not start with a newline when base detail is empty', () => {
+      const model = makeTestModel({ pricing: PRICING, detailKey: '' });
+      const info = buildChatInfo(model, true, false, '', 'CNY', '¥19.20');
+
+      assert.equal(info.detail![0], 'b');
+      assert.ok(!info.detail!.startsWith('\n'));
+    });
+
+    test('appends usage to tooltip, which VS Code renders as the description', () => {
+      const model = makeTestModel({ pricing: PRICING });
+      const info = buildChatInfo(model, true, false, '', 'CNY', '¥19.20');
+
+      assert.equal(
+        info.tooltip,
+        `${DETAIL_KEY}  \nbalance.label: ¥19.20  \nbalance.creditsUnit: CNY`,
+      );
+      assert.equal(info.detail, info.tooltip);
+    });
+
+    test('keeps the no-key tooltip free of usage info', () => {
+      const model = makeTestModel({ pricing: PRICING });
+      const info = buildChatInfo(model, false, false, '', 'CNY', '¥19.20');
+
+      assert.ok(info.tooltip!.startsWith('auth.noKeyTooltip'));
+      assert.ok(!info.tooltip!.includes('¥19.20'));
+    });
+  });
 });

@@ -689,7 +689,8 @@
     "format": "prettier --write src/",
     "format:check": "prettier --check src/",
     "package": "vsce package -o dist/",
-    "test": "TS_NODE_PROJECT=tsconfig.test.json vscode-test"
+    "test": "TS_NODE_PROJECT=tsconfig.test.json vscode-test",
+    "test:unit": "TS_NODE_PROJECT=tsconfig.test.json mocha --ui tdd --require ts-node/register --require ./test/helpers/vscode-stub.ts 'test/tests/**/*.test.ts'"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",

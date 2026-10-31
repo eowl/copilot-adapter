@@ -135,7 +135,7 @@ VS Code Copilot Chat 官方的 **Custom Endpoint** 仅支持基础的模型配�
 
 ### 余额与用量显示
 
-对于 API Key 模式的提供商（DeepSeek、Moonshot），扩展可以在每个模型的信息卡片上显示账户余额。对于 Coding Plan 模式（如 Kimi Code），扩展会显示计划用量配额（如限流窗口、周用量和总量）。结果会出现在语言模型面板中模型的悬浮卡片底部。
+对于 API Key 模式的提供商（DeepSeek、Moonshot），扩展可以在每个模型的信息卡片上显示账户余额。对于 Coding Plan 模式（如 Kimi Code），扩展会显示计划用量配额（如限流窗口、周用量和总量）。结果会追加在语言模型面板中模型的悬浮卡片描述行下方。
 
 查询结果会被缓存，避免频繁调用 API。你可以通过 `copilot-adapter.balanceCacheTime` 设置来控制缓存时长。选择「关闭（不缓存）」则每次刷新模型列表时都重新获取余额或用量。
 

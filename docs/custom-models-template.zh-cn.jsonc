@@ -8,8 +8,8 @@
 // "supportsReasoningEffort" 控制模型选择器中显示的思考强度选项，
 // 以及发送给 API 的请求字段格式。
 //
-// 不填时，扩展会根据模型 ID 自动匹配预置配置（如 deepseek-v4-pro → DeepSeek
-// 配置、qwen3.7-max → Qwen 配置、claude-sonnet-4-20250514 → Anthropic 配置
+// 不填时，扩展会根据模型 ID 自动匹配预置配置（如 deepseek-v4-pro -> DeepSeek
+// 配置、qwen3.7-max -> Qwen 配置、claude-sonnet-4-20250514 -> Anthropic 配置
 // 等）。未识别的 ID 使用通用 fallback：["minimal", "low", "medium", "high"]。
 //
 // 以下示例展示的是该模型的默认配置。如需自定义，请按相同格式修改后填入。
