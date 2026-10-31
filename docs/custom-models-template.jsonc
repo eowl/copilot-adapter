@@ -9,8 +9,8 @@
 // the model picker and what request fields are sent to the API.
 //
 // When omitted, the extension auto-selects the correct pre-built config for
-// known model IDs (e.g. deepseek-v4-pro → DeepSeek config, qwen3.7-max → Qwen
-// config, claude-sonnet-4-20250514 → Anthropic config, etc.).  For unrecognized
+// known model IDs (e.g. deepseek-v4-pro -> DeepSeek config, qwen3.7-max -> Qwen
+// config, claude-sonnet-4-20250514 -> Anthropic config, etc.).  For unrecognized
 // IDs the generic ["minimal", "low", "medium", "high"] fallback is used.
 //
 // The examples below show the default config that would be applied.  Only

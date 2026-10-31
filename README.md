@@ -135,7 +135,7 @@ For a step-by-step guide with screenshots, see [How to Add a Custom Model](docs/
 
 ### Balance & usage display
 
-For API-key based providers (DeepSeek, Moonshot), the extension can display your account balance on each model's information card. For Coding Plan providers (Kimi Code), the extension displays plan usage quotas (rate-limit window, weekly usage and total quota). The result appears at the bottom of the model hover card in the Language Models panel.
+For API-key based providers (DeepSeek, Moonshot), the extension can display your account balance on each model's information card. For Coding Plan providers (Kimi Code), the extension displays plan usage quotas (rate-limit window, weekly usage and total quota). The result is appended to the model's description line on the model hover card in the Language Models panel.
 
 The query result is cached to avoid excessive API calls. You can control the cache duration via the `copilot-adapter.balanceCacheTime` setting. Changing it to `Off (no cache)` fetches the balance on every model list refresh.
 
@@ -148,7 +148,7 @@ The extension uses VS Code's unit-price API. Some models are configured with pri
 1. Currency returned in the balance API response
 2. Currency specified in the endpoint configuration
 3. Currency from the `copilot-adapter.pricingCurrency` setting
-4. VS Code UI language (Chinese → CNY, others → USD)
+4. VS Code UI language (Chinese -> CNY, others -> USD)
 
 *Note:* for `DeepSeek` models, the default price shown on the hover card is the official off-peak pricing, while the long-context price represents the official peak pricing (this is because VS Code's unit-price API only distinguishes `default` and `longContext`).
 
@@ -170,7 +170,7 @@ The extension uses VS Code's unit-price API. Some models are configured with pri
 | `copilot-adapter.tokenRatioCalibrationThreshold` | `0.1` | Minimum relative change (1–100%) to persist auto-calibrated ratio |
 | `copilot-adapter.toolWarmup` | `false` | Send fake `activate_*` tool calls before real requests (improves tool stability on some models) |
 | `copilot-adapter.balanceCacheTime` | `60` | Cache duration (seconds) for balance/usage queries. `0` disables caching — see [Balance & usage display](#balance--usage-display) |
-| `copilot-adapter.pricingCurrency` | `""` | Fallback currency for credits unit on model hover cards. Priority: balance API > endpoint > this setting > VS Code language (zh → CNY, else USD) |
+| `copilot-adapter.pricingCurrency` | `""` | Fallback currency for credits unit on model hover cards. Priority: balance API > endpoint > this setting > VS Code language (zh -> CNY, else USD) |
 | `copilot-adapter.maxWarmupRounds` | `3` | Max warmup rounds per request (requires `toolWarmup` on) |
 | `copilot-adapter.debugMode` | `"off"` | Log verbosity: `off` / `info` / `meta` / `verbose` |
 
