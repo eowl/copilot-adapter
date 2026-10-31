@@ -58,8 +58,7 @@ export function buildChatInfo(
     pricingCurrency,
   );
 
-  // Build category with balance info, credits unit and/or plan usage
-  const category = buildCategory(
+  const usageParts = buildUsageParts(
     balance,
     modelItem.pricing,
     pricingCurrency,
@@ -67,6 +66,9 @@ export function buildChatInfo(
     balanceCurrency,
     planUsage,
   );
+  const category = usageParts.length > 0 ? usageParts.join(' ') : undefined;
+  const description =
+    notConfigured ? t('auth.noKeyTooltip', modelProvider.label) : appendLines(detail, usageParts);
 
   const info = {
     id: infoId,
@@ -81,8 +83,8 @@ export function buildChatInfo(
       imageInput: modelItem.imageInput || hasVisionProxy,
       toolCalling: modelItem.maxTools ?? (modelItem.maxTools === undefined ? true : false),
     },
-    tooltip: notConfigured ? t('auth.noKeyTooltip', modelProvider.label) : detail,
-    detail: detail,
+    tooltip: description,
+    detail: description,
     statusIcon: notConfigured ? new vscode.ThemeIcon('warning') : undefined,
     configurationSchema: schema,
     ...costInfo,
@@ -133,14 +135,15 @@ function toModelCostInfo(
   };
 }
 
-function buildCategory(
+/** Balance, credits unit and plan usage segments, in display order. */
+function buildUsageParts(
   balance: string | undefined,
   pricing: Readonly<Partial<Record<PricingCurrency, ModelPricing>>> | undefined,
   pricingCurrency: PricingCurrency | undefined,
   billing: BillingMode | undefined,
   balanceCurrency?: string,
   planUsage?: string,
-): string | undefined {
+): string[] {
   // balanceCurrency from API response takes highest priority,
   // then endpoint/settings pricingCurrency
   const effectiveCurrency = (balanceCurrency as PricingCurrency | undefined) ?? pricingCurrency;
@@ -159,7 +162,11 @@ function buildCategory(
     parts.push(planUsage);
   }
 
-  return parts.length > 0 ? parts.join(' ') : undefined;
+  return parts;
+}
+
+function appendLines(base: string, parts: readonly string[]): string {
+  return [base, ...parts].filter(Boolean).join('  \n');
 }
 
 export function resolveModelConfig(options: ReqOptions): Record<string, unknown> {
