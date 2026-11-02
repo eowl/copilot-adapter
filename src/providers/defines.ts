@@ -158,6 +158,36 @@ export const MINIMAX_THINKING: ThinkingConfig = {
   ],
 };
 
+export const MINIMAX_THINKING_WITH_REASONING: ThinkingConfig = {
+  default: 'max',
+  options: [
+    {
+      value: 'max',
+      label: 'think.max',
+      hint: 'think.max.hint',
+      requestFields: { thinking: { type: 'adaptive' }, reasoning_effort: 'max' },
+    },
+    {
+      value: 'high',
+      label: 'think.high',
+      hint: 'think.high.hint',
+      requestFields: { thinking: { type: 'adaptive' }, reasoning_effort: 'high' },
+    },
+    {
+      value: 'xhigh',
+      label: 'think.xhigh',
+      hint: 'think.xhigh.hint',
+      requestFields: { thinking: { type: 'adaptive' }, reasoning_effort: 'xhigh' },
+    },
+    {
+      value: 'low',
+      label: 'think.low',
+      hint: 'think.low.hint',
+      requestFields: { thinking: { type: 'adaptive' }, reasoning_effort: 'low' },
+    },
+  ],
+};
+
 export const MOONSHOT_THINKING: ThinkingConfig = {
   default: 'adaptive',
   options: [
@@ -217,9 +247,21 @@ export const MOONSHOT_K3_THINKING: ThinkingConfig = {
   options: [
     {
       value: 'max',
-      label: 'model.kimi.reasoningEffort.max',
-      hint: 'model.kimi.reasoningEffort.max.hint',
-      requestFields: { reasoning_effort: 'max' },
+      label: 'think.max',
+      hint: 'think.max.hint',
+      requestFields: { thinking: { type: 'enabled' }, reasoning_effort: 'max' },
+    },
+    {
+      value: 'high',
+      label: 'think.high',
+      hint: 'think.high.hint',
+      requestFields: { thinking: { type: 'enabled' }, reasoning_effort: 'high' },
+    },
+    {
+      value: 'low',
+      label: 'think.low',
+      hint: 'think.low.hint',
+      requestFields: { thinking: { type: 'enabled' }, reasoning_effort: 'low' },
     },
   ],
 };

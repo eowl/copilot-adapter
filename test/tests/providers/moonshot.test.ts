@@ -9,15 +9,19 @@ suite('providers/moonshot', () => {
     assert.equal(MOONSHOT.id, 'moonshot');
   });
 
-  test('has 5 models', () => {
-    assert.equal(MS_MODELS.length, 5);
+  test('has 6 models', () => {
+    assert.equal(MS_MODELS.length, 6);
   });
 
-  test('K2.5 has 2-value thinking (adaptive / disabled)', () => {
-    const k25 = MS_MODELS.find((m) => m.label === 'Kimi K2.5')!;
-    assert.ok(k25.thinkingConfig !== undefined);
-    assert.equal(k25.thinkingConfig!.default, 'adaptive');
-    assert.equal(k25.thinkingConfig!.options.length, 2);
+  test('K2.7 has single-value thinking (enabled with keep:all)', () => {
+    const k27 = MS_MODELS.find((m) => m.label === 'Kimi K2.7 Code')! as ModelItem;
+    backfillModel(k27);
+    assert.ok(k27.thinkingConfig !== undefined);
+    assert.equal(k27.thinkingConfig!.default, 'enabled');
+    assert.equal(k27.thinkingConfig!.options.length, 1);
+
+    const result = k27.requestExtras!({ thinkingMode: 'enabled' });
+    assert.deepEqual(result, { thinking: { type: 'enabled', keep: 'all' } });
   });
 
   test('K2.6 has 3-value thinking (enabled / enabled_keep / disabled)', () => {
@@ -27,7 +31,6 @@ suite('providers/moonshot', () => {
     assert.equal(k26.thinkingConfig!.default, 'enabled');
     assert.equal(k26.thinkingConfig!.options.length, 3);
 
-    // enabled_keep to thinking with keep:all
     const result = k26.requestExtras!({ thinkingMode: 'enabled_keep' });
     assert.deepEqual(result, { thinking: { type: 'enabled', keep: 'all' } });
   });

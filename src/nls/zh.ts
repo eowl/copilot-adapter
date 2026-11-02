@@ -15,6 +15,7 @@ export const zh: Translation = {
     '模型支持在文本之外输入图片，你可以让模型描述图片、识别截图中的文字、分析图表等',
 
   'model.kimi-k3.detail': 'Kimi K3 是 Kimi 迄今能力最强的旗舰模型',
+  'model.kimi-k3.1-pro.detail': 'Kimi K3.1 Pro',
   'model.kimi-k2.7-code.detail':
     'Kimi K2.7 Code 是 Kimi 的 Coding 模型，在长上下文中更可靠地遵循指令，能以更高的成功率完成编程任务，同时支持文本、图片与视频输入，思考模式，对话与 Agent 任务。',
   'model.kimi-k2.7-code-highspeed.detail':
@@ -36,6 +37,7 @@ export const zh: Translation = {
   'model.minimax-m2.7.detail': '深度推理模型',
   'model.minimax-m2.7-highspeed.detail': '深度推理，高速版',
   'model.minimax-m3.detail': '深度推理，支持图像',
+  'model.minimax-m3.1-flash.detail': 'Minimax M3.1 Flash',
 
   'model.qwen3.8-max.detail': '旗舰模型，最新一代',
   'model.qwen3.7-max.detail': 'Qwen3.7系列中规模最大、综合能力最强的Max模型',
@@ -120,6 +122,8 @@ export const zh: Translation = {
   'think.low.hint': '适合简单任务',
   'think.high': '高',
   'think.high.hint': '适合日常任务',
+  'think.xhigh': '极高',
+  'think.xhigh.hint': '适合日常任务',
   'think.max': '最大',
   'think.max.hint': '适合复杂问题',
   'think.keep': '保留',

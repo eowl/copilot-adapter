@@ -3,6 +3,7 @@ import { suite, test } from 'mocha';
 import { MINIMAX, MM_MODELS } from '../../../src/providers/minimax';
 import { ThinkTagParser } from '../../../src/providers/parsers/tag';
 import { backfillModel } from '../../../src/providers/loader';
+import { resolveTrait } from '../../../src/providers/utils';
 import type { ModelItem } from '../../../src/providers/types';
 
 function reasoningModel(): ModelItem {
@@ -28,23 +29,16 @@ suite('providers/minimax model.createContentParser()', () => {
 });
 
 suite('providers/minimax model list', () => {
-  test('has 8 models', () => {
-    assert.equal(MM_MODELS.length, 8);
+  test('has 2 models', () => {
+    assert.equal(MM_MODELS.length, 2);
   });
 
-  test('first model is minimax-m2', () => {
-    assert.equal(MM_MODELS[0].label, 'MiniMax M2');
+  test('first model is MiniMax M3', () => {
+    assert.equal(MM_MODELS[0].label, 'MiniMax M3');
   });
 
   test('MINIMAX provider id is "minimax"', () => {
     assert.equal(MINIMAX.id, 'minimax');
-  });
-
-  test('M2 models have thinkingTag "think"', () => {
-    const m2 = MM_MODELS.find((m) => m.label === 'MiniMax M2')!;
-    backfillModel(m2);
-    assert.equal(m2.thinkingTag, 'think');
-    assert.ok(m2.createContentParser !== undefined);
   });
 
   test('M3 model has thinking config', () => {
@@ -56,8 +50,19 @@ suite('providers/minimax model list', () => {
     assert.ok(m3.configSchema !== undefined);
   });
 
-  test('M3 model has thinkingTag "think"', () => {
+  test('M3 thinking resolves via think tag, not a delta field', () => {
     const m3 = MM_MODELS.find((m) => m.label === 'MiniMax M3')!;
+    backfillModel(m3);
     assert.equal(m3.thinkingTag, 'think');
+    assert.ok(m3.createContentParser!() instanceof ThinkTagParser);
+    assert.equal(resolveTrait(m3, 'thinkingField'), undefined);
+  });
+
+  test('M3.1 Flash thinking resolves via reasoning_content field', () => {
+    const flash = MM_MODELS.find((m) => m.label === 'MiniMax M3.1 Flash')!;
+    backfillModel(flash);
+    assert.equal(resolveTrait(flash, 'thinkingField'), 'reasoning_content');
+    assert.equal(flash.thinkingTag, undefined);
+    assert.equal(flash.createContentParser, undefined);
   });
 });
