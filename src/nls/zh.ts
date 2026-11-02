@@ -15,6 +15,7 @@ export const zh: Translation = {
     '模型支持在文本之外输入图片，你可以让模型描述图片、识别截图中的文字、分析图表等',
 
   'model.kimi-k3.detail': 'Kimi K3 是 Kimi 迄今能力最强的旗舰模型',
+  'model.kimi-k3.1-pro.detail': 'Kimi K3.1 Pro',
   'model.kimi-k2.7-code.detail':
     'Kimi K2.7 Code 是 Kimi 的 Coding 模型，在长上下文中更可靠地遵循指令，能以更高的成功率完成编程任务，同时支持文本、图片与视频输入，思考模式，对话与 Agent 任务。',
   'model.kimi-k2.7-code-highspeed.detail':

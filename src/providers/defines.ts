@@ -217,9 +217,21 @@ export const MOONSHOT_K3_THINKING: ThinkingConfig = {
   options: [
     {
       value: 'max',
-      label: 'model.kimi.reasoningEffort.max',
-      hint: 'model.kimi.reasoningEffort.max.hint',
-      requestFields: { reasoning_effort: 'max' },
+      label: 'think.max',
+      hint: 'think.max.hint',
+      requestFields: { thinking: { type: 'enabled' }, reasoning_effort: 'max' },
+    },
+    {
+      value: 'high',
+      label: 'think.high',
+      hint: 'think.high.hint',
+      requestFields: { thinking: { type: 'enabled' }, reasoning_effort: 'high' },
+    },
+    {
+      value: 'low',
+      label: 'think.low',
+      hint: 'think.low.hint',
+      requestFields: { thinking: { type: 'enabled' }, reasoning_effort: 'low' },
     },
   ],
 };
