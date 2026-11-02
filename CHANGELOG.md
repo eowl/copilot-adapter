@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.21](https://github.com/eowl/copilot-adapter/releases/tag/v0.1.21) 2026-11-02
+
+* feat: refresh Moonshot (Kimi) & MiniMax model lineup by @eowl in [#78](https://github.com/eowl/copilot-adapter/pull/78)
+* refactor: show balance and usage in the model description by @eowl in [#77](https://github.com/eowl/copilot-adapter/pull/77)
+
+**Full Changelog**: https://github.com/eowl/copilot-adapter/compare/v0.1.20...v0.1.21
+
 ## [0.1.20](https://github.com/eowl/copilot-adapter/releases/tag/v0.1.20) 2026-09-26
 
 * fix: json parse in req by @eowl in [#75](https://github.com/eowl/copilot-adapter/pull/75)
