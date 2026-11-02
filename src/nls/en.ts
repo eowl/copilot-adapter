@@ -36,6 +36,7 @@ export const en: Translation = {
   'model.minimax-m2.7.detail': 'Deep reasoning model',
   'model.minimax-m2.7-highspeed.detail': 'Deep reasoning, high-speed',
   'model.minimax-m3.detail': 'Deep reasoning with vision support',
+  'model.minimax-m3.1-flash.detail': 'Minimax M3.1 Flash',
 
   'model.qwen3.8-max.detail': 'Flagship model, latest generation',
   'model.qwen3.7-max.detail':
@@ -132,6 +133,8 @@ export const en: Translation = {
   'think.low.hint': 'Suitable for simple tasks',
   'think.high': 'High',
   'think.high.hint': 'Good for day-to-day coding tasks',
+  'think.xhigh': 'Very High',
+  'think.xhigh.hint': 'Good for day-to-day coding tasks',
   'think.max': 'Max',
   'think.max.hint': 'Full reasoning depth for hard problems',
   'think.keep': 'Keep',

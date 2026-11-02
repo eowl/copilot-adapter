@@ -6,8 +6,7 @@ export const MINIMAX: ModelProvider = {
   label: 'MiniMax',
   detailKey: 'provider.minimax.detail',
   url: DEFAULT_ENDPOINT_URLS.minimax,
-  tokenRatio: 4.0,
-  thinkingField: 'thinking_content',
+  // tokenRatio: 4.0,
   supportsStreamUsage: false,
   apiKeyHint: 'sk-...',
   links: {

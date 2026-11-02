@@ -92,10 +92,11 @@ suite('providers/index', () => {
       assert.equal(entry!.id, 'deepseek-flash');
     });
 
-    test('minimax-m2.7-highspeed maps to MINIMAX provider', () => {
-      const entry = modelById.get('minimax-m2.7-highspeed-minimax-minimax.io');
-      assert.ok(entry !== undefined);
+    test('minimax-m3 maps to MINIMAX provider', () => {
+      const entry = modelById.get('minimax-m3-minimax-minimax.io');
+      assert.ok(entry !== undefined, 'minimax-m3-minimax-minimax.io not found in modelById');
       assert.strictEqual(entry!.provider, MINIMAX);
+      assert.equal(entry!.id, 'minimax-m3');
     });
 
     test('contains all models from all providers', () => {

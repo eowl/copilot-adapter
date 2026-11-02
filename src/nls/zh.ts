@@ -37,6 +37,7 @@ export const zh: Translation = {
   'model.minimax-m2.7.detail': '深度推理模型',
   'model.minimax-m2.7-highspeed.detail': '深度推理，高速版',
   'model.minimax-m3.detail': '深度推理，支持图像',
+  'model.minimax-m3.1-flash.detail': 'Minimax M3.1 Flash',
 
   'model.qwen3.8-max.detail': '旗舰模型，最新一代',
   'model.qwen3.7-max.detail': 'Qwen3.7系列中规模最大、综合能力最强的Max模型',
@@ -121,6 +122,8 @@ export const zh: Translation = {
   'think.low.hint': '适合简单任务',
   'think.high': '高',
   'think.high.hint': '适合日常任务',
+  'think.xhigh': '极高',
+  'think.xhigh.hint': '适合日常任务',
   'think.max': '最大',
   'think.max.hint': '适合复杂问题',
   'think.keep': '保留',

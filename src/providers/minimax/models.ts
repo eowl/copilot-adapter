@@ -1,6 +1,6 @@
 import type { ModelItem } from '../types';
 import { MINIMAX } from './provider';
-import { MINIMAX_THINKING } from '../defines';
+import { MINIMAX_THINKING, MINIMAX_THINKING_WITH_REASONING } from '../defines';
 
 const MM_BASE = {
   family: 'minimax',
@@ -22,14 +22,45 @@ const MM_M3_BASE = {
   thinking: true,
   imageInput: true,
   maxTools: 64,
-  thinkingTag: 'think',
   thinkingConfig: MINIMAX_THINKING,
+};
+
+export const MM_M3_1_FLASH: ModelItem = {
+  ...MM_M3_BASE,
+  id: 'minimax-m3.1-flash',
+  label: 'MiniMax M3.1 Flash',
+  apiId: 'MiniMax-M3.1-Flash',
+  maxTokensField: 'max_completion_tokens',
+  version: '3',
+  maxInputTokens: 1_000_000,
+  maxOutputTokens: 40960,
+  detailKey: 'model.minimax-m3.1-flash.detail',
+  pricing: {
+    CNY: {
+      default: {
+        cacheInput: 0.1,
+        input: 1,
+        output: 4,
+      },
+    },
+    USD: {
+      default: {
+        cacheInput: 0.015,
+        input: 0.15,
+        output: 0.6,
+      },
+    },
+  },
+  priceCategory: 'low',
+  thinkingField: 'reasoning_content',
+  thinkingConfig: MINIMAX_THINKING_WITH_REASONING,
 };
 
 export const MM_M3: ModelItem = {
   ...MM_M3_BASE,
   id: 'minimax-m3',
   label: 'MiniMax M3',
+  thinkingTag: 'think',
   maxTokensField: 'max_completion_tokens',
   apiId: 'MiniMax-M3',
   version: '3',
@@ -105,63 +136,6 @@ export const MM_M2_5: ModelItem = {
 };
 
 export const MM_MODELS: readonly ModelItem[] = [
-  {
-    ...MM_BASE,
-    id: 'minimax-m2',
-    label: 'MiniMax M2',
-    apiId: 'MiniMax-M2',
-    version: '2',
-    detailKey: 'model.minimax-m2.detail',
-  },
-  {
-    ...MM_BASE,
-    id: 'minimax-m2.1',
-    label: 'MiniMax M2.1',
-    apiId: 'MiniMax-M2.1',
-    version: '2.1',
-    detailKey: 'model.minimax-m2.1.detail',
-  },
-  {
-    ...MM_BASE,
-    id: 'minimax-m2.1-highspeed',
-    label: 'MiniMax M2.1 Highspeed',
-    apiId: 'MiniMax-M2.1-highspeed',
-    version: '2.1',
-    detailKey: 'model.minimax-m2.1-highspeed.detail',
-  },
-  MM_M2_5,
-  {
-    ...MM_BASE,
-    id: 'minimax-m2.5-highspeed',
-    label: 'MiniMax M2.5 Highspeed',
-    apiId: 'MiniMax-M2.5-highspeed',
-    version: '2.5',
-    detailKey: 'model.minimax-m2.5-highspeed.detail',
-  },
-  MM_M2_7,
-  {
-    ...MM_BASE,
-    id: 'minimax-m2.7-highspeed',
-    label: 'MiniMax M2.7 Highspeed',
-    apiId: 'MiniMax-M2.7-highspeed',
-    version: '2.7',
-    detailKey: 'model.minimax-m2.7-highspeed.detail',
-    pricing: {
-      CNY: {
-        default: {
-          cacheInput: 0.42,
-          input: 4.2,
-          output: 16.8,
-        },
-      },
-      USD: {
-        default: {
-          cacheInput: 0.06,
-          input: 0.6,
-          output: 2.4,
-        },
-      },
-    },
-  },
   MM_M3,
+  MM_M3_1_FLASH,
 ];
