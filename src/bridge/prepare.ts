@@ -9,7 +9,7 @@ import type { ReqOptions } from './information';
 import type { ApiReq } from '../client/types';
 import { Settings } from '../settings';
 import { countMessageChars } from './tally';
-import { imagePart, apiModelId } from '../providers/utils';
+import { imagePart, apiModelId, resolveTrait } from '../providers/utils';
 import { DEFAULT_IMAGE_FIELD } from './defines';
 
 export interface ReadyReq {
@@ -55,7 +55,7 @@ export async function assembleChatReq(ctx: PrepContext): Promise<ReadyReq> {
   let tools: ReturnType<typeof translateTools>;
 
   const translateOpts = {
-    thinkingField: modelProvider.thinkingField,
+    thinkingField: resolveTrait(model, 'thinkingField'),
     formatImagePart:
       model.formatImagePart ??
       (model.imageInput ? imagePart(model.imageField ?? DEFAULT_IMAGE_FIELD) : undefined),
