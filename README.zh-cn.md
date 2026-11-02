@@ -8,6 +8,8 @@
 
 让 VS Code 原生 Copilot Chat 无缝接入第三方 AI 模型。无需 Copilot 订阅，无需本地代理，使用自己的 API Key，即可在 Copilot Chat 的模型选择器中直接切换[支持的模型](#模型)——体验与 Copilot 内置模型完全一致。
 
+> 常见问题请看[注意事项](#注意事项)。
+
 [English](README.md)
 
 - [模型](#模型)
@@ -32,8 +34,8 @@
 | 提供商 | 端点 | 模型 | 备注 |
 |---|---|---|---|
 | **DeepSeek** | [`Deepseek Platform`](https://platform.deepseek.com) | `DeepSeek V4 Pro` `DeepSeek V4.1 Flash` | |
-| **MiniMax** | [`minimaxi.com`](https://www.minimaxi.com/) [`minimax.io`](https://www.minimax.io/) | `M3` `M2.7` `M2.7 Highspeed` `M2.5` `M2.5 Highspeed` `M2.1` `M2.1 Highspeed` `M2` | |
-| **Moonshot (Kimi)** | [`platform.moonshot.cn`](https://platform.moonshot.cn/) [`platform.moonshot.ai`](https://platform.moonshot.ai/) [`Kimi Code`](https://www.kimi.com/code/docs/) | `Kimi K3` `Kimi K2.7 Code` `Kimi K2.7 Code High-Speed` `Kimi K2.6` `Kimi K2.5` | |
+| **MiniMax** | [`minimaxi.com`](https://www.minimaxi.com/) [`minimax.io`](https://www.minimax.io/) | `M3` `M3.1 Flash` | |
+| **Moonshot (Kimi)** | [`platform.moonshot.cn`](https://platform.moonshot.cn/) [`platform.moonshot.ai`](https://platform.moonshot.ai/) [`Kimi Code`](https://www.kimi.com/code/docs/) | `Kimi K3.1 Pro` `Kimi K3.1 Pro High-Speed` `Kimi K3` `Kimi K2.7 Code` `Kimi K2.7 Code High-Speed` `Kimi K2.6` | |
 | **Qwen** | [`bailian.console.aliyun.com`](https://bailian.console.aliyun.com/) `CN` `US` `SGP` `EU` `JP` `Token Plan` | `Qwen3.8 Max` `Qwen3.7 Max` `Qwen3.7 Plus` `Qwen3.6 Max` `Qwen3.6 Plus` `Qwen3.6 Flash` `Qwen3.5 Plus` `Qwen3.5 Flash` `Qwen3 Max` `Qwen3 Coder Plus` `Qwen3 Coder Flash` `Qwen Plus (US only)` `Qwen Flash (US only)` `MiniMax-M3 (Third Party)` `MiniMax-M2.7 (Third Party)` `MiniMax-M2.5 (Third Party)` `Kimi-K3 (Third Party)` `Kimi-K2.5 (Third Party)` `Kimi-K2.6 (Third Party)` `Kimi-K2.7-Code (Third Party)` `GLM-5.2 (Third Party)` `GLM-5.1 (Third Party)` `MIMO-V2.5-PRO (Third Party)` | *带 `(Third Party)` 标识的模型，需先在 Qwen 官网 Dashboard 的模型卡片中手动启用「服务开通」后方可使用。* |
 | **智谱** | [`BigModel`](https://open.bigmodel.cn/) [`Z.ai`](https://api.z.ai/) `Coding Plan` | `GLM-5.3-Flash` `GLM-5.3` `GLM-5.2` `GLM-5.1` `GLM-5` `GLM-5-Turbo` `GLM-4.7` `GLM-4.7-FlashX` `GLM-4.6` `GLM-4.5-Air` `GLM-4.5-AirX` `GLM-4-Long` `GLM-4-FlashX-250414` `GLM-4.7-Flash` `GLM-4.5-Flash` `GLM-4-Flash-250414` `GLM-5V-Turbo` `GLM-4.6V` `GLM-OCR` `GLM-4.1V-Thinking-FlashX` `GLM-4.6V-Flash` `GLM-4.1V-Thinking-Flash` `GLM-4V-Flash` | |
 | **Xiaomi MIMO** | [`Xiaomi MIMO`](https://mimo.mi.com/) `Token Plan CN` `Token Plan SGP` `Token Plan EU` | `mimo-v2.6-pro` `mimo-v2.6-flash` | |
@@ -204,6 +206,8 @@ VS Code Copilot Chat 官方的 **Custom Endpoint** 仅支持基础的模型配�
 ## 注意事项
 
 **Profile 隔离：** 如果你使用了 VS Code 的 [Profiles](https://code.visualstudio.com/docs/editor/profiles) 功能，官方 Copilot Chat 的配置是按 Profile 隔离的——Copilot Adapter 的配置同样遵循此规则。API Key、模型分组和自定义模型定义均作用于当前活动的 Profile。
+
+**使用本扩展的模型需切换 Local 模式：** 本扩展提供的所有模型（包括内置的第三方模型和[自定义模型](#自定义模型)）都需要将 Copilot Chat 会话切换到 **Local** 模式后，才会出现在模型选择器中。
 
 ---
 
