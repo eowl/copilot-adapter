@@ -135,7 +135,4 @@ export const MM_M2_5: ModelItem = {
   detailKey: 'model.minimax-m2.5.detail',
 };
 
-export const MM_MODELS: readonly ModelItem[] = [
-  MM_M3,
-  MM_M3_1_FLASH,
-];
+export const MM_MODELS: readonly ModelItem[] = [MM_M3, MM_M3_1_FLASH];

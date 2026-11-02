@@ -64,7 +64,6 @@ export const MS_KIMI_K3: ModelItem = {
   priceCategory: 'high',
 };
 
-
 export const MS_KIMI_K3_1_PRO: ModelItem = {
   ...MS_K3_BASE,
   id: 'kimi-k3.1-pro',
